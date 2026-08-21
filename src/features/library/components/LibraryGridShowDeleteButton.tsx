@@ -2,8 +2,8 @@
 
 import { IconTrash } from '@tabler/icons-react';
 import { FC, useTransition } from 'react';
-import { LibraryGridShowDeleteButtonProps } from '@/app/(main)/library/_types/libraryGridShowDeleteButton';
 import { deleteShowFromLibrary } from '@/features/show/actions/deleteShowFromLibrary';
+import { LibraryGridShowDeleteButtonProps } from '@/features/library/types/libraryGridShowDeleteButton';
 
 export const LibraryGridShowDeleteButton: FC<LibraryGridShowDeleteButtonProps> = ({ showId }) => {
   const [isPending, startTransition] = useTransition();
