@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navigation } from '@/lib/navigation';
+import Image from 'next/image';
 
 export const Header = () => {
   const pathname = usePathname();
@@ -11,9 +12,13 @@ export const Header = () => {
     <header className="border-zinc-850 sticky top-0 z-30 border-b bg-zinc-950/80 backdrop-blur-lg">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="group flex items-center space-x-4 select-none">
-          <div className="text-gold-400 group-hover:border-gold-500/50 flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 font-serif text-xl font-extrabold shadow-lg transition-all duration-300">
-            <span>C</span>
-          </div>
+          <Image
+            width="40"
+            height="40"
+            alt="Chronicle Logo"
+            src="/icons/logo.svg"
+            referrerPolicy="no-referrer"
+          />
           <div>
             <h1 className="to-gold-300 group-hover:to-gold-400 bg-linear-to-r from-white via-zinc-100 bg-clip-text font-serif text-2xl font-extrabold tracking-tight text-transparent transition-all duration-300">
               Chronicle

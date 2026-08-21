@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { UpNextEpisodesListProps } from '@/features/show/types/upNextShowsList';
-import { UpNextEpisodeCard } from '@/features/show/components/upNext/UpNextEpisodeCard';
+import { UpNextEpisodeCard } from '@/features/episode/components/upNext/UpNextEpisodeCard';
+import { UpNextEpisodesListProps } from '@/features/episode/types/upNextShowsList';
 
 export const UpNextEpisodesList: FC<UpNextEpisodesListProps> = ({ episodes }) => {
   return (

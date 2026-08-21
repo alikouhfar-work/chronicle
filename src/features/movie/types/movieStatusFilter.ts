@@ -1,6 +1,6 @@
-import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
+import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 
-export type ShowStatusFilter = {
-  key: ShowTrackingStatus;
+export type MovieStatusFilter = {
+  key: MovieTrackingStatus;
   title: string;
 };

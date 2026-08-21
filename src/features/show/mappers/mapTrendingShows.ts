@@ -1,18 +1,23 @@
-import { Show, ShowRaw } from '@/features/show/types/show';
+import { TrendingShowRaw } from '@/features/show';
+import { TrendingShow } from '@/features/show/types/trending';
 
-export const mapShow = (show: ShowRaw): Show => ({
-  id: show.id,
-  tmdbId: show.id,
-  name: show.name,
-  status: show.status,
-  overview: show.overview,
-  posterPath: show.poster_path,
-  backdropPath: show.backdrop_path,
-  firstAirDate: show.first_air_date,
-  lastAirDate: show.last_air_date,
-  numberOfSeasons: show.number_of_seasons,
-  numberOfEpisodes: show.number_of_episodes,
-  inProduction: show.in_production,
-  genres: show.genres,
-  seasons: show.seasons,
-});
+export const mapTrendingShows = (
+  trendingShows: TrendingShowRaw[],
+  genreDictionary: Map<number, string>,
+): Omit<TrendingShow, 'isTracked'>[] =>
+  trendingShows.map((trendingShow) => ({
+    backdropPath: trendingShow.backdrop_path,
+    id: trendingShow.id,
+    name: trendingShow.name,
+    overview: trendingShow.overview,
+    mediaType: trendingShow.media_type,
+    releaseDate: trendingShow.first_air_date,
+    rating: trendingShow.vote_average,
+    voteCount: trendingShow.vote_count,
+    genres: trendingShow.genre_ids
+      .map((id) => {
+        const name = genreDictionary.get(id);
+        return name ? { id, name } : null;
+      })
+      .filter((genre): genre is { id: number; name: string } => genre !== null),
+  }));

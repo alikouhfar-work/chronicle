@@ -1,4 +1,4 @@
-const getAvatarColor = (name: string) => {
+export const getAvatarColor = (name: string) => {
   const colors = [
     'from-emerald-950/40 to-teal-900/25 text-emerald-300 border-emerald-900/30',
     'from-blue-950/40 to-indigo-900/25 text-blue-300 border-blue-900/30',

@@ -1,3 +1,6 @@
+import { GenreRaw } from '@/features/genre';
+import { MappedUpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
+
 export type TrendingShowRaw = {
   adult: boolean;
   backdrop_path: string;
@@ -7,7 +10,7 @@ export type TrendingShowRaw = {
   original_name: string;
   overview: string;
   poster_path: string;
-  media_type: string;
+  media_type: 'tv';
   genre_ids: number[];
   popularity: number;
   first_air_date: string;
@@ -16,20 +19,15 @@ export type TrendingShowRaw = {
   origin_country: string[];
 };
 
-export type TrendingMedia = {
-  adult: boolean;
+export type TrendingShow = {
   backdropPath: string;
   id: number;
-  title: string;
-  originalLanguage: string;
-  originalName: string;
+  name: string;
   overview: string;
-  posterPath: string;
-  mediaType: string;
-  genreIds: number[];
-  popularity: number;
-  firstAirYear: string;
+  mediaType: 'tv';
+  genres: GenreRaw[];
+  releaseDate: string;
   rating: number;
   voteCount: number;
-  originCountry: string[];
+  isTracked: boolean;
 };

@@ -1,1 +1,1 @@
-export type { Cast, CastRaw } from './types/cast';
+export type { Credits, CreditsRaw } from './types/credit';

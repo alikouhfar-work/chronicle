@@ -1,18 +1,21 @@
 import { IconDeviceTv } from '@tabler/icons-react';
 import { FC } from 'react';
-import { getUpcomingEpisodes } from '@/features/episode';
 import { UpcomingMediaSection } from '@/components/upcoming/UpcomingMediaSection';
-import { MappedUpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
+import { getUpcomingMovies } from '@/features/movie';
+import { MappedUpcomingMovie } from '@/features/movie/types/upcomingMovie';
 
-export const UpcomingShowList: FC = async () => {
-  const upcomingEpisodes = await getUpcomingEpisodes();
+export const UpcomingMovieList: FC = async () => {
+  const upcomingMovies = await getUpcomingMovies();
 
   return (
-    <UpcomingMediaSection<MappedUpcomingEpisode>
+    <UpcomingMediaSection<MappedUpcomingMovie>
       icon={IconDeviceTv}
-      title="TV Series & Seasons"
-      upcomingMedia={upcomingEpisodes}
-      subtitle="Next episodes and season premiere forecasts"
+      upcomingMedia={upcomingMovies}
+      sectionTitle="Feature Films & Sequels"
+      sectionSubtitle="Theatrical premieres and franchise sequels"
+      emptySectionTitle="No Upcoming Movie Premieres Forecasted"
+      emptySectionSubtitle="Add films and cinematic franchises to your archive to track future sequels and theatrical release dates."
+      getTitle={(media) => media.name}
     />
   );
 };

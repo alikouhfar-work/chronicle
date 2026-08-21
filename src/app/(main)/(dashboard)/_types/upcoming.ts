@@ -1,4 +1,4 @@
-import { UpcomingEvent } from '@/app/(main)/(dashboard)/types/test';
+import { UpcomingEvent } from '@/app/(main)/(dashboard)/_types/dashboard';
 
 export type DashboardUpcomingProps = {
   upcomingEvents: UpcomingEvent[];

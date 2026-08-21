@@ -1,24 +1,26 @@
-import { getSampleMovies } from '@/api/getSampleMovies';
-import { getSampleShows } from '@/api/getSampleShows';
-import { Dashboard } from '@/features/dashboard';
-import { getSampleUpcoming } from '@/api/getSampleUpcoming';
-import { getSampleTrending } from '@/api/getSampleTrending';
+import { DashboardHeader } from '@/app/(main)/(dashboard)/_components/DashboardHeader';
+import { TrendingShowList } from '@/features/show';
+import { TrendingMovieList, UpcomingMovieList } from '@/features/movie';
+import { UpcomingEpisodeList, UpNextEpisodesSection } from '@/features/episode';
 
 const DashboardPage = async () => {
-  const [sampleMovies, sampleShows, sampleTrending, sampleUpcoming] = await Promise.all([
-    getSampleMovies(),
-    getSampleShows(),
-    getSampleTrending(),
-    getSampleUpcoming(),
-  ]);
-
   return (
-      <Dashboard
-        shows={sampleShows}
-        movies={sampleMovies}
-        trendingMedia={sampleTrending}
-        upcomingEvents={sampleUpcoming}
-      />
+    <article className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 lg:px-8">
+      <DashboardHeader />
+      <UpNextEpisodesSection />
+
+      <section className="flex flex-col gap-12 pt-6">
+        <TrendingShowList />
+        <TrendingMovieList />
+      </section>
+
+      <section className="pt-8 font-sans">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
+          <UpcomingEpisodeList />
+          <UpcomingMovieList />
+        </div>
+      </section>
+    </article>
   );
 };
 

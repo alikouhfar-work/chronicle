@@ -1,17 +1,19 @@
-import { TrackedShow } from '@/features/show';
+import type { TrackedShow } from '@/features/show';
 
 export const getAverageEpisodeRuntime = (show: TrackedShow) => {
-  return show
-    ? (() => {
-        const runtimes = show.seasons
-          .filter((season) => season.seasonNumber !== 0)
-          .flatMap((season) => season.episodes)
-          .map((episode) => episode.runtime)
-          .filter(Boolean);
+  let totalRuntime = 0;
+  let runtimeCount = 0;
 
-        if (!runtimes.length) return null;
+  for (const season of show.seasons) {
+    if (season.seasonNumber === 0) continue;
 
-        return Math.round(runtimes.reduce((sum, runtime) => sum + runtime, 0) / runtimes.length);
-      })()
-    : null;
+    for (const episode of season.episodes) {
+      if (episode.runtime == null) continue;
+
+      totalRuntime += episode.runtime;
+      runtimeCount++;
+    }
+  }
+
+  return runtimeCount ? Math.round(totalRuntime / runtimeCount) : null;
 };

@@ -1,5 +1,9 @@
-export type SearchPageProps = {
+import { MediaSortFilter, MediaStatusFilter, MediaTypeFilter } from '@/features/library';
+
+export type LibraryPageProps = {
   searchParams: Promise<{
-    query?: string;
+    type?: MediaTypeFilter;
+    status?: MediaStatusFilter;
+    sort?: MediaSortFilter;
   }>;
 };

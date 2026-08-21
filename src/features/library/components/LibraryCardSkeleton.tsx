@@ -1,4 +1,4 @@
-export const LibraryShowCardSkeleton = () => {
+export const LibraryCardSkeleton = () => {
   return (
     <li className="relative aspect-2/3 w-full animate-pulse overflow-hidden rounded-2xl bg-zinc-700 shadow-lg duration-1000">
       <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">

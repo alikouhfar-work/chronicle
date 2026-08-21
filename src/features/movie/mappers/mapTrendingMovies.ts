@@ -1,21 +1,19 @@
-import { TrendingShowRaw } from '@/features/show';
-import { TrendingShow } from '@/features/show/types/trending';
+import { TrendingMovie, TrendingMovieRaw } from '@/features/movie';
 
-export const mapTrendingShows = (
-  trendingShows: TrendingShowRaw[],
+export const mapTrendingMovies = (
+  trendingMovies: TrendingMovieRaw[],
   genreDictionary: Map<number, string>,
-): Omit<TrendingShow, 'isTracked'>[] =>
-  trendingShows.map((trendingShow) => ({
-    backdropPath: trendingShow.backdrop_path,
-    id: trendingShow.id,
-    name: trendingShow.name,
-    overview: trendingShow.overview,
-    mediaType: trendingShow.media_type,
-    releaseDate: trendingShow.first_air_date,
-    rating: trendingShow.vote_average,
-    voteCount: trendingShow.vote_count,
-    originCountry: trendingShow.origin_country,
-    genres: trendingShow.genre_ids
+): Omit<TrendingMovie, 'isTracked'>[] =>
+  trendingMovies.map((trendingMovie) => ({
+    backdropPath: trendingMovie.backdrop_path,
+    id: trendingMovie.id,
+    name: trendingMovie.title,
+    overview: trendingMovie.overview,
+    mediaType: trendingMovie.media_type,
+    releaseDate: trendingMovie.release_date,
+    rating: trendingMovie.vote_average,
+    voteCount: trendingMovie.vote_count,
+    genres: trendingMovie.genre_ids
       .map((id) => {
         const name = genreDictionary.get(id);
         return name ? { id, name } : null;

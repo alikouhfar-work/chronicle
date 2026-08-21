@@ -1,6 +1,6 @@
-import { ShowTrackingStatus } from '@/features/show/enums/showTrackingStatus';
+import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 
-export const showStatus = {
+export const showStatusConfig = {
   [ShowTrackingStatus.WATCHING]: {
     title: 'Watching',
     colors: 'bg-gold-400/10 text-gold-400 border-gold-400/20',

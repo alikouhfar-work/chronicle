@@ -1,10 +1,10 @@
 'use client'
 
-import { IconArrowsUpDown, IconSearch } from '@tabler/icons-react';
+import { IconArrowsUpDown, IconCaretDownFilled, IconSearch } from '@tabler/icons-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import { typeFilters } from '@/app/(main)/library/_lib/typeFilters';
-import { statusFilters } from '@/app/(main)/library/_lib/statusFilters';
+import { typeFilters } from '@/features/library/lib/typeFilters';
+import { statusFilters } from '@/features/library/lib/statusFilters';
 
 export const LibraryHeader = () => {
   const pathname = usePathname();
@@ -15,9 +15,6 @@ export const LibraryHeader = () => {
   const typeFilter = searchParams.get('type') || 'all';
   const statusFilter = searchParams.get('status') || 'all';
   const sortFilter = searchParams.get('sort') || 'recent';
-  // const skip = Number(searchParams.get('skip'));
-  // const take = Number(searchParams.get('take'));
-  // const currentPage = skip / take;
 
   const createQueryString = useCallback(
     (name: string | Record<string, string | number>, value?: string | number) => {
@@ -82,9 +79,7 @@ export const LibraryHeader = () => {
               <option value="year">Release Year</option>
             </select>
             {/* Custom select chevron */}
-            <div className="pointer-events-none absolute top-3.5 right-3 text-[8px] font-bold text-zinc-500">
-              ▼
-            </div>
+            <IconCaretDownFilled size={14} className="pointer-events-none absolute top-3 right-3 text-[8px] font-bold text-zinc-500" />
           </div>
         </div>
       </div>

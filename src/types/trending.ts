@@ -1,4 +1,5 @@
 import { FC, SVGProps } from 'react';
+import { MediaType } from '@/types/media';
 
 export type TrendingMedia = {
   adult: boolean;
@@ -8,12 +9,13 @@ export type TrendingMedia = {
   originalLanguage: string;
   overview: string;
   posterPath: string;
-  mediaType: 'movie' | 'tv';
+  mediaType: MediaType;
   genres: string[];
   popularity: number;
   firstAirYear: string;
   rating: number;
   voteCount: number;
+  isTracked: boolean;
 };
 
 export type TrendingSectionProps = {
@@ -21,13 +23,13 @@ export type TrendingSectionProps = {
   trendingMovies: TrendingMedia[];
 };
 
-export type TrendingMediaListProps = {
+export type TrendingMediaListProps<T> = {
   title: string;
   subtitle: string;
-  trendingMedia: TrendingMedia[];
+  trendingMedia: T[];
   icon: FC<SVGProps<SVGSVGElement>>;
 };
 
-export type TrendingMediaCardProps = {
-  media: TrendingMedia;
+export type TrendingMediaCardProps<T> = {
+  media: T;
 };

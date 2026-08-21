@@ -1,29 +1,18 @@
 import { tmdbFetch } from '@/utils/tmdbFetch';
-import { getTrackedShowsLookup, mapTrendingShows } from '@/features/show';
-import { getGenreDictionary } from '@/features/genre';
-import { GetTrendingShowsResponse } from '@/features/show/types/getTrendingShows';
-import { TrendingShow } from '@/features/show/types/trending';
+import { mapCredits } from '@/features/credit/mappers/mapCredits';
+import { Credits, CreditsRaw } from '@/features/credit';
 
-export const getShowCast = async (tmdbId: number) => {
+export const getShowCredits = async (id: string): Promise<Credits | null> => {
   try {
-    const cast = await tmdbFetch<GetTrendingShowsResponse>(`tv/${tmdbId}/credits`, {
+    const credits = await tmdbFetch<CreditsRaw>(`tv/${id}/credits`, {
       next: {
         revalidate: 86400,
       },
     });
 
-    // const results = mapTrendingShows(trendingShows.results, genreDictionary);
-    //
-    // const showTmdbIds = results.map((result) => result.id);
-    //
-    // const trackedShowsLookup = await getTrackedShowsLookup(showTmdbIds);
-    //
-    // return results.map((show) => ({
-    //   ...show,
-    //   isTracked: trackedShowsLookup.has(show.id),
-    // }));
+    return mapCredits(credits);
   } catch (error) {
-    console.error('Failed to fetch trending shows:', error);
-    return [];
+    console.error('Failed to fetch show credits:', error);
+    return null;
   }
 };

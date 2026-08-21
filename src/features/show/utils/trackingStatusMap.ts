@@ -1,9 +1,9 @@
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
-import { StatusFilter } from '@/features/library';
+import { MediaStatusFilter } from '@/features/library';
 
 export const showTrackingStatusMap = {
   plan_to_watch: ShowTrackingStatus.PLAN_TO_WATCH,
   watching: ShowTrackingStatus.WATCHING,
   completed: ShowTrackingStatus.COMPLETED,
   dropped: ShowTrackingStatus.DROPPED,
-} satisfies Record<Exclude<StatusFilter, 'all'>, ShowTrackingStatus>;
+} satisfies Record<Exclude<MediaStatusFilter, 'all'>, ShowTrackingStatus>;

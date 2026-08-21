@@ -1,27 +1,43 @@
+'use client';
+
 import { IconBook, IconDeviceTv, IconRefresh, IconVideo } from '@tabler/icons-react';
 import { FC, useTransition } from 'react';
-import { getPosterPlaceholderColor } from '@/app/(main)/(dashboard)/_utils/getPosterPlaceholderColor';
-import { statusFilters } from '@/app/(main)/library/_lib/statusFilters';
-import { LibraryMediaDetailsHeaderProps } from '@/app/(main)/library/[...slug]/_types/libraryItemHeader';
+import { LibraryMediaDetailsHeaderProps } from '@/features/library/types/libraryItemHeader';
 import Image from 'next/image';
 import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
 import { showStatusFilters } from '@/features/show/lib/statusFilters';
 import { updateShowTrackingStatus } from '@/features/show/actions/updateShowTrackingStatus';
 import { clsx } from 'clsx';
-import { ShowTrackingStatus } from '../../../../../../generated/prisma/enums';
+import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { format } from 'date-fns';
-import { getAverageEpisodeRuntime } from '@/features/show';
+import { getAverageEpisodeRuntime } from '@/features/show/utils/getAverageEpisodeRuntime';
+import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
+import { movieStatusFilters } from '@/features/movie/lib/statusFilters';
+import { updateMovieTrackingStatus } from '@/features/movie/actions/updateMovieTrackingStatus';
 
 export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ media }) => {
   const [isPending, startTransition] = useTransition();
+  const show = 'seasons' in media ? media : null;
+  const movie = 'runtime' in media ? media : null;
 
-  const averageEpisodeRuntime = getAverageEpisodeRuntime(show);
+  const runtime = show ? getAverageEpisodeRuntime(show) : movie?.runtime;
 
   const handleShowStatusChange = (status: ShowTrackingStatus) => {
     if (!show) return;
     startTransition(async () => {
       await updateShowTrackingStatus(show.id, status);
     });
+
+    // Add Toast
+  };
+
+  const handleMovieStatusChange = (status: MovieTrackingStatus) => {
+    if (!movie) return;
+    startTransition(async () => {
+      await updateMovieTrackingStatus(movie.id, status);
+    });
+
+    // Add Toast
   };
 
   return (
@@ -35,7 +51,7 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
         className={`group relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-2xl border border-zinc-800/80 shadow-lg select-none md:w-56`}
       >
         <div
-          className={`absolute inset-0 bg-gradient-to-br ${getPosterPlaceholderColor(media.name)} flex flex-col justify-between p-5`}
+          className={`absolute inset-0 bg-linear-to-br ${getPosterPlaceholderColor(media.name)} flex flex-col justify-between p-5`}
         >
           {media.posterPath && (
             <Image
@@ -50,18 +66,18 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
         </div>
 
         {/* Dark overlay */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/10" />
+        <div className="absolute inset-0 z-0 bg-linear-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/10" />
 
         {/* Additional details on top of cover */}
         <div className="absolute inset-0 z-10 flex flex-col justify-between p-5">
           <div className="flex items-start justify-between gap-2">
             <span className="border-zinc-850/80 flex items-center gap-1 rounded border bg-zinc-950/90 px-2 py-1 font-mono text-[8px] leading-none font-bold text-zinc-300 uppercase">
-              {isShow ? (
+              {show ? (
                 <IconDeviceTv size={9} className="text-gold-400" />
               ) : (
                 <IconVideo size={9} className="text-gold-400" />
               )}
-              <span>{isShow ? 'Series' : 'Movie'}</span>
+              <span>{show ? 'Series' : 'Movie'}</span>
             </span>
           </div>
 
@@ -86,17 +102,20 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
                     {show.firstAirDate?.getFullYear()} - {show.lastAirDate?.getFullYear()}
                   </span>
                 ) : (
-                  <span>Hello</span>
+                  <span>{movie?.releaseDate?.getFullYear()}</span>
                 )}
                 )
               </p>
             </div>
+            {media.tagline && (
+              <p className="text-gold-400 text-sm font-light italic">&#34;{media.tagline}&#34;</p>
+            )}
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {isShow && averageEpisodeRuntime && (
+            {runtime && (
               <span className="rounded-lg border border-zinc-800/80 bg-zinc-950/80 px-3 py-1 font-mono text-[9px] tracking-widest text-zinc-300 uppercase">
-                {averageEpisodeRuntime} min / ep
+                {runtime} {show ? 'min / ep' : 'min'}
               </span>
             )}
             {media.genres.map((genre) => (
@@ -132,7 +151,7 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
             <p className="font-mono text-[9px] font-bold tracking-widest text-zinc-500 uppercase">
               Track Status
             </p>
-            {show ? (
+            {show && (
               <div className="border-zinc-850 flex flex-wrap gap-1 rounded-xl border bg-zinc-950/80 p-1">
                 {showStatusFilters.map((status) => {
                   const automatic =
@@ -158,19 +177,22 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
                   );
                 })}
               </div>
-            ) : (
+            )}
+            {movie && (
               <div className="border-zinc-850 flex flex-wrap gap-1 rounded-xl border bg-zinc-950/80 p-1">
-                {statusFilters.map((status) => (
+                {movieStatusFilters.map((status) => (
                   <button
-                    key={status.id}
-                    // onClick={() => handleMovieStatusChange(st)}
-                    // className={`cursor-pointer rounded-lg px-3.5 py-1.5 font-mono text-[9.5px] tracking-wider uppercase transition-all duration-300 ${
-                    //   currentItem.trackedStatus === status.id
-                    //     ? 'bg-gold-400 font-bold text-zinc-950 shadow'
-                    //     : 'text-zinc-400 hover:bg-zinc-900/40 hover:text-zinc-200'
-                    // }`}
+                    key={status.key}
+                    disabled={isPending}
+                    onClick={() => handleMovieStatusChange(status.key)}
+                    className={clsx(
+                      'cursor-pointer rounded-lg px-3.5 py-1.5 font-mono text-[9.5px] tracking-wider uppercase transition-all duration-300',
+                      movie.tracking?.status === status.key
+                        ? 'bg-gold-400 font-bold text-zinc-950 shadow'
+                        : 'text-zinc-400 hover:bg-zinc-900/40',
+                    )}
                   >
-                    {status.id}
+                    {status.title}
                   </button>
                 ))}
               </div>

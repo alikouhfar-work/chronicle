@@ -1,5 +1,3 @@
-export { getTrackedMovie } from './api/getTrackedMovie';
-export { getTrackedMovies } from './api/getTrackedMovies';
+export { getGenreDictionary } from '@/features/genre/queries/getGenreDictionary';
 
-export type { TrackedMovie } from './types/movie';
-export type { TrendingMovie, TrendingMovieRaw } from './types/trending';
+export type { Genre, GenreRaw } from './types/genre';

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { LibraryItemNavigation } from '@/app/(main)/library/[id]/_components/LibraryItemNavigation';
+import { LibraryItemNavigation } from '@/features/library/components/LibraryItemNavigation';
 
 const LibraryItemLayout = ({
   children,

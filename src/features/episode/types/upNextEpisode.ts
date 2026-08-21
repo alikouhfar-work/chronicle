@@ -1,30 +1,22 @@
-import { EpisodeTracking } from '@/features/episode/types/tracking';
+import { Season } from '@/features/season';
+import { Episode } from '@/features/episode';
+import { TrackedShow } from '@/features/show';
 
-export type EpisodeRaw = {
-  id: number;
-  episode_number: number;
-  name: string;
-  overview: string;
-  runtime: number;
-  air_date: Date;
+export type UpNextEpisode = Episode & {
+  season: Omit<Season, 'episodes'> & {
+    show: Pick<TrackedShow, 'name' | 'tmdbId' | 'posterPath'>;
+  };
 };
 
-export type Episode = {
+export type MappedUpNextEpisode = {
   id: string;
+  seasonNumber: number;
   episodeNumber: number;
   name: string;
+  showId: string;
+  showName: string;
+  showTmdbId: number;
   overview: string;
-  runtime: number | null;
   airDate: Date | null;
-  tracking?: EpisodeTracking | null;
-};
-
-export type UpNextEpisode = {
-  id: string;
-  episodeNumber: number;
-  name: string;
-  overview: string;
-  runtime: number | null;
-  airDate: Date | null;
-  tracking?: EpisodeTracking | null;
+  posterPath: string | null;
 };

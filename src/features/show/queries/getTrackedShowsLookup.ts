@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 
-export const getTrackedShowLookup = async (tmdbIds: number[]) => {
+export const getTrackedShowsLookup = async (tmdbIds: number[]) => {
   const trackedShows = await prisma.show.findMany({
     where: {
       tmdbId: {

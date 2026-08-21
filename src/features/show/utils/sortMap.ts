@@ -1,8 +1,7 @@
-import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { MediaSortFilter } from '@/features/library';
 
-export const sortMap = {
+export const showSortMap = {
   title: 'name:asc',
-  year: ShowTrackingStatus.COMPLETED,
-  recent: ShowTrackingStatus.PLAN_TO_WATCH,
-} satisfies Record<MediaSortFilter, 'string:string'>;
+  recent: 'createdAt:desc',
+  year: 'firstAirDate:desc',
+} satisfies Record<MediaSortFilter, `${string}:${'asc' | 'desc'}`>;

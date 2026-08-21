@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 
-export const getTrackedShowsLookup = async (tmdbIds: number[]) => {
-  const trackedShows = await prisma.show.findMany({
+export const getTrackedMoviesLookup = async (tmdbIds: number[]) => {
+  const trackedMovies = await prisma.movie.findMany({
     where: {
       tmdbId: {
         in: tmdbIds,
@@ -12,5 +12,5 @@ export const getTrackedShowsLookup = async (tmdbIds: number[]) => {
     },
   });
 
-  return new Set(trackedShows.map((show) => show.tmdbId));
+  return new Set(trackedMovies.map((show) => show.tmdbId));
 };

@@ -1,7 +1,7 @@
 import { MediaSortFilter } from '@/features/library';
 
-export const showSortMap = {
+export const movieSortMap = {
   title: 'name:asc',
-  year: 'firstAirDate:asc',
-  recent: 'createdAt:asc',
-} satisfies Record<MediaSortFilter, `${string}:asc`>;
+  recent: 'createdAt:desc',
+  year: 'releaseDate:desc',
+} satisfies Record<MediaSortFilter, `${string}:${'asc' | 'desc'}`>;

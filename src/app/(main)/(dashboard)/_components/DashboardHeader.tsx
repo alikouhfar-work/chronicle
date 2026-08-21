@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { DashboardHeaderProps } from '@/app/(main)/(dashboard)/types/dashboardHeader';
-import { DashboardHeaderWatchStats } from '@/app/(main)/(dashboard)/components/DashboardHeaderWatchStats';
+import { getTrackedShows } from '@/features/show';
+import { getTrackedMovies } from '@/features/movie';
+import { DashboardHeaderWatchStats } from '@/app/(main)/(dashboard)/_components/DashboardHeaderWatchStats';
 
-export const DashboardHeader: FC<DashboardHeaderProps> = ({ shows, movies }) => {
+export const DashboardHeader: FC = async () => {
+  const [trackedShows, trackedMovies] = await Promise.all([getTrackedShows(), getTrackedMovies()]);
+
   return (
     <header className="border-zinc-850 relative overflow-hidden rounded-2xl border bg-linear-to-br from-zinc-900/90 via-zinc-950 to-zinc-900 p-8 shadow-2xl md:p-10">
       <div className="bg-gold-500/5 pointer-events-none absolute top-0 left-1/4 h-96 w-96 rounded-full blur-3xl" />
@@ -24,7 +27,7 @@ export const DashboardHeader: FC<DashboardHeaderProps> = ({ shows, movies }) => 
           </p>
         </div>
 
-        <DashboardHeaderWatchStats shows={shows} movies={movies} />
+        <DashboardHeaderWatchStats trackedShows={trackedShows} trackedMovies={trackedMovies} />
       </div>
     </header>
   );

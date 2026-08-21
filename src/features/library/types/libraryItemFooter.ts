@@ -1,4 +1,5 @@
+import { Credits } from '@/features/credit';
+
 export type LibraryItemFooterProps = {
-  enrichment: any;
-  isAlreadyTracked: (title: string, type: 'tv' | 'show' | 'movie') => boolean;
+  credits: Credits | null;
 };

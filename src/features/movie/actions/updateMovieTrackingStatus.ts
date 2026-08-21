@@ -2,43 +2,46 @@
 
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
-import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
+import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 
-export const updateShowTrackingStatus = async (showId: string, status: ShowTrackingStatus) => {
-  const allowedStatuses: ShowTrackingStatus[] = [
-    ShowTrackingStatus.PLAN_TO_WATCH,
-    ShowTrackingStatus.DROPPED,
-  ];
-
-  if (!allowedStatuses.includes(status)) {
-    throw new Error('Invalid tracking status');
-  }
-
-  const show = await prisma.show.findUnique({
+export const updateMovieTrackingStatus = async (movieId: string, status: MovieTrackingStatus) => {
+  const movie = await prisma.movie.findUnique({
     where: {
-      id: showId,
+      id: movieId,
     },
     select: {
       id: true,
+      tracking: {
+        select: {
+          startedAt: true,
+        },
+      },
     },
   });
 
-  if (!show) {
-    throw new Error('Show not found');
+  if (!movie) {
+    throw new Error('Movie not found');
   }
 
-  await prisma.showTracking.upsert({
+  const now = new Date();
+
+  const data = {
+    status,
+    startedAt:
+      status === MovieTrackingStatus.PLAN_TO_WATCH ? null : (movie.tracking?.startedAt ?? now),
+    completedAt: status === MovieTrackingStatus.COMPLETED ? now : null,
+  };
+
+  await prisma.movieTracking.upsert({
     where: {
-      showId,
+      movieId,
     },
     create: {
-      showId,
-      status,
+      movieId,
+      ...data,
     },
-    update: {
-      status,
-    },
+    update: data,
   });
 
-  revalidatePath(`/tv/${showId}`);
+  revalidatePath(`/library/movie/${movieId}`);
 };

@@ -1,11 +1,8 @@
-export { getTrendingShows } from './api/getTrendingShows';
-export { getTrackedShow } from './queries/getTrackedShow';
-export { getTrackedShows } from './queries/getTrackedShows';
-export { getTrackedShowLookup } from './queries/getTrackedShowLookup';
+export { SearchForm } from './components/SearchForm';
+export { SearchHeader } from './components/SearchHeader';
+export { SearchResultList } from './components/SearchResultList';
+export { SearchResultError } from './components/SearchResultError';
+export { SearchResultLoading } from './components/SearchResultLoading';
 
-export { mapTrendingShows } from './mappers/mapTrendingShows';
-
-export { TrendingShowList } from './components/TrendingShowList';
-
-export type { TrackedShow } from './types/show';
-export type { TrendingShowRaw } from './types/trending';
+export type { SearchPageProps } from './types/searchPage';
+export type { SearchResultRaw, SearchResultResponse } from './types/searchResult';

@@ -1,7 +1,7 @@
-import { LibraryShowCardSkeleton } from '@/features/library/components/LibraryCardSkeleton';
+import { LibraryCardSkeleton } from '@/features/library/components/LibraryCardSkeleton';
 
-export const LibraryShowsLoading = () => {
-  const shows = Array.from({ length: 4 }).map((_, i) => i);
+export const LibrarySectionLoading = () => {
+  const shows = Array.from({ length: 6 }).map((_, i) => i);
 
   return (
     <div className="space-y-5">
@@ -14,7 +14,7 @@ export const LibraryShowsLoading = () => {
 
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {shows.map((show) => (
-          <LibraryShowCardSkeleton key={show} />
+          <LibraryCardSkeleton key={show} />
         ))}
       </ul>
     </div>

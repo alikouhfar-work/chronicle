@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { UpNextEpisodesEmpty } from '@/features/show/components/upNext/UpNextEpisodesEmpty';
-import { UpNextEpisodesList } from '@/features/show/components/upNext/UpNextEpisodesList';
-import { UpNextEpisodesSectionHeader } from '@/features/show/components/upNext/UpNextEpisodesSectionHeader';
 import { getUpNextEpisodes } from '@/features/episode';
+import { UpNextEpisodesSectionHeader } from '@/features/episode/components/upNext/UpNextEpisodesSectionHeader';
+import { UpNextEpisodesEmpty } from '@/features/episode/components/upNext/UpNextEpisodesEmpty';
+import { UpNextEpisodesList } from '@/features/episode/components/upNext/UpNextEpisodesList';
 
 export const UpNextEpisodesSection: FC = async () => {
   const upNextEpisodes = await getUpNextEpisodes();

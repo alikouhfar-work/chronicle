@@ -1,23 +1,14 @@
-'use client';
+import { FC } from 'react';
+import Link from 'next/link';
+import { ViewDetailsButtonProps } from '@/features/library/types/viewDetailsButton';
 
-import { FC, useTransition } from 'react';
-import { TrackButtonProps } from '@/features/library/types/trackButton';
-import { addMedia } from '@/features/library/actions/addMedia';
-
-export const TrackButton: FC<TrackButtonProps> = ({ tmdbId, mediaType }) => {
-  const [pending, startTransition] = useTransition();
-
+export const ViewDetailsButton: FC<ViewDetailsButtonProps> = ({ tmdbId, mediaType }) => {
   return (
-    <button
-      disabled={pending}
-      onClick={() =>
-        startTransition(async () => {
-          await addMedia(tmdbId, mediaType);
-        })
-      }
-      className="bg-gold-400 hover:bg-gold-300 cursor-pointer rounded-lg px-3 py-1.5 font-mono text-[10px] font-black tracking-wider text-zinc-950 uppercase transition-all hover:scale-[1.02]"
+    <Link
+      href={`/library/${mediaType}/${tmdbId}`}
+      className="hover:bg-zinc-750 text-gold-400 hover:text-gold-300 cursor-pointer rounded-lg border border-zinc-700/50 bg-zinc-800 px-3 py-1.5 font-mono text-[10px] font-bold tracking-wider uppercase transition-colors"
     >
-      {pending ? 'Adding...' : '+ Track'}
-    </button>
+      View details
+    </Link>
   );
 };

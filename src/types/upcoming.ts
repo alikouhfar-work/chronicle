@@ -1,35 +1,26 @@
 import { FC, SVGProps } from 'react';
-import { MediaType } from '@/types/media';
 
-export type TrendingMedia = {
-  adult: boolean;
-  backdropPath: string;
-  id: number;
-  title: string;
-  originalLanguage: string;
-  overview: string;
-  posterPath: string;
-  mediaType: MediaType;
-  genres: string[];
-  popularity: number;
-  firstAirYear: string;
-  rating: number;
-  voteCount: number;
-  isTracked: boolean;
-};
-
-export type TrendingSectionProps = {
-  trendingShows: TrendingMedia[];
-  trendingMovies: TrendingMedia[];
-};
-
-export type TrendingMediaListProps<T> = {
-  title: string;
-  subtitle: string;
-  trendingMedia: T[];
+export type UpcomingMediaSectionProps<T> = {
+  upcomingMedia: T[];
+  sectionTitle: string;
+  sectionSubtitle: string;
+  emptySectionTitle: string;
+  emptySectionSubtitle: string;
   icon: FC<SVGProps<SVGSVGElement>>;
+  getTitle?: (media: T) => string;
+  getSubtitle?: (media: T) => string;
 };
 
-export type TrendingMediaCardProps<T> = {
+export type UpcomingMediaCardProps<T> = {
   media: T;
+  title: string;
+  index: number;
+  subTitle: string;
+  mediaCount: number;
+};
+
+export type UpcomingMediaEmptyProps = {
+  title: string;
+  subTitle: string;
+  icon: FC<SVGProps<SVGSVGElement>>;
 };

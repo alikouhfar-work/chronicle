@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma';
-import { EpisodeRaw } from '@/features/episode';
+import { mapUpNextEpisodes } from '@/features/episode/mappers/mapUpNextEpisodes';
+import { MappedUpNextEpisode, UpNextEpisode } from '@/features/episode/types/upNextEpisode';
 
-export const getUpNextEpisodes = async (): Promise<EpisodeRaw[]> => {
+export const getUpNextEpisodes = async (): Promise<MappedUpNextEpisode[]> => {
   const now = new Date();
 
   const episodes = await prisma.episode.findMany({
@@ -61,5 +62,6 @@ export const getUpNextEpisodes = async (): Promise<EpisodeRaw[]> => {
     upNextEpisodes.set(showId, episode);
   }
 
-  return Array.from(upNextEpisodes.values());
+  const result: UpNextEpisode[] = Array.from(upNextEpisodes.values());
+  return mapUpNextEpisodes(result);
 };

@@ -1,28 +1,27 @@
+import type { MediaType } from '@/types/media';
+import { LibraryMovieDetails, LibraryShowDetails } from '@/features/library';
+import { getFreshTrackedShow, getShowCredits } from '@/features/show';
+import { getMovieCredits, getTrackedMovie } from '@/features/movie';
+
 type LibraryItemParams = {
-  id: string[];
+  slug: [MediaType, string];
 };
 
 const LibraryItemPage = async ({ params }: { params: Promise<LibraryItemParams> }) => {
-  const { id } = await params;
+  const { slug } = await params;
 
-  return <p>{id}</p>;
-  // if (itemType === 'movie') {
-  //   const [movie, cast, similarMovies] = await Promise.all([
-  //     getTrackedMovie(id),
-  //     getTrackedMovieCast(id),
-  //     getSimilarMovies(id),
-  //   ]);
-  //   return <LibraryItem movie={movie} moviesList={[]} cast={cast} similarMovies={similarMovies} />;
-  // }
-  //
-  // if (itemType === 'show') {
-  //   const [show, cast, similarShows] = await Promise.all([
-  //     getTrackedShow(id),
-  //     getTrackedShowCast(id),
-  //     getSimilarShows(id),
-  //   ]);
-  //   return <LibraryItem show={show} showsList={[]} cast={cast} similarShows={similarShows} />;
-  // }
+  const id = slug[1];
+  const mediaType = slug[0];
+
+  if (mediaType === 'movie') {
+    const [movie, credits] = await Promise.all([getTrackedMovie(id), getMovieCredits(id)]);
+    if (movie) return <LibraryMovieDetails movie={movie} credits={credits} />;
+  }
+
+  if (mediaType === 'tv') {
+    const [show, credits] = await Promise.all([getFreshTrackedShow(id), getShowCredits(id)]);
+    if (show) return <LibraryShowDetails show={show} credits={credits} />;
+  }
 };
 
 export default LibraryItemPage;

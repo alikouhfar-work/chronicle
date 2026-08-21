@@ -1,24 +1,17 @@
-import { ShowSearchResultRaw } from '@/features/show';
-import { ShowSearchResult } from '@/features/show/types/showSearchResult';
+import { SearchResultRaw } from '@/features/search';
+import { SearchResult } from '@/features/search/types/searchResult';
+import { mapShowSearchResult } from '@/features/show/mappers/mapShowSearchResult';
+import { mapMovieSearchResult } from '@/features/movie/mappers/mapMovieSearchResult';
 
-export const mapShowSearchResult = (
-  show: ShowSearchResultRaw,
+export const mapSearchResult = (
+  searchResults: SearchResultRaw[],
   genreDictionary: Map<number, string>,
-): ShowSearchResult => ({
-  adult: show.adult,
-  backdropPath: show.backdrop_path,
-  id: show.id,
-  name: show.name,
-  overview: show.overview,
-  posterPath: show.poster_path,
-  mediaType: show.media_type,
-  firstAirDate: show.first_air_date,
-  voteAverage: show.vote_average,
-  originCountry: show.origin_country,
-  genres: show.genre_ids
-    .map((id) => {
-      const name = genreDictionary.get(id);
-      return name ? { id, name } : null;
-    })
-    .filter((genre): genre is { id: number; name: string } => genre !== null),
-});
+): SearchResult[] =>
+  searchResults
+    .filter((result) => result.media_type === 'tv' || result.media_type === 'movie')
+    .map((result) => {
+      if (result.media_type === 'tv') {
+        return mapShowSearchResult(result, genreDictionary);
+      }
+      return mapMovieSearchResult(result, genreDictionary);
+    });

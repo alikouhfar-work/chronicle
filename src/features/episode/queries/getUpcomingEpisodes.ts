@@ -1,14 +1,17 @@
 import { addDays } from 'date-fns';
 import { prisma } from '@/lib/prisma';
 import { GetUpcomingMediaOptions } from '@/features/library/types/getUpcomingMedia';
+import { mapUpcomingEpisodes } from '@/features/episode/mappers/mapUpcomingEpisodes';
 
 export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {}) => {
-  const { days = 30 } = options;
+  const { days = 40 } = options;
 
   const now = new Date();
   const futureDate = addDays(now, days);
 
-  return prisma.episode.findMany({
+  // TODO: we need to fresh the data somehow
+
+  const episodes = await prisma.episode.findMany({
     where: {
       airDate: {
         gt: now,
@@ -18,14 +21,10 @@ export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {})
         seasonNumber: {
           gt: 0,
         },
-        show: {
-          tracking: {
-            status: 'WATCHING',
-          },
-        },
       },
     },
     include: {
+      tracking: true,
       season: {
         include: {
           show: true,
@@ -36,4 +35,6 @@ export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {})
       airDate: 'asc',
     },
   });
+
+  return mapUpcomingEpisodes(episodes);
 };

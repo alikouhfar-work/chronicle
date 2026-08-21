@@ -1,8 +1,8 @@
-import { getTrackedShow } from '@/features/show';
-import { Show } from '@/features/show/types/show';
+import { type TrackedShow } from '@/features/show';
 import { syncShow } from '@/features/library/services/syncShow';
+import { getTrackedShow } from '@/features/show/queries/getTrackedShow';
 
-const shouldSyncShow = (show: Show) => {
+const shouldSyncShow = (show: TrackedShow) => {
   const now = new Date();
 
   const hasNewlyAiredEpisode = show.seasons.some((season) =>

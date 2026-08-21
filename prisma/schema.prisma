@@ -6,3 +6,137 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum ShowTrackingStatus {
+  PLAN_TO_WATCH
+  WATCHING
+  COMPLETED
+  DROPPED
+}
+
+enum MovieTrackingStatus {
+  PLAN_TO_WATCH
+  WATCHING
+  COMPLETED
+}
+
+model Show {
+  id               String        @id @default(uuid())
+  tmdbId           Int           @unique
+  name             String
+  overview         String        @db.Text
+  posterPath       String?
+  backdropPath     String?
+  firstAirDate     DateTime?
+  lastAirDate      DateTime?
+  status           String
+  tagline          String?
+  numberOfSeasons  Int
+  numberOfEpisodes Int
+  inProduction     Boolean
+  lastSyncedAt     DateTime      @default(now())
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  seasons          Season[]
+  genres           Genre[]
+  tracking         ShowTracking?
+}
+
+model Movie {
+  id           String         @id @default(uuid())
+  tmdbId       Int            @unique
+  name         String
+  overview     String         @db.Text
+  posterPath   String?
+  backdropPath String?
+  releaseDate  DateTime?
+  status       String
+  runtime      Int
+  tagline      String?
+  lastSyncedAt DateTime       @default(now())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  genres       Genre[]
+  tracking     MovieTracking?
+}
+
+model Season {
+  id           String    @id @default(uuid())
+  tmdbId       Int       @unique
+  showId       String
+  seasonNumber Int
+  name         String
+  episodeCount Int
+  airDate      DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  episodes     Episode[]
+
+  show Show @relation(fields: [showId], references: [id], onDelete: Cascade)
+
+  @@unique([showId, seasonNumber])
+}
+
+model Episode {
+  id            String           @id @default(uuid())
+  tmdbId        Int              @unique
+  seasonId      String
+  episodeNumber Int
+  name          String
+  overview      String           @db.Text
+  runtime       Int?
+  airDate       DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  tracking      EpisodeTracking?
+
+  season Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+
+  @@unique([seasonId, episodeNumber])
+}
+
+model Genre {
+  id     String  @id @default(uuid())
+  tmdbId Int     @unique
+  name   String
+  shows  Show[]
+  movies Movie[]
+}
+
+model ShowTracking {
+  id          String             @id @default(uuid())
+  showId      String             @unique
+  status      ShowTrackingStatus @default(PLAN_TO_WATCH)
+  addedAt     DateTime           @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+  updatedAt   DateTime           @updatedAt
+
+  show Show @relation(fields: [showId], references: [id], onDelete: Cascade)
+}
+
+model MovieTracking {
+  id          String              @id @default(uuid())
+  movieId     String              @unique
+  status      MovieTrackingStatus @default(PLAN_TO_WATCH)
+  rating      Int?
+  notes       String?             @db.Text
+  addedAt     DateTime            @default(now())
+  startedAt   DateTime?
+  completedAt DateTime?
+  updatedAt   DateTime            @updatedAt
+
+  movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+}
+
+model EpisodeTracking {
+  id        String    @id @default(uuid())
+  episodeId String    @unique
+  watched   Boolean   @default(false)
+  watchedAt DateTime?
+  rating    Int?
+  notes     String?   @db.Text
+  updatedAt DateTime  @updatedAt
+
+  episode Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+}

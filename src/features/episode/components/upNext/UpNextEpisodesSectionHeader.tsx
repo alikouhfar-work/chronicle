@@ -1,6 +1,6 @@
 import { IconPlayerPlay } from '@tabler/icons-react';
 import { FC } from 'react';
-import { UpNextEpisodesSectionHeaderProps } from '@/features/show/types/upNextShowsSectionHeader';
+import { UpNextEpisodesSectionHeaderProps } from '@/features/episode/types/upNextShowsSectionHeader';
 
 export const UpNextEpisodesSectionHeader: FC<UpNextEpisodesSectionHeaderProps> = async ({
   upNextShowsLength,

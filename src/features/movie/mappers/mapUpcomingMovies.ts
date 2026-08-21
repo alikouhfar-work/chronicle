@@ -1,15 +1,11 @@
-import { MappedUpcomingEpisode, UpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
+import { MappedUpcomingMovie, UpcomingMovie } from '@/features/movie/types/upcomingMovie';
 
-export const mapUpcomingEpisodes = (episodes: UpcomingEpisode[]): MappedUpcomingEpisode[] =>
-  episodes.map((episode) => ({
-    id: episode.id,
-    name: episode.name,
-    airDate: episode.airDate,
-    overview: episode.overview,
-    mediaId: episode.season.showId,
-    mediaName: episode.season.show.name,
-    episodeNumber: episode.episodeNumber,
-    mediaTmdbId: episode.season.show.tmdbId,
-    seasonNumber: episode.season.seasonNumber,
-    posterPath: episode.season.show.posterPath,
+export const mapUpcomingMovies = (movies: UpcomingMovie[]): MappedUpcomingMovie[] =>
+  movies.map((movie) => ({
+    id: movie.id,
+    name: movie.name,
+    overview: movie.overview,
+    mediaTmdbId: movie.tmdbId,
+    airDate: movie.releaseDate,
+    posterPath: movie.posterPath,
   }));

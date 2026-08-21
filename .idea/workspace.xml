@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.prettierignore" beforeDir="false" afterPath="$PROJECT_DIR$/.prettierignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.prettierrc" beforeDir="false" afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/prisma.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderWatchStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderWatchStats.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_hooks/useWatchStats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_hooks/useWatchStats.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/dashboard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/dashboard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/dashboardHeader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/dashboardHeader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/upcoming.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/upcoming.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/loading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/search/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/upcoming/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/upcoming/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaCardSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaSectionSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaSectionSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCardSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaEmpty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaEmpty.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSectionSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSectionSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/credit/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/credit/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/credit/mappers/mapCast.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/credit/mappers/mapCast.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/credit/mappers/mapCredits.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/credit/mappers/mapCredits.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/credit/mappers/mapCrew.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/credit/mappers/mapCrew.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/credit/types/credit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/credit/types/credit.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/credit/utils/getAvatarColor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/credit/utils/getAvatarColor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/UpcomingShowList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/UpcomingShowList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCardSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/mappers/mapUpNextEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/mappers/mapUpNextEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/mappers/mapUpcomingEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/mappers/mapUpcomingEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/queries/getUpNextEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/queries/getUpNextEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/queries/getUpcomingEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/queries/getUpcomingEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/types/episode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/types/episode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/types/tracking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/types/tracking.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/types/upNextEpisode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/types/upNextEpisode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/types/upcomingEpisode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/types/upcomingEpisode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/genre/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/genre/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/genre/types/genre.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/genre/types/genre.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/actions/addMediaAction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/actions/addMediaAction.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryCardSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieRating.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovies.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovies.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibrarySection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibrarySection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibrarySectionLoading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibrarySectionLoading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowProgress.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShowProgress.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShows.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShows.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/lib/statusFilters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/lib/statusFilters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/services/addMedia.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/services/addMedia.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/services/addMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/services/addMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/services/addShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/services/addShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/services/syncShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/services/syncShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/addMedia.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/addMedia.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryCard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryCard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryItemFooter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryItemFooter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovieRating.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovieRating.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryPage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryPage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/librarySection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/librarySection.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryShowDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryShowDetails.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryShowProgress.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryShowProgress.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryShows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/mediaSortFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/mediaSortFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/mediaStatusFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/mediaStatusFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/mediaTypeFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/mediaTypeFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/trackButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/trackButton.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/viewDetailsButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/viewDetailsButton.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/actions/updateMovieTrackingStatus.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/actions/updateMovieTrackingStatus.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/components/TrendingMovieList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/components/TrendingMovieList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/components/UpcomingMovieList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/components/UpcomingMovieList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/lib/statusFilters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/lib/statusFilters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/mappers/mapMovieSearchResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapMovieSearchResult.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/mappers/mapTrendingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapTrendingMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/mappers/mapUpcomingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapUpcomingMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getMovieCredits.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getMovieCredits.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMoviesLookup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMoviesLookup.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getTrendingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getTrendingMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getUpcomingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getUpcomingMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/getTrendingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/getTrendingMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/movieSearchResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/movieSearchResult.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/movieStatusFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/movieStatusFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/trackedMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/trackedMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/trending.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/trending.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/upcomingMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/upcomingMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/utils/sortMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/utils/sortMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/utils/trackingStatusMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/utils/trackingStatusMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultCardActions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultCardActions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultEmpty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultEmpty.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultError.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultError.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultLoading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultLoading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultMovieCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultMovieCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultShowCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultShowCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/mappers/mapSearchResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/mappers/mapSearchResult.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/services/searchMedia.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/services/searchMedia.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/types/searchForm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/types/searchForm.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/types/searchPage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/types/searchPage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/types/searchResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/types/searchResult.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/types/searchResultCard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/types/searchResultCard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/types/searchResultCardActions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/types/searchResultCardActions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/types/searchResultList.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/types/searchResultList.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/utils/formatCountryBadge.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/utils/formatCountryBadge.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/season/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/season/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/season/types/season.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/season/types/season.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/actions/setSeasonWatched.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/setSeasonWatched.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/actions/setShowWatched.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/setShowWatched.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/actions/toggleEpisodeWatched.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/toggleEpisodeWatched.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/actions/updateShowTrackingStatus.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/updateShowTrackingStatus.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/components/ShowDetailsEpisodeCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/components/ShowDetailsEpisodeCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/components/TrendingShowList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/components/TrendingShowList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/lib/showStatusConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/lib/showStatusConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/lib/statusFilters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/lib/statusFilters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/mappers/mapShowSearchResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/mappers/mapShowSearchResult.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/mappers/mapTrendingShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/mappers/mapTrendingShows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getFreshTrackedShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getFreshTrackedShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getShowCredits.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getShowCredits.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getTrackedShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getTrackedShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getTrackedShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getTrackedShows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getTrackedShowsLookup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getTrackedShowsLookup.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getTrendingShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getTrendingShows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/types/getTrendingShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/getTrendingShows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/types/show.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/show.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/types/showDetailsEpisodeCardProps.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/showDetailsEpisodeCardProps.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/types/showSearchResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/showSearchResult.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/types/showStatusFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/showStatusFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/types/trending.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/trending.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/utils/getAverageEpisodeRuntime.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/utils/getAverageEpisodeRuntime.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/utils/getShowDisplayStatus.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/utils/getShowDisplayStatus.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/utils/getShowProgress.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/utils/getShowProgress.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/utils/sortMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/utils/sortMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/utils/trackingStatusMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/utils/trackingStatusMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/navigation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/navigation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/prisma.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/prisma.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/media.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/media.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/trending.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/trending.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/upcoming.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/upcoming.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/getDaysUntilAirDate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/getDaysUntilAirDate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/getTmdbImageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/getTmdbImageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/tmdbFetch.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/tmdbFetch.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "alikouhfar-work"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/alikouhfar-work/chronicle.git",
+    "accountId": "fbc8d423-2f62-45c4-b589-c0e2d22435f6"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0000022998959115" />
+      <entry key="MS500" value="1.074531804670215" />
+      <entry key="S2" value="1.528234687509774" />
+      <entry key="S5" value="1.994118554773085" />
+      <entry key="S10" value="2.852326383589062" />
+      <entry key="S30" value="5.474777604524264" />
+      <entry key="S60" value="7.182136809025494" />
+      <entry key="M2" value="8.41563757269964" />
+      <entry key="M5" value="10.195380440441628" />
+      <entry key="M10" value="17.075873323459195" />
+      <entry key="M15" value="27.969988388318626" />
+      <entry key="M30" value="65.31488391237306" />
+      <entry key="H1" value="126.08543446579438" />
+      <entry key="H2" value="209.53484296204576" />
+      <entry key="H4" value="317.2446753548981" />
+      <entry key="D1" value="586.1114772674625" />
+      <entry key="W1" value="1932.3511601176695" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="2.6744571864527535E-233" />
+      <entry key="MS500" value="3.0580679417218716E-47" />
+      <entry key="S2" value="2.35159096268259E-12" />
+      <entry key="S5" value="2.2312319132222245E-5" />
+      <entry key="S10" value="0.004723591761808195" />
+      <entry key="S30" value="0.1677866689627117" />
+      <entry key="S60" value="0.40961773944381696" />
+      <entry key="M2" value="0.6402194660059795" />
+      <entry key="M5" value="0.9187324364053775" />
+      <entry key="M10" value="2.082793473610617" />
+      <entry key="M15" value="4.375153902125653" />
+      <entry key="M30" value="14.774279397048362" />
+      <entry key="H1" value="39.463226488323414" />
+      <entry key="H2" value="86.91323753155595" />
+      <entry key="H4" value="163.6634958164362" />
+      <entry key="D1" value="391.6622923457314" />
+      <entry key="W1" value="1774.971493565038" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.6029050879561869" />
+      <entry key="MS500" value="0.9689068369390742" />
+      <entry key="S2" value="1.4858344731977855" />
+      <entry key="S5" value="1.9706193440046973" />
+      <entry key="S10" value="2.8316980293554623" />
+      <entry key="S30" value="5.597074202396739" />
+      <entry key="S60" value="7.550212213393694" />
+      <entry key="M2" value="9.027102564909304" />
+      <entry key="M5" value="11.097378565182023" />
+      <entry key="M10" value="19.13971133690136" />
+      <entry key="M15" value="32.32104704546564" />
+      <entry key="M30" value="80.05653058981274" />
+      <entry key="H1" value="165.51410671540896" />
+      <entry key="H2" value="296.4172917867972" />
+      <entry key="H4" value="480.88367087683423" />
+      <entry key="D1" value="977.7658535359808" />
+      <entry key="W1" value="3707.31892190085" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3HN2vldIzAZjtoPtTxNJ4e83LRi" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;bun&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/components/trending&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/trending" />
+      <recent name="$PROJECT_DIR$/src/components/upcoming" />
+      <recent name="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components" />
+      <recent name="$PROJECT_DIR$/src/features/movie/types" />
+      <recent name="$PROJECT_DIR$/src/features/movie/mappers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/features/episode/components" />
+      <recent name="$PROJECT_DIR$/src/features/movie/queries" />
+      <recent name="$PROJECT_DIR$/src/features/episode/queries" />
+      <recent name="$PROJECT_DIR$/src/features/credit/types" />
+      <recent name="$PROJECT_DIR$/src/features/show/utils" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Next.js: server-side">
+    <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="Next.js: server-side" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.24374.125" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="" />
+      <created>1785694438568</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1785694438568</updated>
+      <workItem from="1785694439577" duration="4037000" />
+      <workItem from="1785778866486" duration="17455000" />
+      <workItem from="1785840552455" duration="37140000" />
+      <workItem from="1786036630678" duration="27239000" />
+      <workItem from="1786112202406" duration="3279000" />
+      <workItem from="1786123369760" duration="12000" />
+      <workItem from="1786207352649" duration="66672000" />
+      <workItem from="1786813075596" duration="19599000" />
+      <workItem from="1787160215499" duration="10164000" />
+      <workItem from="1787232812365" duration="18000" />
+      <workItem from="1787238209622" duration="4880000" />
+      <workItem from="1787298913359" duration="2915000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

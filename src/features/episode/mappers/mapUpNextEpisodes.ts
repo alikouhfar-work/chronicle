@@ -1,23 +1,15 @@
-import { TrendingShowRaw } from '@/features/show';
-import { TrendingShow } from '@/features/show/types/trending';
+import { MappedUpNextEpisode, UpNextEpisode } from '@/features/episode/types/upNextEpisode';
 
-export const mapEpisode = (
-  trendingShows: TrendingShowRaw[],
-  genreDictionary: Map<number, string>,
-): Omit<TrendingShow, 'isTracked'>[] =>
-  trendingShows.map((trendingShow) => ({
-    backdropPath: trendingShow.backdrop_path,
-    id: trendingShow.id,
-    name: trendingShow.name,
-    overview: trendingShow.overview,
-    mediaType: trendingShow.media_type,
-    releaseDate: trendingShow.first_air_date,
-    rating: trendingShow.vote_average,
-    voteCount: trendingShow.vote_count,
-    genres: trendingShow.genre_ids
-      .map((id) => {
-        const name = genreDictionary.get(id);
-        return name ? { id, name } : null;
-      })
-      .filter((genre): genre is { id: number; name: string } => genre !== null),
+export const mapUpNextEpisodes = (episodes: UpNextEpisode[]): MappedUpNextEpisode[] =>
+  episodes.map((episode) => ({
+    id: episode.id,
+    name: episode.name,
+    airDate: episode.airDate,
+    overview: episode.overview,
+    showId: episode.season.showId,
+    showName: episode.season.show.name,
+    episodeNumber: episode.episodeNumber,
+    showTmdbId: episode.season.show.tmdbId,
+    seasonNumber: episode.season.seasonNumber,
+    posterPath: episode.season.show.posterPath,
   }));

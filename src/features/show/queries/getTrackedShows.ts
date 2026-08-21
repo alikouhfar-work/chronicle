@@ -1,29 +1,41 @@
 import { prisma } from '@/lib/prisma';
-import { GetTrackedShowsReturn } from '@/features/show/types/getTrackedShows';
+import { TrackedShow } from '@/features/show';
+import { MediaSortFilter, MediaStatusFilter } from '@/features/library';
+import { showTrackingStatusMap } from '@/features/show/utils/trackingStatusMap';
+import { showSortMap } from '@/features/show/utils/sortMap';
 
-export const getTrackedShows = async (): GetTrackedShowsReturn => {
+export const getTrackedShows = async (
+  sort?: MediaSortFilter,
+  status?: MediaStatusFilter,
+): Promise<TrackedShow[]> => {
+  const filteredStatus = status && status !== 'all' ? showTrackingStatusMap[status] : undefined;
+  const [sortBy, sortOrder] = sort ? showSortMap[sort].split(':') : ['createdAt', 'desc'];
+
   return prisma.show.findMany({
+    where: {
+      ...(filteredStatus
+        ? {
+            tracking: {
+              status: filteredStatus,
+            },
+          }
+        : {}),
+    },
     include: {
       genres: true,
       tracking: true,
       seasons: {
-        orderBy: {
-          seasonNumber: 'asc',
-        },
         include: {
           episodes: {
-            orderBy: {
-              episodeNumber: 'asc',
-            },
             include: {
-              progress: true,
+              tracking: true,
             },
           },
         },
       },
     },
     orderBy: {
-      createdAt: 'desc',
+      [sortBy]: sortOrder,
     },
   });
 };

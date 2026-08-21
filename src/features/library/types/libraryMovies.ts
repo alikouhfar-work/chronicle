@@ -1,5 +1,6 @@
-import { StatusFilter } from '@/features/library';
+import { MediaSortFilter, MediaStatusFilter } from '@/features/library';
 
-export type LibraryShowsProps = {
-  status?: StatusFilter;
+export type LibraryMoviesProps = {
+  sort?: MediaSortFilter;
+  status?: MediaStatusFilter;
 };

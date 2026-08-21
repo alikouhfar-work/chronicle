@@ -1,20 +1,10 @@
-import { Season } from '@/features/season';
-import { Episode } from '@/features/episode';
-import { TrackedShow } from '@/features/show';
+import { TrackedMovie } from '@/features/movie';
 
-export type UpcomingEpisode = Episode & {
-  season: Omit<Season, 'episodes'> & {
-    show: Pick<TrackedShow, 'name' | 'tmdbId' | 'posterPath'>;
-  };
-};
+export type UpcomingMovie = Omit<TrackedMovie, 'genres'>;
 
-export type MappedUpcomingEpisode = {
+export type MappedUpcomingMovie = {
   id: string;
-  seasonNumber: number;
-  episodeNumber: number;
   name: string;
-  mediaId: string;
-  mediaName: string;
   mediaTmdbId: number;
   overview: string;
   airDate: Date | null;

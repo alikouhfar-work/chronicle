@@ -1,6 +1,6 @@
-import { MappedUpNextEpisode, UpNextEpisode } from '@/features/episode/types/upNextEpisode';
+import { MappedUpcomingEpisode, UpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
 
-export const mapUpNextEpisodes = (episodes: UpNextEpisode[]): MappedUpNextEpisode[] =>
+export const mapUpcomingEpisodes = (episodes: UpcomingEpisode[]): MappedUpcomingEpisode[] =>
   episodes.map((episode) => ({
     id: episode.id,
     name: episode.name,

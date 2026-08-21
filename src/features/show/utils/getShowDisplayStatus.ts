@@ -1,18 +1,7 @@
+import { TrackedShow } from '@/features/show';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 
-export function getShowDisplayStatus(show: {
-  tracking?: {
-    status: ShowTrackingStatus;
-  } | null;
-  seasons: {
-    seasonNumber: number;
-    episodes: {
-      progress?: {
-        watched: boolean;
-      } | null;
-    }[];
-  }[];
-}): ShowTrackingStatus {
+export const getShowDisplayStatus = (show: TrackedShow): ShowTrackingStatus => {
   const episodes = show.seasons
     .filter((season) => season.seasonNumber !== 0)
     .flatMap((season) => season.episodes);
@@ -23,7 +12,7 @@ export function getShowDisplayStatus(show: {
     return show.tracking?.status ?? ShowTrackingStatus.PLAN_TO_WATCH;
   }
 
-  const watchedEpisodes = episodes.filter((episode) => episode.progress?.watched).length;
+  const watchedEpisodes = episodes.filter((episode) => episode.tracking?.watched).length;
 
   if (watchedEpisodes === totalEpisodes) {
     return ShowTrackingStatus.COMPLETED;
@@ -34,4 +23,4 @@ export function getShowDisplayStatus(show: {
   }
 
   return show.tracking?.status ?? ShowTrackingStatus.PLAN_TO_WATCH;
-}
+};

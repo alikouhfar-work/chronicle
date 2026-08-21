@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
-import { UpNextEpisodeCardProps } from '@/features/show/types/upNextShowCard';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
-import { UpNextEpisodeCardWatchButton } from '@/features/show/components/upNext/UpNextEpisodeCardWatchButton';
 import Link from 'next/link';
+import { UpNextEpisodeCardProps } from '@/features/episode/types/upNextShowCard';
+import { UpNextEpisodeCardWatchButton } from '@/features/episode/components/upNext/UpNextEpisodeCardWatchButton';
 
 export const UpNextEpisodeCard: FC<UpNextEpisodeCardProps> = ({ episode }) => {
   return (
@@ -14,7 +14,7 @@ export const UpNextEpisodeCard: FC<UpNextEpisodeCardProps> = ({ episode }) => {
         href={`/library/tv/${episode.showTmdbId}`}
         className="group border-zinc-850 hover:border-zinc-750/80 relative flex flex-col items-start justify-between gap-5 rounded-xl border bg-zinc-900/40 p-5 transition-all duration-300 hover:bg-zinc-900/90 md:flex-row md:items-center"
       >
-        <div className="flex w-full min-w-0 flex-1 flex-col items-start gap-4 sm:flex-row">
+        <div className="flex w-full min-w-0 flex-1 flex-col items-start gap-4 sm:flex-row sm:items-stretch">
           <div
             className={`h-20 w-14 rounded-lg bg-linear-to-br ${getPosterPlaceholderColor(episode.name)} relative flex shrink-0 flex-col justify-between overflow-hidden border border-zinc-800 p-2 shadow-md transition-all duration-300 select-none group-hover:border-zinc-700`}
           >
@@ -28,7 +28,7 @@ export const UpNextEpisodeCard: FC<UpNextEpisodeCardProps> = ({ episode }) => {
             <div className="pointer-events-none absolute inset-0 bg-linear-to-tr from-black/40 via-transparent to-transparent" />
           </div>
 
-          <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <div className="flex min-w-0 flex-1 flex-col gap-3">
             <div className="flex flex-col">
               <div className="flex flex-wrap items-center gap-3">
                 <h3 className="text-gold-400 hover:text-gold-300 max-w-full truncate text-left font-serif text-xl leading-tight font-extrabold transition-colors md:text-2xl">
@@ -48,7 +48,7 @@ export const UpNextEpisodeCard: FC<UpNextEpisodeCardProps> = ({ episode }) => {
             </div>
             {episode.overview && (
               <p className="line-clamp-2 pr-4 text-xs leading-relaxed font-normal text-zinc-400">
-                {episode.overview}
+                {episode.overview || 'N/A'}
               </p>
             )}
           </div>

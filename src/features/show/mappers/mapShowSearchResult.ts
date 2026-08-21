@@ -1,18 +1,24 @@
-import { Show, ShowRaw } from '@/features/show/types/show';
+import { ShowSearchResult, ShowSearchResultRaw } from '@/features/show';
 
-export const mapShow = (show: ShowRaw): Show => ({
+export const mapShowSearchResult = (
+  show: ShowSearchResultRaw,
+  genreDictionary: Map<number, string>,
+): Omit<ShowSearchResult, 'isTracked'> => ({
+  adult: show.adult,
+  backdropPath: show.backdrop_path,
   id: show.id,
-  tmdbId: show.id,
   name: show.name,
-  status: show.status,
   overview: show.overview,
   posterPath: show.poster_path,
-  backdropPath: show.backdrop_path,
+  mediaType: show.media_type,
   firstAirDate: show.first_air_date,
-  lastAirDate: show.last_air_date,
-  numberOfSeasons: show.number_of_seasons,
-  numberOfEpisodes: show.number_of_episodes,
-  inProduction: show.in_production,
-  genres: show.genres,
-  seasons: show.seasons,
+  voteAverage: show.vote_average,
+  originCountry: show.origin_country,
+  originalLanguage: show.original_language,
+  genres: show.genre_ids
+    .map((id) => {
+      const name = genreDictionary.get(id);
+      return name ? { id, name } : null;
+    })
+    .filter((genre): genre is { id: number; name: string } => genre !== null),
 });

@@ -1,17 +1,22 @@
 import { IconDeviceTv } from '@tabler/icons-react';
-import { TrendingMediaSection } from '@/components/trending/TrendingMediaSection';
 import { FC } from 'react';
-import { getTrendingShows, TrendingShow } from '@/features/show';
+import { getUpcomingEpisodes } from '@/features/episode';
+import { UpcomingMediaSection } from '@/components/upcoming/UpcomingMediaSection';
+import { MappedUpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
 
-export const TrendingShowList: FC = async () => {
-  const trendingShows = await getTrendingShows();
+export const UpcomingEpisodeList: FC = async () => {
+  const upcomingEpisodes = await getUpcomingEpisodes();
 
   return (
-    <TrendingMediaSection<TrendingShow>
+    <UpcomingMediaSection<MappedUpcomingEpisode>
       icon={IconDeviceTv}
-      title="Trending TV Series"
-      trendingMedia={trendingShows}
-      subtitle="Most watched and talked-about TV shows right now. Track them directly to your library."
+      upcomingMedia={upcomingEpisodes}
+      sectionTitle="TV Series & Seasons"
+      sectionSubtitle="Next episodes and season premiere forecasts"
+      emptySectionTitle="No Upcoming TV Series Forecasted"
+      emptySectionSubtitle="Track television series in your library to unlock automated next-episode countdowns and season premiere forecasts."
+      getTitle={(media) => media.showName}
+      getSubtitle={(media) => `Season ${media.seasonNumber}, Episode ${media.episodeNumber} - ${media.name}`}
     />
   );
 };

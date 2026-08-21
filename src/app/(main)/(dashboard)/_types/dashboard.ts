@@ -1,11 +1,12 @@
-import { TrackedShow, TrendingShow } from '@/features/show';
+import { TrackedShow } from '@/features/show';
 import { TrackedMovie } from '@/features/movie';
+import { TrendingMedia } from '@/types/trending';
 
 export interface DashboardProps {
   shows: TrackedShow[];
   movies: TrackedMovie[];
-  trendingMovies: TrackedMovie[];
-  trendingShows: TrendingShow[];
+  trendingMovies: TrendingMedia[];
+  trendingShows: TrendingMedia[];
   upcomingEvents: UpcomingEvent[];
 }
 

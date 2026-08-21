@@ -1,5 +1,5 @@
-import { TrendingShowRaw } from '@/features/show';
+import { TrendingMovieRaw } from '@/features/movie';
 
-export type GetTrendingShowsResponse = {
-  results: TrendingShowRaw[];
+export type GetTrendingMoviesResponse = {
+  results: TrendingMovieRaw[];
 };

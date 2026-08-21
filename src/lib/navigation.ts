@@ -1,6 +1,6 @@
 import { IconBookmark, IconDeviceTv, IconLayoutDashboard } from '@tabler/icons-react';
 
-export const header = [
+export const navigation = [
   {
     href: '/',
     id: 'dashboard',
@@ -16,7 +16,7 @@ export const header = [
   {
     href: '/search',
     id: 'search',
-    title: 'Search / Add',
+    title: 'Search',
     icon: IconDeviceTv,
   },
 ];

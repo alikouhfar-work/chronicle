@@ -1,15 +1,12 @@
-export const statusFilters = [
+import { ShowStatusFilter } from '@/features/show/types/showStatusFilter';
+import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
+
+export const showStatusFilters: ShowStatusFilter[] = [
   {
-    id: 'all',
-    title: 'All',
-    indicatorColor: 'bg-zinc-600',
-  },
-  {
-    id: 'watching',
+    key: ShowTrackingStatus.WATCHING,
     title: 'Watching',
-    indicatorColor: 'bg-gold-400 animate-pulse',
   },
-  { id: 'planned', title: 'Plan to Watch', indicatorColor: 'bg-zinc-500' },
-  { id: 'completed', title: 'Completed', indicatorColor: 'bg-emerald-400' },
-  { id: 'dropped', title: 'Dropped', indicatorColor: 'bg-red-400' },
+  { key: ShowTrackingStatus.PLAN_TO_WATCH, title: 'Plan to Watch' },
+  { key: ShowTrackingStatus.COMPLETED, title: 'Completed' },
+  { key: ShowTrackingStatus.DROPPED, title: 'Dropped' },
 ];

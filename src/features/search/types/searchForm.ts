@@ -1,5 +1,3 @@
-export type SearchPageProps = {
-  searchParams: Promise<{
-    query?: string;
-  }>;
+export type SearchFormProps = {
+  query?: string;
 };

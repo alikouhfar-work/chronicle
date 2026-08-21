@@ -1,3 +1,5 @@
+'use client';
+
 import {
   IconCircleCheck,
   IconClock,
@@ -6,13 +8,13 @@ import {
   IconSparkles,
 } from '@tabler/icons-react';
 import { FC } from 'react';
-import { DashboardHeaderWatchStatsProps } from '@/app/(main)/(dashboard)/types/dashboardHeader';
-import { useWatchStats } from '@/app/(main)/(dashboard)/hooks/useWatchStats';
-import { formatMinutes } from '@/app/(main)/(dashboard)/utils/formatMinutes';
+import { DashboardHeaderWatchStatsProps } from '@/app/(main)/(dashboard)/_types/dashboardHeader';
+import { useWatchStats } from '@/app/(main)/(dashboard)/_hooks/useWatchStats';
+import { formatMinutes } from '@/utils/formatMinutes';
 
 export const DashboardHeaderWatchStats: FC<DashboardHeaderWatchStatsProps> = ({
-  shows,
-  movies,
+  trackedShows,
+  trackedMovies,
 }) => {
   const {
     totalShowMinutes,
@@ -23,7 +25,7 @@ export const DashboardHeaderWatchStats: FC<DashboardHeaderWatchStatsProps> = ({
     totalCompletedCount,
     totalLibraryCount,
     completionRatePercent,
-  } = useWatchStats(shows, movies);
+  } = useWatchStats(trackedShows, trackedMovies);
 
   return (
     <div className="space-y-4 rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-6 shadow-2xl backdrop-blur-lg">

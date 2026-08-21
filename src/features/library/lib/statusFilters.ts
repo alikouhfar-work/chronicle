@@ -9,7 +9,7 @@ export const statusFilters = [
     title: 'Watching',
     indicatorColor: 'bg-gold-400 animate-pulse',
   },
-  { id: 'planned', title: 'Plan to Watch', indicatorColor: 'bg-zinc-500' },
+  { id: 'plan_to_watch', title: 'Plan to Watch', indicatorColor: 'bg-zinc-500' },
   { id: 'completed', title: 'Completed', indicatorColor: 'bg-emerald-400' },
   { id: 'dropped', title: 'Dropped', indicatorColor: 'bg-red-400' },
 ];

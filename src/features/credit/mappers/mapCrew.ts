@@ -1,10 +1,9 @@
-import { Cast, CastRaw } from '@/features/credit/types/cast';
+import { Crew, CrewRaw } from '@/features/credit/types/crew';
 
-export const mapCast = (cast: CastRaw[]): Cast[] =>
-  cast.map((person) => ({
+export const mapCrew = (crew: CrewRaw[]): Crew[] =>
+  crew.map((person) => ({
     id: person.id,
+    job: person.job,
     name: person.name,
-    order: person.order,
-    character: person.character,
     profilePath: person.profile_path,
   }));

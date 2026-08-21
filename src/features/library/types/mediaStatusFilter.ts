@@ -1,1 +1,1 @@
-export type StatusFilter = 'all' | 'plan_to_watch' | 'watching' | 'completed' | 'dropped';
+export type MediaStatusFilter = 'all' | 'plan_to_watch' | 'watching' | 'completed' | 'dropped';

@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
+import { TrackedShow } from '@/features/show';
 
-export const getTrackedShow = async (id: string) => {
+export const getTrackedShow = async (id: string): Promise<TrackedShow | null> => {
   return prisma.show.findUnique({
     where: {
       tmdbId: +id,
@@ -18,7 +19,7 @@ export const getTrackedShow = async (id: string) => {
               episodeNumber: 'asc',
             },
             include: {
-              progress: true,
+              tracking: true,
             },
           },
         },

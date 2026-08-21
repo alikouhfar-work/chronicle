@@ -1,94 +1,103 @@
-'use server';
-
 import { prisma } from '@/lib/prisma';
 import { tmdbFetch } from '@/utils/tmdbFetch';
-import { ShowDetailsRaw, ShowSeasonRaw } from '@/features/show/types/show';
+import { ShowDetailsRaw } from '@/features/show/types/show';
+import { SeasonRaw } from '@/features/season';
 
-export const importShow = async (tmdbId: number) => {
-  const existing = await prisma.show.findUnique({
-    where: {
-      tmdbId,
-    },
-    include: {
-      tracking: true,
+export const syncShow = async (showId: string) => {
+  const existingShow = await prisma.show.findUnique({
+    where: { tmdbId: +showId },
+    select: {
+      id: true,
+      tmdbId: true,
     },
   });
 
-  if (existing) {
-    return existing;
+  if (!existingShow) {
+    throw new Error('Show not found');
   }
 
-  const show = await tmdbFetch<ShowDetailsRaw>(`tv/${tmdbId}`);
+  const show = await tmdbFetch<ShowDetailsRaw>(`tv/${existingShow.tmdbId}`);
 
-  const seasons = await Promise.all(
-    show.seasons.map((season) =>
-      tmdbFetch<ShowSeasonRaw>(`tv/${tmdbId}/season/${season.season_number}`),
-    ),
-  );
+  await prisma.show.update({
+    where: { id: existingShow.id },
+    data: {
+      name: show.name,
+      overview: show.overview,
+      posterPath: show.poster_path,
+      backdropPath: show.backdrop_path,
+      firstAirDate: show.first_air_date ? new Date(show.first_air_date) : null,
+      lastAirDate: show.last_air_date ? new Date(show.last_air_date) : null,
+      status: show.status,
+      numberOfSeasons: show.number_of_seasons,
+      numberOfEpisodes: show.number_of_episodes,
+      inProduction: show.in_production,
+      lastSyncedAt: new Date(),
 
-  return prisma.$transaction(async (tx) => {
-    return tx.show.create({
-      data: {
-        tmdbId: show.id,
-        name: show.name,
-        overview: show.overview,
-        posterPath: show.poster_path,
-        backdropPath: show.backdrop_path,
-        firstAirDate: show.first_air_date ? new Date(show.first_air_date) : null,
-        lastAirDate: show.last_air_date ? new Date(show.last_air_date) : null,
-        status: show.status,
-        numberOfSeasons: show.number_of_seasons,
-        numberOfEpisodes: show.number_of_episodes,
-        inProduction: show.in_production,
-        lastSyncedAt: new Date(),
+      genres: {
+        set: show.genres.map((genre) => ({
+          tmdbId: genre.id,
+        })),
+      },
+    },
+  });
 
-        tracking: {
-          create: {},
-        },
+  for (const seasonSummary of show.seasons) {
+    if (seasonSummary.season_number === 0) {
+      continue;
+    }
 
-        genres: {
-          connectOrCreate: show.genres.map((genre: { id: number; name: string }) => ({
-            where: {
-              tmdbId: genre.id,
-            },
-            create: {
-              tmdbId: genre.id,
-              name: genre.name,
-            },
-          })),
-        },
+    const season = await tmdbFetch<SeasonRaw>(
+      `tv/${existingShow.tmdbId}/season/${seasonSummary.season_number}`,
+    );
 
-        seasons: {
-          create: seasons.map((season) => ({
-            tmdbId: season.id,
-            name: season.name,
-            seasonNumber: season.season_number,
-            episodeCount: season.episodes.length,
-            airDate: season.air_date ? new Date(season.air_date) : null,
-
-            episodes: {
-              create: season.episodes.map((episode) => ({
-                tmdbId: episode.id,
-                episodeNumber: episode.episode_number,
-                name: episode.name,
-                overview: episode.overview,
-                runtime: episode.runtime,
-                airDate: episode.air_date ? new Date(episode.air_date) : null,
-              })),
-            },
-          })),
+    const localSeason = await prisma.season.upsert({
+      where: {
+        showId_seasonNumber: {
+          showId: existingShow.id,
+          seasonNumber: season.season_number,
         },
       },
-
-      include: {
-        tracking: true,
-        genres: true,
-        seasons: {
-          include: {
-            episodes: true,
-          },
-        },
+      create: {
+        tmdbId: season.id,
+        showId: existingShow.id,
+        seasonNumber: season.season_number,
+        name: season.name,
+        episodeCount: season.episodes.length,
+        airDate: season.air_date ? new Date(season.air_date) : null,
+      },
+      update: {
+        tmdbId: season.id,
+        name: season.name,
+        episodeCount: season.episodes.length,
+        airDate: season.air_date ? new Date(season.air_date) : null,
       },
     });
-  });
+
+    await prisma.$transaction(
+      season.episodes.map((episode) =>
+        prisma.episode.upsert({
+          where: {
+            tmdbId: episode.id,
+          },
+          create: {
+            tmdbId: episode.id,
+            seasonId: localSeason.id,
+            episodeNumber: episode.episode_number,
+            name: episode.name,
+            overview: episode.overview ?? '',
+            runtime: episode.runtime,
+            airDate: episode.air_date ? new Date(episode.air_date) : null,
+          },
+          update: {
+            name: episode.name,
+            overview: episode.overview ?? '',
+            runtime: episode.runtime,
+            airDate: episode.air_date ? new Date(episode.air_date) : null,
+          },
+        }),
+      ),
+    );
+  }
+
+  return;
 };

@@ -1,14 +1,15 @@
 import { addDays } from 'date-fns';
 import { prisma } from '@/lib/prisma';
 import { GetUpcomingMediaOptions } from '@/features/library/types/getUpcomingMedia';
+import { mapUpcomingMovies } from '@/features/movie/mappers/mapUpcomingMovies';
 
 export const getUpcomingMovies = async (options: GetUpcomingMediaOptions = {}) => {
-  const { days = 90 } = options;
+  const { days = 40 } = options;
 
   const now = new Date();
   const futureDate = addDays(now, days);
 
-  return prisma.movie.findMany({
+  const movies = await prisma.movie.findMany({
     where: {
       releaseDate: {
         gt: now,
@@ -25,4 +26,6 @@ export const getUpcomingMovies = async (options: GetUpcomingMediaOptions = {}) =
       releaseDate: 'asc',
     },
   });
+
+  return mapUpcomingMovies(movies);
 };

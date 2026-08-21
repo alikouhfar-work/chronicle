@@ -2,12 +2,13 @@
 
 import { FC, useState, useTransition } from 'react';
 import { IconCircleCheck, IconDeviceTv, IconStar } from '@tabler/icons-react';
-import { LibraryMediaDetailsHeader } from '@/app/(main)/library/[...slug]/_components/LibraryMediaDetailsHeader';
-import { LibraryShowDetailsProps } from '@/app/(main)/library/[...slug]/_types/libraryShowDetails';
+import { LibraryMediaDetailsHeader } from '@/features/library/components/LibraryMediaDetailsHeader';
+import { LibraryShowDetailsProps } from '@/features/library/types/libraryShowDetails';
 import { setSeasonWatched } from '@/features/show/actions/setSeasonWatched';
 import { ShowDetailsEpisodeCard } from '@/features/show/components/ShowDetailsEpisodeCard';
+import { LibraryItemFooter } from '@/features/library/components/LibraryItemFooter';
 
-export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show }) => {
+export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits }) => {
   const [isSeasonPending, startSeasonTransition] = useTransition();
   // TV states
   const [activeSeason, setActiveSeason] = useState(show.seasons[0]);
@@ -50,7 +51,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show }) => {
           </button>
         </div>
       )}
-      <LibraryMediaDetailsHeader media={show} isShow={true} />
+      <LibraryMediaDetailsHeader media={show} />
 
       {/* Editing Episode thoughts overlay */}
       {editingEpisode && show && (
@@ -128,9 +129,9 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show }) => {
       )}
 
       {/* Show Seasons & Episode tracking section */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+      <div className="flex flex-col gap-8 md:flex-row">
         {/* Seasons list selectors */}
-        <div className="shrink-0 space-y-3">
+        <div className="flex-1 space-y-3">
           <h4 className="font-mono text-[9px] font-bold tracking-widest text-zinc-500 uppercase">
             Seasons
           </h4>
@@ -206,7 +207,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show }) => {
         </div>
 
         {/* Episode Checklists for selected season */}
-        <div className="space-y-4 md:col-span-3">
+        <div className="space-y-4 md:flex-3">
           <div className="flex items-center justify-between">
             <h4 className="font-serif text-base font-black text-white">
               {activeSeason.name} Episodes
@@ -230,7 +231,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show }) => {
           </div>
 
           {/* Episodes check list */}
-          <div className="space-y-3">
+          <ul className="space-y-3 overflow-y-auto">
             {show.seasons
               .find((s) => s.id === activeSeason.id)
               ?.episodes.map((episode) => {
@@ -245,14 +246,14 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show }) => {
                   />
                 );
               })}
-          </div>
+          </ul>
         </div>
       </div>
 
       {/* Divider */}
       <div className="border-zinc-850/60 my-8 border-t" />
 
-      {/*<LibraryItemFooter enrichment={enrichment} isAlreadyTracked={isAlreadyTracked} />*/}
+      <LibraryItemFooter credits={credits} />
     </article>
   );
 };

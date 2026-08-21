@@ -1,6 +1,6 @@
 import { MediaType } from '@/types/media';
 
-export type ImportMediaParams = {
+export type AddMediaParams = {
   tmdbId: number;
   mediaType: MediaType;
 };
