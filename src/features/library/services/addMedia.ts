@@ -1,6 +1,6 @@
 import { AddMediaParams } from '@/features/library/types/addMedia';
-import { addShow } from '@/features/library/services/addShow';
-import { addMovie } from '@/features/library/services/addMovie';
+import { addShow } from '@/features/show';
+import { addMovie } from '@/features/movie';
 
 export const addMedia = async ({ tmdbId, mediaType }: AddMediaParams) => {
   switch (mediaType) {

@@ -1,5 +1,8 @@
 export { TrendingShowList } from './components/TrendingShowList';
 
+export { addShow } from './actions/addShow';
+export { syncShow } from './actions/syncShow';
+
 export { getShowCredits } from './queries/getShowCredits';
 export { getTrendingShows } from './queries/getTrendingShows';
 export { getTrackedShow } from '@/features/show/queries/getTrackedShow';

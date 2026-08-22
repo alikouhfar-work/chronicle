@@ -1,5 +1,4 @@
-import { type TrackedShow } from '@/features/show';
-import { syncShow } from '@/features/library/services/syncShow';
+import { syncShow, type TrackedShow } from '@/features/show';
 import { getTrackedShow } from '@/features/show/queries/getTrackedShow';
 
 const shouldSyncShow = (show: TrackedShow) => {
