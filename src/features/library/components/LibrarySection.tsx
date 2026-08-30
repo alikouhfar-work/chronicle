@@ -6,34 +6,25 @@ export const LibrarySection: FC<LibrarySectionProps> = ({
   media,
   mediaType,
   icon: Icon,
-  emptyMessage,
+  emptyListTitle,
+  emptyListSubtitle,
 }) => {
   return (
-    <div className="space-y-5">
-      <div className="border-zinc-850/80 flex items-center justify-between border-b pb-3">
-        <div className="flex items-center gap-3">
-          <div className="bg-gold-400/10 border-gold-400/20 text-gold-400 rounded-xl border p-2">
-            <Icon size={18} />
-          </div>
-          <div>
-            <h3 className="flex items-center gap-2.5 font-serif text-xl font-extrabold tracking-tight text-white md:text-2xl">
-              <span>TV Series</span>
-              <span className="text-gold-400 bg-gold-400/10 border-gold-400/20 rounded-full border px-2.5 py-0.5 font-mono text-xs font-bold">
-                {media.length}
-              </span>
-            </h3>
-          </div>
-        </div>
-      </div>
-
+    <div className="animate-fade-in space-y-6">
       {media.length === 0 ? (
-        <div className="border-zinc-850/60 rounded-xl border bg-zinc-900/20 p-6 text-center">
-          <p className="font-mono text-xs text-zinc-500">{emptyMessage}</p>
+        <div className="glass-card flex flex-col items-center justify-center space-y-3 rounded-2xl border border-dashed border-white/10 p-8 py-20 text-center">
+          <div className="rounded-2xl border border-violet-500/25 bg-violet-500/15 p-4 text-violet-400">
+            <Icon size={32} />
+          </div>
+          <div className="max-w-sm space-y-1">
+            <p className="text-base font-bold text-white">{emptyListTitle}</p>
+            <p className="text-xs leading-relaxed font-normal text-zinc-400">{emptyListSubtitle}</p>
+          </div>
         </div>
       ) : (
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {media.map((item) => (
-            <LibraryCard key={item.id} media={item} mediaType={mediaType}/>
+            <LibraryCard key={item.id} media={item} mediaType={mediaType} />
           ))}
         </ul>
       )}

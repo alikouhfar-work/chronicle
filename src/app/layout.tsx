@@ -37,7 +37,7 @@ const RootLayout = ({
   return (
     <html
       lang="en"
-      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} bg-canvas h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>

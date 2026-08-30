@@ -1,57 +1,31 @@
-'use client';
-
-import { IconBook, IconDeviceTv, IconRefresh, IconVideo } from '@tabler/icons-react';
-import { FC, useTransition } from 'react';
+import { IconBook, IconDeviceTv, IconMovie, IconRefresh, IconStar } from '@tabler/icons-react';
+import { FC } from 'react';
 import { LibraryMediaDetailsHeaderProps } from '@/features/library/types/libraryItemHeader';
-import Image from 'next/image';
-import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
-import { showStatusFilters } from '@/features/show/lib/statusFilters';
-import { updateShowTrackingStatus } from '@/features/show/actions/updateShowTrackingStatus';
-import { clsx } from 'clsx';
-import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { format } from 'date-fns';
 import { getAverageEpisodeRuntime } from '@/features/show/utils/getAverageEpisodeRuntime';
 import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
+import Image from 'next/image';
+import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
+import { showStatusFilters } from '@/features/show/lib/statusFilters';
 import { movieStatusFilters } from '@/features/movie/lib/statusFilters';
-import { updateMovieTrackingStatus } from '@/features/movie/actions/updateMovieTrackingStatus';
+import { LibraryShowStatusChangeButton } from '@/features/library/components/LibraryShowStatusChangeButton';
+import { LibraryMovieStatusChangeButton } from '@/features/library/components/LibraryMovieStatusChangeButton';
 
 export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ media }) => {
-  const [isPending, startTransition] = useTransition();
   const show = 'seasons' in media ? media : null;
   const movie = 'runtime' in media ? media : null;
 
   const runtime = show ? getAverageEpisodeRuntime(show) : movie?.runtime;
 
-  const handleShowStatusChange = (status: ShowTrackingStatus) => {
-    if (!show) return;
-    startTransition(async () => {
-      await updateShowTrackingStatus(show.id, status);
-    });
-
-    // Add Toast
-  };
-
-  const handleMovieStatusChange = (status: MovieTrackingStatus) => {
-    if (!movie) return;
-    startTransition(async () => {
-      await updateMovieTrackingStatus(movie.id, status);
-    });
-
-    // Add Toast
-  };
-
   return (
-    <div className="border-zinc-850/80 relative flex flex-col gap-8 overflow-hidden rounded-2xl border bg-zinc-900/50 p-6 shadow-xl backdrop-blur-md md:flex-row md:p-8">
+    <div className="glass-panel relative flex flex-col gap-7 overflow-hidden rounded-3xl border border-white/8 p-6 shadow-2xl md:flex-row md:p-8">
       {/* Decorative ambient glows inside hero */}
-      <div className="bg-gold-500/5 pointer-events-none absolute -top-16 -right-16 h-36 w-36 rounded-full blur-3xl" />
-      <div className="bg-gold-500/5 pointer-events-none absolute -bottom-16 -left-16 h-36 w-36 rounded-full blur-3xl" />
+      <div className="pointer-events-none absolute top-0 right-1/4 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-10 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
 
-      {/* Poster representation (aligned with cover-art style) */}
-      <div
-        className={`group relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-2xl border border-zinc-800/80 shadow-lg select-none md:w-56`}
-      >
+      <div className="group relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-2xl border border-white/15 shadow-2xl select-none md:w-56">
         <div
-          className={`absolute inset-0 bg-linear-to-br ${getPosterPlaceholderColor(media.name)} flex flex-col justify-between p-5`}
+          className={`absolute inset-0 bg-linear-to-br ${getPosterPlaceholderColor(media.name)} flex flex-col justify-between p-4`}
         >
           {media.posterPath && (
             <Image
@@ -60,144 +34,146 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
               src={getTmdbImageUrl(media.posterPath, 'backdrop', 'w500')!}
             />
           )}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_50%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_45%,rgba(0,0,0,0.9)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-white/[0.01] bg-[radial-gradient(#ffffff02_1px,transparent_1px)] [background-size:14px_14px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.15),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_35%,rgba(12,13,18,0.95)_100%)]" />
         </div>
 
-        {/* Dark overlay */}
-        <div className="absolute inset-0 z-0 bg-linear-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/10" />
+        <div className="absolute inset-0 z-0 bg-linear-to-t from-canvas via-canvas/60 to-canvas/10" />
 
-        {/* Additional details on top of cover */}
-        <div className="absolute inset-0 z-10 flex flex-col justify-between p-5">
+        <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
           <div className="flex items-start justify-between gap-2">
-            <span className="border-zinc-850/80 flex items-center gap-1 rounded border bg-zinc-950/90 px-2 py-1 font-mono text-[8px] leading-none font-bold text-zinc-300 uppercase">
+            <span className="apple-badge border border-white/10 bg-black/60 text-[10px] text-zinc-300 backdrop-blur-md">
               {show ? (
-                <IconDeviceTv size={9} className="text-gold-400" />
+                <IconDeviceTv size={10} className="mr-1 text-violet-400" />
               ) : (
-                <IconVideo size={9} className="text-gold-400" />
+                <IconMovie size={10} className="mr-1 text-violet-400" />
               )}
               <span>{show ? 'Series' : 'Movie'}</span>
             </span>
+            <span className="rounded-full border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-zinc-300 backdrop-blur-md">
+              {show ? show.firstAirDate?.getFullYear() : movie?.releaseDate?.getFullYear()}
+            </span>
           </div>
 
-          <h3 className="font-serif text-base leading-tight font-black text-white drop-shadow-md">
-            {media.name}
-          </h3>
+          <h3 className="text-base leading-tight font-bold text-white">{media.name}</h3>
         </div>
       </div>
 
-      {/* Info Grid details */}
-      <div className="relative z-10 flex flex-1 flex-col justify-between space-y-6">
+      <div className="relative z-10 flex flex-1 flex-col justify-between space-y-5">
         <div className="space-y-4">
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex flex-wrap items-baseline gap-2">
-              <h2 className="font-serif text-2xl leading-tight font-black tracking-tight text-white md:text-3xl">
+              <h2 className="text-2xl leading-tight font-extrabold tracking-tight text-white md:text-3xl">
                 {media.name}
               </h2>
-              <p className="flex items-center font-mono text-sm text-zinc-500">
+              <span className="text-sm font-semibold text-violet-400">
                 (
-                {show ? (
-                  <span className="flex items-center">
-                    {show.firstAirDate?.getFullYear()} - {show.lastAirDate?.getFullYear()}
-                  </span>
-                ) : (
-                  <span>{movie?.releaseDate?.getFullYear()}</span>
-                )}
+                {show
+                  ? `${show.firstAirDate?.getFullYear()}${show.firstAirDate?.getFullYear() !== show.lastAirDate?.getFullYear() ? `-${show.lastAirDate?.getFullYear()}` : ''}`
+                  : movie?.releaseDate?.getFullYear()}
                 )
-              </p>
+              </span>
             </div>
             {media.tagline && (
-              <p className="text-gold-400 text-sm font-light italic">&#34;{media.tagline}&#34;</p>
+              <p className="text-xs text-zinc-400 italic">&#34;{media.tagline}&#34;</p>
             )}
           </div>
 
+          {/* Badges / Runtimes */}
           <div className="flex flex-wrap items-center gap-2">
-            {runtime && (
-              <span className="rounded-lg border border-zinc-800/80 bg-zinc-950/80 px-3 py-1 font-mono text-[9px] tracking-widest text-zinc-300 uppercase">
+            <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-200">
+              {show?.status || (movie?.runtime ? `${movie.runtime} min` : 'Released')}
+            </span>
+            {show && (
+              <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-200">
                 {runtime} {show ? 'min / ep' : 'min'}
               </span>
             )}
             {media.genres.map((genre) => (
               <span
                 key={genre.id}
-                className="bg-gold-400/5 text-gold-400 border-gold-400/10 rounded-lg border px-3 py-1 font-mono text-[9px] tracking-widest uppercase"
+                className="apple-badge border border-violet-500/25 bg-violet-500/15 text-xs text-violet-300"
               >
                 {genre.name}
               </span>
             ))}
-            {show && show.lastSyncedAt && (
-              <span className="flex items-center gap-1.5 rounded-lg border border-emerald-500/20 bg-zinc-950/80 px-3 py-1 font-mono text-[9px] tracking-widest text-emerald-400 uppercase shadow-sm">
-                <IconRefresh size={10} className="shrink-0 text-emerald-400" />
+            {show && (
+              <span className="apple-badge flex items-center gap-1.5 border border-white/10 bg-white/6 text-xs text-zinc-300">
+                <IconRefresh size={11} className="shrink-0 text-violet-400" />
                 <span className="text-zinc-400">Synced:</span>
-                <span className="font-bold text-emerald-300">
+                <span className="font-semibold text-zinc-200">
                   {format(show.lastSyncedAt, "MMM d, yyyy 'at' h:mm a")}
                 </span>
               </span>
             )}
           </div>
 
-          <div className="space-y-2 pt-2">
-            <h4 className="flex items-center gap-1.5 font-mono text-[9px] font-bold tracking-widest text-zinc-500 uppercase">
-              <IconBook size={11} className="text-gold-400" /> Overview
+          {/* Synopsis */}
+          <div className="space-y-1.5 pt-1">
+            <h4 className="flex items-center gap-1.5 text-xs font-semibold text-violet-400">
+              <IconBook size={13} className="text-violet-400" /> Overview
             </h4>
-            <p className="text-sm leading-relaxed font-light text-zinc-300">{media.overview}</p>
+            <p className="text-xs leading-relaxed font-normal text-zinc-300 sm:text-sm">
+              {media.overview}
+            </p>
           </div>
         </div>
 
         {/* Controls Panel */}
-        <div className="border-zinc-850/60 flex flex-col items-start justify-between gap-6 border-t pt-6 sm:flex-row sm:items-center">
-          <div className="space-y-2.5">
-            <p className="font-mono text-[9px] font-bold tracking-widest text-zinc-500 uppercase">
-              Track Status
-            </p>
+        <div className="flex flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-center">
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-zinc-400">Tracking Status</p>
             {show && (
-              <div className="border-zinc-850 flex flex-wrap gap-1 rounded-xl border bg-zinc-950/80 p-1">
-                {showStatusFilters.map((status) => {
-                  const automatic =
-                    status.key === ShowTrackingStatus.WATCHING ||
-                    status.key === ShowTrackingStatus.COMPLETED;
-
-                  return (
-                    <button
-                      key={status.key}
-                      disabled={automatic || isPending}
-                      onClick={() => !automatic && handleShowStatusChange(status.key)}
-                      className={clsx(
-                        'rounded-lg px-3.5 py-1.5 font-mono text-[9.5px] tracking-wider uppercase transition-all duration-300',
-                        automatic ? 'cursor-not-allowed' : 'cursor-pointer',
-                        !automatic && 'hover:text-zinc-200',
-                        show.tracking?.status === status.key
-                          ? 'bg-gold-400 font-bold text-zinc-950 shadow'
-                          : 'text-zinc-400 hover:bg-zinc-900/40',
-                      )}
-                    >
-                      {status.title}
-                    </button>
-                  );
-                })}
+              <div className="flex flex-wrap gap-1 rounded-full border border-white/10 bg-zinc-900/90 p-1">
+                {showStatusFilters.map((statusFilter) => (
+                  <LibraryShowStatusChangeButton
+                    showId={show.id}
+                    key={statusFilter.key}
+                    statusFilter={statusFilter}
+                    showStatus={show.tracking?.status}
+                  />
+                ))}
               </div>
             )}
             {movie && (
-              <div className="border-zinc-850 flex flex-wrap gap-1 rounded-xl border bg-zinc-950/80 p-1">
-                {movieStatusFilters.map((status) => (
-                  <button
-                    key={status.key}
-                    disabled={isPending}
-                    onClick={() => handleMovieStatusChange(status.key)}
-                    className={clsx(
-                      'cursor-pointer rounded-lg px-3.5 py-1.5 font-mono text-[9.5px] tracking-wider uppercase transition-all duration-300',
-                      movie.tracking?.status === status.key
-                        ? 'bg-gold-400 font-bold text-zinc-950 shadow'
-                        : 'text-zinc-400 hover:bg-zinc-900/40',
-                    )}
-                  >
-                    {status.title}
-                  </button>
+              <div className="flex flex-wrap gap-1 rounded-full border border-white/10 bg-zinc-900/90 p-1">
+                {movieStatusFilters.map((statusFilter) => (
+                  <LibraryMovieStatusChangeButton
+                    movieId={movie?.id}
+                    key={statusFilter.key}
+                    statusFilter={statusFilter}
+                    movieStatus={movie?.tracking?.status}
+                  />
                 ))}
               </div>
             )}
           </div>
+
+          {/* Movie Star rating */}
+          {movie && movie.tracking?.status === 'COMPLETED' && (
+            <div className="glass-card flex items-center gap-3 rounded-2xl border border-white/10 p-3 shadow-md">
+              <div className="space-y-0.5">
+                <p className="text-[10px] font-semibold tracking-tight text-zinc-400 uppercase">
+                  Your Score
+                </p>
+                <div className="flex items-center gap-1 text-xs font-bold text-amber-400">
+                  <IconStar className="fill-amber-400 text-amber-400" size={13} />
+                  <span>{movie?.tracking.rating ? `${movie.tracking.rating} / 5` : 'Unrated'}</span>
+                </div>
+              </div>
+              {/*<button*/}
+              {/*  onClick={() => {*/}
+              {/*    setMovieRating(movie?.rating || 0);*/}
+              {/*    setMovieNotes(movie?.notes || '');*/}
+              {/*    setIsEditingMovieLog(true);*/}
+              {/*  }}*/}
+              {/*  className="apple-pill-btn cursor-pointer bg-white/[0.08] p-2 text-zinc-200 hover:bg-white/[0.15]"*/}
+              {/*  title="Edit rating/review"*/}
+              {/*>*/}
+              {/*  <Edit3 size={13} />*/}
+              {/*</button>*/}
+            </div>
+          )}
         </div>
       </div>
     </div>

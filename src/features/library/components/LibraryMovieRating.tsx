@@ -6,13 +6,13 @@ export const LibraryMovieRating: FC<LibraryMovieRatingProps> = ({ rating }) => {
   return (
     <>
       {rating ? (
-        <div className="text-gold-400 flex items-center gap-1.5 border-t border-zinc-900/30 pt-1.5">
-          <IconStar size={11} className="fill-gold-400 text-gold-400" />
-          <span className="font-mono text-[10px] font-bold">{rating} / 10</span>
+        <div className="flex items-center gap-1.5 border-t border-white/10 pt-1.5 text-xs font-semibold text-amber-400">
+          <IconStar size={10} className="fill-amber-400 text-amber-400" />
+          <span>{rating} / 10</span>
         </div>
       ) : (
-        <div className="border-t border-zinc-900/30 pt-1">
-          <span className="font-mono text-[9px] text-zinc-500">Unrated</span>
+        <div className="border-t border-white/10 pt-1.5">
+          <span className="text-xs font-medium text-zinc-500">Unrated</span>
         </div>
       )}
     </>

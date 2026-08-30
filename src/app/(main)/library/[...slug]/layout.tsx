@@ -7,7 +7,7 @@ const LibraryItemLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <article className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-y-8 px-4 py-8 font-sans sm:px-6 lg:px-8">
+    <article className="animate-fade-in mx-auto max-w-5xl space-y-8 font-sans">
       <LibraryItemNavigation />
       {children}
     </article>

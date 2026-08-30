@@ -11,12 +11,14 @@ export const UpcomingEpisodeList: FC = async () => {
     <UpcomingMediaSection<MappedUpcomingEpisode>
       icon={IconDeviceTv}
       upcomingMedia={upcomingEpisodes}
-      sectionTitle="TV Series & Seasons"
-      sectionSubtitle="Next episodes and season premiere forecasts"
-      emptySectionTitle="No Upcoming TV Series Forecasted"
-      emptySectionSubtitle="Track television series in your library to unlock automated next-episode countdowns and season premiere forecasts."
+      sectionTitle="TV Series Premieres"
+      sectionSubtitle="New seasons & upcoming episode drops"
+      emptySectionTitle="No Upcoming TV Premieres"
+      emptySectionSubtitle="Add more series to your library to track upcoming season release dates."
       getTitle={(media) => media.showName}
-      getSubtitle={(media) => `Season ${media.seasonNumber}, Episode ${media.episodeNumber} - ${media.name}`}
+      getSubtitle={(media) =>
+        `Season ${media.seasonNumber}, Episode ${media.episodeNumber} - ${media.name}`
+      }
     />
   );
 };

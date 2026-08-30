@@ -6,9 +6,9 @@ export const ViewDetailsButton: FC<ViewDetailsButtonProps> = ({ tmdbId, mediaTyp
   return (
     <Link
       href={`/library/${mediaType}/${tmdbId}`}
-      className="hover:bg-zinc-750 text-gold-400 hover:text-gold-300 cursor-pointer rounded-lg border border-zinc-700/50 bg-zinc-800 px-3 py-1.5 font-mono text-[10px] font-bold tracking-wider uppercase transition-colors"
+      className="apple-pill-btn cursor-pointer border border-violet-500/30 bg-white/8 px-3 py-1.5 text-xs text-violet-400 hover:bg-white/15"
     >
-      View details
+      In Library
     </Link>
   );
 };

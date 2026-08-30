@@ -9,9 +9,9 @@ export const TrendingShowList: FC = async () => {
   return (
     <TrendingMediaSection<TrendingShow>
       icon={IconDeviceTv}
-      title="Trending TV Series"
+      title="Trending TV Shows"
       trendingMedia={trendingShows}
-      subtitle="Most watched and talked-about TV shows right now. Track them directly to your library."
+      subtitle="Popular series everyone is watching right now."
     />
   );
 };

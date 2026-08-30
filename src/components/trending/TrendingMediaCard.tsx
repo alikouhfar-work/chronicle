@@ -1,77 +1,74 @@
-import Image from 'next/image';
-import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
-import { IconStarFilled } from '@tabler/icons-react';
 import { TrendingMediaCardProps } from '@/types/trending';
-import { ViewDetailsButton } from '@/features/library/components/ViewDetailsButton';
-import { TrackButton } from '@/features/library/components/TrackButton';
 import { TrendingShow } from '@/features/show';
 import { TrendingMovie } from '@/features/movie';
 import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
+import { IconCircleFilled } from '@tabler/icons-react';
+import { ViewDetailsButton } from '@/features/library/components/ViewDetailsButton';
+import { TrackButton } from '@/features/library/components/TrackButton';
+import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
+import Image from 'next/image';
 
 export const TrendingMediaCard = async <T extends TrendingShow | TrendingMovie>({
   media,
 }: TrendingMediaCardProps<T>) => {
   return (
-    <li className="group border-zinc-850 hover:border-zinc-750/80 relative flex min-w-70 flex-col justify-between overflow-hidden rounded-2xl border bg-zinc-900/40 shadow-md transition-all duration-300 hover:bg-zinc-900/90">
-      <div className="border-zinc-850/50 relative aspect-video w-full shrink-0 overflow-hidden border-b select-none">
-        {media.backdropPath ? (
+    <li className="group glass-card glass-card-interactive relative flex min-w-70 cursor-default flex-col justify-between overflow-hidden rounded-2xl shadow-xl">
+      <div className="relative aspect-video w-full shrink-0 overflow-hidden border-b border-white/8 select-none">
+        <div
+          className={`absolute inset-0 bg-linear-to-br ${getPosterPlaceholderColor(media.name)}`}
+        />
+        {media.backdropPath && (
           <Image
             fill
             alt={media.name}
             src={getTmdbImageUrl(media.backdropPath, 'backdrop', 'w300')!}
           />
-        ) : (
-          <div
-            className={`absolute inset-0 bg-linear-to-br ${getPosterPlaceholderColor(media.name)}`}
-          />
         )}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.05),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_25%,rgba(9,9,11,0.95)_100%)]" />
-        <div className="absolute inset-0 bg-zinc-950/20" />
-        <div className="absolute inset-0 bg-white/[0.01] bg-[radial-gradient(#ffffff02_1px,transparent_1px)] [background-size:10px_10px]" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/40 to-zinc-950" />
 
-        <div className="absolute inset-0 z-10 flex flex-col justify-between p-4.5">
-          <div className="bg-gold-400/30 text-gold-400 border-gold-400/50 ml-auto flex items-center gap-1 rounded border px-1.5 py-0.5 font-mono text-[8px] leading-none font-bold">
-            <IconStarFilled className="size-1.5" />
-            <span>{media.rating.toFixed(1)}</span>
+        <div className="absolute inset-0 z-10 flex flex-col justify-between p-3.5">
+          <div className="flex items-start justify-end gap-2">
+            <div className="flex items-center gap-1 rounded-full border border-amber-400/20 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-amber-400 backdrop-blur-md">
+              <span>★</span>
+              <span>{media.rating.toFixed(1)}</span>
+            </div>
           </div>
 
-          <h4 className="group-hover:text-gold-300 truncate font-serif text-sm leading-tight font-black text-white drop-shadow-md transition-colors">
+          <h4 className="truncate text-sm font-bold text-white transition-colors group-hover:text-violet-300">
             {media.name}
           </h4>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col justify-between gap-4 p-5">
-        <div className="space-y-3">
-          <p className="font-mono text-[8.5px] leading-none font-semibold tracking-wider text-zinc-500 uppercase">
-            {media.releaseDate.substring(0, 4) ?? 'N/A'} •{' '}
+      <div className="flex flex-1 flex-col justify-between gap-3 p-4">
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-zinc-400">
+            {media.releaseDate.substring(0, 4) ?? 'N/A'}
+            <IconCircleFilled className="mx-1.5 mb-0.5 inline-block size-1.5" />
             {media.genres.map((genre) => genre.name).join(', ')}
           </p>
 
-          <div className="space-y-1.5">
-            <p className="line-clamp-3 font-sans text-[11px] leading-relaxed font-light text-zinc-400">
+          <div className="space-y-1">
+            <p className="line-clamp-3 text-xs leading-relaxed font-normal text-zinc-400">
               {media.overview}
             </p>
           </div>
         </div>
 
-        <div className="border-zinc-850/40 flex items-center justify-between gap-2 border-t bg-transparent pt-3">
-          <span className="font-mono text-[9px] tracking-wider text-zinc-500 uppercase">
+        <div className="flex items-center justify-between gap-2 border-t border-white/8 pt-3">
+          <span className="text-[11px] font-medium text-zinc-400">
             {new Intl.NumberFormat('en-US', {
               notation: 'compact',
               compactDisplay: 'short',
             }).format(media.voteCount)}{' '}
-            votes
+            reviews
           </span>
 
-          <>
-            {media.isTracked ? (
-              <ViewDetailsButton tmdbId={media.id} mediaType={media.mediaType} />
-            ) : (
-              <TrackButton tmdbId={media.id} mediaType={media.mediaType} />
-            )}
-          </>
+          {media.isTracked ? (
+            <ViewDetailsButton tmdbId={media.id} mediaType={media.mediaType} />
+          ) : (
+            <TrackButton tmdbId={media.id} mediaType={media.mediaType} />
+          )}
         </div>
       </div>
     </li>

@@ -2,8 +2,9 @@ import { MediaSortFilter, MediaStatusFilter, MediaTypeFilter } from '@/features/
 
 export type LibraryPageProps = {
   searchParams: Promise<{
+    search?: string;
     type?: MediaTypeFilter;
-    status?: MediaStatusFilter;
     sort?: MediaSortFilter;
+    status?: MediaStatusFilter;
   }>;
 };

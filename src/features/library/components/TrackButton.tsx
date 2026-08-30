@@ -5,13 +5,14 @@ import { TrackButtonProps } from '@/features/library/types/trackButton';
 import { addMediaAction } from '@/features/library/actions/addMediaAction';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { IconLoader2, IconPlus } from '@tabler/icons-react';
 
 export const TrackButton: FC<TrackButtonProps> = ({ tmdbId, mediaType }) => {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [isAddMediaPending, startAddMediaTransition] = useTransition();
 
-  const handleWatch = () => {
-    startTransition(async () => {
+  const handleAddMedia = () => {
+    startAddMediaTransition(async () => {
       const result = await addMediaAction({ tmdbId, mediaType });
 
       if (!result.success) {
@@ -26,11 +27,16 @@ export const TrackButton: FC<TrackButtonProps> = ({ tmdbId, mediaType }) => {
 
   return (
     <button
-      aria-busy={pending}
-      onClick={handleWatch}
-      className="bg-gold-400 hover:bg-gold-300 aria-busy:false:hover:scale-[1.02] cursor-pointer rounded-lg px-3 py-1.5 font-mono text-[10px] font-black tracking-wider text-zinc-950 uppercase transition-all aria-busy:cursor-wait aria-busy:opacity-70"
+      onClick={handleAddMedia}
+      aria-busy={isAddMediaPending}
+      className="apple-pill-btn cursor-pointer border border-violet-500 bg-violet-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-md shadow-violet-500/20 hover:bg-violet-400 aria-busy:cursor-wait aria-busy:opacity-80"
     >
-      {pending ? 'Adding...' : '+ Track'}
+      {isAddMediaPending ? (
+        <IconLoader2 size={12} className="animate-spin" />
+      ) : (
+        <IconPlus size={12} strokeWidth={2.6} />
+      )}
+      <span>Add</span>
     </button>
   );
 };

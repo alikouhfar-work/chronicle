@@ -4,7 +4,8 @@ import { TrackedMedia } from '@/features/library/types/trackedMedia';
 import { MediaType } from '@/types/media';
 
 export type LibrarySectionProps = {
-  emptyMessage: string;
+  emptyListTitle: string;
+  emptyListSubtitle: string;
   mediaType: MediaType;
   media: TrackedMedia[];
   icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>;

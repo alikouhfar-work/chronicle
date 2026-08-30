@@ -9,16 +9,16 @@ export const LibraryShowProgress: FC<LibraryShowProgressProps> = ({
   const progress = getShowProgress(seasons, numberOfEpisodes);
 
   return (
-    <div className="space-y-1 border-t border-zinc-900/30 pt-1">
-      <div className="flex justify-between font-mono text-[8px] tracking-wider text-zinc-500 uppercase">
+    <div className="space-y-1 border-t border-white/10 pt-1.5">
+      <div className="flex justify-between text-xs font-medium text-zinc-400">
         <span>Progress</span>
-        <span className="font-bold text-zinc-300">{progress}%</span>
+        <span className="font-bold text-violet-400">{progress}%</span>
       </div>
-      <div className="h-1 w-full overflow-hidden rounded-full border border-zinc-900/40 bg-zinc-950/60">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800/80">
         <div
-          className="bg-gold-400 h-1 rounded-full transition-all duration-500"
+          className="h-full rounded-full bg-linear-to-r from-violet-500 to-indigo-400 transition-all duration-500"
           style={{ width: `${progress}%` }}
-        ></div>
+        />
       </div>
     </div>
   );

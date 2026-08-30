@@ -7,9 +7,10 @@ import { showSortMap } from '@/features/show/utils/sortMap';
 export const getTrackedShows = async (
   sort?: MediaSortFilter,
   status?: MediaStatusFilter,
+  search?: string,
 ): Promise<TrackedShow[]> => {
   const filteredStatus = status && status !== 'all' ? showTrackingStatusMap[status] : undefined;
-  const [sortBy, sortOrder] = sort ? showSortMap[sort].split(':') : ['createdAt', 'desc'];
+  const sortBy = sort ? showSortMap[sort] : 'createdAt';
 
   return prisma.show.findMany({
     where: {
@@ -17,6 +18,14 @@ export const getTrackedShows = async (
         ? {
             tracking: {
               status: filteredStatus,
+            },
+          }
+        : {}),
+      ...(search
+        ? {
+            name: {
+              contains: search,
+              mode: 'insensitive',
             },
           }
         : {}),
@@ -35,7 +44,7 @@ export const getTrackedShows = async (
       },
     },
     orderBy: {
-      [sortBy]: sortOrder,
+      [sortBy]: 'desc',
     },
   });
 };

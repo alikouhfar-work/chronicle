@@ -1,7 +1,7 @@
 import { TrendingMediaListProps } from '@/types/trending';
-import { TrendingMediaCard } from '@/components/trending/TrendingMediaCard';
 import { TrendingShow } from '@/features/show';
 import { TrendingMovie } from '@/features/movie';
+import { TrendingMediaCard } from '@/components/trending/TrendingMediaCard';
 
 export const TrendingMediaSection = <T extends TrendingShow | TrendingMovie>({
   icon: Icon,
@@ -11,19 +11,19 @@ export const TrendingMediaSection = <T extends TrendingShow | TrendingMovie>({
 }: TrendingMediaListProps<T>) => {
   return (
     <div className="space-y-4">
-      <div className="border-zinc-850 flex flex-col justify-between gap-4 border-b pb-4 md:flex-row md:items-center">
-        <div className="space-y-1">
-          <h3 className="flex items-center gap-3 font-serif text-2xl font-extrabold text-white md:text-3xl">
-            <Icon className="size-5.5 text-amber-400" />
+      <div className="flex flex-col justify-between gap-3 border-b border-white/8 pb-3 md:flex-row md:items-center">
+        <div className="space-y-0.5">
+          <h3 className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white sm:text-2xl">
+            <Icon className="size-5 text-violet-400" />
             <span>{title}</span>
           </h3>
-          <p className="text-xs leading-relaxed font-normal text-zinc-500">{subtitle}</p>
+          <p className="text-xs font-normal text-zinc-400">{subtitle}</p>
         </div>
       </div>
 
-      <ul className="flex gap-4 overflow-x-auto pb-2">
+      <ul className="-mx-1 flex snap-x snap-mandatory scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent gap-5 overflow-x-auto scroll-smooth px-1 pt-1.5 pb-4">
         {trendingMedia.map((media) => (
-          <TrendingMediaCard key={media.id} media={media} />
+          <TrendingMediaCard media={media} key={media.id} />
         ))}
       </ul>
     </div>

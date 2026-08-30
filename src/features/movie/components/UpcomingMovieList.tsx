@@ -11,10 +11,10 @@ export const UpcomingMovieList: FC = async () => {
     <UpcomingMediaSection<MappedUpcomingMovie>
       icon={IconDeviceTv}
       upcomingMedia={upcomingMovies}
-      sectionTitle="Feature Films & Sequels"
-      sectionSubtitle="Theatrical premieres and franchise sequels"
-      emptySectionTitle="No Upcoming Movie Premieres Forecasted"
-      emptySectionSubtitle="Add films and cinematic franchises to your archive to track future sequels and theatrical release dates."
+      sectionTitle="Movie Premieres"
+      sectionSubtitle="Theatrical releases & streaming debuts"
+      emptySectionTitle="No Upcoming Movie Premieres"
+      emptySectionSubtitle="Add movies to your library to track their theatrical and streaming premiere dates."
       getTitle={(media) => media.name}
     />
   );

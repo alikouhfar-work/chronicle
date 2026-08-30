@@ -12,11 +12,8 @@ import { toggleEpisodeWatched } from '@/features/show/actions/toggleEpisodeWatch
 import { ShowDetailsEpisodeCardProps } from '@/features/show/types/showDetailsEpisodeCardProps';
 import { format } from 'date-fns';
 
-export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({
-  showId,
-  episode,
-  isWatched,
-}) => {
+export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({ showId, episode }) => {
+  const isWatched = episode.tracking?.watched ?? false;
   const [isEpisodePending, startEpisodeTransition] = useTransition();
 
   const handleToggleEpisode = (episodeId: string) => {
@@ -29,102 +26,83 @@ export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({
 
   return (
     <li
-      className={`group/ep flex items-start gap-4 rounded-2xl border p-4 transition-all duration-300 ${
+      className={`group/ep glass-card relative flex items-start gap-3.5 overflow-hidden rounded-2xl p-4 transition-all duration-150 hover:border-white/20 ${
         isUpcomingEpisode
-          ? 'border-gold-400/10 from-gold-400/10 bg-linear-to-r via-zinc-900/40 to-zinc-900/20'
-          : `bg-zinc-900/30 hover:bg-zinc-900/60 ${
-              isWatched ? 'border-zinc-850/80 bg-zinc-900/15' : 'border-zinc-800/80'
-            }`
+          ? 'border-violet-400/10 border-dashed'
+          : isWatched
+            ? 'border-white/4 bg-zinc-950/40 opacity-80'
+            : 'border-white/8'
       }`}
     >
+      {isUpcomingEpisode && (
+        <>
+          <div className="pointer-events-none absolute top-0 right-1/2 h-80 w-3/5 rounded-full bg-violet-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute bottom-0 left-10 h-72 w-3/4 rounded-full bg-indigo-500/10 blur-3xl" />
+        </>
+      )}
       {/* Status indicator */}
       {isUpcomingEpisode ? (
         <div className="flex shrink-0 items-center justify-center p-1">
-          <IconCalendarTime size={20} className="text-gold-400" />
+          <IconCalendarTime size={20} className="text-violet-400" />
         </div>
       ) : (
         <button
-          disabled={isEpisodePending}
           onClick={() => handleToggleEpisode(episode.id)}
-          className={`mt-0.5 shrink-0 cursor-pointer rounded-full p-1 transition-all duration-200 active:scale-90 ${
-            isEpisodePending
-              ? 'cursor-wait opacity-50'
-              : isWatched
-                ? 'text-gold-400'
-                : 'text-zinc-600 hover:text-zinc-400'
+          className={`mt-0.5 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-transform duration-150 active:scale-90 ${
+            isWatched
+              ? 'bg-violet-500/15 text-violet-400'
+              : 'bg-zinc-800 text-zinc-500 hover:text-zinc-300'
           }`}
-          title={isWatched ? 'Mark unwatched' : 'Mark watched'}
+          title={isWatched ? 'Mark as unwatched' : 'Mark as watched'}
         >
           {isEpisodePending ? (
-            <span className="block size-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            <span className="block size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : isWatched ? (
-            <IconCircleCheck size={20} />
+            <IconCircleCheck size={20} className="fill-violet-400/20" />
           ) : (
             <IconCircle size={20} />
           )}
         </button>
       )}
 
-      {/* Episode details */}
       <div className="flex-1 space-y-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[9px] font-bold tracking-wider text-zinc-500 uppercase">
+          <span className="text-[10px] font-bold tracking-tight text-violet-400 uppercase">
             Episode {episode.episodeNumber}
           </span>
-
           {episode.airDate && (
-            <span className="flex items-center gap-1 font-mono text-[9px] text-zinc-500">
-              <IconCalendar size={10} className="text-gold-400" />
+            <span className="flex items-center gap-1 text-xs text-zinc-400">
+              <IconCalendar size={11} className="text-zinc-500" />{' '}
               {format(episode.airDate, 'yyyy.MM.dd - HH:mm')}
-            </span>
-          )}
-
-          {episode.runtime && (
-            <span className="flex items-center gap-1 font-mono text-[9px] text-zinc-500">
-              <IconCalendarTime size={10} className="text-gold-400" />
-              {episode.runtime} min
-            </span>
-          )}
-
-          {isUpcomingEpisode && (
-            <span className="border-gold-400/20 bg-gold-400/10 text-gold-400 rounded border px-2 py-0.5 font-mono text-[8px] font-bold tracking-widest uppercase">
-              Upcoming
             </span>
           )}
         </div>
 
         <h5
-          className={`text-sm font-bold ${
-            isUpcomingEpisode
-              ? 'text-zinc-300'
-              : isWatched
-                ? 'font-light text-zinc-500 line-through'
-                : 'text-zinc-200'
-          }`}
+          className={`text-xs font-bold sm:text-sm ${isWatched ? 'text-zinc-400 line-through' : 'text-white'}`}
         >
           {episode.name}
         </h5>
 
-        {!isUpcomingEpisode && episode.overview && (
-          <p className="max-w-2xl font-sans text-xs leading-relaxed font-light text-zinc-400">
+        {episode.overview && (
+          <p className="max-w-2xl text-xs leading-relaxed font-normal text-zinc-400">
             {episode.overview}
           </p>
         )}
 
-        {/* Ratings & Notes */}
-        {isWatched && (
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+        {isEpisodePending && (
+          <div className="flex flex-wrap items-center gap-3 pt-1.5">
             {episode.tracking?.rating ? (
-              <div className="border-gold-400/10 bg-gold-400/5 text-gold-400 flex items-center gap-1 rounded border px-2 py-0.5 text-xs">
-                <IconStar className="fill-gold-400" size={11} />
-                <span className="font-mono font-bold">{episode.tracking.rating} / 5</span>
+              <div className="flex items-center gap-1 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-0.5 text-xs font-bold text-amber-400">
+                <IconStar className="fill-amber-400 text-amber-400" size={11} />
+                <span>{episode.tracking.rating} / 5</span>
               </div>
             ) : null}
 
             {episode.tracking?.notes ? (
-              <p className="line-clamp-1 flex max-w-xl items-center gap-1.5 text-xs font-light text-zinc-500 italic">
-                <IconMessage size={11} className="text-gold-400 shrink-0" />
-                <span>{episode.tracking.notes}</span>
+              <p className="line-clamp-1 flex max-w-xl items-center gap-1.5 text-xs text-zinc-300 italic">
+                <IconMessage size={12} className="shrink-0 text-violet-400" />
+                <span>&#34;{episode.tracking.notes}&#34;</span>
               </p>
             ) : null}
           </div>
@@ -133,7 +111,7 @@ export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({
 
       {/* Review button */}
       {isWatched && !isUpcomingEpisode && (
-        <button className="text-gold-400 flex cursor-pointer items-center gap-1 self-center rounded-xl border border-zinc-800 bg-zinc-900/80 px-3 py-2 font-mono text-[9.5px] tracking-widest uppercase transition-colors hover:bg-zinc-800">
+        <button className="apple-pill-btn flex shrink-0 cursor-pointer items-center gap-1.5 self-center rounded-full bg-white/6 px-3 py-1.5 text-xs text-zinc-300 hover:bg-white/12">
           <IconEdit size={11} />
           <span>
             {episode.tracking?.rating || episode.tracking?.notes ? 'Edit Notes' : 'Add Notes'}

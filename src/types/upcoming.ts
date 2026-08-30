@@ -14,9 +14,7 @@ export type UpcomingMediaSectionProps<T> = {
 export type UpcomingMediaCardProps<T> = {
   media: T;
   title: string;
-  index: number;
   subTitle: string;
-  mediaCount: number;
 };
 
 export type UpcomingMediaEmptyProps = {

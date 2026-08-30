@@ -9,20 +9,11 @@ export const useWatchStats = (shows: TrackedShow[], movies: TrackedMovie[]): Wat
   let episodesCount = 0;
   let moviesCount = 0;
 
-  let activeShowsCount = 0;
   let completedShowsCount = 0;
   let completedMoviesCount = 0;
 
   for (const show of shows) {
-    switch (show.tracking?.status) {
-      case 'WATCHING':
-        activeShowsCount++;
-        break;
-
-      case 'COMPLETED':
-        completedShowsCount++;
-        break;
-    }
+    if (show.tracking?.status === 'COMPLETED') completedShowsCount++;
 
     for (const season of show.seasons) {
       if (season.seasonNumber === 0) continue;
@@ -52,11 +43,8 @@ export const useWatchStats = (shows: TrackedShow[], movies: TrackedMovie[]): Wat
     totalMovieMinutes,
     episodesCount,
     moviesCount,
-    activeShowsCount,
     completedShowsCount,
     completedMoviesCount,
-    totalCompletedCount,
-    totalLibraryCount,
     completionRatePercent:
       totalLibraryCount === 0 ? 0 : Math.round((totalCompletedCount / totalLibraryCount) * 100),
   };

@@ -10,8 +10,8 @@ export const TrendingMovieList: FC = async () => {
     <TrendingMediaSection<TrendingMovie>
       icon={IconMovie}
       trendingMedia={trendingMovies}
-      title="Trending Blockbuster Movies"
-      subtitle="Critically acclaimed feature films and hot theatrical releases."
+      title="Trending Movies"
+      subtitle="Blockbusters and celebrated films making waves."
     />
   );
 };

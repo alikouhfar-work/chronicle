@@ -22,29 +22,27 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
 
   return (
     <div className="space-y-4">
-      <div className="border-zinc-850 flex items-center justify-between border-b pb-3">
+      <div className="flex items-center justify-between border-b border-white/8 pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="bg-gold-400/10 border-gold-400/20 text-gold-400 rounded-lg border p-1.5">
-            <Icon className="size-5.5 text-amber-400" />
+          <div className="rounded-xl border border-violet-500/25 bg-violet-500/15 p-2 text-violet-400">
+            <Icon className="size-4" />
           </div>
           <div>
-            <h4 className="font-serif text-base font-bold text-white sm:text-lg">{sectionTitle}</h4>
-            <p className="font-mono text-[11px] text-zinc-500">{sectionSubtitle}</p>
+            <h4 className="text-sm font-bold text-white">{sectionTitle}</h4>
+            <p className="text-xs text-zinc-400">{sectionSubtitle}</p>
           </div>
         </div>
-        <span className="text-gold-400 bg-gold-400/10 border-gold-400/25 rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-bold">
-          {upcomingMedia.length} {upcomingMedia.length === 1 ? 'Release' : 'Releases'}
+        <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-300">
+          {upcomingMedia.length} Upcoming
         </span>
       </div>
 
-      <ul>
-        {upcomingMedia.map((media, index) => (
+      <ul className="flex flex-col space-y-2.5">
+        {upcomingMedia.map((media) => (
           <UpcomingMediaCard
-            index={index}
             media={media}
             title={getTitle?.(media) ?? ''}
             subTitle={getSubtitle?.(media) ?? ''}
-            mediaCount={upcomingMedia.length}
             key={`timeline-${media.id}-${media.name}`}
           />
         ))}

@@ -8,8 +8,8 @@ export const UpNextEpisodesSection: FC = async () => {
   const upNextEpisodes = await getUpNextEpisodes();
 
   return (
-    <section className="space-y-6">
-      <UpNextEpisodesSectionHeader upNextShowsLength={upNextEpisodes.length} />
+    <section className="space-y-4">
+      <UpNextEpisodesSectionHeader upNextEpisodesCount={upNextEpisodes.length} />
 
       {upNextEpisodes.length === 0 ? (
         <UpNextEpisodesEmpty />

@@ -7,10 +7,11 @@ import { movieSortMap } from '@/features/movie/utils/sortMap';
 export const getTrackedMovies = async (
   sort?: MediaSortFilter,
   status?: MediaStatusFilter,
+  search?: string,
 ): Promise<TrackedMovie[]> => {
   const filteredStatus =
     status && status !== 'all' && status !== 'dropped' ? movieTrackingStatusMap[status] : undefined;
-  const [sortBy, sortOrder] = sort ? movieSortMap[sort].split(':') : ['createdAt', 'desc'];
+  const sortBy = sort ? movieSortMap[sort] : 'createdAt';
 
   return prisma.movie.findMany({
     where: {
@@ -21,13 +22,21 @@ export const getTrackedMovies = async (
             },
           }
         : {}),
+      ...(search
+        ? {
+            name: {
+              contains: search,
+              mode: 'insensitive',
+            },
+          }
+        : {}),
     },
     include: {
       genres: true,
       tracking: true,
     },
     orderBy: {
-      [sortBy]: sortOrder,
+      [sortBy]: 'desc',
     },
   });
 };

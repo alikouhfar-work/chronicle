@@ -5,11 +5,11 @@ import { TrendingMediaSectionSkeleton } from '@/components/trending/TrendingMedi
 
 const DashboardPageLoading = () => {
   return (
-    <article className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-10 px-4 py-8 sm:px-6 lg:px-8">
+    <article className="animate-fade-in space-y-10 font-sans">
       <DashboardHeaderSkeleton />
       <UpNextEpisodesSectionSkeleton />
 
-      <section className="flex flex-col gap-12 pt-6">
+      <section className="space-y-8 pt-4">
         <TrendingMediaSectionSkeleton />
         <TrendingMediaSectionSkeleton />
       </section>

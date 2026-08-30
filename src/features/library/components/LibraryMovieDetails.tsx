@@ -24,10 +24,6 @@ export const LibraryMovieDetails: FC<LibraryMovieDetailsProps> = ({ movie, credi
       {/*  </div>*/}
       {/*)}*/}
       <LibraryMediaDetailsHeader media={movie} />
-
-      {/* Divider */}
-      <div className="border-zinc-850/60 my-8 border-t" />
-
       <LibraryItemFooter credits={credits} />
     </article>
   );

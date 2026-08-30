@@ -2,57 +2,51 @@ import { FC } from 'react';
 
 export const DashboardHeaderSkeleton: FC = async () => {
   return (
-    <header className="border-zinc-850 relative overflow-hidden rounded-2xl border bg-zinc-900/60 p-8 shadow-2xl md:p-10">
-      <div className="relative z-10 grid grid-cols-1 items-center gap-8 md:grid-cols-3">
-        <div className="space-y-5 md:col-span-2">
-          {/* Pill Tag */}
-          <div className="h-6.25 w-52 animate-pulse rounded-full bg-gold-500/30" />
-          {/* Main Heading */}
-          <div className="h-15 w-4/5 animate-pulse rounded-lg bg-zinc-800" />
-
-          {/* Subtitle Lines */}
+    <section className="glass-panel relative overflow-hidden rounded-3xl border border-white/8 p-6 shadow-2xl md:p-8">
+      <div className="relative z-10 grid grid-cols-1 items-center gap-6 md:grid-cols-3">
+        <div className="space-y-4 md:col-span-2">
+          <div className="h-6 w-36 animate-pulse rounded-full border border-violet-500/25 bg-violet-500/15" />
+          <div className="space-y-2">
+            <div className="h-9 w-3/4 animate-pulse rounded-xl bg-zinc-700" />
+            <div className="h-9 w-1/2 animate-pulse rounded-xl bg-zinc-800" />
+          </div>
           <div className="max-w-xl space-y-2 pt-1">
-            <div className="bg-zinc-850 h-4 w-full animate-pulse rounded" />
-            <div className="bg-zinc-850 h-4 w-5/6 animate-pulse rounded" />
-            <div className="bg-zinc-850 h-4 w-2/3 animate-pulse rounded" />
+            <div className="h-3.5 w-full animate-pulse rounded-md bg-zinc-800" />
+            <div className="h-3.5 w-5/6 animate-pulse rounded-md bg-zinc-800" />
+            <div className="h-3.5 w-2/3 animate-pulse rounded-md bg-zinc-800/80" />
           </div>
         </div>
 
         {/* Right Status Widget Card */}
-        <div className="hidden space-y-4 rounded-2xl border border-zinc-800/80 bg-zinc-950/80 p-6 shadow-2xl md:block">
-          <div className="border-zinc-850 flex items-center justify-between border-b pb-2.5">
-            <div className="h-4 w-36 animate-pulse rounded bg-zinc-800" />
-            <div className="h-4 w-16 animate-pulse rounded bg-emerald-500/20" />
+        <div className="glass-card space-y-4 rounded-2xl border border-white/10 p-6 shadow-2xl">
+          <div className="flex items-center justify-between border-b border-white/8 pb-3">
+            <div className="h-4 w-28 animate-pulse rounded-md bg-zinc-700" />
+            <div className="h-4 w-14 animate-pulse rounded-full bg-violet-500/20" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="border-zinc-850 space-y-1.5 rounded-xl border bg-zinc-900/40 p-2.5"
+                className="space-y-2 rounded-xl border border-white/10 bg-white/4 p-3"
               >
-                <div className="h-3 w-16 animate-pulse rounded bg-zinc-800" />
-                <div className="bg-zinc-750 h-4 w-20 animate-pulse rounded" />
+                <div className="h-3 w-14 animate-pulse rounded-md bg-zinc-800" />
+                <div className="h-5 w-16 animate-pulse rounded-md bg-zinc-700" />
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between border-t border-b border-zinc-900 px-1 py-1">
-            <div className="bg-zinc-850 h-3 w-28 animate-pulse rounded" />
-            <div className="bg-zinc-850 h-3 w-16 animate-pulse rounded" />
-          </div>
-
-          <div className="space-y-1.5 pt-1">
+          <div className="space-y-2 border-t border-white/8 pt-2">
             <div className="flex justify-between">
-              <div className="bg-zinc-850 h-3 w-20 animate-pulse rounded" />
-              <div className="bg-zinc-850 h-3 w-8 animate-pulse rounded" />
+              <div className="h-3 w-24 animate-pulse rounded-md bg-zinc-800" />
+              <div className="h-3 w-8 animate-pulse rounded-md bg-violet-400/40" />
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-900">
-              <div className="bg-gold-500/30 h-full w-2/3 animate-pulse rounded-full" />
+            <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800/80">
+              <div className="h-full w-2/3 animate-pulse rounded-full bg-gradient-to-r from-violet-500 to-indigo-400" />
             </div>
           </div>
         </div>
       </div>
-    </header>
+    </section>
   );
 };

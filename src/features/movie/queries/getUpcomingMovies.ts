@@ -4,7 +4,7 @@ import { GetUpcomingMediaOptions } from '@/features/library/types/getUpcomingMed
 import { mapUpcomingMovies } from '@/features/movie/mappers/mapUpcomingMovies';
 
 export const getUpcomingMovies = async (options: GetUpcomingMediaOptions = {}) => {
-  const { days = 40 } = options;
+  const { days = 30 } = options;
 
   const now = new Date();
   const futureDate = addDays(now, days);

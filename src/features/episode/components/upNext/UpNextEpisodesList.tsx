@@ -4,9 +4,9 @@ import { UpNextEpisodesListProps } from '@/features/episode/types/upNextShowsLis
 
 export const UpNextEpisodesList: FC<UpNextEpisodesListProps> = ({ episodes }) => {
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-3">
       {episodes.map((episode) => (
-        <UpNextEpisodeCard key={`${episode.id}-next`} episode={episode} />
+        <UpNextEpisodeCard episode={episode} key={`${episode.id}-next`} />
       ))}
     </ul>
   );
