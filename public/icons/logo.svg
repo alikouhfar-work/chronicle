@@ -1,27 +1,207 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <!-- Minimal Dark Background -->
-  <rect width="512" height="512" rx="112" fill="#09090b" />
-
-  <!-- Single Solid Amber/Gold Color Definition -->
   <defs>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24" />
-      <stop offset="100%" stop-color="#d97706" />
+    <!-- Background Canvas Base -->
+    <linearGradient id="cBgBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14151a" />
+      <stop offset="100%" stop-color="#0a0b0e" />
     </linearGradient>
+
+    <!-- Clip path to round the entire full-bleed grid into the app squircle -->
+    <clipPath id="cIconClip">
+      <rect width="512" height="512" rx="116" />
+    </clipPath>
+
+    <!-- Dark Grid Tile Subtle Variations -->
+    <linearGradient id="cDarkTile1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2c2d36" />
+      <stop offset="100%" stop-color="#1e1f26" />
+    </linearGradient>
+
+    <linearGradient id="cDarkTile2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#24252e" />
+      <stop offset="100%" stop-color="#181920" />
+    </linearGradient>
+
+    <linearGradient id="cDarkTile3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#31323c" />
+      <stop offset="100%" stop-color="#21222a" />
+    </linearGradient>
+
+    <!-- 3D Electric Violet Tile Gradients for 'C' -->
+    <linearGradient id="cVioletFace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="55%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+
+    <linearGradient id="cVioletHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F3E8FF" stop-opacity="0.9" />
+      <stop offset="40%" stop-color="#C084FC" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="cVioletSideRight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#4C1D95" stop-opacity="0.45" />
+    </linearGradient>
+
+    <linearGradient id="cVioletSideBottom" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#3B0764" stop-opacity="0.6" />
+    </linearGradient>
+
+    <!-- Elevated Drop Shadow for Active 3D Blocks -->
+    <filter id="cBlockShadow" x="-25%" y="-20%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000000" flood-opacity="0.8" />
+    </filter>
+
+    <filter id="cDarkTileShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
   </defs>
 
-  <!-- Clean Chronicle 'C' Arc -->
-  <path
-    d="M 345 160 A 130 130 0 1 0 345 352"
-    fill="none"
-    stroke="url(#goldGrad)"
-    stroke-width="44"
-    stroke-linecap="round"
-  />
+  <!-- Base App Squircle Container -->
+  <rect width="512" height="512" rx="116" fill="url(#cBgBase)" />
 
-  <!-- Clean Centered Play Symbol -->
-  <path
-    d="M 230 196 L 326 256 L 230 316 Z"
-    fill="url(#goldGrad)"
-  />
+  <!-- Full-bleed 7x8 Modular Grid spanning edge to edge inside squircle -->
+  <!-- 
+       7 columns: width=66px, gap=7px, padding=6px -> 6 + 7*66 + 6*7 = 6 + 462 + 42 = 510 (+1px edge margin)
+       8 rows:    height=57px, gap=7px, padding=6px -> 6 + 8*57 + 7*7 = 6 + 456 + 49 = 511 (+0.5px edge margin)
+       X coordinates: 6, 79, 152, 225, 298, 371, 444
+       Y coordinates: 6, 70, 134, 198, 262, 326, 390, 454
+  -->
+  <g clip-path="url(#cIconClip)">
+    <!-- ======================================================= -->
+    <!-- BACKGROUND: 7x8 Dark Tiles                              -->
+    <!-- ======================================================= -->
+    <!-- Row 0 (y=6): All 7 Dark -->
+    <rect x="6" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="152" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="225" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="298" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="6" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 1 (y=70): All 7 Dark -->
+    <rect x="6" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="152" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="225" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="298" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="70" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 2 (y=134): Left cols (0,1) & Right cols (5,6) Dark -->
+    <rect x="6" y="134" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="134" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="134" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="134" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 3 (y=198): Left cols (0,1), Cavity cols (3,4), Right cols (5,6) Dark -->
+    <rect x="6" y="198" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="198" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="225" y="198" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="298" y="198" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="198" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="198" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 4 (y=262): Left cols (0,1), Cavity cols (3,4), Right cols (5,6) Dark -->
+    <rect x="6" y="262" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="262" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="225" y="262" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="298" y="262" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="262" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="262" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 5 (y=326): Left cols (0,1) & Right cols (5,6) Dark -->
+    <rect x="6" y="326" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="326" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="326" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="326" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 6 (y=390): All 7 Dark -->
+    <rect x="6" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="152" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="225" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="298" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="390" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- Row 7 (y=454): All 7 Dark -->
+    <rect x="6" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="79" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="152" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="225" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="298" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile3)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="371" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile1)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+    <rect x="444" y="454" width="66" height="57" rx="12" fill="url(#cDarkTile2)" filter="url(#cDarkTileShadow)" stroke="#383a47" stroke-width="1.2" />
+
+    <!-- ======================================================= -->
+    <!-- FOREGROUND: 4 Vertical x 3 Horizontal Letter 'C'        -->
+    <!-- ======================================================= -->
+    <g filter="url(#cBlockShadow)">
+      <!-- Top Row (3 horizontal): Cols 2, 3, 4 at Row 2 (y=134) -->
+      <g transform="translate(152, 134)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+      <g transform="translate(225, 134)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+      <g transform="translate(298, 134)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+
+      <!-- Spine (Rows 3 and 4 at Col 2: x=152, y=198 and y=262) -->
+      <g transform="translate(152, 198)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+      <g transform="translate(152, 262)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+
+      <!-- Bottom Row (3 horizontal): Cols 2, 3, 4 at Row 5 (y=326) -->
+      <g transform="translate(152, 326)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+      <g transform="translate(225, 326)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+      <g transform="translate(298, 326)">
+        <rect width="66" height="57" rx="12" fill="url(#cVioletFace)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideRight)" />
+        <rect width="66" height="57" rx="12" fill="url(#cVioletSideBottom)" />
+        <rect x="2" y="2" width="62" height="17" rx="8" fill="url(#cVioletHighlight)" />
+        <rect width="66" height="57" rx="12" fill="none" stroke="#E9D5FF" stroke-width="1.2" stroke-opacity="0.65" />
+      </g>
+    </g>
+  </g>
 </svg>

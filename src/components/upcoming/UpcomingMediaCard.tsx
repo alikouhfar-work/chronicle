@@ -18,8 +18,8 @@ export const UpcomingMediaCard = async <T extends MappedUpcomingEpisode | Mapped
   const fullMonth = media.airDate?.toLocaleString('default', { month: 'short' });
 
   return (
-    <li className="group relative flex items-stretch gap-2.5 transition-all duration-200">
-      <div className="flex w-11 shrink-0 flex-col justify-center py-2 text-right select-none">
+    <li className="group relative flex items-stretch gap-3 pl-1 transition-all duration-200">
+      <div className="flex shrink-0 flex-col justify-center py-2 text-right select-none">
         <div className="text-[10px] leading-none font-bold tracking-wider text-violet-400 uppercase">
           {fullMonth}
         </div>

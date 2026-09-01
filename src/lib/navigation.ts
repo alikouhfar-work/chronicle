@@ -14,7 +14,7 @@ export const navigation = [
     icon: IconBookmark,
   },
   {
-    href: '/discover',
+    href: '/search',
     id: 'discover',
     title: 'Discover',
     icon: IconDeviceTv,

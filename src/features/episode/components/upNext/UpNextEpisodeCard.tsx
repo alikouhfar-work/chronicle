@@ -30,8 +30,8 @@ export const UpNextEpisodeCard: FC<UpNextEpisodeCardProps> = ({ episode }) => {
           </div>
         </div>
 
-        <div className="min-w-0 flex-1 space-y-1">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="min-w-0 flex-1 space-y-1 w-full">
+          <div className="flex flex-wrap items-center gap-x-2">
             <h4 className="truncate text-left text-base font-bold text-white transition-colors group-hover:text-violet-300 sm:text-lg">
               {episode.showName}
             </h4>

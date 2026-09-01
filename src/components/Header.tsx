@@ -9,11 +9,11 @@ export const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/8 bg-canvas/80 px-4 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300 sm:px-6 lg:px-8">
+    <header className="bg-canvas/80 sticky top-0 z-40 border-b border-white/8 px-4 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300 sm:px-6 lg:px-8">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between">
         {/* Masthead Brand */}
         <div className="group flex cursor-pointer items-center space-x-3 select-none">
-          <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-linear-to-br from-zinc-800 to-zinc-950 p-1 shadow-lg transition-all duration-300 group-hover:border-violet-500/50 group-hover:shadow-violet-500/20">
+          <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-zinc-900 p-0.5 shadow-lg shadow-black/40 transition-all duration-300 group-hover:scale-105 group-hover:border-violet-400/50 group-hover:shadow-violet-500/25">
             <div className="absolute inset-0 bg-violet-500/10 opacity-0 transition-opacity group-hover:opacity-100" />
             <Image
               width="40"
@@ -38,7 +38,7 @@ export const Header = () => {
         </div>
 
         {/* Navigation Tabs */}
-        <nav className="hidden md:flex items-center rounded-full border border-white/8 bg-zinc-900/80 p-1 shadow-inner backdrop-blur-xl">
+        <nav className="hidden items-center rounded-full border border-white/8 bg-zinc-900/80 p-1 shadow-inner backdrop-blur-xl md:flex">
           {navigation.map((item) => {
             const Icon = item.icon;
             const activeTab = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);

@@ -5,24 +5,20 @@ export const UpcomingMediaSectionSkeleton = () => {
 
   return (
     <div className="space-y-4">
-      <div className="border-zinc-850 flex items-center justify-between border-b pb-3">
-        <div className="flex flex-1 items-center gap-2.5">
-          <div className="bg-gold-400/10 border-gold-400/20 text-gold-400 size-9 animate-pulse rounded-lg border" />
-          <div className="h-full w-full space-y-1">
-            <div className="bg-zinc-850 h-6 w-1/3 animate-pulse rounded" />
-            <div className="bg-zinc-850 h-4 w-2/3 animate-pulse rounded" />
+      <div className="flex items-center justify-between border-b border-white/8 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="h-8 w-8 animate-pulse rounded-xl border border-violet-500/25 bg-violet-500/15" />
+          <div className="space-y-1">
+            <div className="h-4 w-32 animate-pulse rounded bg-zinc-700" />
+            <div className="h-3 w-48 animate-pulse rounded bg-zinc-800" />
           </div>
         </div>
-        <div className="text-gold-400 bg-gold-400/10 border-gold-400/25 h-5.25 w-20.5 animate-pulse rounded-full border" />
+        <div className="h-5 w-20 animate-pulse rounded-full bg-white/6" />
       </div>
 
-      <ul>
+      <ul className="space-y-2.5">
         {upcomingMedia.map((media) => (
-          <UpcomingMediaCardSkeleton
-            key={media}
-            isFirst={media === 0}
-            isLast={media === upcomingMedia.length - 1}
-          />
+          <UpcomingMediaCardSkeleton key={media} />
         ))}
       </ul>
     </div>

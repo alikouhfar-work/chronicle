@@ -4,89 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="fix: Change Add Show Transaction Limit">
-      <change afterPath="$PROJECT_DIR$/.env.prod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/components/LibraryFilters.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaTypeSwitch.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieStatusChangeButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShowStatusChangeButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/hooks/useQueryString.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovieStatusChangeButton.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/library/types/libraryShowStatusChangeButton.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/movie/actions/deleteMovieFromLibrary.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Change Design System">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderWatchStats.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_components/DashboardHeaderWatchStats.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_hooks/useWatchStats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_hooks/useWatchStats.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/watchStats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/_types/watchStats.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/loading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/(dashboard)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/(dashboard)/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/api/upcoming/route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bun.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/file.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/globe.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/icons/logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/pwa-192x192.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/icons/pwa-192x192.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/pwa-512x512.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/icons/pwa-512x512.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/pwa-maskable.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/icons/pwa-maskable.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/next.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/window.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/favicon.ico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaCardSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaSectionSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaSectionSkeleton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaEmpty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaEmpty.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/UpcomingShowList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/UpcomingShowList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCardSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSectionSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSectionSkeleton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCardSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCardWatchButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodeCardWatchButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesEmpty.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesEmpty.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/upNext/UpNextEpisodesSectionSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/queries/getUpcomingEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/queries/getUpcomingEpisodes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/types/upNextShowsSectionHeader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/types/upNextShowsSectionHeader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryCardSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryCardSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryGridShowDeleteButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDeleteButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryItemNavigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieRating.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovies.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovies.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibrarySection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibrarySection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibrarySectionLoading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibrarySectionLoading.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowProgress.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShowProgress.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShows.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShows.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/lib/statusFilters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/lib/statusFilters.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryGridShowDeleteButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMediaDeleteButton.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovies.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryPage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryPage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/librarySection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/librarySection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryShows.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/components/TrendingMovieList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/components/TrendingMovieList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/components/UpcomingMovieList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/components/UpcomingMovieList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getTrackedMovies.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/queries/getUpcomingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/queries/getUpcomingMovies.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/utils/sortMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/utils/sortMap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/components/ShowDetailsEpisodeCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/components/ShowDetailsEpisodeCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/components/TrendingShowList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/components/TrendingShowList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/lib/showStatusConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/lib/showStatusConfig.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getTrackedShows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getTrackedShows.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/types/showDetailsEpisodeCardProps.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/types/showDetailsEpisodeCardProps.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/utils/sortMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/utils/sortMap.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/navigation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/navigation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/upcoming.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/upcoming.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/getPosterPlaceholderColor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/getPosterPlaceholderColor.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,61 +58,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="3.0720088184826916E-67" />
-      <entry key="MS500" value="4.9829266192548054E-14" />
-      <entry key="S2" value="4.7251895727771863E-4" />
-      <entry key="S5" value="0.04925834038443176" />
-      <entry key="S10" value="0.33370592783060193" />
-      <entry key="S30" value="2.673278386297354" />
-      <entry key="S60" value="5.525313526030816" />
-      <entry key="M2" value="8.765846147672535" />
-      <entry key="M5" value="14.933540008363611" />
-      <entry key="M10" value="22.795832109077065" />
-      <entry key="M15" value="30.66759456675738" />
-      <entry key="M30" value="56.34552110332041" />
-      <entry key="H1" value="103.98800435365317" />
-      <entry key="H2" value="163.34593613690967" />
-      <entry key="H4" value="216.67252169185585" />
-      <entry key="D1" value="572.8738015175311" />
-      <entry key="W1" value="2102.6889391125737" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000000022" />
-      <entry key="S5" value="1.0000017305344557" />
-      <entry key="S10" value="1.001942574396874" />
-      <entry key="S30" value="1.2472753432412693" />
-      <entry key="S60" value="1.9206419616825499" />
-      <entry key="M2" value="3.5219352736948424" />
-      <entry key="M5" value="8.456094183123046" />
-      <entry key="M10" value="16.655130873577203" />
-      <entry key="M15" value="27.204032676645117" />
-      <entry key="M30" value="64.02650520909042" />
-      <entry key="H1" value="125.06982855863663" />
-      <entry key="H2" value="192.7194774564064" />
-      <entry key="H4" value="248.4584455255735" />
-      <entry key="D1" value="518.0553702287123" />
-      <entry key="W1" value="1981.8382596658817" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0000001950315032" />
+      <entry key="S60" value="1.0012089156894255" />
+      <entry key="M2" value="1.100236648664507" />
+      <entry key="M5" value="2.49930736099329" />
+      <entry key="M10" value="5.712872754654648" />
+      <entry key="M15" value="10.018447645967031" />
+      <entry key="M30" value="28.4307964388125" />
+      <entry key="H1" value="72.24656895287029" />
+      <entry key="H2" value="138.60180105856733" />
+      <entry key="H4" value="205.3564602069212" />
+      <entry key="D1" value="578.6706573457185" />
+      <entry key="W1" value="2115.2681351599467" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="1.8242456970432223E-185" />
+      <entry key="S10" value="4.279412200041013E-93" />
+      <entry key="S30" value="2.0236843210683823E-31" />
+      <entry key="S60" value="7.736359235884331E-16" />
+      <entry key="M2" value="7.068487229041896E-8" />
+      <entry key="M5" value="0.007049979504703557" />
+      <entry key="M10" value="0.48090254027235774" />
+      <entry key="M15" value="2.5603890950810064" />
+      <entry key="M30" value="19.64247177006267" />
+      <entry key="H1" value="69.27407329573393" />
+      <entry key="H2" value="143.42824836092174" />
+      <entry key="H4" value="214.34250714193792" />
+      <entry key="D1" value="505.4582279170113" />
+      <entry key="W1" value="1974.881017819082" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="2.4960389970635385E-5" />
-      <entry key="MS500" value="0.12007435799418531" />
-      <entry key="S2" value="0.5888210468602343" />
-      <entry key="S5" value="0.8418447398816974" />
-      <entry key="S10" value="1.1872565753753903" />
-      <entry key="S30" value="3.7966442331525205" />
-      <entry key="S60" value="7.338520470487956" />
-      <entry key="M2" value="12.197714603461405" />
-      <entry key="M5" value="23.31665350534705" />
-      <entry key="M10" value="39.39084650744737" />
-      <entry key="M15" value="57.81616919766043" />
-      <entry key="M30" value="120.32144991533939" />
-      <entry key="H1" value="229.01419599379523" />
-      <entry key="H2" value="356.03310420306366" />
-      <entry key="H4" value="465.1102692895495" />
-      <entry key="D1" value="1090.9206773447613" />
-      <entry key="W1" value="4084.5229985969795" />
+      <entry key="MS100" value="0.8293195458144417" />
+      <entry key="MS500" value="0.963261894020148" />
+      <entry key="S2" value="0.9906861581012825" />
+      <entry key="S5" value="0.9962640014981925" />
+      <entry key="S10" value="0.9981302527717475" />
+      <entry key="S30" value="0.999376551080878" />
+      <entry key="S60" value="1.0008782692147742" />
+      <entry key="M2" value="1.0993149586377424" />
+      <entry key="M5" value="2.5018583730248" />
+      <entry key="M10" value="6.186540833374535" />
+      <entry key="M15" value="12.568528019303665" />
+      <entry key="M30" value="48.054097116960484" />
+      <entry key="H1" value="141.49423598776872" />
+      <entry key="H2" value="282.0047577698978" />
+      <entry key="H4" value="419.6804525504387" />
+      <entry key="D1" value="1084.120482209113" />
+      <entry key="W1" value="4090.1449509472354" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -192,33 +128,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "bun",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/library/types",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "bun",
-    "prettierjs.PrettierConfiguration.Package": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;bun&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/library/types&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/features/library/types" />
@@ -278,7 +214,8 @@
       <workItem from="1787298913359" duration="5275000" />
       <workItem from="1787424181494" duration="1144000" />
       <workItem from="1787670092500" duration="9880000" />
-      <workItem from="1788071960295" duration="11921000" />
+      <workItem from="1788071960295" duration="12624000" />
+      <workItem from="1788286360749" duration="3512000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Fix Build Errors">
       <option name="closed" value="true" />
@@ -296,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787424877567</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: Change Design System">
+      <option name="closed" value="true" />
+      <created>1788084061598</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1788084061598</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,6 +250,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix: Fix Build Errors" />
     <MESSAGE value="fix: Change Add Show Transaction Limit" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Change Add Show Transaction Limit" />
+    <MESSAGE value="feat: Change Design System" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Change Design System" />
   </component>
 </project>

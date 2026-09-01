@@ -1,24 +1,93 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <linearGradient id="pwaMaskGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fbbf24" />
-      <stop offset="100%" stop-color="#d97706" />
+    <linearGradient id="pwaMaskBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14151a" />
+      <stop offset="100%" stop-color="#0a0b0e" />
+    </linearGradient>
+
+    <linearGradient id="pwaMaskVioletFace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="60%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
     </linearGradient>
   </defs>
 
-  <rect width="512" height="512" fill="#09090b" />
+  <rect width="512" height="512" fill="url(#pwaMaskBg)" />
 
-  <g transform="translate(256, 256) scale(0.78) translate(-256, -256)">
-    <path
-      d="M 345 160 A 130 130 0 1 0 345 352"
-      fill="none"
-      stroke="url(#pwaMaskGrad)"
-      stroke-width="44"
-      stroke-linecap="round"
-    />
-    <path
-      d="M 230 196 L 326 256 L 230 316 Z"
-      fill="url(#pwaMaskGrad)"
-    />
-  </g>
+  <!-- 7x8 Modular Dark Grid Tiles spanning edge-to-edge -->
+  <!-- Row 0 -->
+  <rect x="6" y="6" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="6" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="152" y="6" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="225" y="6" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="298" y="6" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="6" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="6" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 1 -->
+  <rect x="6" y="70" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="70" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="152" y="70" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="225" y="70" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="298" y="70" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="70" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="70" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 2 -->
+  <rect x="6" y="134" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="134" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="134" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="134" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 3 -->
+  <rect x="6" y="198" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="198" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="225" y="198" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="298" y="198" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="198" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="198" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 4 -->
+  <rect x="6" y="262" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="262" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="225" y="262" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="298" y="262" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="262" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="262" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 5 -->
+  <rect x="6" y="326" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="326" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="326" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="326" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 6 -->
+  <rect x="6" y="390" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="390" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="152" y="390" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="225" y="390" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="298" y="390" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="390" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="390" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Row 7 -->
+  <rect x="6" y="454" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="79" y="454" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="152" y="454" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="225" y="454" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+  <rect x="298" y="454" width="66" height="57" rx="12" fill="#31323c" stroke="#383a47" stroke-width="1.5" />
+  <rect x="371" y="454" width="66" height="57" rx="12" fill="#2c2d36" stroke="#383a47" stroke-width="1.5" />
+  <rect x="444" y="454" width="66" height="57" rx="12" fill="#24252e" stroke="#383a47" stroke-width="1.5" />
+
+  <!-- Foreground: 4 Vertical x 3 Horizontal Letter 'C' -->
+  <rect x="152" y="134" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+  <rect x="225" y="134" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+  <rect x="298" y="134" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+
+  <rect x="152" y="198" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+  <rect x="152" y="262" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+
+  <rect x="152" y="326" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+  <rect x="225" y="326" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
+  <rect x="298" y="326" width="66" height="57" rx="12" fill="url(#pwaMaskVioletFace)" stroke="#E9D5FF" stroke-width="1.5" />
 </svg>
