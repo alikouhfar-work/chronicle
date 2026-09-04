@@ -13,10 +13,6 @@ export const TrendingMediaSectionSkeleton = () => {
           </div>
           <div className="h-3.5 w-60 animate-pulse rounded-md bg-zinc-800" />
         </div>
-        <div className="flex items-center gap-1.5 rounded-full border border-white/8 bg-white/4 p-1">
-          <div className="h-6 w-6 animate-pulse rounded-full bg-white/6" />
-          <div className="h-6 w-6 animate-pulse rounded-full bg-white/6" />
-        </div>
       </div>
 
       <ul className="flex gap-5 overflow-hidden pt-1 pb-4">

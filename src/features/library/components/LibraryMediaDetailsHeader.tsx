@@ -38,7 +38,7 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_35%,rgba(12,13,18,0.95)_100%)]" />
         </div>
 
-        <div className="absolute inset-0 z-0 bg-linear-to-t from-canvas via-canvas/60 to-canvas/10" />
+        <div className="from-canvas via-canvas/60 to-canvas/10 absolute inset-0 z-0 bg-linear-to-t" />
 
         <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
           <div className="flex items-start justify-between gap-2">
@@ -124,7 +124,7 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
           <div className="space-y-2">
             <p className="text-xs font-semibold text-zinc-400">Tracking Status</p>
             {show && (
-              <div className="flex flex-wrap gap-1 rounded-full border border-white/10 bg-zinc-900/90 p-1">
+              <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
                 {showStatusFilters.map((statusFilter) => (
                   <LibraryShowStatusChangeButton
                     showId={show.id}
@@ -136,7 +136,7 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
               </div>
             )}
             {movie && (
-              <div className="flex flex-wrap gap-1 rounded-full border border-white/10 bg-zinc-900/90 p-1">
+              <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
                 {movieStatusFilters.map((statusFilter) => (
                   <LibraryMovieStatusChangeButton
                     movieId={movie?.id}

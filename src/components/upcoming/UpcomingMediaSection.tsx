@@ -22,7 +22,7 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between border-b border-white/8 pb-3">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center justify-between border-b border-white/8 pb-3">
         <div className="flex items-center gap-2.5">
           <div className="rounded-xl border border-violet-500/25 bg-violet-500/15 p-2 text-violet-400">
             <Icon className="size-4" />
@@ -32,7 +32,7 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
             <p className="text-xs text-zinc-400">{sectionSubtitle}</p>
           </div>
         </div>
-        <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-300">
+        <span className="apple-badge self-end border border-white/10 bg-white/6 text-xs text-zinc-300">
           {upcomingMedia.length} Upcoming
         </span>
       </div>

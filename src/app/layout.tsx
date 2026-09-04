@@ -26,7 +26,8 @@ const jetBrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'Chronicle',
-  description: 'Your Chronicle, Your Story.',
+  description:
+    'Your ultimate personal movie and TV show tracker. Track watched episodes, movies, and log statistics.',
 };
 
 const RootLayout = ({

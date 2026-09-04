@@ -4,7 +4,6 @@ import { GenreRaw } from '@/features/genre';
 export type SearchResultCardProps = {
   id: number;
   name: string;
-  adult: boolean;
   posterPath: string;
   mediaType: MediaType;
   year: string;

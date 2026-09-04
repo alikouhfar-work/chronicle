@@ -22,7 +22,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits 
   };
 
   return (
-    <article className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-y-8 font-sans">
+    <section className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-y-8 font-sans">
       {/* Toast Success Message */}
       {/*{toastMessage && (*/}
       {/*  <div className="animate-fade-in relative flex items-center justify-between overflow-hidden rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 font-mono text-xs text-emerald-400">*/}
@@ -117,7 +117,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits 
       {/*)}*/}
 
       {/* Show Seasons & Episode tracking section */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
         {/* Seasons list selectors */}
         <div className="shrink-0 space-y-3">
           <h4 className="text-xs font-bold tracking-tight text-zinc-400 uppercase">Seasons</h4>
@@ -175,10 +175,10 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits 
         </div>
 
         {/* Episode Checklists for selected season */}
-        <div className="space-y-3.5 md:col-span-3">
-          <div className="flex items-center justify-between border-b border-white/8 pb-2">
+        <div className="space-y-3.5 md:col-span-2 lg:col-span-3">
+          <div className="flex flex-col justify-between gap-2 border-b border-white/8 pb-2 md:flex-row md:items-center">
             <h4 className="text-base font-bold text-white">{activeSeason.name} Episodes</h4>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 self-end">
               <button
                 disabled={isSeasonPending}
                 onClick={() => handleWatchSeason(activeSeason.id)}
@@ -212,6 +212,6 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits 
       </div>
 
       <LibraryItemFooter credits={credits} />
-    </article>
+    </section>
   );
 };

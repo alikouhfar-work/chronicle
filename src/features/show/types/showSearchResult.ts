@@ -19,7 +19,6 @@ export type ShowSearchResultRaw = {
 };
 
 export type ShowSearchResult = {
-  adult: boolean;
   backdropPath: string;
   id: number;
   name: string;

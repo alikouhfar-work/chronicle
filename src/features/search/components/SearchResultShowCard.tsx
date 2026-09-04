@@ -7,7 +7,6 @@ export const SearchResultShowCard = (show: ShowSearchResult) => {
     <SearchResultCard
       id={show.id}
       name={show.name}
-      adult={show.adult}
       mediaType={show.mediaType}
       posterPath={show.posterPath}
       year={show.firstAirDate?.substring(0, 4) ?? 'N/A'}

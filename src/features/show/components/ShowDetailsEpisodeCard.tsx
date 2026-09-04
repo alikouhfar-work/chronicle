@@ -28,7 +28,7 @@ export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({ showId
     <li
       className={`group/ep glass-card relative flex items-start gap-3.5 overflow-hidden rounded-2xl p-4 transition-all duration-150 hover:border-white/20 ${
         isUpcomingEpisode
-          ? 'border-violet-400/10 border-dashed'
+          ? 'border-dashed border-violet-400/10'
           : isWatched
             ? 'border-white/4 bg-zinc-950/40 opacity-80'
             : 'border-white/8'
@@ -113,9 +113,6 @@ export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({ showId
       {isWatched && !isUpcomingEpisode && (
         <button className="apple-pill-btn flex shrink-0 cursor-pointer items-center gap-1.5 self-center rounded-full bg-white/6 px-3 py-1.5 text-xs text-zinc-300 hover:bg-white/12">
           <IconEdit size={11} />
-          <span>
-            {episode.tracking?.rating || episode.tracking?.notes ? 'Edit Notes' : 'Add Notes'}
-          </span>
         </button>
       )}
     </li>

@@ -45,7 +45,7 @@ export const UpcomingMediaCard = async <T extends MappedUpcomingEpisode | Mapped
           </div>
 
           <div className="min-w-0 flex-1 space-y-0.5">
-            <div className="mb-0.5 flex flex-wrap items-center gap-2">
+            <div className="mb-1 flex flex-wrap items-center gap-x-2">
               <h4 className="truncate text-sm font-bold text-white transition-colors group-hover:text-violet-300">
                 {title}
               </h4>

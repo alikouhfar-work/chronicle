@@ -115,7 +115,7 @@ export const LibraryFilters = () => {
 
         <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-auto">
           <span className="mr-1 text-xs font-medium text-zinc-400">Status:</span>
-          <div className="flex flex-wrap gap-1 rounded-full border border-white/8 bg-zinc-900/90 p-1">
+          <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/8 bg-zinc-900/90 p-1 sm:rounded-full">
             {statusFilters.map((status) => {
               const isSelected = statusFilter === status.id;
 
