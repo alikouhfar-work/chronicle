@@ -4,7 +4,6 @@ export const mapShowSearchResult = (
   show: ShowSearchResultRaw,
   genreDictionary: Map<number, string>,
 ): Omit<ShowSearchResult, 'isTracked'> => ({
-  adult: show.adult,
   backdropPath: show.backdrop_path,
   id: show.id,
   name: show.name,

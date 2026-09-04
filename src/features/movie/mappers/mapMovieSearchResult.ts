@@ -4,7 +4,6 @@ export const mapMovieSearchResult = (
   movie: MovieSearchResultRaw,
   genreDictionary: Map<number, string>,
 ): Omit<MovieSearchResult, 'isTracked'> => ({
-  adult: movie.adult,
   backdropPath: movie.backdrop_path,
   id: movie.id,
   name: movie.title,

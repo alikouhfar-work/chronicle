@@ -6,7 +6,6 @@ export const SearchResultMovieCard = (movie: MovieSearchResult) => {
     <SearchResultCard
       id={movie.id}
       name={movie.name}
-      adult={movie.adult}
       mediaType={movie.mediaType}
       posterPath={movie.posterPath}
       year={movie.releaseDate?.substring(0, 4) ?? 'N/A'}

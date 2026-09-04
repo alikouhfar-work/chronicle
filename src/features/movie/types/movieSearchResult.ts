@@ -1,7 +1,6 @@
 import { GenreRaw } from '@/features/genre';
 
 export type MovieSearchResultRaw = {
-  adult: boolean;
   backdrop_path: string;
   id: number;
   title: string;
@@ -19,7 +18,6 @@ export type MovieSearchResultRaw = {
 };
 
 export type MovieSearchResult = {
-  adult: boolean;
   backdropPath: string;
   id: number;
   name: string;
