@@ -1,8 +1,22 @@
 import { prisma } from '@/lib/prisma';
 import { mapUpNextEpisodes } from '@/features/episode/mappers/mapUpNextEpisodes';
 import { MappedUpNextEpisode, UpNextEpisode } from '@/features/episode/types/upNextEpisode';
+import { getFreshTrackedShow } from '@/features/show/queries/getFreshTrackedShow';
 
 export const getUpNextEpisodes = async (): Promise<MappedUpNextEpisode[]> => {
+  const watchingShows = await prisma.show.findMany({
+    where: {
+      tracking: {
+        status: 'WATCHING',
+      },
+    },
+    select: {
+      tmdbId: true,
+    },
+  });
+
+  await Promise.all(watchingShows.map(({ tmdbId }) => getFreshTrackedShow(tmdbId.toString())));
+
   const now = new Date();
 
   const episodes = await prisma.episode.findMany({
@@ -63,5 +77,6 @@ export const getUpNextEpisodes = async (): Promise<MappedUpNextEpisode[]> => {
   }
 
   const result: UpNextEpisode[] = Array.from(upNextEpisodes.values());
+
   return mapUpNextEpisodes(result);
 };

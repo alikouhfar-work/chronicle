@@ -4,15 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { addMedia } from '@/features/library/services/addMedia';
 import { AddMediaActionResult, AddMediaParams } from '@/features/library/types/addMedia';
 
-export const addMediaAction = async ({
-  tmdbId,
-  mediaType,
-}: AddMediaParams): Promise<AddMediaActionResult> => {
+export const addMediaAction = async (params: AddMediaParams): Promise<AddMediaActionResult> => {
   try {
-    await addMedia({
-      tmdbId,
-      mediaType,
-    });
+    await addMedia(params);
 
     revalidatePath('/');
     revalidatePath('/library');

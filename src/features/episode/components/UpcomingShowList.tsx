@@ -10,6 +10,7 @@ export const UpcomingEpisodeList: FC = async () => {
   return (
     <UpcomingMediaSection<MappedUpcomingEpisode>
       icon={IconDeviceTv}
+      mediaType="tv"
       upcomingMedia={upcomingEpisodes}
       sectionTitle="TV Series Premieres"
       sectionSubtitle="New seasons & upcoming episode drops"

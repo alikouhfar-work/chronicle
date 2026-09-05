@@ -1,9 +1,16 @@
-import { MediaType } from '@/types/media';
+import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
 
-export type AddMediaParams = {
-  tmdbId: number;
-  mediaType: MediaType;
-};
+export type AddMediaParams =
+  | {
+      tmdbId: number;
+      mediaType: 'tv';
+      trackingStatus?: ShowTrackingStatus;
+    }
+  | {
+      tmdbId: number;
+      mediaType: 'movie';
+      trackingStatus?: MovieTrackingStatus;
+    };
 
 export type AddMediaActionResult =
   | {

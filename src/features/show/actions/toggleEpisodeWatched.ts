@@ -102,5 +102,6 @@ export const toggleEpisodeWatched = async (showId: string, episodeId: string) =>
     });
   });
 
+  revalidatePath('/');
   revalidatePath(`/tv/${showId}`);
 };

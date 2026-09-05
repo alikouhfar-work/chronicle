@@ -12,6 +12,7 @@ export const UpcomingMediaCard = async <T extends MappedUpcomingEpisode | Mapped
   media,
   title,
   subTitle,
+  mediaType
 }: UpcomingMediaCardProps<T>) => {
   const day = media.airDate?.getDate();
   const remainingDays = getDaysUntilAirDate(media.airDate);
@@ -71,7 +72,7 @@ export const UpcomingMediaCard = async <T extends MappedUpcomingEpisode | Mapped
         </div>
 
         <Link
-          href=""
+          href={`/library/${mediaType}/${media.tmdbId}`}
           className="apple-pill-btn flex shrink-0 cursor-pointer items-center gap-1 bg-white/6 px-3 py-1 text-xs text-violet-400 hover:bg-white/12"
         >
           View <IconChevronRight size={12} />

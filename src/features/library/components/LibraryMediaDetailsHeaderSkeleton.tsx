@@ -14,9 +14,7 @@ export const LibraryMediaDetailsHeaderSkeleton: FC = () => {
         </div>
 
         <div className="space-y-2">
-          <div className="h-3 w-16 rounded bg-violet-400/30" />
           <div className="h-5 w-3/4 rounded bg-white/20" />
-          <div className="h-3 w-1/2 rounded bg-white/10" />
         </div>
       </div>
 

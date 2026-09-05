@@ -13,6 +13,7 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
   upcomingMedia,
   getTitle,
   getSubtitle,
+  mediaType,
 }: UpcomingMediaSectionProps<T>) => {
   if (upcomingMedia.length === 0) {
     return (
@@ -22,7 +23,7 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center justify-between border-b border-white/8 pb-3">
+      <div className="flex flex-col justify-between gap-2.5 border-b border-white/8 pb-3 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2.5">
           <div className="rounded-xl border border-violet-500/25 bg-violet-500/15 p-2 text-violet-400">
             <Icon className="size-4" />
@@ -41,6 +42,7 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
         {upcomingMedia.map((media) => (
           <UpcomingMediaCard
             media={media}
+            mediaType={mediaType}
             title={getTitle?.(media) ?? ''}
             subTitle={getSubtitle?.(media) ?? ''}
             key={`timeline-${media.id}-${media.name}`}

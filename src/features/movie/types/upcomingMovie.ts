@@ -5,7 +5,7 @@ export type UpcomingMovie = Omit<TrackedMovie, 'genres'>;
 export type MappedUpcomingMovie = {
   id: string;
   name: string;
-  mediaTmdbId: number;
+  tmdbId: number;
   overview: string;
   airDate: Date | null;
   posterPath: string | null;

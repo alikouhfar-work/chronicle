@@ -87,14 +87,14 @@ export const SearchResultCard: FC<SearchResultCardProps> = ({
         {/* Bottom Actions */}
         <div className="border-t border-white/8 pt-2">
           {isTracked ? (
-            <div className="flex w-full items-center justify-between rounded-full border border-white/8 bg-white/4 p-1.5">
+            <div className="justify-betweenbg-white/4 flex w-fit items-center">
               {/*<span className="apple-badge border border-violet-500/25 bg-violet-500/15 text-[10px] text-violet-300">*/}
               {/*  <Check size={11} className="text-violet-400" />*/}
               {/*  <span>{trackedMatch.trackedStatus}</span>*/}
               {/*</span>*/}
               <Link
                 href={`/library/${mediaType}/${id}`}
-                className="apple-pill-btn cursor-pointer bg-white/8 px-3 py-1 text-[10px] text-white hover:bg-white/15"
+                className="apple-pill-btn cursor-pointer border border-white/8 bg-white/4 px-3 py-2 text-[10px] text-white hover:bg-white/15"
               >
                 View in Library
               </Link>

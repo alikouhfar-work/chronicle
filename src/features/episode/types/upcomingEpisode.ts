@@ -10,12 +10,12 @@ export type UpcomingEpisode = Episode & {
 
 export type MappedUpcomingEpisode = {
   id: string;
+  tmdbId: number;
   seasonNumber: number;
   episodeNumber: number;
   name: string;
   showId: string;
   showName: string;
-  showTmdbId: number;
   overview: string;
   airDate: Date | null;
   posterPath: string | null;

@@ -4,8 +4,8 @@ export const mapUpcomingMovies = (movies: UpcomingMovie[]): MappedUpcomingMovie[
   movies.map((movie) => ({
     id: movie.id,
     name: movie.name,
+    tmdbId: movie.tmdbId,
     overview: movie.overview,
-    mediaTmdbId: movie.tmdbId,
     airDate: movie.releaseDate,
     posterPath: movie.posterPath,
   }));

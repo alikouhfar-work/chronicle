@@ -1,6 +1,8 @@
 import { FC, SVGProps } from 'react';
+import { MediaType } from '@/types/media';
 
 export type UpcomingMediaSectionProps<T> = {
+  mediaType: MediaType;
   upcomingMedia: T[];
   sectionTitle: string;
   sectionSubtitle: string;
@@ -15,6 +17,7 @@ export type UpcomingMediaCardProps<T> = {
   media: T;
   title: string;
   subTitle: string;
+  mediaType: MediaType
 };
 
 export type UpcomingMediaEmptyProps = {

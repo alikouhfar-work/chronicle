@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { tmdbFetch } from '@/utils/tmdbFetch';
 import { TrackedMovieDetailsRaw } from '@/features/movie/types/trackedMovie';
+import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 
-export const addMovie = async (tmdbId: number) => {
+export const addMovie = async (tmdbId: number, trackingStatus?: MovieTrackingStatus) => {
   try {
     const existing = await prisma.movie.findUnique({
       where: {
@@ -32,7 +33,7 @@ export const addMovie = async (tmdbId: number) => {
           lastSyncedAt: new Date(),
 
           tracking: {
-            create: {},
+            create: trackingStatus ? { status: trackingStatus } : {},
           },
 
           genres: {

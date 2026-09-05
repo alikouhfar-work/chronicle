@@ -4,7 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Redesign Search Page" />
+    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="fix: Fix Build Errors">
+      <change afterPath="$PROJECT_DIR$/src/features/show/utils/shouldSyncShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/components/UpcomingShowList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/components/UpcomingShowList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/mappers/mapUpcomingEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/mappers/mapUpcomingEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/queries/getUpNextEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/queries/getUpNextEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/episode/types/upcomingEpisode.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/types/upcomingEpisode.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/actions/addMediaAction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/actions/addMediaAction.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeaderSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeaderSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/services/addMedia.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/services/addMedia.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/addMedia.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/addMedia.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/actions/addMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/actions/addMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/components/UpcomingMovieList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/components/UpcomingMovieList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/mappers/mapUpcomingMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapUpcomingMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/upcomingMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/upcomingMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultCardActions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultCardActions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/actions/addShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/addShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/actions/toggleEpisodeWatched.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/toggleEpisodeWatched.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/show/queries/getFreshTrackedShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/queries/getFreshTrackedShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/upcoming.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/upcoming.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,61 +62,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.233286938550385" />
-      <entry key="MS500" value="1.933960435508551" />
-      <entry key="S2" value="3.5713584219943484" />
-      <entry key="S5" value="4.739932135379382" />
-      <entry key="S10" value="5.375125709301042" />
-      <entry key="S30" value="6.648610159527892" />
-      <entry key="S60" value="8.294847908840197" />
-      <entry key="M2" value="10.771507766981802" />
-      <entry key="M5" value="16.005778000291848" />
-      <entry key="M10" value="22.482679984982624" />
-      <entry key="M15" value="27.750639322918552" />
-      <entry key="M30" value="41.51408034783021" />
-      <entry key="H1" value="71.93660015739967" />
-      <entry key="H2" value="135.59380980506216" />
-      <entry key="H4" value="220.6270784364568" />
-      <entry key="D1" value="631.8389105200024" />
-      <entry key="W1" value="2185.9088443877113" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.000001241056902" />
+      <entry key="S2" value="1.03428379984978" />
+      <entry key="S5" value="1.3347578478265496" />
+      <entry key="S10" value="1.9307665107880227" />
+      <entry key="S30" value="3.383401027268828" />
+      <entry key="S60" value="4.717955233472447" />
+      <entry key="M2" value="6.7098630510503074" />
+      <entry key="M5" value="10.594288139106006" />
+      <entry key="M10" value="17.645535140657103" />
+      <entry key="M15" value="25.851681240868995" />
+      <entry key="M30" value="49.937632748865546" />
+      <entry key="H1" value="90.65830087143085" />
+      <entry key="H2" value="161.52202053582351" />
+      <entry key="H4" value="258.11385176662526" />
+      <entry key="D1" value="693.622117943205" />
+      <entry key="W1" value="2258.283124109728" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="2.6609942049138964E-82" />
-      <entry key="S5" value="3.526645782144942E-33" />
-      <entry key="S10" value="9.690050134284902E-17" />
-      <entry key="S30" value="1.0458879359884364E-5" />
-      <entry key="S60" value="0.007084702525363065" />
-      <entry key="M2" value="0.2138446358449104" />
-      <entry key="M5" value="2.2460023155993656" />
-      <entry key="M10" value="6.426847171296401" />
-      <entry key="M15" value="10.200811198762365" />
-      <entry key="M30" value="20.19470382149667" />
-      <entry key="H1" value="45.98459345991968" />
-      <entry key="H2" value="108.34675653103189" />
-      <entry key="H4" value="194.10552879392733" />
-      <entry key="D1" value="526.6747895137902" />
-      <entry key="W1" value="2009.834113863068" />
+      <entry key="MS500" value="1.4104566665768538E-109" />
+      <entry key="S2" value="6.1282989200490135E-28" />
+      <entry key="S5" value="1.3037502798406224E-11" />
+      <entry key="S10" value="3.6977424691899683E-6" />
+      <entry key="S30" value="0.0197894417130767" />
+      <entry key="S60" value="0.19123862437364628" />
+      <entry key="M2" value="0.6484625339421283" />
+      <entry key="M5" value="2.4124336613505193" />
+      <entry key="M10" value="8.119810903831114" />
+      <entry key="M15" value="14.88430169020383" />
+      <entry key="M30" value="32.520772458798696" />
+      <entry key="H1" value="62.06978001717284" />
+      <entry key="H2" value="123.33055756056021" />
+      <entry key="H4" value="214.60880147028715" />
+      <entry key="D1" value="568.0635575844447" />
+      <entry key="W1" value="2059.035992326804" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9812324082272581" />
-      <entry key="MS500" value="1.5660376295517733" />
-      <entry key="S2" value="3.425897943894094" />
-      <entry key="S5" value="4.675343494795422" />
-      <entry key="S10" value="5.339679751078114" />
-      <entry key="S30" value="6.62800621881737" />
-      <entry key="S60" value="8.282480971449003" />
-      <entry key="M2" value="10.965985283418325" />
-      <entry key="M5" value="18.231364097524487" />
-      <entry key="M10" value="28.89030153808949" />
-      <entry key="M15" value="37.93385081852364" />
-      <entry key="M30" value="61.69337262956271" />
-      <entry key="H1" value="117.90420787327825" />
-      <entry key="H2" value="243.92124254622232" />
-      <entry key="H4" value="414.71560225723215" />
-      <entry key="D1" value="1158.505004237644" />
-      <entry key="W1" value="4195.738677577159" />
+      <entry key="MS100" value="2.9352770169852137E-7" />
+      <entry key="MS500" value="0.04937758592941628" />
+      <entry key="S2" value="0.4800421000140545" />
+      <entry key="S5" value="0.9546926734934286" />
+      <entry key="S10" value="1.6387726656117791" />
+      <entry key="S30" value="3.2464463328828654" />
+      <entry key="S60" value="4.813827849167655" />
+      <entry key="M2" value="7.300845699886533" />
+      <entry key="M5" value="12.970865417984651" />
+      <entry key="M10" value="25.723577943540437" />
+      <entry key="M15" value="40.68900743517916" />
+      <entry key="M30" value="82.41210073895311" />
+      <entry key="H1" value="152.68978648933498" />
+      <entry key="H2" value="284.82116384843334" />
+      <entry key="H4" value="472.69863127043885" />
+      <entry key="D1" value="1261.6754688843241" />
+      <entry key="W1" value="4317.31459802572" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -199,6 +222,9 @@
       <workItem from="1788286360749" duration="3538000" />
       <workItem from="1788379929070" duration="2268000" />
       <workItem from="1788514333834" duration="7143000" />
+      <workItem from="1788522746201" duration="573000" />
+      <workItem from="1788625743437" duration="7000" />
+      <workItem from="1788630457961" duration="3716000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Fix Build Errors">
       <option name="closed" value="true" />
@@ -240,18 +266,26 @@
       <option name="project" value="LOCAL" />
       <updated>1788522426083</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix: Fix Build Errors">
+      <option name="closed" value="true" />
+      <created>1788522967045</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1788522967045</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix: Fix Build Errors" />
     <MESSAGE value="fix: Change Add Show Transaction Limit" />
     <MESSAGE value="feat: Change Design System" />
     <MESSAGE value="feat: Change Icon" />
     <MESSAGE value="feat: Redesign Search Page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Redesign Search Page" />
+    <MESSAGE value="fix: Fix Build Errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Fix Build Errors" />
   </component>
 </project>

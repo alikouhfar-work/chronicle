@@ -7,9 +7,9 @@ export const mapUpcomingEpisodes = (episodes: UpcomingEpisode[]): MappedUpcoming
     airDate: episode.airDate,
     overview: episode.overview,
     showId: episode.season.showId,
+    tmdbId: episode.season.show.tmdbId,
     showName: episode.season.show.name,
     episodeNumber: episode.episodeNumber,
-    showTmdbId: episode.season.show.tmdbId,
     seasonNumber: episode.season.seasonNumber,
     posterPath: episode.season.show.posterPath,
   }));
