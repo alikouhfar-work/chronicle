@@ -77,7 +77,7 @@ export const LibraryMovieDetails: FC<LibraryMovieDetailsProps> = ({ movie, credi
       {/*    )}*/}
       {/*  </div>*/}
       {/*)}*/}
-      <LibraryItemFooter credits={credits} />
+      <LibraryItemFooter credits={credits} similarMedia={[]}/>
     </section>
   );
 };
