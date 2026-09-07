@@ -9,16 +9,17 @@ import { ShowDetailsEpisodeCard } from '@/features/show/components/ShowDetailsEp
 import { LibraryItemFooter } from '@/features/library/components/LibraryItemFooter';
 import { clsx } from 'clsx';
 
-export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits }) => {
-  const [isSeasonPending, startSeasonTransition] = useTransition();
+export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits, similarShows }) => {
+  const [isWatchSeasonPending, startWatchSeasonTransition] = useTransition();
+  const [isClearSeasonPending, startClearSeasonTransition] = useTransition();
   const [activeSeason, setActiveSeason] = useState(show.seasons[0]);
 
   const handleWatchSeason = (seasonId: string) => {
-    startSeasonTransition(async () => await setSeasonWatched(show.id, seasonId, true));
+    startWatchSeasonTransition(async () => await setSeasonWatched(show.id, seasonId, true));
   };
 
   const handleClearSeason = async (seasonId: string) => {
-    startSeasonTransition(async () => await setSeasonWatched(show.id, seasonId, false));
+    startClearSeasonTransition(async () => await setSeasonWatched(show.id, seasonId, false));
   };
 
   return (
@@ -180,16 +181,18 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits 
             <h4 className="text-base font-bold text-white">{activeSeason.name} Episodes</h4>
             <div className="flex items-center gap-1.5 self-end">
               <button
-                disabled={isSeasonPending}
+                disabled={isClearSeasonPending}
+                aria-busy={isWatchSeasonPending}
                 onClick={() => handleWatchSeason(activeSeason.id)}
-                className="apple-pill-btn cursor-pointer border border-violet-500/30 bg-violet-500/15 px-3 py-1 text-xs text-violet-300 hover:bg-violet-500/25 disabled:cursor-wait disabled:opacity-50"
+                className="apple-pill-btn cursor-pointer border border-violet-500/30 bg-violet-500/15 px-3 py-1 text-xs text-violet-300 hover:bg-violet-500/25 disabled:cursor-not-allowed disabled:opacity-50 aria-busy:cursor-wait aria-busy:opacity-80"
               >
                 Mark All Watched
               </button>
               <button
-                disabled={isSeasonPending}
+                disabled={isWatchSeasonPending}
+                aria-busy={isClearSeasonPending}
                 onClick={() => handleClearSeason(activeSeason.id)}
-                className="apple-pill-btn cursor-pointer bg-white/6 px-3 py-1 text-xs text-zinc-400 hover:bg-white/12 hover:text-white disabled:cursor-wait disabled:opacity-50"
+                className="apple-pill-btn cursor-pointer bg-white/6 px-3 py-1 text-xs text-zinc-400 hover:bg-white/12 hover:text-white disabled:cursor-not-allowed disabled:opacity-50 aria-busy:cursor-wait aria-busy:opacity-80"
               >
                 Clear All
               </button>
@@ -211,7 +214,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits 
         </div>
       </div>
 
-      <LibraryItemFooter credits={credits} />
+      <LibraryItemFooter credits={credits} similarMedia={similarShows}/>
     </section>
   );
 };

@@ -52,5 +52,6 @@ export const updateShowTrackingStatus = async (showId: string, status: ShowTrack
     },
   });
 
+  revalidatePath('/');
   revalidatePath(`/tv/${showId}`);
 };

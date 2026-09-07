@@ -1,6 +1,6 @@
 import type { MediaType } from '@/types/media';
 import { LibraryMovieDetails, LibraryShowDetails } from '@/features/library';
-import { getFreshTrackedShow, getShowCredits } from '@/features/show';
+import { getFreshTrackedShow, getShowCredits, getSimilarShows } from '@/features/show';
 import { getMovieCredits, getTrackedMovie } from '@/features/movie';
 
 type LibraryItemParams = {
@@ -19,8 +19,14 @@ const LibraryItemPage = async ({ params }: { params: Promise<LibraryItemParams> 
   }
 
   if (mediaType === 'tv') {
-    const [show, credits] = await Promise.all([getFreshTrackedShow(id), getShowCredits(id)]);
-    if (show) return <LibraryShowDetails show={show} credits={credits} />;
+    const [show, credits, similarShows] = await Promise.all([
+      getFreshTrackedShow(id),
+      getShowCredits(id),
+      getSimilarShows(id),
+    ]);
+
+    if (show)
+      return <LibraryShowDetails show={show} credits={credits} similarShows={similarShows} />;
   }
 };
 

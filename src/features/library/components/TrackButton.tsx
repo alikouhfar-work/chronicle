@@ -6,8 +6,9 @@ import { addMediaAction } from '@/features/library/actions/addMediaAction';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { IconLoader2, IconPlus } from '@tabler/icons-react';
+import { clsx } from 'clsx';
 
-export const TrackButton: FC<TrackButtonProps> = ({ tmdbId, mediaType }) => {
+export const TrackButton: FC<TrackButtonProps> = ({ tmdbId, mediaType, className }) => {
   const router = useRouter();
   const [isAddMediaPending, startAddMediaTransition] = useTransition();
 
@@ -29,7 +30,10 @@ export const TrackButton: FC<TrackButtonProps> = ({ tmdbId, mediaType }) => {
     <button
       onClick={handleAddMedia}
       aria-busy={isAddMediaPending}
-      className="apple-pill-btn cursor-pointer border border-violet-500 bg-violet-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-md shadow-violet-500/20 hover:bg-violet-400 aria-busy:cursor-wait aria-busy:opacity-80"
+      className={clsx(
+        'apple-pill-btn cursor-pointer border border-violet-500 bg-violet-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-md shadow-violet-500/20 hover:bg-violet-400 aria-busy:cursor-wait aria-busy:opacity-80',
+        className,
+      )}
     >
       {isAddMediaPending ? (
         <IconLoader2 size={12} className="animate-spin" />

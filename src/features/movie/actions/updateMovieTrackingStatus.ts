@@ -43,5 +43,6 @@ export const updateMovieTrackingStatus = async (movieId: string, status: MovieTr
     update: data,
   });
 
+  revalidatePath('/');
   revalidatePath(`/library/movie/${movieId}`);
 };

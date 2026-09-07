@@ -4,7 +4,7 @@ import { GenreRaw } from '@/features/genre';
 const getMovieGenreDictionary = async () => {
   const { genres } = await tmdbFetch<{ genres: GenreRaw[] }>('genre/movie/list', {
     next: {
-      revalidate: 604800,
+      revalidate: 2592000,
     },
   });
 
@@ -14,7 +14,7 @@ const getMovieGenreDictionary = async () => {
 const getShowGenreDictionary = async () => {
   const { genres } = await tmdbFetch<{ genres: GenreRaw[] }>('genre/tv/list', {
     next: {
-      revalidate: 604800,
+      revalidate: 2592000,
     },
   });
 
