@@ -5,7 +5,7 @@ import { LibraryMediaDetailsHeader } from '@/features/library/components/Library
 import { LibraryMovieDetailsProps } from '@/features/library/types/libraryMovieDetails';
 import { LibraryItemFooter } from '@/features/library/components/LibraryItemFooter';
 
-export const LibraryMovieDetails: FC<LibraryMovieDetailsProps> = ({ movie, credits }) => {
+export const LibraryMovieDetails: FC<LibraryMovieDetailsProps> = ({ movie, credits, similarMovies }) => {
   return (
     <section className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-y-8 font-sans">
       {/*{toastMessage && (*/}
@@ -77,7 +77,7 @@ export const LibraryMovieDetails: FC<LibraryMovieDetailsProps> = ({ movie, credi
       {/*    )}*/}
       {/*  </div>*/}
       {/*)}*/}
-      <LibraryItemFooter credits={credits} similarMedia={[]}/>
+      <LibraryItemFooter credits={credits} similarMedia={similarMovies}/>
     </section>
   );
 };

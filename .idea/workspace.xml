@@ -5,25 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Add Some Final Touches">
-      <change afterPath="$PROJECT_DIR$/src/features/show/mappers/mapSimilarShows.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/show/queries/getSimilarShows.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/show/types/getSimilarShows.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/show/types/similarShow.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapSimilarMovies.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/movie/queries/getSimilarMovies.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/movie/types/getSimilarMovies.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/movie/types/similarMovie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/genre/queries/getGenreDictionary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/genre/queries/getGenreDictionary.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryItemFooter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryItemFooter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryShowDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryShowDetails.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/trackButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/trackButton.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/viewDetailsButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/viewDetailsButton.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/actions/updateMovieTrackingStatus.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/actions/updateMovieTrackingStatus.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/search/components/SearchResultCardActions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/search/components/SearchResultCardActions.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/actions/updateShowTrackingStatus.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/updateShowTrackingStatus.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +38,12 @@
     &quot;assignee&quot;: &quot;alikouhfar-work&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/alikouhfar-work/chronicle.git&quot;,
-    &quot;accountId&quot;: &quot;fbc8d423-2f62-45c4-b589-c0e2d22435f6&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:alikouhfar-work/chronicle.git",
+    "accountId": "eefc3a57-d418-4bf0-80e1-9171bdf02a8b"
   }
-}</component>
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -143,11 +134,12 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "javascript.preferred.runtime.type.id": "bun",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/show/mappers",
+    "last_opened_file_path": "D:/Playground/chronicle/src/features/movie/mappers",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -156,16 +148,17 @@
     "prettierjs.PrettierConfiguration.Package": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
     "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib"
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2026.1.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Playground\chronicle\src\features\movie\mappers" />
+      <recent name="D:\Playground\chronicle\src\features\movie\types" />
+      <recent name="D:\Playground\chronicle\src\features\movie\queries" />
       <recent name="$PROJECT_DIR$/src/features/show/mappers" />
       <recent name="$PROJECT_DIR$/src/features/show/types" />
-      <recent name="$PROJECT_DIR$/src/features/show/queries" />
-      <recent name="$PROJECT_DIR$/src/features/search/components" />
-      <recent name="$PROJECT_DIR$/src/features/library/components" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/app/(main)/search" />
@@ -193,7 +186,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.24374.125" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.23567.141" />
       </set>
     </attachedChunks>
   </component>
@@ -226,6 +219,7 @@
       <workItem from="1788625743437" duration="7000" />
       <workItem from="1788630457961" duration="3873000" />
       <workItem from="1788803351243" duration="3697000" />
+      <workItem from="1788933825215" duration="2031000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Fix Build Errors">
       <option name="closed" value="true" />
