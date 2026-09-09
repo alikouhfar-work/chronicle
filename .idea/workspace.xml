@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Add Some Final Touches">
-      <change afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapSimilarMovies.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/movie/queries/getSimilarMovies.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/movie/types/getSimilarMovies.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/movie/types/similarMovie.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/movie/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/index.ts" afterDir="false" />
-    </list>
+    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Add Similar Movies" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -219,7 +208,7 @@
       <workItem from="1788625743437" duration="7000" />
       <workItem from="1788630457961" duration="3873000" />
       <workItem from="1788803351243" duration="3697000" />
-      <workItem from="1788933825215" duration="2031000" />
+      <workItem from="1788933825215" duration="2234000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Fix Build Errors">
       <option name="closed" value="true" />
@@ -277,7 +266,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788634277337</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: Add Similar Movies">
+      <option name="closed" value="true" />
+      <created>1788936837737</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1788936837737</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,6 +287,7 @@
     <MESSAGE value="feat: Redesign Search Page" />
     <MESSAGE value="fix: Fix Build Errors" />
     <MESSAGE value="feat: Add Some Final Touches" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Some Final Touches" />
+    <MESSAGE value="feat: Add Similar Movies" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Similar Movies" />
   </component>
 </project>

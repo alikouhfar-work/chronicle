@@ -20,7 +20,7 @@ const LibraryItemPage = async ({ params }: { params: Promise<LibraryItemParams> 
       getSimilarMovies(id)]);
 
     if (movie)
-      return <LibraryMovieDetails movie={movie} credits={credits} similarShows={similarMovies} />;
+      return <LibraryMovieDetails movie={movie} credits={credits} similarMovies={similarMovies} />;
   }
 
   if (mediaType === 'tv') {
