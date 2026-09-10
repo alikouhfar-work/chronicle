@@ -21,7 +21,7 @@ export type SimilarMovie = {
   id: number;
   name: string;
   overview: string;
-  mediaType: 'tv';
+  mediaType: 'movie';
   genres: GenreRaw[];
   releaseDate: string;
   isTracked: boolean;

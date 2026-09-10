@@ -4,28 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Add Some Final Touches">
-      <change afterPath="$PROJECT_DIR$/src/app/(main)/person/[id]/loading.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/(main)/person/[id]/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/components/PersonDetails.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/components/PersonDetailsBackButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/components/PersonDetailsBiography.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/components/PersonDetailsCombinedCreditsFilter.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/components/PersonDetailsNavigation.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/mappers/mapCombinedCredits.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/mappers/mapCreditMovies.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/mappers/mapCreditShows.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/mappers/mapPerson.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/queries/getCombinedCredits.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/queries/getPerson.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/types/combinedCredit.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/types/getCombinedCredits.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/types/person.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/person/types/personDetailsNavigation.ts" afterDir="false" />
+    <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Add Person Feature">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/show/actions/syncShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/show/actions/syncShow.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/mappers/mapSimilarMovies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/mappers/mapSimilarMovies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/movie/types/similarMovie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/movie/types/similarMovie.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,61 +43,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000002417467786" />
-      <entry key="MS500" value="1.0481705580477254" />
-      <entry key="S2" value="1.6946411218033273" />
-      <entry key="S5" value="2.558776727273953" />
-      <entry key="S10" value="3.135809467334272" />
-      <entry key="S30" value="3.672400231028304" />
-      <entry key="S60" value="3.9132312635146826" />
-      <entry key="M2" value="4.778739820812948" />
-      <entry key="M5" value="8.655942337254432" />
-      <entry key="M10" value="14.96676611043026" />
-      <entry key="M15" value="21.856988047881494" />
-      <entry key="M30" value="42.67747408071552" />
-      <entry key="H1" value="73.32275917214184" />
-      <entry key="H2" value="128.08101219589486" />
-      <entry key="H4" value="243.1955156378706" />
-      <entry key="D1" value="829.2157222322453" />
-      <entry key="W1" value="2482.173727549962" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000032122152467" />
+      <entry key="S2" value="1.0423351555464206" />
+      <entry key="S5" value="1.2822836984233383" />
+      <entry key="S10" value="1.5350182550619835" />
+      <entry key="S30" value="2.2001424991785608" />
+      <entry key="S60" value="3.1540843423409672" />
+      <entry key="M2" value="4.352325089647116" />
+      <entry key="M5" value="7.418372295939535" />
+      <entry key="M10" value="13.214299249564466" />
+      <entry key="M15" value="19.684376924628843" />
+      <entry key="M30" value="39.988120553591656" />
+      <entry key="H1" value="71.50505150680225" />
+      <entry key="H2" value="127.09369859704644" />
+      <entry key="H4" value="242.48762008465943" />
+      <entry key="D1" value="831.3674169292423" />
+      <entry key="W1" value="2486.525746652096" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="1.1122229497224854E-220" />
-      <entry key="S2" value="1.50403357271561E-55" />
-      <entry key="S5" value="1.7575534100880724E-22" />
-      <entry key="S10" value="1.876536038811813E-11" />
-      <entry key="S30" value="4.6181789713177897E-4" />
-      <entry key="S60" value="0.03685725776278936" />
-      <entry key="M2" value="0.45396372412073377" />
-      <entry key="M5" value="3.7968351451239677" />
-      <entry key="M10" value="11.24004489048893" />
-      <entry key="M15" value="20.545270236808133" />
-      <entry key="M30" value="51.052450851202735" />
-      <entry key="H1" value="95.9698111835848" />
-      <entry key="H2" value="160.1838411426883" />
-      <entry key="H4" value="273.35218968869617" />
-      <entry key="D1" value="775.7300901706489" />
-      <entry key="W1" value="2338.4856139767867" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="9.536825508309667E-143" />
+      <entry key="S5" value="2.321491265614943E-57" />
+      <entry key="S10" value="6.820028203500138E-29" />
+      <entry key="S30" value="7.100362361032738E-10" />
+      <entry key="S60" value="4.5701230838311074E-5" />
+      <entry key="M2" value="0.015985402964088093" />
+      <entry key="M5" value="0.9956408714909871" />
+      <entry key="M10" value="5.755837620111381" />
+      <entry key="M15" value="13.150396569328265" />
+      <entry key="M30" value="40.84417156722526" />
+      <entry key="H1" value="85.8403319285617" />
+      <entry key="H2" value="151.49457379242253" />
+      <entry key="H4" value="265.83474554420627" />
+      <entry key="D1" value="772.1330976776995" />
+      <entry key="W1" value="2336.9334763352795" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.8467455060185896" />
-      <entry key="MS500" value="1.0133602292527315" />
-      <entry key="S2" value="1.6789857819145049" />
-      <entry key="S5" value="2.548961997217009" />
-      <entry key="S10" value="3.129728115999341" />
-      <entry key="S30" value="3.670442511264093" />
-      <entry key="S60" value="3.9470410560087483" />
-      <entry key="M2" value="5.22020326407059" />
-      <entry key="M5" value="12.424171280884218" />
-      <entry key="M10" value="26.17452391803445" />
-      <entry key="M15" value="42.36852808472165" />
-      <entry key="M30" value="93.695646329381" />
-      <entry key="H1" value="169.26352748350945" />
-      <entry key="H2" value="288.24073824207983" />
-      <entry key="H4" value="516.5258509157793" />
-      <entry key="D1" value="1604.933841997278" />
-      <entry key="W1" value="4820.654388441167" />
+      <entry key="MS100" value="0.8408964152537146" />
+      <entry key="MS500" value="0.9659393343489103" />
+      <entry key="S2" value="1.0330098007467905" />
+      <entry key="S5" value="1.2769518163739924" />
+      <entry key="S10" value="1.5315068136429364" />
+      <entry key="S30" value="2.1981218630817443" />
+      <entry key="S60" value="3.152461816746207" />
+      <entry key="M2" value="4.366676896048063" />
+      <entry key="M5" value="8.405899110374213" />
+      <entry key="M10" value="18.953268638163145" />
+      <entry key="M15" value="32.81295402207065" />
+      <entry key="M30" value="80.80474933577736" />
+      <entry key="H1" value="157.31934588404033" />
+      <entry key="H2" value="278.5654351444934" />
+      <entry key="H4" value="508.30109703424046" />
+      <entry key="D1" value="1603.4885971655194" />
+      <entry key="W1" value="4823.454272826063" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -134,33 +116,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "bun",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/person/mappers",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "bun",
-    "prettierjs.PrettierConfiguration.Package": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;bun&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/person/mappers&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/features/person/mappers" />
@@ -285,7 +267,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788634277337</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: Add Person Feature">
+      <option name="closed" value="true" />
+      <created>1789071103877</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1789071103877</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +288,7 @@
     <MESSAGE value="feat: Redesign Search Page" />
     <MESSAGE value="fix: Fix Build Errors" />
     <MESSAGE value="feat: Add Some Final Touches" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Some Final Touches" />
+    <MESSAGE value="feat: Add Person Feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Person Feature" />
   </component>
 </project>

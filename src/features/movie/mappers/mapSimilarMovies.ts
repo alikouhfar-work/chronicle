@@ -6,7 +6,7 @@ export const mapSimilarMovies = (
 ): Omit<SimilarMovie, 'isTracked'>[] =>
   similarMovies.map((similarMovie) => ({
     backdropPath: similarMovie.backdrop_path,
-    mediaType: 'tv',
+    mediaType: 'movie',
     id: similarMovie.id,
     name: similarMovie.title,
     overview: similarMovie.overview,
