@@ -108,7 +108,11 @@ export const PersonDetails: FC<PersonDetailsProps> = ({ person, combinedCredits 
             {/* Quick overlay pill */}
             <div className="pointer-events-none absolute right-3 bottom-3 left-3 flex items-center justify-between rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-[11px] font-medium text-zinc-300 backdrop-blur-md">
               <span>{getGenderLabel(person.gender)}</span>
-              {/*<span className="font-semibold text-violet-300">{credits.length} Credits</span>*/}
+              {combinedCredits.length > 0 && (
+                <span className="font-semibold text-violet-300">
+                  {combinedCredits.length} Credits
+                </span>
+              )}
             </div>
           </div>
 
