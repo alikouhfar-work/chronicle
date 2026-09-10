@@ -6,6 +6,8 @@ import { createMonogram } from '@/utils/createMonogram';
 import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
 import { ViewDetailsButton } from '@/features/library/components/ViewDetailsButton';
 import { TrackButton } from '@/features/library/components/TrackButton';
+import { IconChevronRight } from '@tabler/icons-react';
+import Link from 'next/link';
 
 export const LibraryItemFooter: FC<LibraryItemFooterProps> = ({ credits, similarMedia }) => {
   return (
@@ -21,27 +23,40 @@ export const LibraryItemFooter: FC<LibraryItemFooterProps> = ({ credits, similar
             <p className="text-xs text-zinc-400">Notable lead performances</p>
           </div>
 
-          <ul className="glass-card space-y-3 rounded-2xl border border-white/8 p-4">
+          <ul className="glass-card space-y-1 rounded-2xl border border-white/8 p-2.5">
             {credits.cast.map((member) => (
-              <li key={member.name} className="group/cast flex items-center gap-3">
-                <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-800 text-xs font-bold text-zinc-200">
-                  {member.profilePath ? (
-                    <Image
-                      fill
-                      alt={member.name}
-                      className="object-cover"
-                      src={getTmdbImageUrl(member.profilePath, 'avatar', 'w300')!}
+              <li key={member.name}>
+                <Link
+                  href={`/person/${member.id}`}
+                  className="group/cast flex cursor-pointer items-center justify-between rounded-xl border border-transparent p-2 transition-all select-none hover:border-white/10 hover:bg-white/8 active:bg-white/12"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="relative flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-zinc-800 text-xs font-bold text-zinc-200 transition-all group-hover/cast:border-violet-500/40 group-hover/cast:bg-violet-500/20 group-hover/cast:text-violet-300">
+                      {member.profilePath ? (
+                        <Image
+                          fill
+                          alt={member.name}
+                          className="object-cover"
+                          src={getTmdbImageUrl(member.profilePath, 'avatar', 'w300')!}
+                        />
+                      ) : (
+                        createMonogram(member.name)
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-bold text-white transition-colors group-hover/cast:text-violet-300">
+                        {member.name}
+                      </p>
+                      <p className="truncate text-[11px] text-zinc-400">{member.character}</p>
+                    </div>
+                  </div>
+                  <div className="ml-2 flex shrink-0 items-center gap-1">
+                    <IconChevronRight
+                      size={14}
+                      className="text-zinc-600 transition-all group-hover/cast:translate-x-0.5 group-hover/cast:text-violet-400"
                     />
-                  ) : (
-                    createMonogram(member.name)
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <p className="truncate text-xs font-bold text-white transition-colors group-hover/cast:text-violet-300">
-                    {member.name}
-                  </p>
-                  <p className="truncate text-[11px] text-zinc-400">{member.character}</p>
-                </div>
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>
