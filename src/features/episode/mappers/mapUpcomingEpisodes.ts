@@ -20,8 +20,6 @@ export const mapUpcomingEpisodes = (episodes: UpcomingEpisode[]): MappedUpcoming
       overview: episode.overview,
     };
 
-    console.log(mappedEpisode);
-
     const existingGroup = groups.get(key);
 
     if (existingGroup) {

@@ -17,16 +17,16 @@ export const UpcomingMediaCard = async <T extends MappedUpcomingEpisode | Mapped
   const day = media.airDate?.getDate();
   const remainingDays = getDaysUntilAirDate(media.airDate);
   const fullMonth = media.airDate?.toLocaleString('default', { month: 'short' });
-  const isEpisodeRelease = (
-    media: MappedUpcomingEpisode | MappedUpcomingMovie,
-  ): media is MappedUpcomingEpisode => 'episodes' in media;
-  const isEpisode = isEpisodeRelease(media);
+
+  const isEpisode = 'episodes' in media;
 
   const posterPath = media.posterPath;
   const mediaTmdbId = isEpisode ? media.showTmdbId : media.tmdbId;
   const mediaName = isEpisode ? media.showName : media.name;
 
   const overview = isEpisode ? media.episodes[0].overview : '';
+
+  // TODO: Show batch episodes details
 
   return (
     <li className="group relative flex items-stretch gap-3 pl-1 transition-all duration-200">
@@ -67,7 +67,6 @@ export const UpcomingMediaCard = async <T extends MappedUpcomingEpisode | Mapped
             </div>
 
             <p className="truncate text-xs text-zinc-300">{subTitle}</p>
-
             <p className="truncate text-[11px] text-zinc-400">{overview}</p>
           </div>
         </div>
