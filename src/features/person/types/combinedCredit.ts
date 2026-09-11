@@ -1,4 +1,5 @@
 import { GenreRaw } from '@/features/genre';
+import { MediaType } from '@/types/media';
 
 export type CombinedCreditRaw = CreditShowRaw | CreditMovieRaw;
 
@@ -56,6 +57,6 @@ export type CombinedCredit = {
   voteCount: number;
   character: string;
   creditId: string;
-  mediaType: string;
+  mediaType: MediaType;
   isTracked: boolean;
 };

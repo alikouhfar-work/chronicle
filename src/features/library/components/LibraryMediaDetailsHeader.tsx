@@ -167,7 +167,7 @@ export const LibraryMediaDetailsHeader: FC<LibraryMediaDetailsHeaderProps> = ({ 
               {/*    setMovieNotes(movie?.notes || '');*/}
               {/*    setIsEditingMovieLog(true);*/}
               {/*  }}*/}
-              {/*  className="apple-pill-btn cursor-pointer bg-white/[0.08] p-2 text-zinc-200 hover:bg-white/[0.15]"*/}
+              {/*  className="apple-pill-btn cursor-pointer bg-white/8 p-2 text-zinc-200 hover:bg-white/[0.15]"*/}
               {/*  title="Edit rating/review"*/}
               {/*>*/}
               {/*  <Edit3 size={13} />*/}

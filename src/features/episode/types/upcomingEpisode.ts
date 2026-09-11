@@ -8,15 +8,20 @@ export type UpcomingEpisode = Episode & {
   };
 };
 
-export type MappedUpcomingEpisode = {
+export type MappedUpcomingEpisodeItem = {
   id: string;
-  tmdbId: number;
   seasonNumber: number;
   episodeNumber: number;
   name: string;
+  overview: string;
+};
+
+export type MappedUpcomingEpisode = {
+  id: string;
   showId: string;
   showName: string;
-  overview: string;
-  airDate: Date | null;
+  showTmdbId: number;
   posterPath: string | null;
+  airDate: Date | null;
+  episodes: MappedUpcomingEpisodeItem[];
 };

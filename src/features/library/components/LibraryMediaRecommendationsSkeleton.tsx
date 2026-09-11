@@ -10,9 +10,9 @@ export const LibraryMediaRecommendationsSkeleton = () => {
         {[1, 2, 3].map((sim) => (
           <div
             key={sim}
-            className="glass-card flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.08]"
+            className="glass-card flex flex-col justify-between overflow-hidden rounded-2xl border border-white/8"
           >
-            <div className="relative flex h-24 w-full animate-pulse flex-col justify-between border-b border-white/[0.08] bg-zinc-800/80 p-2.5">
+            <div className="relative flex h-24 w-full animate-pulse flex-col justify-between border-b border-white/8 bg-zinc-800/80 p-2.5">
               <div className="flex items-start justify-between gap-2">
                 <div className="h-4 w-12 rounded-full bg-white/10" />
                 <div className="h-4 w-8 rounded-full bg-white/10" />
@@ -27,7 +27,7 @@ export const LibraryMediaRecommendationsSkeleton = () => {
                 <div className="h-3 w-2/3 animate-pulse rounded bg-zinc-800/70" />
               </div>
 
-              <div className="border-t border-white/[0.08] pt-2">
+              <div className="border-t border-white/8 pt-2">
                 <div className="h-7 w-full animate-pulse rounded-full border border-violet-500/30 bg-violet-500/20" />
               </div>
             </div>

@@ -72,7 +72,7 @@ export const SearchResultCard: FC<SearchResultCardProps> = ({
             {genres.map((genre) => (
               <span
                 key={genre.id}
-                className="rounded-full border border-white/[0.06] bg-white/4 px-2 py-0.5 text-[10px] text-zinc-400"
+                className="rounded-full border border-white/6 bg-white/4 px-2 py-0.5 text-[10px] text-zinc-400"
               >
                 {genre.name}
               </span>

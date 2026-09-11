@@ -200,7 +200,7 @@ export const LibraryShowDetails: FC<LibraryShowDetailsProps> = ({ show, credits,
           </div>
 
           {/* Episodes check list */}
-          <ul className="space-y-2">
+          <ul className="space-y-2 max-h-120 overflow-y-auto">
             {show.seasons
               .find((s) => s.id === activeSeason.id)
               ?.episodes.map((episode) => (

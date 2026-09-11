@@ -26,7 +26,7 @@ export const LibraryMovieDetails: FC<LibraryMovieDetailsProps> = ({ movie, credi
       <LibraryMediaDetailsHeader media={movie} />
       {/*{!isShow && movie && movie.trackedStatus === 'Completed' && (*/}
       {/*  <div className="glass-card space-y-3.5 rounded-2xl border border-white/10 p-6 md:p-7">*/}
-      {/*    <div className="flex items-center justify-between border-b border-white/[0.08] pb-2.5">*/}
+      {/*    <div className="flex items-center justify-between border-b border-white/8 pb-2.5">*/}
       {/*      <h4 className="flex items-center gap-2 text-xs font-bold tracking-tight text-violet-400 uppercase">*/}
       {/*        <MessageSquare size={14} className="text-violet-400" />*/}
       {/*        <span>Your Review & Thoughts</span>*/}

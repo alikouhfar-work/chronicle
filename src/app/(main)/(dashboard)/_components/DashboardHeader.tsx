@@ -16,7 +16,7 @@ export const DashboardHeader: FC = async () => {
       <div className="relative z-10 grid grid-cols-1 items-center gap-8 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="apple-badge border border-white/10 bg-white/[0.08] text-zinc-200">
+            <div className="apple-badge border border-white/10 bg-white/8 text-zinc-200">
               <IconSparkles size={13} className="text-violet-400" />
               <span>Your Entertainment Hub</span>
             </div>

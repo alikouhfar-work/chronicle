@@ -4,6 +4,7 @@ import { getTrackedShowsLookup } from '@/features/show';
 import { GetCombinedCreditsResponse } from '@/features/person/types/getCombinedCredits';
 import { CombinedCredit } from '@/features/person/types/combinedCredit';
 import { mapCombinedCredits } from '@/features/person/mappers/mapCombinedCredits';
+import { getTrackedMoviesLookup } from '@/features/movie/queries/getTrackedMoviesLookup';
 
 export const getCombinedCredits = async (id: string): Promise<CombinedCredit[]> => {
   try {
@@ -18,13 +19,25 @@ export const getCombinedCredits = async (id: string): Promise<CombinedCredit[]> 
 
     const results = mapCombinedCredits(combinedCredits.cast, genreDictionary);
 
-    const showTmdbIds = results.map((result) => result.id);
+    const movieTmdbIds = results
+      .filter((result) => result.mediaType === 'movie')
+      .map((result) => result.id);
 
-    const trackedShowsLookup = await getTrackedShowsLookup(showTmdbIds);
+    const showTmdbIds = results
+      .filter((result) => result.mediaType === 'tv')
+      .map((result) => result.id);
 
-    return results.map((show) => ({
-      ...show,
-      isTracked: trackedShowsLookup.has(show.id),
+    const [trackedMoviesLookup, trackedShowsLookup] = await Promise.all([
+      getTrackedMoviesLookup(movieTmdbIds),
+      getTrackedShowsLookup(showTmdbIds),
+    ]);
+
+    return results.map((result) => ({
+      ...result,
+      isTracked:
+        result.mediaType === 'movie'
+          ? trackedMoviesLookup.has(result.id)
+          : trackedShowsLookup.has(result.id),
     }));
   } catch (error) {
     console.error('Failed to fetch combined credits:', error);

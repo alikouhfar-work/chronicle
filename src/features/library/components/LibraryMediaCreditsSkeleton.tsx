@@ -6,7 +6,7 @@ export const LibraryMediaCreditsSkeleton = () => {
         <div className="h-3 w-36 animate-pulse rounded bg-zinc-800" />
       </div>
 
-      <ul className="glass-card space-y-3.5 rounded-2xl border border-white/[0.08] p-4">
+      <ul className="glass-card space-y-3.5 rounded-2xl border border-white/8 p-4">
         {[1, 2, 3, 4].map((member) => (
           <li key={member} className="flex items-center gap-3">
             <div className="h-9 w-9 shrink-0 animate-pulse rounded-full border border-white/10 bg-zinc-800" />

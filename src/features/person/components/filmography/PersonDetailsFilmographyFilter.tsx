@@ -14,7 +14,7 @@ export type PersonDetailsCombinedCreditsFilterProps = {
   combinedCredits: CombinedCredit[];
 };
 
-export const PersonDetailsCombinedCreditsFilter: FC<PersonDetailsCombinedCreditsFilterProps> = ({
+export const PersonDetailsFilmographyFilter: FC<PersonDetailsCombinedCreditsFilterProps> = ({
   combinedCredits,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');

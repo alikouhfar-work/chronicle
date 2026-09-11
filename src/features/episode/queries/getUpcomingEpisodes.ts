@@ -31,9 +31,14 @@ export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {})
         },
       },
     },
-    orderBy: {
-      airDate: 'asc',
-    },
+    orderBy: [
+      {
+        airDate: 'asc',
+      },
+      {
+        episodeNumber: 'asc',
+      },
+    ],
   });
 
   return mapUpcomingEpisodes(episodes);

@@ -42,10 +42,10 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
         {upcomingMedia.map((media) => (
           <UpcomingMediaCard
             media={media}
+            key={media.id}
             mediaType={mediaType}
             title={getTitle?.(media) ?? ''}
             subTitle={getSubtitle?.(media) ?? ''}
-            key={`timeline-${media.id}-${media.name}`}
           />
         ))}
       </ul>
