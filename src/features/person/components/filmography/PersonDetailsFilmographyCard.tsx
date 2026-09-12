@@ -3,8 +3,8 @@ import { IconDeviceTv, IconMovie, IconStar } from '@tabler/icons-react';
 import { PersonDetailsFilmographyCardProps } from '@/features/person/types/personDetailsFilmographyCard';
 import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
 import Image from 'next/image';
-import { ViewDetailsButton } from '@/features/library/components/ViewDetailsButton';
-import { TrackButton } from '@/features/library/components/TrackButton';
+import { LibraryMediaViewDetailsButton } from '@/features/library/components/LibraryMediaViewDetailsButton';
+import { LibraryMediaTrackButton } from '@/features/library/components/LibraryMediaTrackButton';
 
 export const PersonDetailsFilmographyCard: FC<PersonDetailsFilmographyCardProps> = ({
   combinedCredit,
@@ -78,7 +78,7 @@ export const PersonDetailsFilmographyCard: FC<PersonDetailsFilmographyCardProps>
         {/* Action Button */}
         <div className="border-t border-white/8 pt-2">
           {combinedCredit.isTracked ? (
-            <ViewDetailsButton
+            <LibraryMediaViewDetailsButton
               unstyled
               showIcon
               tmdbId={combinedCredit.id}
@@ -86,7 +86,7 @@ export const PersonDetailsFilmographyCard: FC<PersonDetailsFilmographyCardProps>
               className="w-full border border-violet-500/25 bg-violet-500/15 py-1.5 text-[11px] font-bold text-violet-300 transition-all hover:bg-violet-500/25"
             />
           ) : (
-            <TrackButton
+            <LibraryMediaTrackButton
               unstyled
               tmdbId={combinedCredit.id}
               mediaType={combinedCredit.mediaType}

@@ -6,13 +6,15 @@ import { usePathname } from 'next/navigation';
 
 export const Footer = () => {
   const pathname = usePathname();
+  const isActiveRoute = (href: string) =>
+    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <footer className="fixed right-4 bottom-5 left-4 z-40 md:hidden">
       <div className="grid h-14 grid-cols-3 rounded-full border border-white/12 bg-zinc-900/90 p-1 shadow-2xl shadow-black/90 backdrop-blur-2xl">
         {navigation.map((item) => {
           const Icon = item.icon;
-          const activeTab = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+          const activeTab = isActiveRoute(item.href);
 
           return (
             <Link

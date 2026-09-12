@@ -4,7 +4,7 @@ import {
   LibraryMediaTypeSwitch,
   LibraryMovies,
   type LibraryPageProps,
-  LibrarySectionLoading,
+  LibraryMediaSectionLoading,
   LibraryShows,
 } from '@/features/library';
 import { FC, Suspense } from 'react';
@@ -20,12 +20,12 @@ const LibraryPage: FC<LibraryPageProps> = async ({ searchParams }) => {
       <LibraryFilters />
       <LibraryMediaTypeSwitch />
       {showTv && (
-        <Suspense fallback={<LibrarySectionLoading />}>
+        <Suspense fallback={<LibraryMediaSectionLoading />}>
           <LibraryShows sort={sort} status={status} search={search} />
         </Suspense>
       )}
       {showMovie && (
-        <Suspense fallback={<LibrarySectionLoading />}>
+        <Suspense fallback={<LibraryMediaSectionLoading />}>
           <LibraryMovies sort={sort} status={status} search={search} />
         </Suspense>
       )}

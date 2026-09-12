@@ -7,6 +7,8 @@ import Link from 'next/link';
 
 export const Header = () => {
   const pathname = usePathname();
+  const isActiveRoute = (href: string) =>
+    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className="bg-canvas/80 sticky top-0 z-40 border-b border-white/8 px-4 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300 sm:px-6 lg:px-8">
@@ -19,7 +21,7 @@ export const Header = () => {
               width="40"
               height="40"
               alt="Chronicle Logo"
-              src="/icons/logo.svg"
+              src="/icons/logo.png"
               referrerPolicy="no-referrer"
             />
           </div>
@@ -41,7 +43,7 @@ export const Header = () => {
         <nav className="hidden items-center rounded-full border border-white/8 bg-zinc-900/80 p-1 shadow-inner backdrop-blur-xl md:flex">
           {navigation.map((item) => {
             const Icon = item.icon;
-            const activeTab = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+            const activeTab = isActiveRoute(item.href);
 
             return (
               <Link

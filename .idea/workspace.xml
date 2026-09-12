@@ -5,10 +5,57 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea579f66-f086-464d-8d90-56332f3f2e8e" name="Changes" comment="feat: Add Batch Episodes in Upcoming Section">
+      <change afterPath="$PROJECT_DIR$/public/sw.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/manifest.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ServiceWorkerRegistration.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetails.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/features/library/types/libraryDetailsSeasons.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/upcoming/UpcomingMediaCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/episode/mappers/mapUpcomingEpisodes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/episode/mappers/mapUpcomingEpisodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/pwa-192x192.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/pwa-512x512.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icons/pwa-maskable.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/loading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/[...slug]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/library/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/library/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/trending/TrendingMediaCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/trending/TrendingMediaCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemFooter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsFooter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryItemNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaCreditsSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsCastSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaDetailsHeaderSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsHeaderSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMediaRecommendationsSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsSimilarMediaSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieDetails.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/movies/LibraryMovieRating.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovieStatusChangeButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/movies/LibraryMovieStatusChangeButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryMovies.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/movies/LibraryMovies.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibrarySection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibrarySectionLoading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaSectionLoading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsSeasons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowDetailsSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/details/LibraryDetailsSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowProgress.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/shows/LibraryShowProgress.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShowStatusChangeButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/shows/LibraryShowStatusChangeButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/LibraryShows.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/shows/LibraryShows.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/TrackButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaTrackButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/components/ViewDetailsButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/components/LibraryMediaViewDetailsButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryGridCard.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryGridView.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryItem.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryItemFooter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryDetailsFooter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryItemHeader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryDetailsHeader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryMovieDetails.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/librarySection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMediaSection.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/libraryShowDetails.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryDetails.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/trackButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMediaTrackButton.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/library/types/viewDetailsButton.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/library/types/libraryMediaViewDetailsButton.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/person/components/filmography/PersonDetailsFilmographyCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/person/components/filmography/PersonDetailsFilmographyCard.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +65,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaScript File" />
         <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
       </list>
@@ -44,61 +92,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="2.6419450221531083E-89" />
-      <entry key="MS500" value="1.924796474996234E-18" />
-      <entry key="S2" value="3.7963934257108513E-5" />
-      <entry key="S5" value="0.020405715355118408" />
-      <entry key="S10" value="0.1894755667830384" />
-      <entry key="S30" value="0.9676226333360602" />
-      <entry key="S60" value="1.603345815249095" />
-      <entry key="M2" value="2.151473934271385" />
-      <entry key="M5" value="2.88528151155116" />
-      <entry key="M10" value="5.302802400035635" />
-      <entry key="M15" value="8.937742935601968" />
-      <entry key="M30" value="23.921756074286368" />
-      <entry key="H1" value="60.759523737864384" />
-      <entry key="H2" value="130.4679449608021" />
-      <entry key="H4" value="257.03715780653096" />
-      <entry key="D1" value="899.0180976914128" />
-      <entry key="W1" value="2591.943811336818" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="1.33397443298115E-115" />
+      <entry key="S2" value="1.9530472537800396E-29" />
+      <entry key="S5" value="4.291780799501488E-12" />
+      <entry key="S10" value="3.236434995530423E-6" />
+      <entry key="S30" value="0.03092741395797062" />
+      <entry key="S60" value="0.34056612466384134" />
+      <entry key="M2" value="1.2479596223443477" />
+      <entry key="M5" value="3.5440047343719123" />
+      <entry key="M10" value="7.5308780250925365" />
+      <entry key="M15" value="12.623297388528558" />
+      <entry key="M30" value="31.65857325022683" />
+      <entry key="H1" value="71.92437788180908" />
+      <entry key="H2" value="146.99644192920226" />
+      <entry key="H4" value="280.55931287173394" />
+      <entry key="D1" value="958.918339496588" />
+      <entry key="W1" value="2678.8581693648694" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0000594706462378" />
-      <entry key="MS500" value="1.1829559789019861" />
-      <entry key="S2" value="2.0624369125541113" />
-      <entry key="S5" value="2.5964798805689187" />
-      <entry key="S10" value="3.315529114966071" />
-      <entry key="S30" value="6.1893296518162275" />
-      <entry key="S60" value="8.296088941886495" />
-      <entry key="M2" value="9.877484321259198" />
-      <entry key="M5" value="11.097173852003602" />
-      <entry key="M10" value="12.132784588475213" />
-      <entry key="M15" value="14.11972923245501" />
-      <entry key="M30" value="26.57638526163259" />
-      <entry key="H1" value="64.8032091804331" />
-      <entry key="H2" value="141.92270532747506" />
-      <entry key="H4" value="273.2853606864733" />
-      <entry key="D1" value="844.9733997224022" />
-      <entry key="W1" value="2444.902901212939" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.000000000019158" />
+      <entry key="S10" value="1.0000074242731907" />
+      <entry key="S30" value="1.0774004525775736" />
+      <entry key="S60" value="2.0519642718909" />
+      <entry key="M2" value="5.20924303627852" />
+      <entry key="M5" value="11.194846587695297" />
+      <entry key="M10" value="16.03631536533434" />
+      <entry key="M15" value="19.85715658552163" />
+      <entry key="M30" value="32.376222963387214" />
+      <entry key="H1" value="63.761772439507055" />
+      <entry key="H2" value="135.32052508342915" />
+      <entry key="H4" value="268.82575486100745" />
+      <entry key="D1" value="877.6717204394166" />
+      <entry key="W1" value="2502.002269093284" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.03847369083691247" />
-      <entry key="MS500" value="0.590714699618684" />
-      <entry key="S2" value="1.6871771387248222" />
-      <entry key="S5" value="2.4079261872022606" />
-      <entry key="S10" value="3.3584221879461906" />
-      <entry key="S30" value="7.049245093345216" />
-      <entry key="S60" value="9.821920711889616" />
-      <entry key="M2" value="11.980564991379431" />
-      <entry key="M5" value="13.959730313929342" />
-      <entry key="M10" value="17.421551512610186" />
-      <entry key="M15" value="23.044789264458867" />
-      <entry key="M30" value="50.48310057982241" />
-      <entry key="H1" value="125.54318397071857" />
-      <entry key="H2" value="272.3690706114569" />
-      <entry key="H4" value="530.3009681473488" />
-      <entry key="D1" value="1743.9787838176574" />
-      <entry key="W1" value="5036.841570907458" />
+      <entry key="MS100" value="1.0998851260445367E-9" />
+      <entry key="MS500" value="0.016153605253874447" />
+      <entry key="S2" value="0.35650642934103527" />
+      <entry key="S5" value="0.6619526827275198" />
+      <entry key="S10" value="0.8136137890727849" />
+      <entry key="S30" value="1.0352100388971075" />
+      <entry key="S60" value="2.315105638762484" />
+      <entry key="M2" value="6.355566833371339" />
+      <entry key="M5" value="14.65257840864943" />
+      <entry key="M10" value="23.508316797731243" />
+      <entry key="M15" value="32.43446210991106" />
+      <entry key="M30" value="64.00256135224659" />
+      <entry key="H1" value="135.65971833938696" />
+      <entry key="H2" value="282.2925688712683" />
+      <entry key="H4" value="549.362053359564" />
+      <entry key="D1" value="1836.5766796010184" />
+      <entry key="W1" value="5180.855148542937" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -117,47 +165,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "bun",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/person/components",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "bun",
-    "prettierjs.PrettierConfiguration.Package": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;bun&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/src/features/library/components&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/alikouhfar/Desktop/Projects/Personal/chronicle/node_modules/typescript/lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/features/library/components" />
       <recent name="$PROJECT_DIR$/src/features/person/components" />
       <recent name="$PROJECT_DIR$/src/features/person/components/filmography" />
       <recent name="$PROJECT_DIR$/src/features/person/mappers" />
       <recent name="$PROJECT_DIR$/src/features/person/types" />
-      <recent name="$PROJECT_DIR$/src/features/person/queries" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/features/library/components/shows" />
+      <recent name="$PROJECT_DIR$/src/features/library/components/movies" />
+      <recent name="$PROJECT_DIR$/src/features/library/components/details" />
       <recent name="$PROJECT_DIR$/src/features/person/components/filmography" />
       <recent name="$PROJECT_DIR$/src/app/(main)/search" />
-      <recent name="$PROJECT_DIR$/src/features/show/actions" />
-      <recent name="$PROJECT_DIR$/src/features/movie/actions" />
-      <recent name="$PROJECT_DIR$/src/features/episode/components" />
     </key>
   </component>
   <component name="RunManager" selected="npm.Next.js: server-side">
@@ -211,7 +259,9 @@
       <workItem from="1788625743437" duration="7000" />
       <workItem from="1788630457961" duration="3873000" />
       <workItem from="1788803351243" duration="3697000" />
-      <workItem from="1789106400387" duration="7879000" />
+      <workItem from="1789106400387" duration="8182000" />
+      <workItem from="1789137004500" duration="3342000" />
+      <workItem from="1789227998578" duration="4158000" />
     </task>
     <task id="LOCAL-00001" summary="fix: Fix Build Errors">
       <option name="closed" value="true" />
@@ -301,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789113491068</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="feat: Add Batch Episodes in Upcoming Section">
+      <option name="closed" value="true" />
+      <created>1789115276957</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1789115276957</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

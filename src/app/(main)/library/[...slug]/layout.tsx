@@ -1,17 +1,17 @@
 import { ReactNode } from 'react';
-import { LibraryItemNavigation } from '@/features/library/components/LibraryItemNavigation';
+import { LibraryDetailsNavigation } from '@/features/library';
 
-const LibraryItemLayout = ({
+const LibraryDetailsLayout = ({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) => {
   return (
     <article className="animate-fade-in mx-auto max-w-5xl space-y-8 font-sans">
-      <LibraryItemNavigation />
+      <LibraryDetailsNavigation />
       {children}
     </article>
   );
 };
 
-export default LibraryItemLayout;
+export default LibraryDetailsLayout;

@@ -3,8 +3,8 @@ import { TrendingShow } from '@/features/show';
 import { TrendingMovie } from '@/features/movie';
 import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
 import { IconCircleFilled } from '@tabler/icons-react';
-import { ViewDetailsButton } from '@/features/library/components/ViewDetailsButton';
-import { TrackButton } from '@/features/library/components/TrackButton';
+import { LibraryMediaViewDetailsButton } from '@/features/library/components/LibraryMediaViewDetailsButton';
+import { LibraryMediaTrackButton } from '@/features/library/components/LibraryMediaTrackButton';
 import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
 import Image from 'next/image';
 
@@ -65,9 +65,9 @@ export const TrendingMediaCard = async <T extends TrendingShow | TrendingMovie>(
           </span>
 
           {media.isTracked ? (
-            <ViewDetailsButton tmdbId={media.id} mediaType={media.mediaType} />
+            <LibraryMediaViewDetailsButton tmdbId={media.id} mediaType={media.mediaType} />
           ) : (
-            <TrackButton tmdbId={media.id} mediaType={media.mediaType} />
+            <LibraryMediaTrackButton tmdbId={media.id} mediaType={media.mediaType} />
           )}
         </div>
       </div>

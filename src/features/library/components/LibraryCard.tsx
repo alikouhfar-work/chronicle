@@ -2,12 +2,12 @@ import { showStatusConfig } from '@/features/show/lib/showStatusConfig';
 import { LibraryCardProps } from '@/features/library/types/libraryCard';
 import { FC } from 'react';
 import { getPosterPlaceholderColor } from '@/utils/getPosterPlaceholderColor';
-import { LibraryShowProgress } from '@/features/library/components/LibraryShowProgress';
 import { getTmdbImageUrl } from '@/utils/getTmdbImageUrl';
 import Image from 'next/image';
-import { LibraryMovieRating } from '@/features/library/components/LibraryMovieRating';
 import Link from 'next/link';
 import { LibraryMediaDeleteButton } from '@/features/library/components/LibraryMediaDeleteButton';
+import { LibraryShowProgress } from '@/features/library/components/shows/LibraryShowProgress';
+import { LibraryMovieRating } from '@/features/library/components/movies/LibraryMovieRating';
 
 export const LibraryCard: FC<LibraryCardProps> = ({ media, mediaType }) => {
   const statusConfig = media.tracking?.status && showStatusConfig[media.tracking.status];
