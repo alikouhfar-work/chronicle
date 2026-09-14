@@ -1,14 +1,15 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../generated/prisma/client';
 
-const connectionString =
-  process.env.VERCEL_ENV === 'production'
-    ? process.env.DATABASE_URL
-    : process.env.DEMO_DATABASE_URL;
+const isDemo = process.env.PRISMA_TARGET === 'demo';
+
+const connectionString = isDemo
+  ? process.env.DEMO_DATABASE_URL
+  : process.env.DATABASE_URL;
 
 if (!connectionString) {
   throw new Error(
-    `No database URL resolved. VERCEL_ENV=${process.env.VERCEL_ENV}`,
+    `No database URL resolved. PRISMA_TARGET=${process.env.PRISMA_TARGET}`,
   );
 }
 
