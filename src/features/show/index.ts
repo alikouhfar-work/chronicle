@@ -4,7 +4,6 @@ export { getSimilarShows } from './queries/getSimilarShows';
 export { getShowCredits } from './queries/getShowCredits';
 export { getTrendingShows } from './queries/getTrendingShows';
 export { getTrackedShow } from './queries/getTrackedShow';
-export { getTrackedShows } from './queries/getTrackedShows';
 export { getFreshTrackedShow } from './queries/getFreshTrackedShow';
 export { getTrackedShowsLookup } from './queries/getTrackedShowsLookup';
 

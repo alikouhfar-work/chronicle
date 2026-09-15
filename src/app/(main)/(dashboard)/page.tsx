@@ -1,7 +1,8 @@
 import { DashboardHeader } from '@/app/(main)/(dashboard)/_components/DashboardHeader';
 import { TrendingShowList } from '@/features/show';
 import { TrendingMovieList, UpcomingMovieList } from '@/features/movie';
-import { UpcomingEpisodeList, UpNextEpisodesSection } from '@/features/episode';
+import { UpcomingEpisodeList } from '@/features/episode/components/UpcomingShowList';
+import { UpNextEpisodesSection } from '@/features/episode/components/upNext/UpNextEpisodesSection';
 
 const DashboardPage = async () => {
   return (

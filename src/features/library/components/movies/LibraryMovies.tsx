@@ -1,7 +1,7 @@
 import { IconMovie } from '@tabler/icons-react';
-import { getTrackedMovies } from '@/features/movie';
 import { LibraryMediaSection } from '@/features/library/components/LibraryMediaSection';
 import { LibraryMoviesProps } from '@/features/library/types/libraryMovies';
+import { getTrackedMovies } from '@/features/movie/queries/getTrackedMovies';
 
 export const LibraryMovies = async ({ sort, status, search }: LibraryMoviesProps) => {
   const movies = await getTrackedMovies(sort, status, search);

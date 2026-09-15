@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { getUpNextEpisodes } from '@/features/episode';
 import { UpNextEpisodesSectionHeader } from '@/features/episode/components/upNext/UpNextEpisodesSectionHeader';
 import { UpNextEpisodesEmpty } from '@/features/episode/components/upNext/UpNextEpisodesEmpty';
 import { UpNextEpisodesList } from '@/features/episode/components/upNext/UpNextEpisodesList';
+import { getUpNextEpisodes } from '@/features/episode/queries/getUpNextEpisodes';
 
 export const UpNextEpisodesSection: FC = async () => {
   const upNextEpisodes = await getUpNextEpisodes();
-  console.log(upNextEpisodes)
+  console.log(upNextEpisodes);
 
   return (
     <section className="space-y-4">

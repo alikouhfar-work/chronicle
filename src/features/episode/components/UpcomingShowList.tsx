@@ -1,8 +1,8 @@
 import { IconDeviceTv } from '@tabler/icons-react';
 import { FC } from 'react';
-import { getUpcomingEpisodes } from '@/features/episode';
 import { UpcomingMediaSection } from '@/components/upcoming/UpcomingMediaSection';
 import { MappedUpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
+import { getUpcomingEpisodes } from '@/features/episode/queries/getUpcomingEpisodes';
 
 export const UpcomingEpisodeList: FC = async () => {
   const upcomingEpisodes = await getUpcomingEpisodes();
