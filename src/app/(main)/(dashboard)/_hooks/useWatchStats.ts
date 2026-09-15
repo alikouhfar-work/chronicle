@@ -38,17 +38,6 @@ export const useWatchStats = (shows: TrackedShow[], movies: TrackedMovie[]): Wat
   const totalCompletedCount = completedShowsCount + completedMoviesCount;
   const totalLibraryCount = shows.length + movies.length;
 
-  console.log({
-    totalShowMinutes,
-    totalMovieMinutes,
-    episodesCount,
-    moviesCount,
-    completedShowsCount,
-    completedMoviesCount,
-    completionRatePercent:
-      totalLibraryCount === 0 ? 0 : Math.round((totalCompletedCount / totalLibraryCount) * 100),
-  });
-
   return {
     totalShowMinutes,
     totalMovieMinutes,
