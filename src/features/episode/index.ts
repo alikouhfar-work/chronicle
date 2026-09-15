@@ -1,3 +1,4 @@
+export { ShowDetailsEpisodeCard } from './components/ShowDetailsEpisodeCard';
 export { UpNextEpisodesSection } from './components/upNext/UpNextEpisodesSection';
 export { UpNextEpisodesSectionSkeleton } from './components/upNext/UpNextEpisodesSectionSkeleton';
 export { UpcomingEpisodeList } from './components/UpcomingShowList';

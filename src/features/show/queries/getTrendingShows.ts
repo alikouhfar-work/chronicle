@@ -2,7 +2,7 @@ import { tmdbFetch } from '@/utils/tmdbFetch';
 import { getTrackedShowsLookup, mapTrendingShows } from '@/features/show';
 import { getGenreDictionary } from '@/features/genre';
 import { GetTrendingShowsResponse } from '@/features/show/types/getTrendingShows';
-import { TrendingShow } from '@/features/show/types/trending';
+import { TrendingShow } from '@/features/show/types/trendingShow';
 
 export const getTrendingShows = async (): Promise<TrendingShow[]> => {
   try {

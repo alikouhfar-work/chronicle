@@ -55,7 +55,7 @@ export async function GET(request: Request) {
   // 3. Reset and seed
   // ---------------------------------------------------------------------------
   try {
-    const reset = await execAsync('npx prisma migrate reset --force --skip-seed', {
+    const reset = await execAsync('npx prisma migrate reset --force', {
       env: childEnv,
       timeout: 50_000,
     });

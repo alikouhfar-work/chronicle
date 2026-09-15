@@ -1,5 +1,4 @@
 import { GenreRaw } from '@/features/genre';
-import { MappedUpcomingEpisode } from '@/features/episode/types/upcomingEpisode';
 
 export type TrendingShowRaw = {
   adult: boolean;

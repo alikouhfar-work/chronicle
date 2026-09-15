@@ -1,26 +1,17 @@
 import {
   IconCalendar,
   IconCalendarTime,
-  IconCircle,
-  IconCircleCheck,
   IconEdit,
   IconMessage,
   IconStar,
 } from '@tabler/icons-react';
-import { FC, useTransition } from 'react';
-import { toggleEpisodeWatched } from '@/features/show/actions/toggleEpisodeWatched';
-import { ShowDetailsEpisodeCardProps } from '@/features/show/types/showDetailsEpisodeCardProps';
+import { FC } from 'react';
 import { format } from 'date-fns';
+import { ShowDetailsEpisodeCardToggleButton } from '@/features/episode/components/ShowDetailsEpisodeCardToggleButton';
+import { ShowDetailsEpisodeCardProps } from '@/features/episode/types/showDetailsEpisodeCardProps';
 
 export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({ showId, episode }) => {
   const isWatched = episode.tracking?.watched ?? false;
-  const [isEpisodePending, startEpisodeTransition] = useTransition();
-
-  const handleToggleEpisode = (episodeId: string) => {
-    startEpisodeTransition(async () => {
-      await toggleEpisodeWatched(showId, episodeId);
-    });
-  };
 
   const isUpcomingEpisode = !episode.airDate || episode.airDate > new Date();
 
@@ -46,23 +37,11 @@ export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({ showId
           <IconCalendarTime size={20} className="text-violet-400" />
         </div>
       ) : (
-        <button
-          onClick={() => handleToggleEpisode(episode.id)}
-          className={`mt-0.5 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-transform duration-150 active:scale-90 ${
-            isWatched
-              ? 'bg-violet-500/15 text-violet-400'
-              : 'bg-zinc-800 text-zinc-500 hover:text-zinc-300'
-          }`}
-          title={isWatched ? 'Mark as unwatched' : 'Mark as watched'}
-        >
-          {isEpisodePending ? (
-            <span className="block size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-          ) : isWatched ? (
-            <IconCircleCheck size={20} className="fill-violet-400/20" />
-          ) : (
-            <IconCircle size={20} />
-          )}
-        </button>
+        <ShowDetailsEpisodeCardToggleButton
+          showId={showId}
+          episodeId={episode.id}
+          isWatched={isWatched}
+        />
       )}
 
       <div className="flex-1 space-y-1">
@@ -90,23 +69,21 @@ export const ShowDetailsEpisodeCard: FC<ShowDetailsEpisodeCardProps> = ({ showId
           </p>
         )}
 
-        {isEpisodePending && (
-          <div className="flex flex-wrap items-center gap-3 pt-1.5">
-            {episode.tracking?.rating ? (
-              <div className="flex items-center gap-1 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-0.5 text-xs font-bold text-amber-400">
-                <IconStar className="fill-amber-400 text-amber-400" size={11} />
-                <span>{episode.tracking.rating} / 5</span>
-              </div>
-            ) : null}
+        <div className="flex flex-wrap items-center gap-3 pt-1.5">
+          {episode.tracking?.rating ? (
+            <div className="flex items-center gap-1 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-0.5 text-xs font-bold text-amber-400">
+              <IconStar className="fill-amber-400 text-amber-400" size={11} />
+              <span>{episode.tracking.rating} / 5</span>
+            </div>
+          ) : null}
 
-            {episode.tracking?.notes ? (
-              <p className="line-clamp-1 flex max-w-xl items-center gap-1.5 text-xs text-zinc-300 italic">
-                <IconMessage size={12} className="shrink-0 text-violet-400" />
-                <span>&#34;{episode.tracking.notes}&#34;</span>
-              </p>
-            ) : null}
-          </div>
-        )}
+          {episode.tracking?.notes ? (
+            <p className="line-clamp-1 flex max-w-xl items-center gap-1.5 text-xs text-zinc-300 italic">
+              <IconMessage size={12} className="shrink-0 text-violet-400" />
+              <span>&#34;{episode.tracking.notes}&#34;</span>
+            </p>
+          ) : null}
+        </div>
       </div>
 
       {/* Review button */}

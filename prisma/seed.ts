@@ -3,8 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getTrendingMovies } from '@/features/movie/queries/getTrendingMovies';
 import { getTrendingShows } from '@/features/show/queries/getTrendingShows';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../generated/prisma/enums';
-import { addMovie } from '@/features/movie';
-import { addShow } from '@/features/show';
+import { addMovie } from '@/features/movie/actions/addMovie';
+import { addShow } from '@/features/show/actions/addShow';
 
 const MAX_MOVIES = 5;
 const MAX_SHOWS = 5;
@@ -47,12 +47,7 @@ async function clearDatabase() {
 }
 
 async function main() {
-  const target =
-    process.env.PRISMA_TARGET === 'demo'
-      ? 'demo'
-      : process.env.PRISMA_TARGET === 'personal'
-        ? 'personal'
-        : `default (${process.env.VERCEL_ENV ?? 'local'})`;
+  const target = process.env.PRISMA_TARGET === 'demo' ? 'demo' : 'personal';
 
   console.log(`[seed] target: ${target}`);
 

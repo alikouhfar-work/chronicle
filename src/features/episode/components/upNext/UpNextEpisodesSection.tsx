@@ -6,6 +6,7 @@ import { UpNextEpisodesList } from '@/features/episode/components/upNext/UpNextE
 
 export const UpNextEpisodesSection: FC = async () => {
   const upNextEpisodes = await getUpNextEpisodes();
+  console.log(upNextEpisodes)
 
   return (
     <section className="space-y-4">
