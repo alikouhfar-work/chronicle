@@ -1,0 +1,23 @@
+name: Reset Demo Database
+
+on:
+  schedule:
+    # Runs every Monday and Thursday at 5:00 AM UTC (08:30 IRST)
+    - cron: '0 5 * * 1,4'
+  workflow_dispatch: # Allow manual trigger from the Actions tab
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger demo reset
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X GET "https://chronicle-release.vercel.app/api/cron/reset-demo" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          echo "HTTP status: $response"
+          if [ "$response" != "200" ]; then
+            echo "Reset failed with status $response"
+            exit 1
+          fi
+          echo "Demo database reset successfully"
