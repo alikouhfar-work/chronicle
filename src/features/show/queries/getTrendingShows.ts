@@ -7,11 +7,7 @@ import { TrendingShow } from '@/features/show/types/trendingShow';
 export const getTrendingShows = async (): Promise<TrendingShow[]> => {
   try {
     const [trendingShows, genreDictionary] = await Promise.all([
-      tmdbFetch<GetTrendingShowsResponse>('trending/tv/week', {
-        next: {
-          revalidate: 86400,
-        },
-      }),
+      tmdbFetch<GetTrendingShowsResponse>('trending/tv/week'),
       getGenreDictionary(),
     ]);
 

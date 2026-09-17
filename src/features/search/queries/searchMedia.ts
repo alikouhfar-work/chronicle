@@ -12,7 +12,11 @@ export const searchMedia = async (query: string) => {
     }
 
     const [searchResult, genreDictionary] = await Promise.all([
-      tmdbFetch<SearchResultResponse>(`/search/multi?query=${encodeURIComponent(query)}`),
+      tmdbFetch<SearchResultResponse>(`/search/multi?query=${encodeURIComponent(query)}`, {
+        next: {
+          revalidate: 300,
+        },
+      }),
       getGenreDictionary(),
     ]);
 

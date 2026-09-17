@@ -6,7 +6,7 @@ export const getPerson = async (id: string): Promise<Person | null> => {
   try {
     const person = await tmdbFetch<PersonRaw>(`person/${id}`, {
       next: {
-        revalidate: 86400,
+        revalidate: 604800,
       },
     });
 

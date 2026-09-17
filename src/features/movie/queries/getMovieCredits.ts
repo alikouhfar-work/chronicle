@@ -6,7 +6,7 @@ export const getMovieCredits = async (id: string): Promise<Credits | null> => {
   try {
     const credits = await tmdbFetch<CreditsRaw>(`movie/${id}/credits`, {
       next: {
-        revalidate: 86400,
+        revalidate: 604800,
       },
     });
 

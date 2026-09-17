@@ -7,11 +7,7 @@ import { getTrackedMoviesLookup } from '@/features/movie/queries/getTrackedMovie
 export const getTrendingMovies = async (): Promise<TrendingMovie[]> => {
   try {
     const [trendingMovies, genreDictionary] = await Promise.all([
-      tmdbFetch<GetTrendingMoviesResponse>('trending/movie/week', {
-        next: {
-          revalidate: 86400,
-        },
-      }),
+      tmdbFetch<GetTrendingMoviesResponse>('trending/movie/week'),
       getGenreDictionary(),
     ]);
 

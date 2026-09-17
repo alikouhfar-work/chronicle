@@ -10,7 +10,7 @@ export const getSimilarShows = async (id: string): Promise<SimilarShow[]> => {
     const [similarShows, genreDictionary] = await Promise.all([
       tmdbFetch<GetSimilarShowsResponse>(`tv/${id}/similar`, {
         next: {
-          revalidate: 86400,
+          revalidate: 604800,
         },
       }),
       getGenreDictionary(),

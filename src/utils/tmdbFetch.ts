@@ -1,18 +1,22 @@
 const baseUrl = process.env.BASE_URL;
 const accessToken = process.env.ACCESS_TOKEN;
 
-export async function tmdbFetch<T>(
+export const tmdbFetch = async <T>(
   path: string,
   options: RequestInit & {
     next?: NextFetchRequestConfig;
   } = {},
-): Promise<T> {
+): Promise<T> => {
   if (!accessToken) {
     throw new Error('ACCESS_TOKEN is not defined');
   }
 
   const response = await fetch(`${baseUrl}/${path}`, {
     ...options,
+    next: {
+      revalidate: 86400,
+      ...options.next,
+    },
     headers: {
       Authorization: `Bearer ${accessToken}`,
       Accept: 'application/json',
@@ -25,4 +29,4 @@ export async function tmdbFetch<T>(
   }
 
   return response.json() as Promise<T>;
-}
+};

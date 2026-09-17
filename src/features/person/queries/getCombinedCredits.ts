@@ -11,7 +11,7 @@ export const getCombinedCredits = async (id: string): Promise<CombinedCredit[]> 
     const [combinedCredits, genreDictionary] = await Promise.all([
       tmdbFetch<GetCombinedCreditsResponse>(`person/${id}/combined_credits`, {
         next: {
-          revalidate: 86400,
+          revalidate: 604800,
         },
       }),
       getGenreDictionary(),
