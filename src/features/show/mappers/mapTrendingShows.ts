@@ -1,5 +1,5 @@
 import { TrendingShowRaw } from '@/features/show';
-import { TrendingShow } from '@/features/show/types/trending';
+import { TrendingShow } from '@/features/show/types/trendingShow';
 
 export const mapTrendingShows = (
   trendingShows: TrendingShowRaw[],

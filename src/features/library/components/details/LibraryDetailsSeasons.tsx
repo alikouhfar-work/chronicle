@@ -2,10 +2,10 @@
 
 import { FC, useState, useTransition } from 'react';
 import { IconDeviceTv } from '@tabler/icons-react';
-import { setSeasonWatched } from '@/features/show/actions/setSeasonWatched';
-import { ShowDetailsEpisodeCard } from '@/features/show/components/ShowDetailsEpisodeCard';
 import { clsx } from 'clsx';
 import { LibraryDetailsSeasonsProps } from '@/features/library/types/libraryDetailsSeasons';
+import { setSeasonWatched } from '@/features/season/actions/setSeasonWatched';
+import { ShowDetailsEpisodeCard } from '@/features/episode';
 
 export const LibraryDetailsSeasons: FC<LibraryDetailsSeasonsProps> = ({ show }) => {
   const [isWatchSeasonPending, startWatchSeasonTransition] = useTransition();

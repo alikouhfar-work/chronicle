@@ -1,7 +1,7 @@
 import { IconDeviceTv } from '@tabler/icons-react';
 import { LibraryMediaSection } from '@/features/library/components/LibraryMediaSection';
-import { getTrackedShows } from '@/features/show';
 import { LibraryShowsProps } from '@/features/library/types/libraryShows';
+import { getTrackedShows } from '@/features/show/queries/getTrackedShows';
 
 export const LibraryShows = async ({ sort, status, search }: LibraryShowsProps) => {
   const shows = await getTrackedShows(sort, status, search);

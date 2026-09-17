@@ -1,4 +1,4 @@
-import { searchMedia } from '@/features/search/services/searchMedia';
+import { searchMedia } from '@/features/search/queries/searchMedia';
 import { SearchResultListProps } from '@/features/search/types/searchResultList';
 import { FC } from 'react';
 import { IconSparkles } from '@tabler/icons-react';

@@ -2,8 +2,8 @@
 
 import { IconCircleCheck, IconLoader2 } from '@tabler/icons-react';
 import { FC, MouseEventHandler, useTransition } from 'react';
-import { toggleEpisodeWatched } from '@/features/show/actions/toggleEpisodeWatched';
 import { UpNextEpisodeCardWatchButtonProps } from '@/features/episode/types/upNextEpisodeCardWatchButton';
+import { toggleEpisodeWatched } from '@/features/episode/actions/toggleEpisodeWatched';
 
 export const UpNextEpisodeCardWatchButton: FC<UpNextEpisodeCardWatchButtonProps> = ({
   showId,

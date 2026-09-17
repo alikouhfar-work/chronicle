@@ -13,7 +13,7 @@ jobs:
       - name: Trigger demo reset
         run: |
           response=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X GET "https://chronicle-release.vercel.app/api/cron/reset-demo" \
+            -X GET "https://chronicle-release.vercel.app/api/reset-demo" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
           echo "HTTP status: $response"
           if [ "$response" != "200" ]; then

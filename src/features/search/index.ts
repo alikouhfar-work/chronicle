@@ -4,5 +4,7 @@ export { SearchResultList } from './components/SearchResultList';
 export { SearchResultError } from './components/SearchResultError';
 export { SearchResultLoading } from './components/SearchResultLoading';
 
+export {searchMedia} from './queries/searchMedia'
+
 export type { SearchPageProps } from './types/searchPage';
 export type { SearchResultRaw, SearchResultResponse } from './types/searchResult';

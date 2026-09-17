@@ -1,6 +1,6 @@
-import { syncShow } from '@/features/show';
 import { getTrackedShow } from '@/features/show/queries/getTrackedShow';
 import { shouldSyncShow } from '@/features/show/utils/shouldSyncShow';
+import { syncShow } from '@/features/show/actions/syncShow';
 
 export const getFreshTrackedShow = async (id: string) => {
   const show = await getTrackedShow(id);
