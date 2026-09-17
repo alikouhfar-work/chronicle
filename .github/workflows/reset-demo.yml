@@ -2,9 +2,9 @@ name: Reset Demo Database
 
 on:
   schedule:
-    # Runs every Monday and Thursday at 5:00 AM UTC (08:30 IRST)
-    - cron: '0 5 * * 1,4'
-  workflow_dispatch: # Allow manual trigger from the Actions tab
+    # Runs every Monday and Thursday at 5:00 AM IRST (01:30 UTC)
+    - cron: '30 1 * * 1,4'
+  workflow_dispatch:
 
 jobs:
   reset:
