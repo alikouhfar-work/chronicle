@@ -5,6 +5,7 @@ import { getTrendingShows } from '@/features/show/queries/getTrendingShows';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { addMovie } from '@/features/movie/actions/addMovie';
 import { addShow } from '@/features/show/actions/addShow';
+import { revalidatePath } from 'next/cache';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -100,6 +101,7 @@ export async function GET(request: Request) {
       }
     }
 
+    revalidatePath('/');
     return NextResponse.json({
       ok: true,
       message: 'Demo database reset and seeded successfully.',
