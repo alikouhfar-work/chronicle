@@ -1,7 +1,8 @@
 import { IconDeviceTv } from '@tabler/icons-react';
 import { TrendingMediaSection } from '@/components/trending/TrendingMediaSection';
 import { FC } from 'react';
-import { getTrendingShows, TrendingShow } from '@/features/show';
+import { TrendingShow } from '@/features/show';
+import { getTrendingShows } from '@/features/show/queries/getTrendingShows';
 
 export const TrendingShowList: FC = async () => {
   const trendingShows = await getTrendingShows();

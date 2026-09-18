@@ -10,6 +10,11 @@ export const getTrackedShow = async (id: string): Promise<TrackedShow | null> =>
       genres: true,
       tracking: true,
       seasons: {
+        where: {
+          seasonNumber: {
+            not: 0,
+          },
+        },
         orderBy: {
           seasonNumber: 'asc',
         },

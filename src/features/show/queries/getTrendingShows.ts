@@ -1,17 +1,14 @@
 import { tmdbFetch } from '@/utils/tmdbFetch';
-import { getTrackedShowsLookup, mapTrendingShows } from '@/features/show';
+import { mapTrendingShows } from '@/features/show';
 import { getGenreDictionary } from '@/features/genre';
 import { GetTrendingShowsResponse } from '@/features/show/types/getTrendingShows';
 import { TrendingShow } from '@/features/show/types/trendingShow';
+import { getTrackedShowsLookup } from '@/features/show/queries/getTrackedShowsLookup';
 
 export const getTrendingShows = async (): Promise<TrendingShow[]> => {
   try {
     const [trendingShows, genreDictionary] = await Promise.all([
-      tmdbFetch<GetTrendingShowsResponse>('trending/tv/week', {
-        next: {
-          revalidate: 86400,
-        },
-      }),
+      tmdbFetch<GetTrendingShowsResponse>('trending/tv/week'),
       getGenreDictionary(),
     ]);
 

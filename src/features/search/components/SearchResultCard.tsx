@@ -38,6 +38,17 @@ export const SearchResultCard: FC<SearchResultCardProps> = ({
 
         {/* Badges Overlay */}
         <div className="absolute top-2.5 left-2.5 z-10 flex max-w-[80%] flex-wrap items-center gap-1.5">
+          {isMovie ? (
+            <span className="apple-badge border border-white/10 bg-black/60 text-[10px] text-zinc-300 backdrop-blur-md">
+              <IconMovie size={10} className="text-violet-400" />
+              <span>Movie</span>
+            </span>
+          ) : (
+            <span className="apple-badge border border-white/10 bg-black/60 text-[10px] text-zinc-300 backdrop-blur-md">
+              <IconDeviceTv size={10} className="text-violet-400" />
+              <span>Series</span>
+            </span>
+          )}
           <span className="rounded-full border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-zinc-300 backdrop-blur-md">
             {year}
           </span>

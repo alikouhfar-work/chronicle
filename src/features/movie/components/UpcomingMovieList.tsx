@@ -1,8 +1,8 @@
 import { IconMovie } from '@tabler/icons-react';
 import { FC } from 'react';
 import { UpcomingMediaSection } from '@/components/upcoming/UpcomingMediaSection';
-import { getUpcomingMovies } from '@/features/movie';
 import { MappedUpcomingMovie } from '@/features/movie/types/upcomingMovie';
+import { getUpcomingMovies } from '@/features/movie/queries/getUpcomingMovies';
 
 export const UpcomingMovieList: FC = async () => {
   const upcomingMovies = await getUpcomingMovies();

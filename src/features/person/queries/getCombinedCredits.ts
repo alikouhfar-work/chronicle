@@ -1,17 +1,17 @@
 import { tmdbFetch } from '@/utils/tmdbFetch';
 import { getGenreDictionary } from '@/features/genre';
-import { getTrackedShowsLookup } from '@/features/show';
 import { GetCombinedCreditsResponse } from '@/features/person/types/getCombinedCredits';
 import { CombinedCredit } from '@/features/person/types/combinedCredit';
 import { mapCombinedCredits } from '@/features/person/mappers/mapCombinedCredits';
 import { getTrackedMoviesLookup } from '@/features/movie/queries/getTrackedMoviesLookup';
+import { getTrackedShowsLookup } from '@/features/show/queries/getTrackedShowsLookup';
 
 export const getCombinedCredits = async (id: string): Promise<CombinedCredit[]> => {
   try {
     const [combinedCredits, genreDictionary] = await Promise.all([
       tmdbFetch<GetCombinedCreditsResponse>(`person/${id}/combined_credits`, {
         next: {
-          revalidate: 86400,
+          revalidate: 604800,
         },
       }),
       getGenreDictionary(),

@@ -3,6 +3,7 @@ import { JetBrains_Mono, Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/goog
 import './globals.css';
 import { ReactNode } from 'react';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
+import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',
@@ -26,7 +27,10 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Chronicle',
+  title: {
+    template: 'Chronicle - %s',
+    default: 'Chronicle',
+  },
   applicationName: 'Chronicle',
   description:
     'Your ultimate personal movie and TV show tracker. Track watched episodes, movies, and log statistics.',
@@ -35,7 +39,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0a0a0a',
+  themeColor: '#09090b',
 };
 
 const RootLayout = ({
@@ -49,6 +53,7 @@ const RootLayout = ({
       className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} bg-canvas h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <PWAInstallPrompt />
         <ServiceWorkerRegistration />
         {children}
       </body>

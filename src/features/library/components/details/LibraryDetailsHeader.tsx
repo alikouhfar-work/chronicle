@@ -149,7 +149,6 @@ export const LibraryDetailsHeader: FC<LibraryDetailsHeaderProps> = ({ media }) =
             )}
           </div>
 
-          {/* Movie Star rating */}
           {movie && movie.tracking?.status === 'COMPLETED' && (
             <div className="glass-card flex items-center gap-3 rounded-2xl border border-white/10 p-3 shadow-md">
               <div className="space-y-0.5">
@@ -161,17 +160,6 @@ export const LibraryDetailsHeader: FC<LibraryDetailsHeaderProps> = ({ media }) =
                   <span>{movie?.tracking.rating ? `${movie.tracking.rating} / 5` : 'Unrated'}</span>
                 </div>
               </div>
-              {/*<button*/}
-              {/*  onClick={() => {*/}
-              {/*    setMovieRating(movie?.rating || 0);*/}
-              {/*    setMovieNotes(movie?.notes || '');*/}
-              {/*    setIsEditingMovieLog(true);*/}
-              {/*  }}*/}
-              {/*  className="apple-pill-btn cursor-pointer bg-white/8 p-2 text-zinc-200 hover:bg-white/[0.15]"*/}
-              {/*  title="Edit rating/review"*/}
-              {/*>*/}
-              {/*  <Edit3 size={13} />*/}
-              {/*</button>*/}
             </div>
           )}
         </div>
