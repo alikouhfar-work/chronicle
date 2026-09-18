@@ -49,8 +49,8 @@ export async function generateStaticParams(): Promise<LibraryDetailsParams[]> {
   const [movies, shows] = await Promise.all([getTrackedMovies(), getTrackedShows()]);
 
   return [
-    ...movies.map((movie) => ({ slug: ['movie', movie.id] as [MediaType, string] })),
-    ...shows.map((show) => ({ slug: ['tv', show.id] as [MediaType, string] })),
+    ...movies.map((movie) => ({ slug: ['movie', movie.tmdbId.toString()] as [MediaType, string] })),
+    ...shows.map((show) => ({ slug: ['tv', show.tmdbId.toString()] as [MediaType, string] })),
   ];
 }
 
