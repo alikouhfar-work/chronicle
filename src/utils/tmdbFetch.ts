@@ -1,5 +1,5 @@
-const baseUrl = process.env.BASE_URL;
-const accessToken = process.env.ACCESS_TOKEN;
+const baseUrl = process.env.TMDB_BASE_URL;
+const accessToken = process.env.TMDB_ACCESS_TOKEN;
 
 export const tmdbFetch = async <T>(
   path: string,
@@ -8,7 +8,7 @@ export const tmdbFetch = async <T>(
   } = {},
 ): Promise<T> => {
   if (!accessToken) {
-    throw new Error('ACCESS_TOKEN is not defined');
+    throw new Error('TMDB_ACCESS_TOKEN is not defined');
   }
 
   const response = await fetch(`${baseUrl}/${path}`, {

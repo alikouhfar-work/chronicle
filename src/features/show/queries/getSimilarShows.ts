@@ -3,7 +3,7 @@ import { getGenreDictionary } from '@/features/genre';
 import { GetSimilarShowsResponse } from '@/features/show/types/getSimilarShows';
 import { mapSimilarShows } from '@/features/show/mappers/mapSimilarShows';
 import { SimilarShow } from '@/features/show/types/similarShow';
-import { getTrackedShowsLookup } from '@/features/show';
+import { getTrackedShowsLookup } from '@/features/show/queries/getTrackedShowsLookup';
 
 export const getSimilarShows = async (id: string): Promise<SimilarShow[]> => {
   try {

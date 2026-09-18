@@ -2,10 +2,8 @@ export { TrendingMovieList } from './components/TrendingMovieList';
 export { UpcomingMovieList } from './components/UpcomingMovieList';
 
 export { getMovieCredits } from './queries/getMovieCredits';
-export { getTrackedMovie } from './queries/getTrackedMovie';
 export { getSimilarMovies } from './queries/getSimilarMovies';
 export { getTrendingMovies } from './queries/getTrendingMovies';
-export { getUpcomingMovies } from './queries/getUpcomingMovies';
 
 export { mapTrendingMovies } from './mappers/mapTrendingMovies';
 

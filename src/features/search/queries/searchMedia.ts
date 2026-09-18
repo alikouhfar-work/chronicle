@@ -2,8 +2,8 @@ import { tmdbFetch } from '@/utils/tmdbFetch';
 import { getGenreDictionary } from '@/features/genre';
 import { SearchResultResponse } from '@/features/search';
 import { mapSearchResult } from '@/features/search/mappers/mapSearchResult';
-import { getTrackedShowsLookup } from '@/features/show';
 import { getTrackedMoviesLookup } from '@/features/movie/queries/getTrackedMoviesLookup';
+import { getTrackedShowsLookup } from '@/features/show/queries/getTrackedShowsLookup';
 
 export const searchMedia = async (query: string) => {
   try {

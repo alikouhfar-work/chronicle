@@ -10,7 +10,7 @@ export const SearchForm: FC<SearchFormProps> = ({ query }) => {
           type="text"
           name="query"
           defaultValue={query}
-          placeholder="Search by title (e.g., Dune, Oppenheimer, Shōgun...)"
+          placeholder="Search by title (e.g. Proud, Fellow Travelers...)"
           className="w-full rounded-full border border-white/10 bg-white/6 px-5 py-3.5 pl-12 text-xs font-medium text-white placeholder-zinc-500 shadow-2xl transition-all hover:border-white/20 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 focus:outline-none sm:text-sm"
         />
         <IconSearch className="absolute left-4.5 text-zinc-400" size={18} />

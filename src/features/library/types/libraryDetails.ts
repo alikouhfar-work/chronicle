@@ -1,10 +1,20 @@
-import { SimilarShow } from '@/features/show';
+import { SimilarShow, TrackedShow } from '@/features/show';
 import { Credits } from '@/features/credit';
-import { TrackedMedia } from '@/features/library';
-import { SimilarMovie } from '@/features/movie';
+import { SimilarMovie, TrackedMovie } from '@/features/movie';
+import { MediaType } from '@/types/media';
 
-export type LibraryShowDetailsProps = {
-  media: TrackedMedia;
+type LibraryShowDetailsBaseProps = {
   credits: Credits | null;
-  similarMedia: SimilarShow[] | SimilarMovie[];
 };
+
+export type LibraryShowDetailsProps =
+  | (LibraryShowDetailsBaseProps & {
+      media: TrackedMovie;
+      mediaType: Extract<MediaType, 'movie'>;
+      similarMedia: SimilarMovie[];
+    })
+  | (LibraryShowDetailsBaseProps & {
+      media: TrackedShow;
+      mediaType: Extract<MediaType, 'tv'>;
+      similarMedia: SimilarShow[];
+    });

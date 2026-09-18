@@ -1,9 +1,9 @@
 import { tmdbFetch } from '@/utils/tmdbFetch';
 import { getGenreDictionary } from '@/features/genre';
-import { getTrackedShowsLookup } from '@/features/show';
 import { SimilarMovie } from '@/features/movie/types/similarMovie';
 import { mapSimilarMovies } from '@/features/movie/mappers/mapSimilarMovies';
 import { GetSimilarMoviesResponse } from '@/features/movie/types/getSimilarMovies';
+import { getTrackedShowsLookup } from '@/features/show/queries/getTrackedShowsLookup';
 
 export const getSimilarMovies = async (id: string): Promise<SimilarMovie[]> => {
   try {

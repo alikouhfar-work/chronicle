@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { tmdbFetch } from '@/utils/tmdbFetch';
-import { ShowDetailsRaw } from '@/features/show/types/show';
+import { ShowDetailsRaw } from '@/features/show/types/showDetails';
 import { SeasonRaw } from '@/features/season';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 
