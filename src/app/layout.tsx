@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { JetBrains_Mono, Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { ReactNode } from 'react';
-import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
-import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
+import { ServiceWorkerRegistration } from '@/shared/ui/ServiceWorkerRegistration';
+import { PWAInstallPrompt } from '@/shared/ui/PWAInstallPrompt';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',

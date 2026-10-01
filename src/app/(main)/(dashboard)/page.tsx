@@ -1,10 +1,12 @@
-import { DashboardHeader } from '@/app/(main)/(dashboard)/_components/DashboardHeader';
-import { TrendingShowList } from '@/features/show';
-import { TrendingMovieList, UpcomingMovieList } from '@/features/movie';
-import { UpcomingEpisodeList } from '@/features/episode/components/UpcomingShowList';
-import { UpNextEpisodesSection } from '@/features/episode/components/upNext/UpNextEpisodesSection';
+import { DashboardHeader } from '@/modules/dashboard/components/DashboardHeader';
+import { TrendingShowList } from '@/modules/show';
+import { TrendingMovieList, UpcomingMovieList } from '@/modules/movie';
+import { UpcomingEpisodeList } from '@/modules/episode-season/components/UpcomingEpisodeList';
+import { UpNextEpisodesSection } from '@/modules/episode-season/components/upNext/UpNextEpisodesSection';
 
-const DashboardPage = async () => {
+export const dynamic = 'force-dynamic';
+
+const DashboardPage = () => {
   return (
     <article className="animate-fade-in space-y-10 font-sans">
       <DashboardHeader />

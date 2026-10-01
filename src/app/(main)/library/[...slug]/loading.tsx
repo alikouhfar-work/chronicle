@@ -3,7 +3,7 @@ import {
   LibraryDetailsHeaderSkeleton,
   LibraryDetailsSimilarMediaSkeleton,
   LibraryDetailsSkeleton,
-} from '@/features/library';
+} from '@/modules/library';
 
 const LibraryDetailsPageLoading = () => {
   return (

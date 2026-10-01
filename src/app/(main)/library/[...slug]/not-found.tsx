@@ -7,7 +7,7 @@ import {
   IconQuestionMark,
 } from '@tabler/icons-react';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <div className="glass-panel relative overflow-hidden rounded-3xl border border-white/8 p-8 text-center shadow-2xl sm:p-12">
       {/* Ambient atmospheric lighting */}
@@ -76,4 +76,6 @@ export default function NotFound() {
       </div>
     </div>
   );
-}
+};
+
+export default NotFound;

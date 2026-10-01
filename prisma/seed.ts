@@ -1,10 +1,10 @@
 import 'dotenv/config';
-import { prisma } from '@/lib/prisma';
-import { getTrendingMovies } from '@/features/movie/queries/getTrendingMovies';
-import { getTrendingShows } from '@/features/show/queries/getTrendingShows';
+import { prisma } from '@/infra/db/prisma';
+import { getTrendingMovies } from '@/modules/movie/queries/getTrendingMovies';
+import { getTrendingShows } from '@/modules/show/queries/getTrendingShows';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../generated/prisma/enums';
-import { addMovie } from '@/features/movie/actions/addMovie';
-import { addShow } from '@/features/show/actions/addShow';
+import { addMovie } from '@/modules/movie/actions/addMovie';
+import { addShow } from '@/modules/show/actions/addShow';
 
 const MAX_MOVIES = 5;
 const MAX_SHOWS = 5;

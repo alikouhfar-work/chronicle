@@ -4,17 +4,45 @@ services:
         container_name: chronicle-db
         restart: always
         environment:
-            POSTGRES_USER: ${DATABASE_USER}
-            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-            POSTGRES_DB: ${DATABASE_DB}
+            POSTGRES_USER: ${DATABASE_USER:-admin}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-changeme}
+            POSTGRES_DB: ${DATABASE_DB:-chronicle}
         volumes:
             - db:/var/lib/postgresql/data
         ports:
             - "5434:5432"
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
+            test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-admin}"]
             interval: 10s
             timeout: 5s
             retries: 5
+
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: chronicle-app
+        restart: unless-stopped
+        depends_on:
+            postgres:
+                condition: service_healthy
+        ports:
+            - "3000:3000"
+        env_file:
+            - .env
+        environment:
+            NODE_ENV: production
+            PORT: 3000
+            # Inside the compose network the db is reachable as `postgres:5432`,
+            # not localhost:5434 (which is only the host mapping above).
+            DATABASE_URL: postgresql://${DATABASE_USER:-admin}:${DATABASE_PASSWORD:-changeme}@postgres:5432/${DATABASE_DB:-chronicle}
+            NEXT_PUBLIC_TMDB_IMAGE_BASE_URL: ${TMDB_IMAGE_BASE_URL:-https://image.tmdb.org/t/p}
+        healthcheck:
+            test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
+            interval: 15s
+            timeout: 5s
+            retries: 5
+            start_period: 30s
+
 volumes:
     db:
