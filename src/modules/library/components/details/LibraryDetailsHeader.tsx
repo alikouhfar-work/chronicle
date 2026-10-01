@@ -53,7 +53,12 @@ export const LibraryDetailsHeader = ({ media, controls }: LibraryDetailsHeaderPr
               <span className="text-sm font-semibold text-violet-400">
                 (
                 {show
-                  ? `${show.firstAirDate?.getFullYear()}${show.firstAirDate?.getFullYear() !== show.lastAirDate?.getFullYear() ? `-${show.lastAirDate?.getFullYear()}` : ''}`
+                  ? `${show.firstAirDate?.getFullYear()}${
+                      show.lastAirDate &&
+                      show.firstAirDate?.getFullYear() !== show.lastAirDate.getFullYear()
+                        ? `-${show.lastAirDate.getFullYear()}`
+                        : ''
+                    }`
                   : movie?.releaseDate?.getFullYear()}
                 )
               </span>
