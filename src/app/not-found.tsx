@@ -7,7 +7,7 @@ import {
   IconQuestionMark,
 } from '@tabler/icons-react';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <div className="min-h-screen bg-canvas font-sans antialiased flex items-center justify-center px-4 py-12">
       <div className="glass-panel relative overflow-hidden rounded-3xl border border-white/8 p-8 text-center shadow-2xl sm:p-12 w-full max-w-2xl">
@@ -78,4 +78,6 @@ export default function NotFound() {
       </div>
     </div>
   );
-}
+};
+
+export default NotFound;

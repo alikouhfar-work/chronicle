@@ -1,6 +1,11 @@
 'use client';
 
-import { type ButtonHTMLAttributes, useState } from 'react';
+import { useState } from 'react';
+import type {
+  ErrorButtonProps,
+  ErrorMetaCardProps,
+  LibraryErrorProps,
+} from '@/modules/library/types/libraryDetailsError';
 import {
   IconAlertTriangle,
   IconBookmark,
@@ -18,20 +23,7 @@ import {
 } from '@tabler/icons-react';
 import { clsx } from 'clsx';
 
-export interface NextJSErrorProps {
-  error: Error & { digest?: string };
-  reset: () => void;
-  onBack?: () => void;
-  onNavigateTab?: (tab: 'dashboard' | 'library' | 'search') => void;
-  title?: string;
-}
-
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'ghost';
-  size?: 'sm' | 'md';
-};
-
-const Button = ({ variant = 'ghost', size = 'md', className, ...props }: ButtonProps) => (
+const Button = ({ variant = 'ghost', size = 'md', className, ...props }: ErrorButtonProps) => (
   <button
     {...props}
     className={clsx(
@@ -45,7 +37,7 @@ const Button = ({ variant = 'ghost', size = 'md', className, ...props }: ButtonP
   />
 );
 
-function MetaCard({ label, value, tone }: { label: string; value: string; tone: string }) {
+const MetaCard = ({ label, value, tone }: ErrorMetaCardProps) => {
   return (
     <div className="space-y-1 rounded-2xl border border-white/6 bg-white/3 p-3">
       <span className="block text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
@@ -56,7 +48,7 @@ function MetaCard({ label, value, tone }: { label: string; value: string; tone: 
   );
 }
 
-const Error = ({ error, reset, onBack, onNavigateTab, title }: NextJSErrorProps) => {
+const Error = ({ error, reset, onBack, onNavigateTab, title }: LibraryErrorProps) => {
   const [isRetrying, setIsRetrying] = useState(false);
   const [showStack, setShowStack] = useState(false);
   const [copiedDetails, setCopiedDetails] = useState(false);

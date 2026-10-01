@@ -6,10 +6,10 @@ import {
   type LibraryPageProps,
   LibraryMediaSectionLoading,
   LibraryShows,
-} from '@/features/library';
-import { FC, Suspense } from 'react';
+} from '@/modules/library';
+import { Suspense } from 'react';
 
-const LibraryPage: FC<LibraryPageProps> = async ({ searchParams }) => {
+const LibraryPage = async ({ searchParams }: LibraryPageProps) => {
   const { type = 'tv', status = 'all', sort = 'recent', search } = await searchParams;
   const showTv = type === 'tv';
   const showMovie = type === 'movie' && status !== 'dropped';

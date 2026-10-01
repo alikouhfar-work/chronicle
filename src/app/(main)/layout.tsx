@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import { Header } from '@/shared/ui/Header';
+import { Footer } from '@/shared/ui/Footer';
 import { Toaster } from 'react-hot-toast';
 
 const MainLayout = ({

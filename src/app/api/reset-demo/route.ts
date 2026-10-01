@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { getTrendingMovies } from '@/features/movie/queries/getTrendingMovies';
-import { getTrendingShows } from '@/features/show/queries/getTrendingShows';
+import { prisma } from '@/infra/db/prisma';
+import { getTrendingMovies } from '@/modules/movie/queries/getTrendingMovies';
+import { getTrendingShows } from '@/modules/show/queries/getTrendingShows';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
-import { addMovie } from '@/features/movie/actions/addMovie';
-import { addShow } from '@/features/show/actions/addShow';
+import { addMovie } from '@/modules/movie/actions/addMovie';
+import { addShow } from '@/modules/show/actions/addShow';
 import { revalidatePath } from 'next/cache';
+import { getErrorMessage } from '@/shared/lib/errors';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -27,20 +28,20 @@ const SHOW_STATUSES = [
   ShowTrackingStatus.DROPPED,
 ] as const;
 
-function randomFrom<T>(arr: readonly T[]): T {
+const randomFrom = <T,>(arr: readonly T[]): T => {
   return arr[Math.floor(Math.random() * arr.length)];
-}
+};
 
-function shuffle<T>(arr: readonly T[]): T[] {
+const shuffle = <T,>(arr: readonly T[]): T[] => {
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
   return copy;
-}
+};
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   // 1. Authenticate
   const expected = `Bearer ${process.env.CRON_SECRET}`;
   const received = request.headers.get('authorization');
@@ -59,8 +60,6 @@ export async function GET(request: Request) {
     const movies = shuffle(trendingMovies).slice(0, MAX_MOVIES);
     const shows = shuffle(trendingShows).slice(0, MAX_SHOWS);
 
-    console.log(`[reset-demo] fetched ${movies.length} movie(s), ${shows.length} show(s)`);
-
     // 3. Wipe the demo DB (FK-safe order)
     await prisma.episodeTracking.deleteMany();
     await prisma.showTracking.deleteMany();
@@ -71,46 +70,41 @@ export async function GET(request: Request) {
     await prisma.movie.deleteMany();
     await prisma.genre.deleteMany();
 
-    console.log('[reset-demo] cleared existing data');
-
-    // 4. Seed movies
+    // 4. Seed movies (best-effort per title, failures collected into the response)
+    const movieFailures: string[] = [];
     for (const movie of movies) {
       const status = randomFrom(MOVIE_STATUSES);
       try {
         await addMovie(movie.id, status);
-        console.log(`[reset-demo] seeded movie "${movie.name}" → ${status}`);
       } catch (error) {
-        console.error(
-          `[reset-demo] movie "${movie.name}" failed:`,
-          error instanceof Error ? error.message : error,
-        );
+        movieFailures.push(`${movie.name}: ${getErrorMessage(error)}`);
       }
     }
 
     // 5. Seed shows
+    const showFailures: string[] = [];
     for (const show of shows) {
       const status = randomFrom(SHOW_STATUSES);
       try {
         await addShow(show.id, status);
-        console.log(`[reset-demo] seeded show "${show.name}" → ${status}`);
       } catch (error) {
-        console.error(
-          `[reset-demo] show "${show.name}" failed:`,
-          error instanceof Error ? error.message : error,
-        );
+        showFailures.push(`${show.name}: ${getErrorMessage(error)}`);
       }
     }
 
     revalidatePath('/');
     return NextResponse.json({
-      ok: true,
+      ok: movieFailures.length === 0 && showFailures.length === 0,
       message: 'Demo database reset and seeded successfully.',
-      movies: movies.length,
-      shows: shows.length,
+      movies: movies.length - movieFailures.length,
+      shows: shows.length - showFailures.length,
+      movieFailures,
+      showFailures,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    console.error('[reset-demo] failed:', error);
-    return NextResponse.json({ ok: false, error: 'Reset failed', message }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: 'Reset failed', message: getErrorMessage(error) },
+      { status: 500 },
+    );
   }
-}
+};

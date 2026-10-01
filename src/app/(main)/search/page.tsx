@@ -1,13 +1,13 @@
 import {
   SearchForm,
   SearchHeader,
-  SearchPageProps,
+  type SearchPageProps,
   SearchResultList,
   SearchResultLoading,
-} from '@/features/search';
-import { FC, Suspense } from 'react';
+} from '@/modules/discovery/search';
+import { Suspense } from 'react';
 
-const SearchPage: FC<SearchPageProps> = async ({ searchParams }) => {
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const { query } = await searchParams;
 
   return (
