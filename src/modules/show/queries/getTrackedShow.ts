@@ -1,13 +1,15 @@
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { TrackedShow } from '@/modules/show';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseTmdbId } from '@/shared/lib/validate';
 
 export const getTrackedShow = async (id: string): Promise<TrackedShow | null> => {
   try {
+    const userId = await requireUserId();
     const tmdbId = parseTmdbId(id);
     return await prisma.show.findUnique({
-      where: { tmdbId },
+      where: { userId_tmdbId: { userId, tmdbId } },
       include: {
         genres: true,
         tracking: true,

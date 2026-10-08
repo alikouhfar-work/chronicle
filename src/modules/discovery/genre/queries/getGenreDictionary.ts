@@ -1,4 +1,4 @@
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { GenreRaw } from '@/modules/discovery/genre';
 
 const getMovieGenreDictionary = async (): Promise<Map<number, string>> => {

@@ -17,6 +17,7 @@ export const UpNextEpisodeCard = ({ episode }: UpNextEpisodeCardProps) => {
             <Image
               fill
               alt={episode.showName}
+              sizes="64px"
               src={getTmdbImageUrl(episode.posterPath, 'backdrop', 'w92')!}
             />
           )}

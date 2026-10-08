@@ -1,11 +1,13 @@
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { getFreshTrackedShow } from '@/modules/show/queries/getFreshTrackedShow';
 import { DatabaseError } from '@/shared/lib/errors';
 
 export const getFreshTrackedShows = async (): Promise<void> => {
   try {
+    const userId = await requireUserId();
     const watchingShows = await prisma.show.findMany({
-      where: { tracking: { status: 'WATCHING' } },
+      where: { userId, tracking: { status: 'WATCHING' } },
       select: { tmdbId: true },
     });
 

@@ -1,4 +1,4 @@
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { Person, PersonRaw } from '@/modules/discovery/person/types/person';
 import { mapPerson } from '@/modules/discovery/person/mappers/mapPerson';
 

@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseDbId } from '@/shared/lib/validate';
@@ -15,12 +16,13 @@ export const updateMovieTrackingStatus = async (movieId: string, status: MovieTr
       throw new ValidationError(`Invalid movie tracking status: ${status}`);
     }
 
+    const userId = await requireUserId();
     const movie = await prisma.movie.findUnique({
       where: { id },
-      select: { id: true, tmdbId: true, tracking: { select: { startedAt: true } } },
+      select: { id: true, userId: true, tmdbId: true, tracking: { select: { startedAt: true } } },
     });
 
-    if (!movie) {
+    if (!movie || movie.userId !== userId) {
       throw new NotFoundError(`Movie not found: ${id}`);
     }
 

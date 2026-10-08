@@ -1,14 +1,24 @@
 'use client';
 
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { signOut } from 'next-auth/react';
+import { IconLoader2 } from '@tabler/icons-react';
 import Image from 'next/image';
 import { navigation } from '@/shared/lib/navigation';
 import Link from 'next/link';
 
 export const Header = () => {
   const pathname = usePathname();
+  const [signingOut, setSigningOut] = useState(false);
   const isActiveRoute = (href: string) =>
     href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+
+  const handleSignOut = () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    signOut({ redirectTo: '/login' });
+  };
 
   return (
     <header className="bg-canvas/80 sticky top-0 z-40 border-b border-white/8 px-4 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300 sm:px-6 lg:px-8">
@@ -62,6 +72,24 @@ export const Header = () => {
             );
           })}
         </nav>
+
+        <div className="flex items-center gap-2">
+          <Link
+            href="/settings/tmdb"
+            className="hidden rounded-full px-4 py-2 text-xs font-semibold text-zinc-400 transition-colors hover:text-white sm:block"
+          >
+            TMDB Token
+          </Link>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            disabled={signingOut}
+            className="flex items-center gap-1.5 rounded-full border border-white/8 px-4 py-2 text-xs font-semibold text-zinc-400 transition-colors hover:text-white disabled:cursor-wait disabled:opacity-60"
+          >
+            {signingOut && <IconLoader2 size={13} className="animate-spin" />}
+            {signingOut ? 'Signing out…' : 'Sign out'}
+          </button>
+        </div>
       </div>
     </header>
   );

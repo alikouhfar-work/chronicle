@@ -25,7 +25,12 @@ export const SearchResultCard = ({
     <li className="group glass-card glass-card-interactive flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/8 shadow-xl transition-all duration-300">
       <div className="relative aspect-3/4 w-full shrink-0 overflow-hidden border-b border-white/8 bg-zinc-950 select-none">
         {posterPath ? (
-          <Image fill alt={name} src={getTmdbImageUrl(posterPath, 'backdrop', 'w500')!} />
+          <Image
+            fill
+            alt={name}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            src={getTmdbImageUrl(posterPath, 'backdrop', 'w500')!}
+          />
         ) : (
           <div
             className={`h-full w-full bg-linear-to-br ${getGradientForTitle(name)} flex flex-col items-center justify-center p-3 text-center`}

@@ -28,6 +28,7 @@ export const PersonDetailsHero = ({ person, combinedCreditsCount }: PersonDetail
           <Image
             fill
             alt={person.name}
+            sizes="(max-width: 768px) 100vw, 240px"
             src={getTmdbImageUrl(person.profilePath, 'backdrop', 'w500')!}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />

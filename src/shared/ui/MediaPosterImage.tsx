@@ -8,6 +8,7 @@ export const MediaPosterImage = ({
   path,
   alt,
   size = 'w500',
+  sizes = '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw',
   className,
   placeholderClassName,
 }: MediaPosterImageProps) => {
@@ -23,7 +24,7 @@ export const MediaPosterImage = ({
           placeholderClassName,
         )}
       />
-      {src && <Image fill alt={alt} src={src} className={className} />}
+      {src && <Image fill alt={alt} src={src} sizes={sizes} className={className} />}
     </>
   );
 };

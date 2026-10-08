@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseDbId } from '@/shared/lib/validate';
@@ -19,12 +20,13 @@ export const updateShowTrackingStatus = async (showId: string, status: ShowTrack
       throw new ValidationError(`Invalid show tracking status: ${status}`);
     }
 
+    const userId = await requireUserId();
     const show = await prisma.show.findUnique({
       where: { id },
-      select: { id: true, tmdbId: true, tracking: { select: { startedAt: true } } },
+      select: { id: true, userId: true, tmdbId: true, tracking: { select: { startedAt: true } } },
     });
 
-    if (!show) {
+    if (!show || show.userId !== userId) {
       throw new NotFoundError(`Show not found: ${id}`);
     }
 

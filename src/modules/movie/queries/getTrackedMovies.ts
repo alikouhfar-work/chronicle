@@ -1,5 +1,6 @@
 import { TrackedMovie } from '@/modules/movie';
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { MediaSortFilter, MediaStatusFilter } from '@/modules/media/entities';
 import { movieTrackingStatusMap } from '@/modules/movie/utils/trackingStatusMap';
 import { movieSortMap } from '@/modules/movie/utils/sortMap';
@@ -26,9 +27,11 @@ export const getTrackedMovies = async (
     const filteredStatus = resolveStatus(status);
     if (filteredStatus === 'none') return [];
     const sortBy = resolveSort(sort);
+    const userId = await requireUserId();
 
     return await prisma.movie.findMany({
       where: {
+        userId,
         ...(filteredStatus ? { tracking: { status: filteredStatus } } : {}),
         ...(search ? { name: { contains: search, mode: 'insensitive' } } : {}),
       },

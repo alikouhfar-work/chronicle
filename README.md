@@ -170,3 +170,4 @@ Tests live next to source as `src/**/*.test.{ts,tsx}` (see `vitest.config.ts`, p
 ## Deployment
 
 Standard Next.js deployment (e.g. Vercel). Set all env vars above plus a reachable `DATABASE_URL`, run `prisma migrate deploy`, then `next build` / `next start`. See [Next.js deployment docs](https://nextjs.org/docs/app/building-your-application/deploying) for platform details.
+

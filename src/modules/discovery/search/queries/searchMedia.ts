@@ -1,4 +1,4 @@
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { getGenreDictionary } from '@/modules/discovery/genre';
 import { SearchResultResponse } from '@/modules/discovery/search';
 import { mapSearchResult } from '@/modules/discovery/search/mappers/mapSearchResult';

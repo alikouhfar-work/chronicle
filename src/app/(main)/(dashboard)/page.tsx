@@ -6,7 +6,7 @@ import { UpNextEpisodesSection } from '@/modules/episode-season/components/upNex
 
 export const dynamic = 'force-dynamic';
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
   return (
     <article className="animate-fade-in space-y-10 font-sans">
       <DashboardHeader />

@@ -1,5 +1,6 @@
 import { prisma } from '@/infra/db/prisma';
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { getUserTmdbToken, requireUserId } from '@/infra/tmdb/forUser';
+import { tmdbFetchWithToken } from '@/infra/tmdb/client';
 import { ShowDetailsRaw } from '@/modules/show/types/showDetails';
 import { SeasonRaw } from '@/modules/episode-season';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
@@ -17,7 +18,11 @@ const parseShowTmdbId = (tmdbId: number): number => {
   return tmdbId;
 };
 
-export const addShow = async (tmdbId: number, trackingStatus?: ShowTrackingStatus) => {
+export const addShow = async (
+  tmdbId: number,
+  trackingStatus?: ShowTrackingStatus,
+  opts?: { userId?: string },
+) => {
   try {
     const id = parseShowTmdbId(tmdbId);
 
@@ -29,8 +34,10 @@ export const addShow = async (tmdbId: number, trackingStatus?: ShowTrackingStatu
     }
 
     // 1. Check if the show already exists
+    const userId = opts?.userId ?? (await requireUserId());
+    const token = await getUserTmdbToken(userId);
     const existing = await prisma.show.findUnique({
-      where: { tmdbId: id },
+      where: { userId_tmdbId: { userId, tmdbId: id } },
     });
 
     if (existing) return existing;
@@ -38,7 +45,7 @@ export const addShow = async (tmdbId: number, trackingStatus?: ShowTrackingStatu
     // 2. Fetch show details
     let showData: ShowDetailsRaw;
     try {
-      showData = await tmdbFetch<ShowDetailsRaw>(`tv/${id}`);
+      showData = await tmdbFetchWithToken<ShowDetailsRaw>(token, `tv/${id}`);
     } catch (error) {
       throw new ExternalServiceError('TMDB', `Failed to fetch show ${id}`, { cause: error });
     }
@@ -48,7 +55,7 @@ export const addShow = async (tmdbId: number, trackingStatus?: ShowTrackingStatu
     let seasons: SeasonRaw[];
     try {
       seasons = await mapWithConcurrency(seasonNumbers, SEASON_FETCH_CONCURRENCY, (n) =>
-        tmdbFetch<SeasonRaw>(`tv/${id}/season/${n}`),
+        tmdbFetchWithToken<SeasonRaw>(token, `tv/${id}/season/${n}`),
       );
     } catch (error) {
       throw new ExternalServiceError('TMDB', `Failed to fetch seasons for show ${id}`, {
@@ -71,6 +78,7 @@ export const addShow = async (tmdbId: number, trackingStatus?: ShowTrackingStatu
         const show = await tx.show.create({
           data: {
             tmdbId: showData.id,
+            userId,
             name: showData.name,
             overview: showData.overview,
             posterPath: showData.poster_path,

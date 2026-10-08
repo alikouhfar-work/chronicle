@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseDbId } from '@/shared/lib/validate';
 import { buildTrackingTimestamps, deriveShowStatus } from '@/modules/media/tracking';
@@ -10,13 +11,18 @@ export const setSeasonWatched = async (showId: string, seasonId: string, watched
   try {
     const sId = parseDbId(showId, 'showId');
     const snId = parseDbId(seasonId, 'seasonId');
+    const userId = await requireUserId();
 
     const season = await prisma.season.findUnique({
       where: { id: snId },
-      select: { showId: true, episodes: { select: { id: true, airDate: true } } },
+      select: {
+        showId: true,
+        show: { select: { userId: true } },
+        episodes: { select: { id: true, airDate: true } },
+      },
     });
 
-    if (!season) {
+    if (!season || season.show.userId !== userId) {
       throw new NotFoundError(`Season not found: ${snId}`);
     }
 
@@ -46,6 +52,7 @@ export const setSeasonWatched = async (showId: string, seasonId: string, watched
         where: { id: sId },
         select: {
           tmdbId: true,
+          userId: true,
           seasons: {
             where: { seasonNumber: { not: 0 } },
             select: { episodes: { select: { tracking: { select: { watched: true } } } } },
@@ -53,7 +60,7 @@ export const setSeasonWatched = async (showId: string, seasonId: string, watched
         },
       });
 
-      if (!show) {
+      if (!show || show.userId !== userId) {
         throw new NotFoundError(`Show not found: ${sId}`);
       }
 

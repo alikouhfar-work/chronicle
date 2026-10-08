@@ -41,6 +41,7 @@ export type ShowSumAggregateOutputType = {
 export type ShowMinAggregateOutputType = {
   id: string | null
   tmdbId: number | null
+  userId: string | null
   name: string | null
   overview: string | null
   posterPath: string | null
@@ -60,6 +61,7 @@ export type ShowMinAggregateOutputType = {
 export type ShowMaxAggregateOutputType = {
   id: string | null
   tmdbId: number | null
+  userId: string | null
   name: string | null
   overview: string | null
   posterPath: string | null
@@ -79,6 +81,7 @@ export type ShowMaxAggregateOutputType = {
 export type ShowCountAggregateOutputType = {
   id: number
   tmdbId: number
+  userId: number
   name: number
   overview: number
   posterPath: number
@@ -112,6 +115,7 @@ export type ShowSumAggregateInputType = {
 export type ShowMinAggregateInputType = {
   id?: true
   tmdbId?: true
+  userId?: true
   name?: true
   overview?: true
   posterPath?: true
@@ -131,6 +135,7 @@ export type ShowMinAggregateInputType = {
 export type ShowMaxAggregateInputType = {
   id?: true
   tmdbId?: true
+  userId?: true
   name?: true
   overview?: true
   posterPath?: true
@@ -150,6 +155,7 @@ export type ShowMaxAggregateInputType = {
 export type ShowCountAggregateInputType = {
   id?: true
   tmdbId?: true
+  userId?: true
   name?: true
   overview?: true
   posterPath?: true
@@ -256,6 +262,7 @@ export type ShowGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type ShowGroupByOutputType = {
   id: string
   tmdbId: number
+  userId: string
   name: string
   overview: string
   posterPath: string | null
@@ -298,6 +305,7 @@ export type ShowWhereInput = {
   NOT?: Prisma.ShowWhereInput | Prisma.ShowWhereInput[]
   id?: Prisma.StringFilter<"Show"> | string
   tmdbId?: Prisma.IntFilter<"Show"> | number
+  userId?: Prisma.StringFilter<"Show"> | string
   name?: Prisma.StringFilter<"Show"> | string
   overview?: Prisma.StringFilter<"Show"> | string
   posterPath?: Prisma.StringNullableFilter<"Show"> | string | null
@@ -312,6 +320,7 @@ export type ShowWhereInput = {
   lastSyncedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   seasons?: Prisma.SeasonListRelationFilter
   genres?: Prisma.GenreListRelationFilter
   tracking?: Prisma.XOR<Prisma.ShowTrackingNullableScalarRelationFilter, Prisma.ShowTrackingWhereInput> | null
@@ -320,6 +329,7 @@ export type ShowWhereInput = {
 export type ShowOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tmdbId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   overview?: Prisma.SortOrder
   posterPath?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,6 +344,7 @@ export type ShowOrderByWithRelationInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
   seasons?: Prisma.SeasonOrderByRelationAggregateInput
   genres?: Prisma.GenreOrderByRelationAggregateInput
   tracking?: Prisma.ShowTrackingOrderByWithRelationInput
@@ -341,10 +352,12 @@ export type ShowOrderByWithRelationInput = {
 
 export type ShowWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  tmdbId?: number
+  userId_tmdbId?: Prisma.ShowUserIdTmdbIdCompoundUniqueInput
   AND?: Prisma.ShowWhereInput | Prisma.ShowWhereInput[]
   OR?: Prisma.ShowWhereInput[]
   NOT?: Prisma.ShowWhereInput | Prisma.ShowWhereInput[]
+  tmdbId?: Prisma.IntFilter<"Show"> | number
+  userId?: Prisma.StringFilter<"Show"> | string
   name?: Prisma.StringFilter<"Show"> | string
   overview?: Prisma.StringFilter<"Show"> | string
   posterPath?: Prisma.StringNullableFilter<"Show"> | string | null
@@ -359,14 +372,16 @@ export type ShowWhereUniqueInput = Prisma.AtLeast<{
   lastSyncedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   seasons?: Prisma.SeasonListRelationFilter
   genres?: Prisma.GenreListRelationFilter
   tracking?: Prisma.XOR<Prisma.ShowTrackingNullableScalarRelationFilter, Prisma.ShowTrackingWhereInput> | null
-}, "id" | "tmdbId">
+}, "id" | "userId_tmdbId">
 
 export type ShowOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tmdbId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   overview?: Prisma.SortOrder
   posterPath?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -394,6 +409,7 @@ export type ShowScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ShowScalarWhereWithAggregatesInput | Prisma.ShowScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Show"> | string
   tmdbId?: Prisma.IntWithAggregatesFilter<"Show"> | number
+  userId?: Prisma.StringWithAggregatesFilter<"Show"> | string
   name?: Prisma.StringWithAggregatesFilter<"Show"> | string
   overview?: Prisma.StringWithAggregatesFilter<"Show"> | string
   posterPath?: Prisma.StringNullableWithAggregatesFilter<"Show"> | string | null
@@ -427,6 +443,7 @@ export type ShowCreateInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutShowsInput
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
@@ -435,6 +452,7 @@ export type ShowCreateInput = {
 export type ShowUncheckedCreateInput = {
   id?: string
   tmdbId: number
+  userId: string
   name: string
   overview: string
   posterPath?: string | null
@@ -471,6 +489,7 @@ export type ShowUpdateInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
@@ -479,6 +498,7 @@ export type ShowUpdateInput = {
 export type ShowUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   overview?: Prisma.StringFieldUpdateOperationsInput | string
   posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -501,6 +521,7 @@ export type ShowUncheckedUpdateInput = {
 export type ShowCreateManyInput = {
   id?: string
   tmdbId: number
+  userId: string
   name: string
   overview: string
   posterPath?: string | null
@@ -539,6 +560,7 @@ export type ShowUpdateManyMutationInput = {
 export type ShowUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   overview?: Prisma.StringFieldUpdateOperationsInput | string
   posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -555,9 +577,15 @@ export type ShowUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ShowUserIdTmdbIdCompoundUniqueInput = {
+  userId: string
+  tmdbId: number
+}
+
 export type ShowCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tmdbId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   overview?: Prisma.SortOrder
   posterPath?: Prisma.SortOrder
@@ -583,6 +611,7 @@ export type ShowAvgOrderByAggregateInput = {
 export type ShowMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tmdbId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   overview?: Prisma.SortOrder
   posterPath?: Prisma.SortOrder
@@ -602,6 +631,7 @@ export type ShowMaxOrderByAggregateInput = {
 export type ShowMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tmdbId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   overview?: Prisma.SortOrder
   posterPath?: Prisma.SortOrder
@@ -733,6 +763,48 @@ export type ShowUpdateOneRequiredWithoutTrackingNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ShowUpdateToOneWithWhereWithoutTrackingInput, Prisma.ShowUpdateWithoutTrackingInput>, Prisma.ShowUncheckedUpdateWithoutTrackingInput>
 }
 
+export type ShowCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ShowCreateWithoutUserInput, Prisma.ShowUncheckedCreateWithoutUserInput> | Prisma.ShowCreateWithoutUserInput[] | Prisma.ShowUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShowCreateOrConnectWithoutUserInput | Prisma.ShowCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ShowCreateManyUserInputEnvelope
+  connect?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+}
+
+export type ShowUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ShowCreateWithoutUserInput, Prisma.ShowUncheckedCreateWithoutUserInput> | Prisma.ShowCreateWithoutUserInput[] | Prisma.ShowUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShowCreateOrConnectWithoutUserInput | Prisma.ShowCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ShowCreateManyUserInputEnvelope
+  connect?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+}
+
+export type ShowUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ShowCreateWithoutUserInput, Prisma.ShowUncheckedCreateWithoutUserInput> | Prisma.ShowCreateWithoutUserInput[] | Prisma.ShowUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShowCreateOrConnectWithoutUserInput | Prisma.ShowCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ShowUpsertWithWhereUniqueWithoutUserInput | Prisma.ShowUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ShowCreateManyUserInputEnvelope
+  set?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  disconnect?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  delete?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  connect?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  update?: Prisma.ShowUpdateWithWhereUniqueWithoutUserInput | Prisma.ShowUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ShowUpdateManyWithWhereWithoutUserInput | Prisma.ShowUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ShowScalarWhereInput | Prisma.ShowScalarWhereInput[]
+}
+
+export type ShowUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ShowCreateWithoutUserInput, Prisma.ShowUncheckedCreateWithoutUserInput> | Prisma.ShowCreateWithoutUserInput[] | Prisma.ShowUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ShowCreateOrConnectWithoutUserInput | Prisma.ShowCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ShowUpsertWithWhereUniqueWithoutUserInput | Prisma.ShowUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ShowCreateManyUserInputEnvelope
+  set?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  disconnect?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  delete?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  connect?: Prisma.ShowWhereUniqueInput | Prisma.ShowWhereUniqueInput[]
+  update?: Prisma.ShowUpdateWithWhereUniqueWithoutUserInput | Prisma.ShowUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ShowUpdateManyWithWhereWithoutUserInput | Prisma.ShowUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ShowScalarWhereInput | Prisma.ShowScalarWhereInput[]
+}
+
 export type ShowCreateWithoutSeasonsInput = {
   id?: string
   tmdbId: number
@@ -750,6 +822,7 @@ export type ShowCreateWithoutSeasonsInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutShowsInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
 }
@@ -757,6 +830,7 @@ export type ShowCreateWithoutSeasonsInput = {
 export type ShowUncheckedCreateWithoutSeasonsInput = {
   id?: string
   tmdbId: number
+  userId: string
   name: string
   overview: string
   posterPath?: string | null
@@ -808,6 +882,7 @@ export type ShowUpdateWithoutSeasonsInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
 }
@@ -815,6 +890,7 @@ export type ShowUpdateWithoutSeasonsInput = {
 export type ShowUncheckedUpdateWithoutSeasonsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   overview?: Prisma.StringFieldUpdateOperationsInput | string
   posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -850,6 +926,7 @@ export type ShowCreateWithoutGenresInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutShowsInput
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
 }
@@ -857,6 +934,7 @@ export type ShowCreateWithoutGenresInput = {
 export type ShowUncheckedCreateWithoutGenresInput = {
   id?: string
   tmdbId: number
+  userId: string
   name: string
   overview: string
   posterPath?: string | null
@@ -902,6 +980,7 @@ export type ShowScalarWhereInput = {
   NOT?: Prisma.ShowScalarWhereInput | Prisma.ShowScalarWhereInput[]
   id?: Prisma.StringFilter<"Show"> | string
   tmdbId?: Prisma.IntFilter<"Show"> | number
+  userId?: Prisma.StringFilter<"Show"> | string
   name?: Prisma.StringFilter<"Show"> | string
   overview?: Prisma.StringFilter<"Show"> | string
   posterPath?: Prisma.StringNullableFilter<"Show"> | string | null
@@ -935,6 +1014,7 @@ export type ShowCreateWithoutTrackingInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutShowsInput
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
 }
@@ -942,6 +1022,7 @@ export type ShowCreateWithoutTrackingInput = {
 export type ShowUncheckedCreateWithoutTrackingInput = {
   id?: string
   tmdbId: number
+  userId: string
   name: string
   overview: string
   posterPath?: string | null
@@ -993,6 +1074,7 @@ export type ShowUpdateWithoutTrackingInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
 }
@@ -1000,6 +1082,7 @@ export type ShowUpdateWithoutTrackingInput = {
 export type ShowUncheckedUpdateWithoutTrackingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   overview?: Prisma.StringFieldUpdateOperationsInput | string
   posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1016,6 +1099,76 @@ export type ShowUncheckedUpdateWithoutTrackingInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
+}
+
+export type ShowCreateWithoutUserInput = {
+  id?: string
+  tmdbId: number
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  firstAirDate?: Date | string | null
+  lastAirDate?: Date | string | null
+  status: string
+  tagline?: string | null
+  numberOfSeasons: number
+  numberOfEpisodes: number
+  inProduction: boolean
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
+  genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
+  tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
+}
+
+export type ShowUncheckedCreateWithoutUserInput = {
+  id?: string
+  tmdbId: number
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  firstAirDate?: Date | string | null
+  lastAirDate?: Date | string | null
+  status: string
+  tagline?: string | null
+  numberOfSeasons: number
+  numberOfEpisodes: number
+  inProduction: boolean
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  seasons?: Prisma.SeasonUncheckedCreateNestedManyWithoutShowInput
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutShowsInput
+  tracking?: Prisma.ShowTrackingUncheckedCreateNestedOneWithoutShowInput
+}
+
+export type ShowCreateOrConnectWithoutUserInput = {
+  where: Prisma.ShowWhereUniqueInput
+  create: Prisma.XOR<Prisma.ShowCreateWithoutUserInput, Prisma.ShowUncheckedCreateWithoutUserInput>
+}
+
+export type ShowCreateManyUserInputEnvelope = {
+  data: Prisma.ShowCreateManyUserInput | Prisma.ShowCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ShowUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ShowWhereUniqueInput
+  update: Prisma.XOR<Prisma.ShowUpdateWithoutUserInput, Prisma.ShowUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ShowCreateWithoutUserInput, Prisma.ShowUncheckedCreateWithoutUserInput>
+}
+
+export type ShowUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ShowWhereUniqueInput
+  data: Prisma.XOR<Prisma.ShowUpdateWithoutUserInput, Prisma.ShowUncheckedUpdateWithoutUserInput>
+}
+
+export type ShowUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ShowScalarWhereInput
+  data: Prisma.XOR<Prisma.ShowUpdateManyMutationInput, Prisma.ShowUncheckedUpdateManyWithoutUserInput>
 }
 
 export type ShowUpdateWithoutGenresInput = {
@@ -1035,6 +1188,7 @@ export type ShowUpdateWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
 }
@@ -1042,6 +1196,7 @@ export type ShowUpdateWithoutGenresInput = {
 export type ShowUncheckedUpdateWithoutGenresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   overview?: Prisma.StringFieldUpdateOperationsInput | string
   posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1061,6 +1216,89 @@ export type ShowUncheckedUpdateWithoutGenresInput = {
 }
 
 export type ShowUncheckedUpdateManyWithoutGenresInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberOfSeasons?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfEpisodes?: Prisma.IntFieldUpdateOperationsInput | number
+  inProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ShowCreateManyUserInput = {
+  id?: string
+  tmdbId: number
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  firstAirDate?: Date | string | null
+  lastAirDate?: Date | string | null
+  status: string
+  tagline?: string | null
+  numberOfSeasons: number
+  numberOfEpisodes: number
+  inProduction: boolean
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ShowUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberOfSeasons?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfEpisodes?: Prisma.IntFieldUpdateOperationsInput | number
+  inProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
+  genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
+  tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
+}
+
+export type ShowUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberOfSeasons?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfEpisodes?: Prisma.IntFieldUpdateOperationsInput | number
+  inProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
+  tracking?: Prisma.ShowTrackingUncheckedUpdateOneWithoutShowNestedInput
+}
+
+export type ShowUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1122,6 +1360,7 @@ export type ShowCountOutputTypeCountGenresArgs<ExtArgs extends runtime.Types.Ext
 export type ShowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tmdbId?: boolean
+  userId?: boolean
   name?: boolean
   overview?: boolean
   posterPath?: boolean
@@ -1136,6 +1375,7 @@ export type ShowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   seasons?: boolean | Prisma.Show$seasonsArgs<ExtArgs>
   genres?: boolean | Prisma.Show$genresArgs<ExtArgs>
   tracking?: boolean | Prisma.Show$trackingArgs<ExtArgs>
@@ -1145,6 +1385,7 @@ export type ShowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type ShowSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tmdbId?: boolean
+  userId?: boolean
   name?: boolean
   overview?: boolean
   posterPath?: boolean
@@ -1159,11 +1400,13 @@ export type ShowSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["show"]>
 
 export type ShowSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tmdbId?: boolean
+  userId?: boolean
   name?: boolean
   overview?: boolean
   posterPath?: boolean
@@ -1178,11 +1421,13 @@ export type ShowSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["show"]>
 
 export type ShowSelectScalar = {
   id?: boolean
   tmdbId?: boolean
+  userId?: boolean
   name?: boolean
   overview?: boolean
   posterPath?: boolean
@@ -1199,19 +1444,25 @@ export type ShowSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ShowOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "name" | "overview" | "posterPath" | "backdropPath" | "firstAirDate" | "lastAirDate" | "status" | "tagline" | "numberOfSeasons" | "numberOfEpisodes" | "inProduction" | "lastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["show"]>
+export type ShowOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "userId" | "name" | "overview" | "posterPath" | "backdropPath" | "firstAirDate" | "lastAirDate" | "status" | "tagline" | "numberOfSeasons" | "numberOfEpisodes" | "inProduction" | "lastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["show"]>
 export type ShowInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   seasons?: boolean | Prisma.Show$seasonsArgs<ExtArgs>
   genres?: boolean | Prisma.Show$genresArgs<ExtArgs>
   tracking?: boolean | Prisma.Show$trackingArgs<ExtArgs>
   _count?: boolean | Prisma.ShowCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ShowIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ShowIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ShowIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type ShowIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $ShowPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Show"
   objects: {
+    user: Prisma.$UserPayload<ExtArgs>
     seasons: Prisma.$SeasonPayload<ExtArgs>[]
     genres: Prisma.$GenrePayload<ExtArgs>[]
     tracking: Prisma.$ShowTrackingPayload<ExtArgs> | null
@@ -1219,6 +1470,7 @@ export type $ShowPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tmdbId: number
+    userId: string
     name: string
     overview: string
     posterPath: string | null
@@ -1627,6 +1879,7 @@ readonly fields: ShowFieldRefs;
  */
 export interface Prisma__ShowClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   seasons<T extends Prisma.Show$seasonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$seasonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeasonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   genres<T extends Prisma.Show$genresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$genresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GenrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tracking<T extends Prisma.Show$trackingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$trackingArgs<ExtArgs>>): Prisma.Prisma__ShowTrackingClient<runtime.Types.Result.GetResult<Prisma.$ShowTrackingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -1661,6 +1914,7 @@ export interface Prisma__ShowClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface ShowFieldRefs {
   readonly id: Prisma.FieldRef<"Show", 'String'>
   readonly tmdbId: Prisma.FieldRef<"Show", 'Int'>
+  readonly userId: Prisma.FieldRef<"Show", 'String'>
   readonly name: Prisma.FieldRef<"Show", 'String'>
   readonly overview: Prisma.FieldRef<"Show", 'String'>
   readonly posterPath: Prisma.FieldRef<"Show", 'String'>
@@ -1929,6 +2183,10 @@ export type ShowCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.ShowCreateManyInput | Prisma.ShowCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShowIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1999,6 +2257,10 @@ export type ShowUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Shows to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ShowIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
