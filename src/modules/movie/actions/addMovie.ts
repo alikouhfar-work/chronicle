@@ -1,11 +1,16 @@
 import { prisma } from '@/infra/db/prisma';
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { getUserTmdbToken, requireUserId } from '@/infra/tmdb/forUser';
+import { tmdbFetchWithToken } from '@/infra/tmdb/client';
 import { TrackedMovieDetailsRaw } from '@/modules/movie/types/trackedMovie';
 import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, ExternalServiceError, ValidationError } from '@/shared/lib/errors';
 import { buildTrackingTimestamps } from '@/modules/media/tracking';
 
-export const addMovie = async (tmdbId: number, trackingStatus?: MovieTrackingStatus) => {
+export const addMovie = async (
+  tmdbId: number,
+  trackingStatus?: MovieTrackingStatus,
+  opts?: { userId?: string },
+) => {
   try {
     if (!Number.isInteger(tmdbId) || tmdbId <= 0) {
       throw new ValidationError(`tmdbId must be a positive integer, got "${tmdbId}"`);
@@ -18,15 +23,17 @@ export const addMovie = async (tmdbId: number, trackingStatus?: MovieTrackingSta
       throw new ValidationError(`Invalid movie tracking status: ${trackingStatus}`);
     }
 
+    const ownerId = opts?.userId ?? (await requireUserId());
     const existing = await prisma.movie.findUnique({
-      where: { tmdbId },
+      where: { userId_tmdbId: { userId: ownerId, tmdbId } },
     });
 
     if (existing) return existing;
 
     let movie: TrackedMovieDetailsRaw;
     try {
-      movie = await tmdbFetch<TrackedMovieDetailsRaw>(`movie/${tmdbId}`);
+      const token = await getUserTmdbToken(ownerId);
+      movie = await tmdbFetchWithToken<TrackedMovieDetailsRaw>(token, `movie/${tmdbId}`);
     } catch (error) {
       throw new ExternalServiceError('TMDB', `Failed to fetch movie ${tmdbId}`, { cause: error });
     }
@@ -41,6 +48,7 @@ export const addMovie = async (tmdbId: number, trackingStatus?: MovieTrackingSta
         return tx.movie.create({
           data: {
             tmdbId: movie.id,
+            userId: ownerId,
             name: movie.title,
             runtime: movie.runtime,
             overview: movie.overview,

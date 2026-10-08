@@ -1,4 +1,5 @@
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { TrackedShow } from '@/modules/show';
 import { MediaSortFilter, MediaStatusFilter } from '@/modules/media/entities';
 import { showTrackingStatusMap } from '@/modules/show/utils/trackingStatusMap';
@@ -21,11 +22,13 @@ export const getTrackedShows = async (
   search?: string,
 ): Promise<TrackedShow[]> => {
   try {
+    const userId = await requireUserId();
     const filteredStatus = resolveStatus(status);
     const sortBy = resolveSort(sort);
 
     return await prisma.show.findMany({
       where: {
+        userId,
         ...(filteredStatus ? { tracking: { status: filteredStatus } } : {}),
         ...(search ? { name: { contains: search, mode: 'insensitive' } } : {}),
       },

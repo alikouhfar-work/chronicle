@@ -1,5 +1,6 @@
 import { prisma } from '@/infra/db/prisma';
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { requireUserId } from '@/infra/tmdb/forUser';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { ShowDetailsRaw } from '@/modules/show/types/showDetails';
 import { SeasonRaw } from '@/modules/episode-season';
 import { DatabaseError, ExternalServiceError, NotFoundError, ValidationError } from '@/shared/lib/errors';
@@ -11,9 +12,10 @@ const SEASON_FETCH_CONCURRENCY = 3;
 export const syncShow = async (showId: string) => {
   try {
     const tmdbId = parseTmdbId(showId);
+    const userId = await requireUserId();
 
     const existingShow = await prisma.show.findUnique({
-      where: { tmdbId },
+      where: { userId_tmdbId: { userId, tmdbId } },
       select: {
         id: true,
         tmdbId: true,

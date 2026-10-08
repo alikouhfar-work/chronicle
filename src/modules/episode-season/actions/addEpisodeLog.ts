@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { LibraryDetailsLogState } from '@/modules/library/types/libraryDetailsLog';
 import { parseDbId } from '@/shared/lib/validate';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
@@ -34,12 +35,13 @@ export const addEpisodeLog = async (
   }
 
   try {
+    const userId = await requireUserId();
     const episode = await prisma.episode.findUnique({
       where: { id },
-      select: { season: { select: { show: { select: { tmdbId: true } } } } },
+      select: { season: { select: { show: { select: { tmdbId: true, userId: true } } } } },
     });
 
-    if (!episode) {
+    if (!episode || episode.season.show.userId !== userId) {
       return { success: false, error: 'Episode not found in your library.' };
     }
 

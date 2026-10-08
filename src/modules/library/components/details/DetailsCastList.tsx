@@ -31,6 +31,7 @@ export const DetailsCastList = ({ credits }: DetailsCastListProps) => {
                     <Image
                       fill
                       alt={member.name}
+                      sizes="36px"
                       className="object-cover"
                       src={getTmdbImageUrl(member.profilePath, 'avatar', 'w300')!}
                     />

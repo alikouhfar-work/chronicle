@@ -9,7 +9,7 @@ coverage
 .vscode
 *.log
 .DS_Store
-.env
+.env.development
 .env*.local
 docker-compose*.yml
 Dockerfile

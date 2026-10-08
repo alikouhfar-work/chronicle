@@ -1,5 +1,6 @@
 import { addDays } from 'date-fns';
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { GetUpcomingMediaOptions } from '@/modules/library/types/getUpcomingMedia';
 import { mapUpcomingEpisodes } from '@/modules/episode-season/mappers/mapUpcomingEpisodes';
 import { getFreshTrackedShows } from '@/modules/show/queries/getFreshTrackedShows';
@@ -18,6 +19,7 @@ export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {})
 
     const now = new Date();
     const futureDate = addDays(now, days);
+    const userId = await requireUserId();
 
     const episodes = await prisma.episode.findMany({
       where: {
@@ -25,6 +27,7 @@ export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {})
         season: {
           seasonNumber: { gt: 0 },
           show: {
+            userId,
             tracking: {
               status: { in: [ShowTrackingStatus.WATCHING, ShowTrackingStatus.PLAN_TO_WATCH] },
             },

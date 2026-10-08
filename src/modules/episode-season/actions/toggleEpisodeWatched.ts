@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseDbId } from '@/shared/lib/validate';
 import { deriveShowStatus } from '@/modules/media/tracking';
@@ -10,17 +11,18 @@ export const toggleEpisodeWatched = async (showId: string, episodeId: string) =>
   try {
     const sId = parseDbId(showId, 'showId');
     const eId = parseDbId(episodeId, 'episodeId');
+    const userId = await requireUserId();
 
     const episode = await prisma.episode.findUnique({
       where: { id: eId },
       select: {
         id: true,
-        season: { select: { showId: true } },
+        season: { select: { showId: true, show: { select: { userId: true } } } },
         tracking: { select: { watched: true } },
       },
     });
 
-    if (!episode) {
+    if (!episode || episode.season.show.userId !== userId) {
       throw new NotFoundError(`Episode not found: ${eId}`);
     }
 
@@ -45,6 +47,7 @@ export const toggleEpisodeWatched = async (showId: string, episodeId: string) =>
         where: { id: sId },
         select: {
           tmdbId: true,
+          userId: true,
           seasons: {
             where: { seasonNumber: { not: 0 } },
             select: { episodes: { select: { tracking: { select: { watched: true } } } } },
@@ -52,7 +55,7 @@ export const toggleEpisodeWatched = async (showId: string, episodeId: string) =>
         },
       });
 
-      if (!show) {
+      if (!show || show.userId !== userId) {
         throw new NotFoundError(`Show not found: ${sId}`);
       }
 

@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseDbId } from '@/shared/lib/validate';
@@ -11,16 +12,18 @@ const EPISODE_CHUNK_SIZE = 500;
 export const setShowWatched = async (showId: string, watched: boolean) => {
   try {
     const id = parseDbId(showId, 'showId');
+    const userId = await requireUserId();
 
     const show = await prisma.show.findUnique({
       where: { id },
       select: {
+        userId: true,
         tmdbId: true,
         seasons: { select: { episodes: { select: { id: true } } } },
       },
     });
 
-    if (!show) {
+    if (!show || show.userId !== userId) {
       throw new NotFoundError(`Show not found: ${id}`);
     }
 

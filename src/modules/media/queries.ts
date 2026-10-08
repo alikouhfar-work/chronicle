@@ -1,4 +1,4 @@
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { getGenreDictionary } from '@/modules/discovery/genre';
 import { mapCredits } from '@/modules/discovery/credit/mappers/mapCredits';
 import type { Credits, CreditsRaw } from '@/modules/discovery/credit';

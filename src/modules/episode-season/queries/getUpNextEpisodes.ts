@@ -1,4 +1,5 @@
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { mapUpNextEpisodes } from '@/modules/episode-season/mappers/mapUpNextEpisodes';
 import { MappedUpNextEpisode, UpNextEpisode } from '@/modules/episode-season/types/upNextEpisode';
 import { getFreshTrackedShows } from '@/modules/show/queries/getFreshTrackedShows';
@@ -13,13 +14,14 @@ export const getUpNextEpisodes = async (): Promise<MappedUpNextEpisode[]> => {
     }
 
     const now = new Date();
+    const userId = await requireUserId();
 
     const episodes = await prisma.episode.findMany({
       where: {
         airDate: { lte: now },
         season: {
           seasonNumber: { gt: 0 },
-          show: { tracking: { status: 'WATCHING' } },
+          show: { userId, tracking: { status: 'WATCHING' } },
         },
       },
       include: { tracking: true, season: { include: { show: true } } },

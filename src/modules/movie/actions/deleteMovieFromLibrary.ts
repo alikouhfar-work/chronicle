@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { getErrorMessage, NotFoundError } from '@/shared/lib/errors';
 import { parseDbId } from '@/shared/lib/validate';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
@@ -8,13 +9,14 @@ import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 export const deleteMovieFromLibrary = async (movieId: string) => {
   try {
     const id = parseDbId(movieId, 'movieId');
+    const userId = await requireUserId();
 
     const movie = await prisma.movie.findUnique({
       where: { id },
-      select: { tmdbId: true },
+      select: { tmdbId: true, userId: true },
     });
 
-    if (!movie) {
+    if (!movie || movie.userId !== userId) {
       throw new NotFoundError(`Movie not found: ${id}`);
     }
 

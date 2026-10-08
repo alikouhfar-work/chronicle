@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { requireUserId } from '@/infra/tmdb/forUser';
 import { parseDbId } from '@/shared/lib/validate';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 
@@ -38,12 +39,13 @@ export const addMovieLog = async (
   }
 
   try {
+    const userId = await requireUserId();
     const movie = await prisma.movie.findUnique({
       where: { id },
-      select: { tmdbId: true },
+      select: { tmdbId: true, userId: true },
     });
 
-    if (!movie) {
+    if (!movie || movie.userId !== userId) {
       return { success: false, error: 'Movie not found in your library.' };
     }
 
