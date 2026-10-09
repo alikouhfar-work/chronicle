@@ -6,8 +6,10 @@ import { statusFilters } from '@/modules/library/lib/statusFilters';
 import { useQueryString } from '@/shared/hooks/useQueryString';
 
 export const LibraryFilters = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const { searchParams, createQueryString } = useQueryString();
+
+  const urlSearch = searchParams.get('search') ?? '';
+  const [searchQuery, setSearchQuery] = useState(urlSearch);
 
   const typeFilter = searchParams.get('type') || 'tv';
   const sortFilter = searchParams.get('sort') || 'recent';
@@ -24,12 +26,14 @@ export const LibraryFilters = () => {
   };
 
   useEffect(() => {
+    if (searchQuery === urlSearch) return;
+
     const timeout = setTimeout(() => {
       createQueryString('search', searchQuery);
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeout);
-  }, [searchQuery, createQueryString]);
+  }, [searchQuery, urlSearch, createQueryString]);
 
   return (
     <div className="glass-card flex flex-col gap-4 rounded-2xl border border-white/8 p-5 shadow-xl md:p-6">

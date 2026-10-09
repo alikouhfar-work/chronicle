@@ -26,7 +26,12 @@ export const useQueryString = () => {
         });
       }
 
-      router.push(`${pathname}?${params.toString()}`);
+      const next = params.toString();
+      const current = searchParams.toString();
+      if (next === current) return;
+
+      const url = next ? `${pathname}?${next}` : pathname;
+      router.replace(url);
     },
     [pathname, router, searchParams],
   );
