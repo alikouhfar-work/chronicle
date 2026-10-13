@@ -1,4 +1,6 @@
+import { headers } from 'next/headers';
 import { auth } from '@/infra/auth/auth';
+import { verifyMobileJwt } from '@/infra/auth/mobileJwt';
 import { prisma } from '@/infra/db/prisma';
 import {
   resolveTmdbBaseUrl,
@@ -15,10 +17,24 @@ export class MissingTmdbTokenError extends Error {
 }
 
 export const requireUserId = async (): Promise<string> => {
+  // Web session first (unchanged behavior); mobile Bearer JWT as fallback.
   const session = await auth();
-  const userId = session?.user?.id;
-  if (!userId) throw new Error('Unauthorized');
-  return userId;
+  const sessionUserId = session?.user?.id;
+  if (sessionUserId) return sessionUserId;
+  return requireBearerUserId();
+};
+
+/** Resolve the user from `Authorization: Bearer <mobile JWT>`. Throws when absent/invalid. */
+export const requireBearerUserId = async (): Promise<string> => {
+  const header = (await headers()).get('authorization');
+  const token = header?.startsWith('Bearer ') ? header.slice('Bearer '.length).trim() : '';
+  if (!token) throw new Error('Unauthorized');
+  try {
+    const claims = await verifyMobileJwt(token);
+    return claims.sub;
+  } catch {
+    throw new Error('Unauthorized');
+  }
 };
 
 export const getUserTmdbToken = async (userId?: string): Promise<string> => {

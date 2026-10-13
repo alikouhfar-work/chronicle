@@ -1,20 +1,17 @@
 import { notFound } from 'next/navigation';
 import type { MediaType } from '@/shared/types/media';
 import { LibraryDetails } from '@/modules/library';
-import { getTrackedShows } from '@/modules/show/queries/getTrackedShows';
-import { getTrackedMovies } from '@/modules/movie/queries/getTrackedMovies';
 import { getTrackedMovie } from '@/modules/movie/queries/getTrackedMovie';
 import { getMovieCredits } from '@/modules/movie/queries/getMovieCredits';
 import { getSimilarMovies } from '@/modules/movie/queries/getSimilarMovies';
 import { getFreshTrackedShow } from '@/modules/show/queries/getFreshTrackedShow';
 import { getShowCredits } from '@/modules/show/queries/getShowCredits';
 import { getSimilarShows } from '@/modules/show/queries/getSimilarShows';
-import type { LibraryDetailsPageProps, LibraryDetailsParams } from '@/modules/library/types/libraryDetailsPage';
+import type { LibraryDetailsPageProps } from '@/modules/library/types/libraryDetailsPage';
 
 import { Metadata } from 'next';
 
-export const revalidate = 3600;
-export const dynamicParams = true;
+export const dynamic = 'force-dynamic';
 
 const isValidSlug = (slug: unknown): slug is [MediaType, string] =>
   Array.isArray(slug) &&
@@ -46,22 +43,9 @@ export const generateMetadata = async ({
           : undefined,
       },
     };
-  } catch {{
+  } catch {
     return {};
-  }}
-};
-
-export const generateStaticParams = async (): Promise<LibraryDetailsParams[]> => {
-  try {
-    const [movies, shows] = await Promise.all([getTrackedMovies(), getTrackedShows()]);
-
-    return [
-      ...movies.map((movie) => ({ slug: ['movie', movie.tmdbId.toString()] as [MediaType, string] })),
-      ...shows.map((show) => ({ slug: ['tv', show.tmdbId.toString()] as [MediaType, string] })),
-    ];
-  } catch {{
-    return [];
-  }}
+  }
 };
 
 const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
