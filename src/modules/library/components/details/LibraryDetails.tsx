@@ -12,7 +12,7 @@ export const LibraryDetails = ({
 }: LibraryShowDetailsProps) => {
   return (
     <section className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-y-8 font-sans">
-      <LibraryDetailsHeader media={media} />
+      <LibraryDetailsHeader media={media} mediaType={mediaType} credits={credits} />
       {mediaType === 'movie' && <LibraryDetailsMovieLog movie={media} />}
       {mediaType === 'tv' && <LibraryDetailsSeasons show={media} />}
       <LibraryDetailsFooter credits={credits} similarMedia={similarMedia} />

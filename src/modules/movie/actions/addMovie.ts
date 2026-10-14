@@ -1,6 +1,6 @@
 import { prisma } from '@/infra/db/prisma';
-import { getUserTmdbToken, requireUserId } from '@/infra/tmdb/forUser';
-import { tmdbFetchWithToken } from '@/infra/tmdb/client';
+import { requireUserId } from '@/infra/tmdb/forUser';
+import { tmdbFetch } from '@/infra/tmdb/client';
 import { TrackedMovieDetailsRaw } from '@/modules/movie/types/trackedMovie';
 import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, ExternalServiceError, ValidationError } from '@/shared/lib/errors';
@@ -32,8 +32,7 @@ export const addMovie = async (
 
     let movie: TrackedMovieDetailsRaw;
     try {
-      const token = await getUserTmdbToken(ownerId);
-      movie = await tmdbFetchWithToken<TrackedMovieDetailsRaw>(token, `movie/${tmdbId}`);
+      movie = await tmdbFetch<TrackedMovieDetailsRaw>(`movie/${tmdbId}`);
     } catch (error) {
       throw new ExternalServiceError('TMDB', `Failed to fetch movie ${tmdbId}`, { cause: error });
     }

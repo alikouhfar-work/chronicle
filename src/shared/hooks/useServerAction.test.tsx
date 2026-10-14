@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useServerAction } from './useServerAction';
 
 vi.mock('react-hot-toast', () => ({
-  default: { success: vi.fn(), error: vi.fn() },
+  default: { custom: vi.fn(), dismiss: vi.fn() },
 }));
 
 vi.mock('next/navigation', () => ({
@@ -37,7 +37,7 @@ describe('useServerAction', () => {
 
     expect(action).toHaveBeenCalledWith('arg');
     expect(received).toEqual(['arg']);
-    expect(toast.success).toHaveBeenCalledWith('Done!');
+    expect(toast.custom).toHaveBeenCalledTimes(1);
     expect(refresh).toHaveBeenCalled();
   });
 
@@ -51,9 +51,8 @@ describe('useServerAction', () => {
       result.current.execute();
     });
 
-    expect(toast.error).toHaveBeenCalledWith('Nope.');
+    expect(toast.custom).toHaveBeenCalledTimes(1);
     expect(refresh).not.toHaveBeenCalled();
-    expect(toast.success).not.toHaveBeenCalled();
   });
 
   it('toasts thrown errors with the fallback message', async () => {
@@ -68,7 +67,7 @@ describe('useServerAction', () => {
       result.current.execute();
     });
 
-    expect(toast.error).toHaveBeenCalledWith('Kaboom');
+    expect(toast.custom).toHaveBeenCalledTimes(1);
     expect(refresh).not.toHaveBeenCalled();
   });
 

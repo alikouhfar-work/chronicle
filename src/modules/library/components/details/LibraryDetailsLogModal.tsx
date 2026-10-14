@@ -107,7 +107,7 @@ export const LibraryDetailsLogModal = ({
               disabled={isPending}
               placeholder="Log direction, acting, themes, and cinematography thoughts..."
               rows={4}
-              className="w-full rounded-2xl border border-white/10 bg-white/4 p-3 text-xs leading-relaxed text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-400/20 focus:outline-none"
+              className="w-full rounded-2xl border border-white/10 bg-white/4 p-3 text-base leading-relaxed text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-400/20 focus:outline-none sm:text-xs"
             />
           </div>
 

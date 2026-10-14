@@ -38,7 +38,7 @@ export const resolveTmdbBaseUrl = (): string => {
 };
 
 const resolveAccessToken = (): string => {
-  const token = process.env.TMDB_ACCESS_TOKEN;
+  const token = process.env.TMDB_ACCESS_TOKEN ?? process.env.DEMO_TMDB_TOKEN;
   if (!token) {
     throw new TmdbConfigError('TMDB_ACCESS_TOKEN is not defined');
   }
@@ -172,22 +172,6 @@ const parseJson = async <T>(cleanPath: string, response: Response): Promise<T> =
   } catch {
     throw new TmdbApiError(cleanPath, response.status, 'invalid JSON response');
   }
-};
-
-export const tmdbFetchWithToken = async <T>(
-  accessToken: string,
-  path: string,
-  options: TmdbFetchOptions = {},
-): Promise<T> => {
-  const cleanPath = sanitizePath(path);
-  const baseUrl = resolveTmdbBaseUrl();
-  const response = await fetchShared(
-    `${baseUrl}/${cleanPath}`,
-    accessToken,
-    options,
-    cleanPath,
-  );
-  return parseJson<T>(cleanPath, response);
 };
 
 export const tmdbFetch = async <T>(path: string, options: TmdbFetchOptions = {}): Promise<T> => {

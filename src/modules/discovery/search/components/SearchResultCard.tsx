@@ -20,10 +20,15 @@ export const SearchResultCard = ({
   isTracked,
 }: SearchResultCardProps) => {
   const isMovie = mediaType === 'movie';
+  const detailsHref = `/search/${mediaType}/${id}`;
 
   return (
     <li className="group glass-card glass-card-interactive flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/8 shadow-xl transition-all duration-300">
-      <div className="relative aspect-3/4 w-full shrink-0 overflow-hidden border-b border-white/8 bg-zinc-950 select-none">
+      <Link
+        href={detailsHref}
+        aria-label={`View details for ${name}`}
+        className="relative block aspect-3/4 w-full shrink-0 cursor-pointer overflow-hidden border-b border-white/8 bg-zinc-950 select-none"
+      >
         {posterPath ? (
           <Image
             fill
@@ -63,13 +68,15 @@ export const SearchResultCard = ({
           <IconStar size={10} className="fill-amber-400 text-amber-400" />
           <span>{rating ? rating.toFixed(1) : 'N/A'}</span>
         </div>
-      </div>
+      </Link>
 
       <div className="flex flex-1 flex-col justify-between space-y-3 p-4">
         <div className="space-y-1.5">
-          <h3 className="line-clamp-1 text-sm leading-snug font-bold text-white transition-colors group-hover:text-violet-300">
-            {name}
-          </h3>
+          <Link href={detailsHref} aria-label={`View details for ${name}`}>
+            <h3 className="line-clamp-1 cursor-pointer text-sm leading-snug font-bold text-white transition-colors group-hover:text-violet-300 hover:text-violet-300">
+              {name}
+            </h3>
+          </Link>
 
           <div className="flex flex-wrap items-center gap-1">
             {originalLanguage && (

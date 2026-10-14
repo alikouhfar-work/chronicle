@@ -1,6 +1,6 @@
 import { prisma } from '@/infra/db/prisma';
-import { getUserTmdbToken, requireUserId } from '@/infra/tmdb/forUser';
-import { tmdbFetchWithToken } from '@/infra/tmdb/client';
+import { requireUserId } from '@/infra/tmdb/forUser';
+import { tmdbFetch } from '@/infra/tmdb/client';
 import { ShowDetailsRaw } from '@/modules/show/types/showDetails';
 import { SeasonRaw } from '@/modules/episode-season';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
@@ -35,17 +35,16 @@ export const addShow = async (
 
     // 1. Check if the show already exists
     const userId = opts?.userId ?? (await requireUserId());
-    const token = await getUserTmdbToken(userId);
     const existing = await prisma.show.findUnique({
       where: { userId_tmdbId: { userId, tmdbId: id } },
     });
 
     if (existing) return existing;
 
-    // 2. Fetch show details
+    // 2. Fetch show details (single server token)
     let showData: ShowDetailsRaw;
     try {
-      showData = await tmdbFetchWithToken<ShowDetailsRaw>(token, `tv/${id}`);
+      showData = await tmdbFetch<ShowDetailsRaw>(`tv/${id}`);
     } catch (error) {
       throw new ExternalServiceError('TMDB', `Failed to fetch show ${id}`, { cause: error });
     }
@@ -55,7 +54,7 @@ export const addShow = async (
     let seasons: SeasonRaw[];
     try {
       seasons = await mapWithConcurrency(seasonNumbers, SEASON_FETCH_CONCURRENCY, (n) =>
-        tmdbFetchWithToken<SeasonRaw>(token, `tv/${id}/season/${n}`),
+        tmdbFetch<SeasonRaw>(`tv/${id}/season/${n}`),
       );
     } catch (error) {
       throw new ExternalServiceError('TMDB', `Failed to fetch seasons for show ${id}`, {

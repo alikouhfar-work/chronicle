@@ -4,16 +4,11 @@ import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
-import { encryptTmdbToken } from '@/infra/tmdb/tokenVault';
 
 export const hasGoogle = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
 export const hasGuestLogin = process.env.GUEST_LOGIN_ENABLED === 'true';
 // Shared demo/guest account — provisioned by seed + demo reset on the demo DB.
 export const guestEmail = process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local';
-
-/** Server-side token used ONLY to provision the shared demo/guest account. */
-const demoToken = (): string | null =>
-  process.env.DEMO_TMDB_TOKEN ?? process.env.TMDB_ACCESS_TOKEN ?? null;
 
 export type AuthProviderId = 'google' | 'credentials' | 'guest';
 
@@ -48,7 +43,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             credentials: {},
             authorize: async () => {
               try {
-                const token = demoToken();
                 let user = await prisma.user.findUnique({ where: { email: guestEmail } });
                 if (!user) {
                   try {
@@ -61,23 +55,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                   }
                 }
                 if (!user) return null;
-                // Provision the shared demo token once (no live check here —
-                // validation happens at seed time to spare the shared quota).
-                if (!user.tmdbTokenCiphertext && token) {
-                  try {
-                    const { iv, ciphertext } = encryptTmdbToken(token);
-                    user = await prisma.user.update({
-                      where: { id: user.id },
-                      data: {
-                        tmdbTokenIv: iv,
-                        tmdbTokenCiphertext: ciphertext,
-                        tmdbTokenUpdatedAt: new Date(),
-                      },
-                    });
-                  } catch (error) {
-                    console.error('[auth][guest] token provisioning failed:', error);
-                  }
-                }
                 return { id: user.id, email: user.email, name: user.name };
               } catch (error) {
                 console.error('[auth][guest] authorize failed:', error);

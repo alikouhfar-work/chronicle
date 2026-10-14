@@ -74,12 +74,6 @@ export const Header = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/settings/tmdb"
-            className="hidden rounded-full px-4 py-2 text-xs font-semibold text-zinc-400 transition-colors hover:text-white sm:block"
-          >
-            TMDB Token
-          </Link>
           <button
             type="button"
             onClick={handleSignOut}

@@ -2,8 +2,7 @@
 
 import { useCallback, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
-import { toastError } from '@/shared/lib/toast';
+import { toastError, toastSuccess } from '@/shared/lib/toast';
 
 type FailedActionResult = {
   success: false;
@@ -42,7 +41,7 @@ export const useServerAction = <TArgs extends unknown[]>(
           }
 
           if (successMessage) {
-            toast.success(successMessage);
+            toastSuccess(successMessage);
           }
           if (refresh) {
             router.refresh();

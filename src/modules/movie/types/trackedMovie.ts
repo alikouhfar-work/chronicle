@@ -29,6 +29,7 @@ export type TrackedMovieDetailsRaw = {
   backdrop_path: string;
   genres: GenreRaw[];
   id: number;
+  original_language: string;
   overview: string;
   poster_path: string;
   release_date: string;
@@ -36,4 +37,5 @@ export type TrackedMovieDetailsRaw = {
   status: string;
   tagline: string;
   title: string;
+  vote_average: number;
 };
