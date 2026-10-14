@@ -82,7 +82,7 @@ export const SignupForm = ({ callbackUrl }: { callbackUrl: string }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
           />
         </div>
         <div>
@@ -102,7 +102,7 @@ export const SignupForm = ({ callbackUrl }: { callbackUrl: string }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 8 characters"
-              className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 pr-11 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 pr-11 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
             />
             <button
               type="button"
@@ -129,7 +129,7 @@ export const SignupForm = ({ callbackUrl }: { callbackUrl: string }) => {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             placeholder="Repeat your password"
-            className={`w-full rounded-xl border bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none ${
+            className={`w-full rounded-xl border bg-zinc-900/80 px-4 py-2.5 text-base text-zinc-100 placeholder:text-zinc-600 focus:outline-none ${
               mismatch
                 ? 'border-red-500/50 focus:border-red-400/60 focus:ring-2 focus:ring-red-500/20'
                 : 'border-white/10 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20'

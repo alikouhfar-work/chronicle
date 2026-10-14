@@ -50,7 +50,7 @@ export const LibraryDetailsHeaderSkeleton = () => {
         </div>
 
         {/* Controls Panel */}
-        <div className="flex flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-end">
           <div className="space-y-2">
             <div className="h-3 w-24 animate-pulse rounded bg-zinc-800" />
             <div className="flex flex-wrap gap-1 rounded-[20px] md:rounded-full border border-white/10 bg-zinc-900/90 p-1">

@@ -212,9 +212,6 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   passwordHash: 'passwordHash',
-  tmdbTokenCiphertext: 'tmdbTokenCiphertext',
-  tmdbTokenIv: 'tmdbTokenIv',
-  tmdbTokenUpdatedAt: 'tmdbTokenUpdatedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

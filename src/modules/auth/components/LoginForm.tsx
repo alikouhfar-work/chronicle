@@ -127,7 +127,7 @@ export const LoginForm = ({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
+                className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
               />
             </div>
             <div>
@@ -147,7 +147,7 @@ export const LoginForm = ({
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 pr-11 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
+                  className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 pr-11 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
                 />
                 <button
                   type="button"

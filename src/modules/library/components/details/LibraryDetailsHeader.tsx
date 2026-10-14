@@ -4,8 +4,10 @@ import { format } from 'date-fns';
 import { getAverageEpisodeRuntime } from '@/modules/show/utils/getAverageEpisodeRuntime';
 import { MediaPosterImage } from '@/shared/ui/MediaPosterImage';
 import { TrackingStatusSwitch } from '@/modules/library/components/details/TrackingStatusSwitch';
+import { ShowLifecycleBadge } from '@/modules/library/components/details/ShowLifecycleBadge';
+import { LibraryDetailsShareButton } from '@/modules/library/components/details/LibraryDetailsShareButton';
 
-export const LibraryDetailsHeader = ({ media, controls }: LibraryDetailsHeaderProps) => {
+export const LibraryDetailsHeader = ({ media, mediaType, credits, controls }: LibraryDetailsHeaderProps) => {
   const show = 'seasons' in media ? media : null;
   const movie = 'runtime' in media ? media : null;
 
@@ -70,9 +72,13 @@ export const LibraryDetailsHeader = ({ media, controls }: LibraryDetailsHeaderPr
 
           {/* Badges / Runtimes */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-200">
-              {show?.status || (movie?.runtime ? `${movie.runtime} min` : 'Released')}
-            </span>
+            {show ? (
+              <ShowLifecycleBadge status={show.status} inProduction={show.inProduction} />
+            ) : (
+              <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-200">
+                {movie?.runtime ? `${movie.runtime} min` : 'Released'}
+              </span>
+            )}
             {show && (
               <span className="apple-badge border border-white/10 bg-white/6 text-xs text-zinc-200">
                 {runtime} {show ? 'min / ep' : 'min'}
@@ -109,22 +115,25 @@ export const LibraryDetailsHeader = ({ media, controls }: LibraryDetailsHeaderPr
         </div>
 
         {/* Controls Panel */}
-        <div className="flex flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-end">
           {controls ?? <TrackingStatusSwitch media={media} />}
 
-          {movie && movie.tracking?.status === 'COMPLETED' && (
-            <div className="glass-card flex items-center gap-3 rounded-2xl border border-white/10 p-3 shadow-md">
-              <div className="space-y-0.5">
-                <p className="text-[10px] font-semibold tracking-tight text-zinc-400 uppercase">
-                  Your Score
-                </p>
-                <div className="flex items-center gap-1 text-xs font-bold text-amber-400">
-                  <IconStar className="fill-amber-400 text-amber-400" size={13} />
-                  <span>{movie?.tracking.rating ? `${movie.tracking.rating} / 5` : 'Unrated'}</span>
+          <div className="flex items-center gap-3">
+            {movie && movie.tracking?.status === 'COMPLETED' && (
+              <div className="glass-card flex items-center gap-3 rounded-2xl border border-white/10 p-3 shadow-md">
+                <div className="space-y-0.5">
+                  <p className="text-[10px] font-semibold tracking-tight text-zinc-400 uppercase">
+                    Your Score
+                  </p>
+                  <div className="flex items-center gap-1 text-xs font-bold text-amber-400">
+                    <IconStar className="fill-amber-400 text-amber-400" size={13} />
+                    <span>{movie?.tracking.rating ? `${movie.tracking.rating} / 5` : 'Unrated'}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+            <LibraryDetailsShareButton media={media} mediaType={mediaType} credits={credits} />
+          </div>
         </div>
       </div>
     </div>

@@ -9,7 +9,6 @@ import type { TrendingShowRaw } from '@/modules/show/types/trendingShow';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../generated/prisma/enums';
 import { addMovie } from '@/modules/movie/actions/addMovie';
 import { addShow } from '@/modules/show/actions/addShow';
-import { encryptTmdbToken } from '@/infra/tmdb/tokenVault';
 
 const MAX_MOVIES = 5;
 const MAX_SHOWS = 5;
@@ -53,28 +52,19 @@ async function clearDatabase() {
 }
 
 async function ensureSeedUser(target: 'demo' | 'personal'): Promise<string> {
-  // Seed runs without a session, so it provisions a user and stores a TMDB
-  // token on it (encrypted). App code then uses the per-user token.
-  // Demo target uses the shared demo token; personal uses the server token.
+  // Seed runs without a session. Catalogue reads use the single server token
+  // (TMDB_ACCESS_TOKEN), so the seed user is just a plain library owner.
   const isDemo = target === 'demo';
   const email = isDemo
     ? (process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local')
     : SEED_EMAIL;
-  const serverToken = isDemo
-    ? (process.env.DEMO_TMDB_TOKEN ?? process.env.TMDB_ACCESS_TOKEN)
-    : process.env.TMDB_ACCESS_TOKEN;
-  if (!serverToken) throw new Error('[seed] no TMDB token set (DEMO_TMDB_TOKEN/TMDB_ACCESS_TOKEN)');
 
-  const { iv, ciphertext } = encryptTmdbToken(serverToken);
   const user = await prisma.user.upsert({
     where: { email },
-    update: { tmdbTokenIv: iv, tmdbTokenCiphertext: ciphertext, tmdbTokenUpdatedAt: new Date() },
+    update: {},
     create: {
       email,
       name: isDemo ? 'Guest' : 'Dev',
-      tmdbTokenIv: iv,
-      tmdbTokenCiphertext: ciphertext,
-      tmdbTokenUpdatedAt: new Date(),
     },
     select: { id: true },
   });
@@ -94,8 +84,8 @@ async function main() {
   const userId = await ensureSeedUser(target);
   console.log(`[seed] seed user ready (${target === 'demo' ? 'demo/guest' : SEED_EMAIL})`);
 
-  // --- 3. Fetch trending from TMDB with the server token -----------------
-  // (App queries use per-user tokens; seed has no session so it uses env.)
+  // --- 3. Fetch trending from TMDB with the single server token ---------
+  // (Seed has no session; tmdbFetch resolves TMDB_ACCESS_TOKEN from env.)
   const [movieRes, showRes] = await Promise.all([
     fetchTrendingRaw<TrendingMovieRaw>('movie').catch(() => null),
     fetchTrendingRaw<TrendingShowRaw>('tv').catch(() => null),

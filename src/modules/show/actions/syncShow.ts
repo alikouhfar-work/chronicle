@@ -103,7 +103,10 @@ export const syncShow = async (showId: string) => {
           season.episodes.map((episode) =>
             prisma.episode.upsert({
               where: {
-                tmdbId: episode.id,
+                seasonId_episodeNumber: {
+                  seasonId: localSeason.id,
+                  episodeNumber: episode.episode_number,
+                },
               },
               create: {
                 tmdbId: episode.id,

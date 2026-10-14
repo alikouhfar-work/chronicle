@@ -1,4 +1,5 @@
 import { showStatusConfig } from '@/modules/show/lib/showStatusConfig';
+import { getShowLifecycle } from '@/modules/show/lib/showLifecycle';
 import type { LibraryCardProps } from '@/modules/library/types/libraryCard';
 import Link from 'next/link';
 import { LibraryMediaDeleteButton } from '@/modules/library/components/LibraryMediaDeleteButton';
@@ -24,13 +25,13 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
 
         <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
           <div className="flex items-start justify-between gap-2">
-            <div className="flex flex-wrap items-center gap-1.5">
-              <span
-                className={`apple-badge text-[10px] font-bold tracking-tight uppercase ${statusConfig?.colors}`}
-              >
-                {statusConfig?.title}
-              </span>
-            </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span
+                  className={`apple-badge text-[10px] font-bold tracking-tight uppercase ${statusConfig?.colors}`}
+                >
+                  {statusConfig?.title}
+                </span>
+              </div>
 
             <LibraryMediaDeleteButton mediaId={media.id} mediaType={mediaType} />
           </div>
@@ -69,6 +70,7 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
               <LibraryShowProgress
                 seasons={media.seasons}
                 numberOfEpisodes={media.numberOfEpisodes}
+                lifecycle={getShowLifecycle(media.status, media.inProduction)}
               />
             )}
 

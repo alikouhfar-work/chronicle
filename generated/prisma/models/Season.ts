@@ -276,11 +276,11 @@ export type SeasonOrderByWithRelationInput = {
 
 export type SeasonWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  tmdbId?: number
   showId_seasonNumber?: Prisma.SeasonShowIdSeasonNumberCompoundUniqueInput
   AND?: Prisma.SeasonWhereInput | Prisma.SeasonWhereInput[]
   OR?: Prisma.SeasonWhereInput[]
   NOT?: Prisma.SeasonWhereInput | Prisma.SeasonWhereInput[]
+  tmdbId?: Prisma.IntFilter<"Season"> | number
   showId?: Prisma.StringFilter<"Season"> | string
   seasonNumber?: Prisma.IntFilter<"Season"> | number
   name?: Prisma.StringFilter<"Season"> | string
@@ -290,7 +290,7 @@ export type SeasonWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Season"> | Date | string
   episodes?: Prisma.EpisodeListRelationFilter
   show?: Prisma.XOR<Prisma.ShowScalarRelationFilter, Prisma.ShowWhereInput>
-}, "id" | "tmdbId" | "showId_seasonNumber">
+}, "id" | "showId_seasonNumber">
 
 export type SeasonOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
