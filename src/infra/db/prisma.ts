@@ -6,6 +6,15 @@ const resolveConnectionString = (): string => {
   const connectionString = isDemo ? process.env.DEMO_DATABASE_URL : process.env.DATABASE_URL;
 
   if (!connectionString) {
+    // `next build` collects route config without a live DB or production env.
+    // A placeholder is enough — the real URL is injected at runtime
+    // (see Dockerfile builder ARG). Never swallow a missing URL at runtime.
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.warn(
+        `[infra/db] Missing ${isDemo ? 'DEMO_DATABASE_URL' : 'DATABASE_URL'} during build — using placeholder.`,
+      );
+      return 'postgresql://localhost:5434/chronicle_build_placeholder';
+    }
     throw new Error(
       `[infra/db] Missing database URL. PRISMA_TARGET=${process.env.PRISMA_TARGET ?? '(unset)'}. ` +
         `Set ${isDemo ? 'DEMO_DATABASE_URL' : 'DATABASE_URL'}.`,
