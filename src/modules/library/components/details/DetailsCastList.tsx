@@ -9,7 +9,7 @@ export const DetailsCastList = ({ credits }: DetailsCastListProps) => {
   if (!credits) return null;
 
   return (
-    <div className="space-y-3 lg:col-span-1">
+    <div className="flex flex-col space-y-3 lg:col-span-1 lg:h-[380px]">
       <div className="space-y-0.5">
         <h4 className="flex items-center gap-2 text-sm font-bold text-white">
           <span className="h-2 w-2 rounded-full bg-violet-400" />
@@ -18,7 +18,7 @@ export const DetailsCastList = ({ credits }: DetailsCastListProps) => {
         <p className="text-xs text-zinc-400">Notable lead performances</p>
       </div>
 
-      <ul className="glass-card space-y-1 rounded-2xl border border-white/8 p-2.5">
+      <ul className="glass-card min-h-0 space-y-1 rounded-2xl border border-white/8 p-2.5 lg:flex-1 lg:overflow-y-auto">
         {credits.cast.map((member) => (
           <li key={member.name}>
             <Link

@@ -5,7 +5,7 @@ import type { SimilarMediaCarouselProps } from '@/modules/library/types/similarM
 
 export const SimilarMediaCarousel = ({ similarMedia }: SimilarMediaCarouselProps) => {
   return (
-    <div className="space-y-3 lg:col-span-2">
+    <div className="flex flex-col space-y-3 lg:col-span-2 lg:h-[380px]">
       <div className="space-y-0.5">
         <h4 className="flex items-center gap-2 text-sm font-bold text-white">
           <span className="h-2 w-2 rounded-full bg-violet-400" />
@@ -14,7 +14,7 @@ export const SimilarMediaCarousel = ({ similarMedia }: SimilarMediaCarouselProps
         <p className="text-xs text-zinc-400">Titles with similar themes and tone</p>
       </div>
 
-      <ul className="-mx-1 flex snap-x snap-mandatory scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent gap-5 overflow-x-auto scroll-smooth px-1 pt-1.5 pb-4">
+      <ul className="-mx-1 flex min-h-0 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent gap-5 overflow-x-auto scroll-smooth px-1 pt-1.5 pb-4 lg:flex-1">
         {similarMedia.map((similar) => (
           <li
             key={similar.id}
