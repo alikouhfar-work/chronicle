@@ -1,15 +1,13 @@
-import { showStatusConfig } from '@/modules/show/lib/showStatusConfig';
-import { getShowLifecycle } from '@/modules/show/lib/showLifecycle';
 import type { LibraryCardProps } from '@/modules/library/types/libraryCard';
 import Link from 'next/link';
 import { LibraryMediaDeleteButton } from '@/modules/library/components/LibraryMediaDeleteButton';
+import { LibraryCardStatus } from '@/modules/library/components/LibraryCardStatus';
 import { LibraryShowProgress } from '@/modules/library/components/shows/LibraryShowProgress';
 import { LibraryMovieRating } from '@/modules/library/components/movies/LibraryMovieRating';
 import { MediaPosterImage } from '@/shared/ui/MediaPosterImage';
+import { getShowLifecycle } from '@/modules/show/lib/showLifecycle';
 
 export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
-  const statusConfig = media.tracking?.status && showStatusConfig[media.tracking.status];
-
   return (
     <li className="group glass-card glass-card-interactive relative aspect-2/3 w-full cursor-pointer overflow-hidden rounded-2xl border border-white/8 shadow-xl transition-all duration-300 select-none hover:scale-[1.02] hover:border-white/20 hover:shadow-2xl">
       <Link href={`/library/${mediaType}/${media.tmdbId}`}>
@@ -26,11 +24,7 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
         <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
           <div className="flex items-start justify-between gap-2">
               <div className="flex flex-wrap items-center gap-1.5">
-                <span
-                  className={`apple-badge text-[10px] font-bold tracking-tight uppercase ${statusConfig?.colors}`}
-                >
-                  {statusConfig?.title}
-                </span>
+                <LibraryCardStatus status={media.tracking?.status} />
               </div>
 
             <LibraryMediaDeleteButton mediaId={media.id} mediaType={mediaType} />
@@ -71,6 +65,7 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
                 seasons={media.seasons}
                 numberOfEpisodes={media.numberOfEpisodes}
                 lifecycle={getShowLifecycle(media.status, media.inProduction)}
+                trackingStatus={media.tracking?.status}
               />
             )}
 

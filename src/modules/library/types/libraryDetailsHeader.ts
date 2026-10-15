@@ -8,4 +8,5 @@ export type LibraryDetailsHeaderProps = {
   mediaType: MediaType;
   credits: Credits | null;
   controls?: ReactNode;
+  extraActions?: ReactNode;
 };

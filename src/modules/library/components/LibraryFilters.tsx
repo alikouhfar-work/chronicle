@@ -1,7 +1,7 @@
 'use client';
 
 import { IconArrowsUpDown, IconSearch, IconX } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useOptimistic, useEffect, useState } from 'react';
 import { statusFilters } from '@/modules/library/lib/statusFilters';
 import { useQueryString } from '@/shared/hooks/useQueryString';
 
@@ -14,6 +14,16 @@ export const LibraryFilters = () => {
   const typeFilter = searchParams.get('type') || 'tv';
   const sortFilter = searchParams.get('sort') || 'recent';
   const statusFilter = searchParams.get('status') || 'all';
+
+  // Optimistic status selection: the URL update via router.replace can lag
+  // on slow networks, so reflect the tapped filter immediately and sync
+  // back when the URL catches up.
+  const [optimisticStatus, setOptimisticStatus] = useOptimistic(statusFilter);
+
+  const selectStatus = (statusId: string) => {
+    setOptimisticStatus(statusId);
+    createQueryString('status', statusId);
+  };
 
   const clearFilters = () => {
     setSearchQuery('');
@@ -114,12 +124,13 @@ export const LibraryFilters = () => {
           <span className="mr-1 text-xs font-medium text-zinc-400">Status:</span>
           <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/8 bg-zinc-900/90 p-1 sm:rounded-full">
             {statusFilters.map((status) => {
-              const isSelected = statusFilter === status.id;
+              const isSelected = optimisticStatus === status.id;
 
               return (
                 <button
                   key={status.id}
-                  onClick={() => createQueryString('status', status.id)}
+                  onClick={() => selectStatus(status.id)}
+                  aria-pressed={isSelected}
                   className={`apple-pill-btn flex cursor-pointer items-center gap-1.5 px-3 py-1.5 text-xs transition-all duration-150 ${
                     isSelected
                       ? 'bg-white font-bold text-zinc-950 shadow-md'

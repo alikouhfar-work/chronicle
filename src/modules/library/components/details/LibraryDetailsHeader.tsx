@@ -6,15 +6,23 @@ import { MediaPosterImage } from '@/shared/ui/MediaPosterImage';
 import { TrackingStatusSwitch } from '@/modules/library/components/details/TrackingStatusSwitch';
 import { ShowLifecycleBadge } from '@/modules/library/components/details/ShowLifecycleBadge';
 import { LibraryDetailsShareButton } from '@/modules/library/components/details/LibraryDetailsShareButton';
+import { LibraryDetailsActionsMenu } from '@/modules/library/components/details/LibraryDetailsActionsMenu';
 
-export const LibraryDetailsHeader = ({ media, mediaType, credits, controls }: LibraryDetailsHeaderProps) => {
+export const LibraryDetailsHeader = ({
+  media,
+  mediaType,
+  credits,
+  controls,
+  extraActions,
+}: LibraryDetailsHeaderProps) => {
   const show = 'seasons' in media ? media : null;
   const movie = 'runtime' in media ? media : null;
 
   const runtime = show ? getAverageEpisodeRuntime(show) : movie?.runtime;
 
+  // overflow-visible so the actions-menu dropdown can extend past the panel
   return (
-    <div className="glass-panel relative flex flex-col gap-7 overflow-hidden rounded-3xl border border-white/8 p-6 shadow-2xl md:flex-row md:p-8">
+    <div className="glass-panel relative flex flex-col gap-7 overflow-visible rounded-3xl border border-white/8 p-6 shadow-2xl md:flex-row md:p-8">
       {/* Decorative ambient glows inside hero */}
       <div className="pointer-events-none absolute top-0 right-1/4 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-10 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
@@ -132,7 +140,12 @@ export const LibraryDetailsHeader = ({ media, mediaType, credits, controls }: Li
                 </div>
               </div>
             )}
-            <LibraryDetailsShareButton media={media} mediaType={mediaType} credits={credits} />
+            <LibraryDetailsActionsMenu
+              extraActions={extraActions}
+              shareButton={
+                <LibraryDetailsShareButton media={media} mediaType={mediaType} credits={credits} />
+              }
+            />
           </div>
         </div>
       </div>

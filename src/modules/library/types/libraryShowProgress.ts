@@ -5,4 +5,5 @@ export type LibraryShowProgressProps = {
   seasons: Season[];
   numberOfEpisodes: number;
   lifecycle: ShowLifecycle | null;
+  trackingStatus?: string;
 };

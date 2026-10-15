@@ -8,7 +8,23 @@ import { ShowDetailsEpisodeCard } from '@/modules/episode-season';
 import { LibraryDetailsSeasonActions } from '@/modules/library/components/details/LibraryDetailsSeasonActions';
 
 export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
-  const [activeSeason, setActiveSeason] = useState(show.seasons[0]);
+  // Track only the selected id so the season object is always derived from
+  // the latest props — after a toggle + router.refresh() the watched flags
+  // come back fresh and the action label flips immediately. (Storing the
+  // whole season in state would keep serving the pre-toggle snapshot.)
+  const [activeSeasonId, setActiveSeasonId] = useState(show.seasons[0]?.id);
+  const activeSeason =
+    show.seasons.find((season) => season.id === activeSeasonId) ?? show.seasons[0];
+
+  // Mirror setSeasonWatched: only aired episodes count. Unaired episodes can
+  // never be marked by the toggle, so including them would wedge the label
+  // on "Mark Season Watched" forever for in-progress seasons.
+  const airedEpisodes = activeSeason.episodes.filter(
+    (episode) => episode.airDate && episode.airDate <= new Date(),
+  );
+  const isSeasonWatched =
+    airedEpisodes.length > 0 &&
+    airedEpisodes.every((episode) => episode.tracking?.watched);
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
@@ -28,10 +44,10 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
               <button
                 key={season.id}
                 disabled={isUpcomingSeason}
-                onClick={() => setActiveSeason(season)}
-                aria-current={activeSeason.id === season.id}
+                onClick={() => setActiveSeasonId(season.id)}
+                aria-current={activeSeasonId === season.id}
                 className={`group/season relative flex items-center justify-between gap-2 rounded-2xl border px-4 py-3 text-left text-xs font-semibold whitespace-nowrap transition-all duration-150 not-disabled:cursor-pointer disabled:opacity-50 md:whitespace-normal ${
-                  activeSeason.id === season.id
+                  activeSeasonId === season.id
                     ? 'border-white bg-white font-bold text-zinc-950 shadow-lg'
                     : 'glass-card text-zinc-400 not-disabled:hover:border-white/20 not-disabled:hover:text-white'
                 }`}
@@ -39,7 +55,7 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
                 <div className="flex items-center gap-2">
                   <IconDeviceTv
                     size={14}
-                    className={activeSeason.id === season.id ? 'text-zinc-950' : 'text-violet-400'}
+                    className={activeSeasonId === season.id ? 'text-zinc-950' : 'text-violet-400'}
                   />
                   <span>{season.name}</span>
                 </div>
@@ -50,10 +66,10 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
                     isUpcomingSeason
                       ? 'border-violet-400/10 bg-violet-400/5 font-bold text-violet-400/70'
                       : isCompleted
-                        ? activeSeason.id === season.id
+                        ? activeSeasonId === season.id
                           ? 'bg-black/20 text-zinc-950'
                           : 'border border-violet-500/30 bg-violet-500/20 text-violet-300'
-                        : activeSeason.id === season.id
+                        : activeSeasonId === season.id
                           ? 'bg-black/20 text-zinc-950'
                           : 'bg-white/6 text-zinc-400',
                   )}
@@ -72,20 +88,18 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
           <LibraryDetailsSeasonActions
             showId={show.id}
             seasonId={activeSeason.id}
-            seriesWatched={show.tracking?.status === 'COMPLETED'}
+            seasonWatched={isSeasonWatched}
           />
         </div>
 
         <ul className="max-h-120 space-y-2 overflow-y-auto">
-          {show.seasons
-            .find((s) => s.id === activeSeason.id)
-            ?.episodes.map((episode) => (
-              <ShowDetailsEpisodeCard
-                showId={show.id}
-                episode={episode}
-                key={`${activeSeason.id}-${episode.episodeNumber}`}
-              />
-            ))}
+          {activeSeason.episodes.map((episode) => (
+            <ShowDetailsEpisodeCard
+              showId={show.id}
+              episode={episode}
+              key={`${activeSeason.id}-${episode.episodeNumber}`}
+            />
+          ))}
         </ul>
       </div>
     </div>

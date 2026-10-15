@@ -11,18 +11,26 @@ import Link from 'next/link';
 export const Header = () => {
   const pathname = usePathname();
   const [signingOut, setSigningOut] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const [prevPathname, setPrevPathname] = useState(pathname);
   const isActiveRoute = (href: string) =>
     href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+
+  // Clear the pending nav state once the route transition lands.
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setPendingHref(null);
+  }
 
   const handleSignOut = () => {
     if (signingOut) return;
     setSigningOut(true);
-    signOut({ redirectTo: '/login' });
+    void signOut({ redirectTo: '/login' });
   };
 
   return (
-    <header className="bg-canvas/80 sticky top-0 z-40 border-b border-white/8 px-4 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300 sm:px-6 lg:px-8">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between">
+    <header className="bg-canvas/80 sticky top-0 z-40 border-b border-white/8 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300">
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Masthead Brand */}
         <div className="group flex cursor-pointer items-center space-x-3 select-none">
           <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-zinc-900 p-0.5 shadow-lg shadow-black/40 transition-all duration-300 group-hover:scale-105 group-hover:border-violet-400/50 group-hover:shadow-violet-500/25">
@@ -54,19 +62,30 @@ export const Header = () => {
           {navigation.map((item) => {
             const Icon = item.icon;
             const activeTab = isActiveRoute(item.href);
+            const isPendingNav = pendingHref === item.href;
 
             return (
               <Link
                 key={item.id}
                 href={item.href}
                 aria-current={activeTab ? 'page' : undefined}
+                aria-busy={isPendingNav}
+                onClick={() => {
+                  if (item.href !== pathname) setPendingHref(item.href);
+                }}
                 className={`flex cursor-pointer items-center space-x-2 rounded-full px-5 py-2 text-xs font-semibold tracking-tight transition-all duration-200 ${
+                  isPendingNav ? 'animate-pulse opacity-70' : ''
+                } ${
                   activeTab
                     ? 'scale-100 bg-violet-500 font-bold text-white shadow-md shadow-violet-500/25'
                     : 'text-zinc-400 hover:bg-white/4 hover:text-white'
                 }`}
               >
-                <Icon size={14} className={activeTab ? 'text-white' : 'text-zinc-400'} />
+                {isPendingNav ? (
+                  <IconLoader2 size={14} className="animate-spin" />
+                ) : (
+                  <Icon size={14} className={activeTab ? 'text-white' : 'text-zinc-400'} />
+                )}
                 <span>{item.title}</span>
               </Link>
             );
