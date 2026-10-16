@@ -9,10 +9,10 @@ import type { TrackingStatusSwitchProps } from '@/modules/library/types/tracking
 const isShow = (media: TrackedMedia): media is TrackedShow => 'seasons' in media;
 
 export const TrackingStatusSwitch = ({ media }: TrackingStatusSwitchProps) => (
-  <div className="space-y-2">
+  <div className="w-full min-w-0 space-y-2 sm:w-auto">
     <p className="text-xs font-semibold text-zinc-400">Tracking Status</p>
     {isShow(media) ? (
-      <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
+      <div className="flex max-w-full min-w-0 flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
         {showStatusFilters.map((statusFilter) => (
           <LibraryShowStatusChangeButton
             showId={media.id}
@@ -23,7 +23,7 @@ export const TrackingStatusSwitch = ({ media }: TrackingStatusSwitchProps) => (
         ))}
       </div>
     ) : (
-      <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
+      <div className="flex max-w-full min-w-0 flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
         {movieStatusFilters.map((statusFilter) => (
           <LibraryMovieStatusChangeButton
             movieId={media.id}

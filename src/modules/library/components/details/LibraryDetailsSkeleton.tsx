@@ -35,8 +35,6 @@ export const LibraryDetailsSkeleton = () => {
             <div className="flex items-center justify-between border-b border-white/8 pb-2">
               <div className="h-6 w-48 animate-pulse rounded-lg bg-zinc-700" />
               <div className="flex items-center gap-2">
-                <div className="h-7 w-40 animate-pulse rounded-full border border-violet-500/25 bg-violet-500/15" />
-                <div className="h-7 w-40 animate-pulse rounded-full border border-violet-500/25 bg-violet-500/15" />
                 <div className="h-7 w-25 animate-pulse rounded-full border border-white/10 bg-white/6" />
               </div>
             </div>

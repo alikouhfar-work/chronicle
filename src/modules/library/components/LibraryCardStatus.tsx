@@ -11,7 +11,7 @@ export const LibraryCardStatus = ({ status }: LibraryCardStatusProps) => {
 
   return (
     <span
-      className={`apple-badge border bg-black/60 text-[10px] font-bold tracking-tight uppercase backdrop-blur-md ${statusConfig.colors}`}
+      className={`apple-badge border bg-black/60 text-[10px] font-bold tracking-tight backdrop-blur-md ${statusConfig.colors}`}
     >
       {statusConfig.title}
     </span>

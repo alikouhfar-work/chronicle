@@ -10,6 +10,7 @@ export { LibraryDetailsCastSkeleton } from './components/details/LibraryDetailsC
 export { LibraryDetailsHeaderSkeleton } from './components/details/LibraryDetailsHeaderSkeleton';
 export { LibraryDetailsSimilarMediaSkeleton } from './components/details/LibraryDetailsSimilarMediaSkeleton';
 export { LibraryDetailsNavigation } from './components/details/LibraryDetailsNavigation';
+export { LibraryDetailsNavigationSkeleton } from './components/details/LibraryDetailsNavigationSkeleton';
 
 export type { TrackedMedia } from './types/trackedMedia';
 export type { MediaStatusFilter } from './types/mediaStatusFilter';

@@ -31,6 +31,10 @@ export const useQueryString = () => {
       if (next === current) return;
 
       const url = next ? `${pathname}?${next}` : pathname;
+      // Intentionally NOT wrapped in startTransition: this is an urgent
+      // navigation, so the async results below the <Suspense> boundary
+      // suspend and the loading skeleton shows natively. Wrapping it in a
+      // transition would keep the stale UI and suppress the fallback.
       router.replace(url);
     },
     [pathname, router, searchParams],
