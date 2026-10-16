@@ -1,12 +1,17 @@
 'use client';
 
 import { IconArrowsUpDown, IconSearch, IconX } from '@tabler/icons-react';
-import { useOptimistic, useEffect, useState } from 'react';
+import { useOptimistic, useEffect, useState, useTransition } from 'react';
 import { statusFilters } from '@/modules/library/lib/statusFilters';
 import { useQueryString } from '@/shared/hooks/useQueryString';
 
 export const LibraryFilters = () => {
   const { searchParams, createQueryString } = useQueryString();
+  // useOptimistic setters must run inside a transition or action — calling
+  // them directly logs "An optimistic state update occurred outside a
+  // transition or action". The router.replace navigation itself stays
+  // urgent (see useQueryString) so <Suspense> shows the skeleton natively.
+  const [, startTransition] = useTransition();
 
   const urlSearch = searchParams.get('search') ?? '';
   const [searchQuery, setSearchQuery] = useState(urlSearch);
@@ -17,11 +22,20 @@ export const LibraryFilters = () => {
 
   // Optimistic status selection: the URL update via router.replace can lag
   // on slow networks, so reflect the tapped filter immediately and sync
-  // back when the URL catches up.
+  // back when the URL catches up (including browser back/forward, which
+  // changes the URL without going through selectStatus).
   const [optimisticStatus, setOptimisticStatus] = useOptimistic(statusFilter);
 
+  useEffect(() => {
+    startTransition(() => {
+      setOptimisticStatus(statusFilter);
+    });
+  }, [statusFilter, setOptimisticStatus, startTransition]);
+
   const selectStatus = (statusId: string) => {
-    setOptimisticStatus(statusId);
+    startTransition(() => {
+      setOptimisticStatus(statusId);
+    });
     createQueryString('status', statusId);
   };
 

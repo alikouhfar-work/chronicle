@@ -27,10 +27,10 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
     airedEpisodes.every((episode) => episode.tracking?.watched);
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-      <div className="shrink-0 space-y-3">
+    <div className="grid w-full min-w-0 grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+      <div className="min-w-0 shrink-0 space-y-3">
         <h4 className="text-xs font-bold tracking-tight text-zinc-400 uppercase">Seasons</h4>
-        <div className="flex flex-row gap-2 overflow-x-auto pb-2 md:flex-col md:overflow-visible md:pb-0">
+        <div className="flex min-w-0 max-w-full flex-row gap-2 overflow-x-auto pb-2 md:flex-col md:overflow-visible md:pb-0">
           {show.seasons.map((season) => {
             const totalEpisodes = season.episodeCount;
             const watchedEpisodes = season.episodes.filter(
@@ -82,7 +82,7 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
         </div>
       </div>
 
-      <div className="space-y-3.5 md:col-span-2 lg:col-span-3">
+      <div className="min-w-0 space-y-3.5 md:col-span-2 lg:col-span-3">
         <div className="flex flex-col justify-between gap-2 border-b border-white/8 pb-2 md:flex-row md:items-center">
           <h4 className="text-base font-bold text-white">{activeSeason.name} Episodes</h4>
           <LibraryDetailsSeasonActions

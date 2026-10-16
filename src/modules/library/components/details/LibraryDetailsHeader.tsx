@@ -27,7 +27,7 @@ export const LibraryDetailsHeader = ({
       <div className="pointer-events-none absolute top-0 right-1/4 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-10 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
 
-      <div className="group relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-2xl border border-white/15 shadow-2xl select-none md:w-56">
+      <div className="group relative mx-auto aspect-2/3 w-full max-w-65 shrink-0 overflow-hidden rounded-2xl border border-white/15 shadow-2xl select-none sm:max-w-72 md:mx-0 md:w-56 md:max-w-none">
         <MediaPosterImage title={media.name} path={media.posterPath} alt={media.name} size="w500" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.15),transparent_50%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_35%,rgba(12,13,18,0.95)_100%)]" />
@@ -53,11 +53,11 @@ export const LibraryDetailsHeader = ({
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-between space-y-5">
+      <div className="relative z-10 flex w-full min-w-0 flex-1 flex-col justify-between space-y-5">
         <div className="space-y-4">
-          <div className="space-y-1.5">
-            <div className="flex flex-wrap items-baseline gap-2">
-              <h2 className="text-2xl leading-tight font-extrabold tracking-tight text-white md:text-3xl">
+          <div className="min-w-0 space-y-1.5">
+            <div className="flex min-w-0 flex-wrap items-baseline gap-2">
+              <h2 className="min-w-0 text-2xl leading-tight font-extrabold tracking-tight break-words text-white md:text-3xl">
                 {media.name}
               </h2>
               <span className="text-sm font-semibold text-violet-400">
@@ -79,7 +79,7 @@ export const LibraryDetailsHeader = ({
           </div>
 
           {/* Badges / Runtimes */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             {show ? (
               <ShowLifecycleBadge status={show.status} inProduction={show.inProduction} />
             ) : (
@@ -101,10 +101,10 @@ export const LibraryDetailsHeader = ({
               </span>
             ))}
             {show && (
-              <span className="apple-badge flex items-center gap-1.5 border border-white/10 bg-white/6 text-xs text-zinc-300">
+              <span className="apple-badge flex max-w-full min-w-0 items-center gap-1.5 border border-white/10 bg-white/6 text-xs break-words text-zinc-300">
                 <IconRefresh size={11} className="shrink-0 text-violet-400" />
-                <span className="text-zinc-400">Synced:</span>
-                <span className="font-semibold text-zinc-200">
+                <span className="shrink-0 text-zinc-400">Synced:</span>
+                <span className="min-w-0 font-semibold break-words text-zinc-200">
                   {format(show.lastSyncedAt, "MMM d, yyyy 'at' h:mm a")}
                 </span>
               </span>
@@ -116,17 +116,17 @@ export const LibraryDetailsHeader = ({
             <h4 className="flex items-center gap-1.5 text-xs font-semibold text-violet-400">
               <IconBook size={13} className="text-violet-400" /> Overview
             </h4>
-            <p className="text-xs leading-relaxed font-normal text-zinc-300 sm:text-sm">
+            <p className="min-w-0 text-xs leading-relaxed font-normal break-words text-zinc-300 sm:text-sm">
               {media.overview}
             </p>
           </div>
         </div>
 
         {/* Controls Panel */}
-        <div className="flex flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-end">
+        <div className="flex w-full min-w-0 flex-col items-start justify-between gap-5 border-t border-white/8 pt-4 sm:flex-row sm:items-end">
           {controls ?? <TrackingStatusSwitch media={media} />}
 
-          <div className="flex items-center gap-3">
+          <div className="flex w-full min-w-0 flex-wrap items-center gap-3 sm:w-auto">
             {movie && movie.tracking?.status === 'COMPLETED' && (
               <div className="glass-card flex items-center gap-3 rounded-2xl border border-white/10 p-3 shadow-md">
                 <div className="space-y-0.5">
@@ -140,12 +140,17 @@ export const LibraryDetailsHeader = ({
                 </div>
               </div>
             )}
-            <LibraryDetailsActionsMenu
-              extraActions={extraActions}
-              shareButton={
-                <LibraryDetailsShareButton media={media} mediaType={mediaType} credits={credits} />
-              }
-            />
+            {/* Desktop: actions stay in the header controls. On mobile the
+                menu lives at the top-right end of the back row (see
+                LibraryDetails), where its dropdown fits the viewport. */}
+            <div className="hidden sm:block">
+              <LibraryDetailsActionsMenu
+                extraActions={extraActions}
+                shareButton={
+                  <LibraryDetailsShareButton media={media} mediaType={mediaType} credits={credits} />
+                }
+              />
+            </div>
           </div>
         </div>
       </div>

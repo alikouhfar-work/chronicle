@@ -6,7 +6,7 @@ export const LibraryDetailsHeaderSkeleton = () => {
       <div className="pointer-events-none absolute bottom-0 left-10 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
 
       {/* Poster Skeleton */}
-      <div className="relative flex aspect-2/3 w-full shrink-0 animate-pulse flex-col justify-between overflow-hidden rounded-2xl border border-white/15 bg-zinc-900/90 p-4 shadow-2xl select-none md:w-56">
+      <div className="relative mx-auto flex aspect-2/3 w-full max-w-65 shrink-0 animate-pulse flex-col justify-between overflow-hidden rounded-2xl border border-white/15 bg-zinc-900/90 p-4 shadow-2xl select-none sm:max-w-72 md:mx-0 md:w-56 md:max-w-none">
         <div className="flex items-start justify-between gap-2">
           <div className="h-5 w-16 rounded-full bg-white/10" />
           <div className="h-5 w-12 rounded-full bg-white/10" />
@@ -18,7 +18,7 @@ export const LibraryDetailsHeaderSkeleton = () => {
       </div>
 
       {/* Info Column Details */}
-      <div className="relative z-10 flex flex-1 flex-col justify-between space-y-5">
+      <div className="relative z-10 flex w-full min-w-0 flex-1 flex-col justify-between space-y-5">
         <div className="space-y-4">
           {/* Title and Subtitle */}
           <div className="space-y-2">

@@ -9,7 +9,7 @@ export const DetailsCastList = ({ credits }: DetailsCastListProps) => {
   if (!credits) return null;
 
   return (
-    <div className="flex flex-col space-y-3 lg:col-span-1 lg:h-[380px]">
+    <div className="flex w-full min-w-0 max-w-full flex-col space-y-3 lg:col-span-1 lg:h-[380px]">
       <div className="space-y-0.5">
         <h4 className="flex items-center gap-2 text-sm font-bold text-white">
           <span className="h-2 w-2 rounded-full bg-violet-400" />

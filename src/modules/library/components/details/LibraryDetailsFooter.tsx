@@ -4,7 +4,7 @@ import { SimilarMediaCarousel } from '@/modules/library/components/details/Simil
 
 export const LibraryDetailsFooter = ({ credits, similarMedia }: LibraryDetailsFooterProps) => {
   return (
-    <div className="grid grid-cols-1 gap-6 border-t border-white/8 pt-4 lg:grid-cols-3">
+    <div className="grid w-full min-w-0 grid-cols-1 gap-6 border-t border-white/8 pt-4 lg:grid-cols-3">
       <DetailsCastList credits={credits} />
       <SimilarMediaCarousel similarMedia={similarMedia} />
     </div>
