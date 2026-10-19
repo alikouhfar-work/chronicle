@@ -55,7 +55,6 @@ const topBilled = (credits: Credits | null): string | null => {
 
 export const buildShareMessage = ({
   media,
-  mediaType,
   credits,
   origin,
 }: {
@@ -64,7 +63,7 @@ export const buildShareMessage = ({
   credits: Credits | null;
   origin: string;
 }): SharePayload => {
-  const url = `${origin}/library/${mediaType}/${media.tmdbId}`;
+  const url = `${origin}/search?query=${encodeURIComponent(media.name)}`;
   const posterUrl = getTmdbImageUrl(media.posterPath);
 
   // The headline lives inside the text itself (not just the payload title),
