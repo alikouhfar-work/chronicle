@@ -38,8 +38,11 @@ export const searchMedia = async (query: string) => {
       .map((result) => result.id);
 
     const [trackedMoviesLookup, trackedShowsLookup] = await Promise.all([
-      getTrackedMoviesLookup(movieTmdbIds),
-      getTrackedShowsLookup(showTmdbIds),
+      // Crawlers (and anonymous visitors) have no session; tracking state is
+      // not part of the public payload, so degrade gracefully instead of
+      // failing the whole search.
+      getTrackedMoviesLookup(movieTmdbIds).catch(() => new Set<number>()),
+      getTrackedShowsLookup(showTmdbIds).catch(() => new Set<number>()),
     ]);
 
     return results.map((result) => ({

@@ -11,16 +11,9 @@ import type { LibraryDetailsPageProps } from '@/modules/library/types/libraryDet
 
 import { Metadata } from 'next';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
+import { getAppBaseUrl } from '@/shared/lib/appUrl';
 
 export const dynamic = 'force-dynamic';
-
-// Shared links must render identically in local and production: resolve the
-// canonical base URL and poster image through the same helpers the client
-// share sheet uses (NEXT_PUBLIC_* with CDN fallback). Reading the
-// server-only TMDB_IMAGE_BASE_URL directly breaks OG images in production
-// when only the NEXT_PUBLIC_* var is configured.
-const getAppBaseUrl = () =>
-  process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || 'http://localhost:3000';
 
 const isValidSlug = (slug: unknown): slug is [MediaType, string] =>
   Array.isArray(slug) &&
@@ -42,14 +35,24 @@ export const generateMetadata = async ({
 
     const title = media.name;
     const posterUrl = getTmdbImageUrl(media.posterPath, 'poster', 'w500');
+    const baseUrl = await getAppBaseUrl();
     return {
-      metadataBase: new URL(getAppBaseUrl()),
+      metadataBase: new URL(baseUrl),
       title,
       description: media.overview ?? `Details and similar titles for ${title}.`,
       openGraph: {
+        type: 'website',
+        siteName: 'Chronicle',
         title,
         description: media.overview ?? undefined,
-        images: posterUrl ? [{ url: posterUrl }] : undefined,
+        url: `${baseUrl}/library/${mediaType}/${id}`,
+        images: posterUrl ? [{ url: posterUrl, width: 500, height: 750, alt: title }] : undefined,
+      },
+      twitter: {
+        card: posterUrl ? 'summary_large_image' : 'summary',
+        title,
+        description: media.overview ?? undefined,
+        images: posterUrl ? [posterUrl] : undefined,
       },
     };
   } catch {
