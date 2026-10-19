@@ -59,7 +59,7 @@ describe('LibraryDetailsShareButton', () => {
     const message = writeText.mock.calls[0]?.[0] as unknown as string;
     expect(message.startsWith('Severance (2022)\nGenres: Drama')).toBe(true);
     expect(message).toContain('Cast: Adam Scott as Mark Scout');
-    expect(message).toContain(`${window.location.origin}/library/tv/123`);
+    expect(message).toContain(`${window.location.origin}/search?query=Severance`);
     expect(message.endsWith('https://image.tmdb.org/t/p/w500/poster.jpg')).toBe(true);
     expect(toast.custom).not.toHaveBeenCalled();
     expect(await screen.findByText('Copied!')).toBeInTheDocument();
@@ -86,13 +86,13 @@ describe('LibraryDetailsShareButton', () => {
     >;
     const payload = calls[0][0];
     expect(payload.title).toBe('Severance (2022)');
-    expect(payload.url).toBe(`${window.location.origin}/library/tv/123`);
+    expect(payload.url).toBe(`${window.location.origin}/search?query=Severance`);
     expect(payload.text.startsWith('Severance (2022)\nGenres: Drama')).toBe(true);
     expect(payload.text).toContain('Genres: Drama');
     expect(payload.text).toContain('Cast: Adam Scott as Mark Scout');
     expect(payload.text).toContain('A workplace thriller.');
     expect(payload.text).toContain('https://image.tmdb.org/t/p/w500/poster.jpg');
-    expect(payload.text).toContain(`${window.location.origin}/library/tv/123`);
+    expect(payload.text).toContain(`${window.location.origin}/search?query=Severance`);
     expect(toast.custom).not.toHaveBeenCalled();
   });
 
@@ -181,7 +181,7 @@ describe('LibraryDetailsShareButton', () => {
 
     expect(writeText).toHaveBeenCalledTimes(1);
     const message = writeText.mock.calls[0]?.[0] as unknown as string;
-    expect(message).toContain('https://chronicle.example/library/tv/123');
+    expect(message).toContain('https://chronicle.example/search?query=Severance');
     expect(message).not.toContain(window.location.origin);
   });
 });

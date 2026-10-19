@@ -3,7 +3,6 @@ import { JetBrains_Mono, Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/goog
 import './globals.css';
 import { ReactNode } from 'react';
 import { ServiceWorkerRegistration } from '@/shared/ui/ServiceWorkerRegistration';
-import { PWAInstallPrompt } from '@/shared/ui/PWAInstallPrompt';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',
@@ -53,7 +52,6 @@ const RootLayout = ({
       className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} bg-canvas h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <PWAInstallPrompt />
         <ServiceWorkerRegistration />
         {children}
       </body>

@@ -59,7 +59,7 @@ describe('buildShareMessage', () => {
     });
 
     expect(payload.title).toBe('Dune: Part Two (2024)');
-    expect(payload.url).toBe('https://chronicle.example/library/movie/999');
+    expect(payload.url).toBe('https://chronicle.example/search?query=Dune%3A%20Part%20Two');
     expect(payload.posterUrl).toContain('/w500/poster.jpg');
     expect(payload.text).not.toContain('Long live the fighters.');
     // Headline leads the text itself; poster closes the message.
@@ -71,7 +71,7 @@ describe('buildShareMessage', () => {
     );
     expect(payload.text).not.toContain('Extra Four');
     expect(payload.text).toContain('Paul unites with the Fremen.');
-    expect(payload.text).toContain('https://chronicle.example/library/movie/999');
+    expect(payload.text).toContain('https://chronicle.example/search?query=Dune%3A%20Part%20Two');
     expect(payload.text.endsWith('https://image.tmdb.org/t/p/w500/poster.jpg')).toBe(true);
     expect(payload.text).not.toContain('Poster:');
     expect(payload.text).not.toContain('Details:');
@@ -86,11 +86,11 @@ describe('buildShareMessage', () => {
     });
 
     expect(payload.title).toBe('Severance (2022-2025)');
-    expect(payload.url).toBe('https://chronicle.example/library/tv/123');
+    expect(payload.url).toBe('https://chronicle.example/search?query=Severance');
     expect(payload.posterUrl).toBeNull();
     // No poster: the headline leads the text and the URL closes it.
     expect(payload.text.startsWith('Severance (2022-2025)')).toBe(true);
-    expect(payload.text.endsWith('https://chronicle.example/library/tv/123')).toBe(true);
+    expect(payload.text.endsWith('https://chronicle.example/search?query=Severance')).toBe(true);
     expect(payload.text).toContain('Genres: Drama');
     expect(payload.text).not.toContain('My rating');
     expect(payload.text).not.toContain('Cast:');
