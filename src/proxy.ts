@@ -7,6 +7,21 @@ const isLogin = (pathname: string): boolean =>
   pathname === '/signup' ||
   pathname.startsWith('/signup/');
 
+// Link-preview crawlers (Telegram, WhatsApp, Discord, …) never carry a
+// session. Let them read the public search page so shared links can expose
+// their Open Graph poster metadata.
+const PREVIEW_CRAWLER_PATTERN =
+  /(telegrambot|whatsapp|facebookexternalhit|twitterbot|discordbot|slackbot|linkedinbot|pinterest|embedly|redditbot|skypeuripreview|vkshare|mastodon|applebot)/i;
+
+const isPreviewCrawler = (req: Parameters<Parameters<typeof auth>[0]>[0]): boolean => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return false;
+  const userAgent = req.headers.get('user-agent') ?? '';
+  return PREVIEW_CRAWLER_PATTERN.test(userAgent);
+};
+
+const isPublicPreviewPath = (pathname: string): boolean =>
+  pathname === '/search' || pathname.startsWith('/search/');
+
 const loginRedirect = (req: Parameters<Parameters<typeof auth>[0]>[0], pathname: string) => {
   const loginUrl = new URL('/login', req.url);
   loginUrl.searchParams.set('callbackUrl', pathname);
@@ -26,7 +41,12 @@ export default auth(async (req) => {
 
   // --- No session: everything else needs login.
   // (Catalogue reads use the single server token — no per-user token gate.)
-  if (!userId) return loginRedirect(req, `${pathname}${search}`);
+  if (!userId) {
+    if (isPublicPreviewPath(pathname) && isPreviewCrawler(req)) {
+      return NextResponse.next();
+    }
+    return loginRedirect(req, `${pathname}${search}`);
+  }
 
   return NextResponse.next();
 });
