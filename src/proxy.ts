@@ -20,7 +20,10 @@ const isPreviewCrawler = (req: Parameters<Parameters<typeof auth>[0]>[0]): boole
 };
 
 const isPublicPreviewPath = (pathname: string): boolean =>
-  pathname === '/search' || pathname.startsWith('/search/');
+  pathname === '/search' ||
+  pathname.startsWith('/search/') ||
+  pathname.startsWith('/library/movie/') ||
+  pathname.startsWith('/library/tv/');
 
 const loginRedirect = (req: Parameters<Parameters<typeof auth>[0]>[0], pathname: string) => {
   const loginUrl = new URL('/login', req.url);
