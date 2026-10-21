@@ -12,6 +12,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 const DEFAULT_DESCRIPTION = 'Search movies and TV shows to track on Chronicle.';
+const FALLBACK_OG_IMAGE = '/icons/logo.png';
 
 export const generateMetadata = async ({
   searchParams,
@@ -31,6 +32,7 @@ export const generateMetadata = async ({
         title: 'Search movies and TV shows',
         description: DEFAULT_DESCRIPTION,
         url: `${baseUrl}/search`,
+        images: [{ url: `${baseUrl}${FALLBACK_OG_IMAGE}`, width: 1024, height: 1024 }],
       },
     };
   }
@@ -43,6 +45,11 @@ export const generateMetadata = async ({
   const shareUrl = `${baseUrl}/search?query=${encodeURIComponent(trimmed)}`;
   const title = preview ? preview.name : `${trimmed} — Search`;
   const description = preview?.overview ?? `Search results for ${trimmed} on Chronicle.`;
+  const isPoster = Boolean(posterUrl);
+  // Telegram needs an absolute, publicly reachable image. Fall back to the
+  // app logo when TMDB has no poster (or the lookup failed) so a preview is
+  // always available.
+  const ogImage = posterUrl ?? `${baseUrl}${FALLBACK_OG_IMAGE}`;
 
   return {
     metadataBase: new URL(baseUrl),
@@ -55,22 +62,20 @@ export const generateMetadata = async ({
       title,
       description,
       url: shareUrl,
-      images: posterUrl
-        ? [
-            {
-              url: posterUrl,
-              width: 500,
-              height: 750,
-              alt: preview?.name ?? trimmed,
-            },
-          ]
-        : undefined,
+      images: [
+        {
+          url: ogImage,
+          width: isPoster ? 500 : 1024,
+          height: isPoster ? 750 : 1024,
+          alt: preview?.name ?? trimmed,
+        },
+      ],
     },
     twitter: {
-      card: posterUrl ? 'summary_large_image' : 'summary',
+      card: 'summary_large_image',
       title,
       description,
-      images: posterUrl ? [posterUrl] : undefined,
+      images: [ogImage],
     },
   };
 };
