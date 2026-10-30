@@ -406,6 +406,7 @@ export const ModelName = {
   MovieTracking: 'MovieTracking',
   EpisodeTracking: 'EpisodeTracking',
   User: 'User',
+  RewatchLog: 'RewatchLog',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "user" | "account" | "session" | "verificationToken"
+    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "user" | "rewatchLog" | "account" | "session" | "verificationToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1094,6 +1095,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RewatchLog: {
+      payload: Prisma.$RewatchLogPayload<ExtArgs>
+      fields: Prisma.RewatchLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RewatchLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RewatchLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>
+        }
+        findFirst: {
+          args: Prisma.RewatchLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RewatchLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>
+        }
+        findMany: {
+          args: Prisma.RewatchLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>[]
+        }
+        create: {
+          args: Prisma.RewatchLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>
+        }
+        createMany: {
+          args: Prisma.RewatchLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RewatchLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>[]
+        }
+        delete: {
+          args: Prisma.RewatchLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>
+        }
+        update: {
+          args: Prisma.RewatchLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.RewatchLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RewatchLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RewatchLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.RewatchLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogPayload>
+        }
+        aggregate: {
+          args: Prisma.RewatchLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRewatchLog>
+        }
+        groupBy: {
+          args: Prisma.RewatchLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewatchLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RewatchLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewatchLogCountAggregateOutputType> | number
+        }
+      }
+    }
     Account: {
       payload: Prisma.$AccountPayload<ExtArgs>
       fields: Prisma.AccountFieldRefs
@@ -1372,7 +1447,8 @@ export const ShowScalarFieldEnum = {
   inProduction: 'inProduction',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type ShowScalarFieldEnum = (typeof ShowScalarFieldEnum)[keyof typeof ShowScalarFieldEnum]
@@ -1392,7 +1468,8 @@ export const MovieScalarFieldEnum = {
   tagline: 'tagline',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
@@ -1407,7 +1484,8 @@ export const SeasonScalarFieldEnum = {
   episodeCount: 'episodeCount',
   airDate: 'airDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type SeasonScalarFieldEnum = (typeof SeasonScalarFieldEnum)[keyof typeof SeasonScalarFieldEnum]
@@ -1423,7 +1501,8 @@ export const EpisodeScalarFieldEnum = {
   runtime: 'runtime',
   airDate: 'airDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type EpisodeScalarFieldEnum = (typeof EpisodeScalarFieldEnum)[keyof typeof EpisodeScalarFieldEnum]
@@ -1491,6 +1570,21 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RewatchLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  mediaId: 'mediaId',
+  rewatchedAt: 'rewatchedAt',
+  showId: 'showId',
+  seasonId: 'seasonId',
+  episodeId: 'episodeId',
+  movieId: 'movieId'
+} as const
+
+export type RewatchLogScalarFieldEnum = (typeof RewatchLogScalarFieldEnum)[keyof typeof RewatchLogScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {
@@ -1634,6 +1728,20 @@ export type EnumMovieTrackingStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
  * Reference to a field of type 'MovieTrackingStatus[]'
  */
 export type ListEnumMovieTrackingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MovieTrackingStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RewatchMediaType'
+ */
+export type EnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType'>
+    
+
+
+/**
+ * Reference to a field of type 'RewatchMediaType[]'
+ */
+export type ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType[]'>
     
 
 
@@ -1810,6 +1918,7 @@ export type GlobalOmitConfig = {
   movieTracking?: Prisma.MovieTrackingOmit
   episodeTracking?: Prisma.EpisodeTrackingOmit
   user?: Prisma.UserOmit
+  rewatchLog?: Prisma.RewatchLogOmit
   account?: Prisma.AccountOmit
   session?: Prisma.SessionOmit
   verificationToken?: Prisma.VerificationTokenOmit

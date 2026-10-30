@@ -88,14 +88,15 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
           <LibraryDetailsSeasonActions
             showId={show.id}
             seasonId={activeSeason.id}
+            seasonName={activeSeason.name}
             seasonWatched={isSeasonWatched}
+            seasonRewatchCount={activeSeason.rewatchCount}
           />
         </div>
 
         <ul className="max-h-120 space-y-2 overflow-y-auto">
           {activeSeason.episodes.map((episode) => (
             <ShowDetailsEpisodeCard
-              showId={show.id}
               episode={episode}
               key={`${activeSeason.id}-${episode.episodeNumber}`}
             />

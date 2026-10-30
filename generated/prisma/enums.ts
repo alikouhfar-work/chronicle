@@ -26,3 +26,13 @@ export const MovieTrackingStatus = {
 } as const
 
 export type MovieTrackingStatus = (typeof MovieTrackingStatus)[keyof typeof MovieTrackingStatus]
+
+
+export const RewatchMediaType = {
+  EPISODE: 'EPISODE',
+  SEASON: 'SEASON',
+  SHOW: 'SHOW',
+  MOVIE: 'MOVIE'
+} as const
+
+export type RewatchMediaType = (typeof RewatchMediaType)[keyof typeof RewatchMediaType]

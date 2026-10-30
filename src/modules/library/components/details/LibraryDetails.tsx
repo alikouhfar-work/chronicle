@@ -7,6 +7,7 @@ import { LibraryDetailsShowWatchToggle } from '@/modules/library/components/deta
 import { LibraryDetailsNavigation } from '@/modules/library/components/details/LibraryDetailsNavigation';
 import { LibraryDetailsActionsMenu } from '@/modules/library/components/details/LibraryDetailsActionsMenu';
 import { LibraryDetailsShareButton } from '@/modules/library/components/details/LibraryDetailsShareButton';
+import { RewatchButton } from '@/modules/rewatch';
 
 export const LibraryDetails = ({
   media,
@@ -24,6 +25,18 @@ export const LibraryDetails = ({
   const shareButton = (
     <LibraryDetailsShareButton media={media} mediaType={mediaType} credits={credits} />
   );
+  const menuActions = (
+    <>
+      <RewatchButton
+        mediaType={mediaType === 'tv' ? 'show' : 'movie'}
+        mediaId={media.id}
+        initialCount={media.rewatchCount}
+        historyTitle={media.name}
+        fullWidth
+      />
+      {showWatchToggle}
+    </>
+  );
 
   return (
     <section className="mx-auto flex w-full min-w-0 max-w-7xl flex-1 flex-col gap-y-8 font-sans">
@@ -34,7 +47,7 @@ export const LibraryDetails = ({
           // viewport. (On sm+ screens it stays in the header controls.)
           <div className="sm:hidden">
             <LibraryDetailsActionsMenu
-              extraActions={showWatchToggle}
+              extraActions={menuActions}
               shareButton={shareButton}
             />
           </div>
@@ -44,7 +57,7 @@ export const LibraryDetails = ({
         media={media}
         mediaType={mediaType}
         credits={credits}
-        extraActions={showWatchToggle}
+        extraActions={menuActions}
       />
       {mediaType === 'movie' && <LibraryDetailsMovieLog movie={media} />}
       {mediaType === 'tv' && <LibraryDetailsSeasons show={media} />}

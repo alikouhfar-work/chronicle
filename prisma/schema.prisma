@@ -20,6 +20,13 @@ enum MovieTrackingStatus {
   COMPLETED
 }
 
+enum RewatchMediaType {
+  EPISODE @map("episode")
+  SEASON  @map("season")
+  SHOW    @map("show")
+  MOVIE   @map("movie")
+}
+
 model Show {
   id               String        @id @default(uuid())
   tmdbId           Int
@@ -39,9 +46,11 @@ model Show {
   lastSyncedAt     DateTime      @default(now())
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
+  rewatchCount     Int           @default(0) @map("rewatch_count")
   seasons          Season[]
   genres           Genre[]
   tracking         ShowTracking?
+  rewatchLogs      RewatchLog[]
 
   @@unique([userId, tmdbId])
   @@index([userId])
@@ -63,8 +72,10 @@ model Movie {
   lastSyncedAt DateTime       @default(now())
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+  rewatchCount Int            @default(0) @map("rewatch_count")
   genres       Genre[]
   tracking     MovieTracking?
+  rewatchLogs  RewatchLog[]
 
   @@unique([userId, tmdbId])
   @@index([userId])
@@ -80,7 +91,9 @@ model Season {
   airDate      DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  rewatchCount Int       @default(0) @map("rewatch_count")
   episodes     Episode[]
+  rewatchLogs  RewatchLog[]
 
   show Show @relation(fields: [showId], references: [id], onDelete: Cascade)
 
@@ -99,7 +112,9 @@ model Episode {
   airDate       DateTime?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
+  rewatchCount  Int              @default(0) @map("rewatch_count")
   tracking      EpisodeTracking?
+  rewatchLogs   RewatchLog[]
 
   season Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
 
@@ -166,6 +181,34 @@ model User {
   sessions              Session[]
   shows                 Show[]
   movies                Movie[]
+  rewatchLogs           RewatchLog[]
+}
+
+model RewatchLog {
+  id          String           @id @default(uuid())
+  userId      String           @map("user_id")
+  mediaType   RewatchMediaType @map("media_type")
+  mediaId     String           @map("media_id")
+  rewatchedAt DateTime         @default(now()) @map("rewatched_at")
+  showId      String?          @map("show_id")
+  seasonId    String?          @map("season_id")
+  episodeId   String?          @map("episode_id")
+  movieId     String?          @map("movie_id")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  show    Show?    @relation(fields: [showId], references: [id], onDelete: Cascade)
+  season  Season?  @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  episode Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  movie   Movie?   @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@index([userId, mediaType, mediaId, rewatchedAt])
+  @@index([mediaType, mediaId])
+  @@index([userId, rewatchedAt])
+  @@index([showId])
+  @@index([seasonId])
+  @@index([episodeId])
+  @@index([movieId])
+  @@map("rewatch_logs")
 }
 
 model Account {

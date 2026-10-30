@@ -4,13 +4,16 @@ import { setSeasonWatched } from '@/modules/episode-season/actions/setSeasonWatc
 import { LibraryDetailsSeasonActionsProps } from '@/modules/library/types/libraryDetailsSeasonActions';
 import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
 import { clsx } from 'clsx';
+import { RewatchButton } from '@/modules/rewatch';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
 
 export const LibraryDetailsSeasonActions = ({
   showId,
   seasonId,
+  seasonName,
   seasonWatched,
+  seasonRewatchCount,
 }: LibraryDetailsSeasonActionsProps) => {
   const { execute: toggleSeason, isPending } = useServerAction(
     () => setSeasonWatched(showId, seasonId, !seasonWatched),
@@ -22,7 +25,14 @@ export const LibraryDetailsSeasonActions = ({
   );
 
   return (
-    <div className="flex items-center gap-1.5 self-end">
+    <div className="flex flex-wrap items-center gap-1.5 self-end">
+      <RewatchButton
+        mediaType="season"
+        mediaId={seasonId}
+        initialCount={seasonRewatchCount}
+        historyTitle={seasonName}
+        variant="compact"
+      />
       <ActionButton
         onClick={toggleSeason}
         isPending={isPending}

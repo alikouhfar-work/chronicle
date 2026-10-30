@@ -63,6 +63,11 @@ export type EpisodeTracking = Prisma.EpisodeTrackingModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model RewatchLog
+ * 
+ */
+export type RewatchLog = Prisma.RewatchLogModel
+/**
  * Model Account
  * 
  */

@@ -17,6 +17,7 @@ export type TrackedShow = {
   numberOfSeasons: number;
   numberOfEpisodes: number;
   inProduction: boolean;
+  rewatchCount: number;
   seasons: Season[];
   genres: Genre[];
   tracking: ShowTracking | null;

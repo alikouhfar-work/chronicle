@@ -16,5 +16,6 @@ export type Episode = {
   overview: string;
   runtime: number | null;
   airDate: Date | null;
+  rewatchCount: number;
   tracking?: EpisodeTracking | null;
 };

@@ -60,6 +60,7 @@ export const ModelName = {
   MovieTracking: 'MovieTracking',
   EpisodeTracking: 'EpisodeTracking',
   User: 'User',
+  RewatchLog: 'RewatchLog',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -98,7 +99,8 @@ export const ShowScalarFieldEnum = {
   inProduction: 'inProduction',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type ShowScalarFieldEnum = (typeof ShowScalarFieldEnum)[keyof typeof ShowScalarFieldEnum]
@@ -118,7 +120,8 @@ export const MovieScalarFieldEnum = {
   tagline: 'tagline',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
@@ -133,7 +136,8 @@ export const SeasonScalarFieldEnum = {
   episodeCount: 'episodeCount',
   airDate: 'airDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type SeasonScalarFieldEnum = (typeof SeasonScalarFieldEnum)[keyof typeof SeasonScalarFieldEnum]
@@ -149,7 +153,8 @@ export const EpisodeScalarFieldEnum = {
   runtime: 'runtime',
   airDate: 'airDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type EpisodeScalarFieldEnum = (typeof EpisodeScalarFieldEnum)[keyof typeof EpisodeScalarFieldEnum]
@@ -217,6 +222,21 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RewatchLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  mediaId: 'mediaId',
+  rewatchedAt: 'rewatchedAt',
+  showId: 'showId',
+  seasonId: 'seasonId',
+  episodeId: 'episodeId',
+  movieId: 'movieId'
+} as const
+
+export type RewatchLogScalarFieldEnum = (typeof RewatchLogScalarFieldEnum)[keyof typeof RewatchLogScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

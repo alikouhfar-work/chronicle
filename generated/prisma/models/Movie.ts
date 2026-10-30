@@ -29,11 +29,13 @@ export type AggregateMovie = {
 export type MovieAvgAggregateOutputType = {
   tmdbId: number | null
   runtime: number | null
+  rewatchCount: number | null
 }
 
 export type MovieSumAggregateOutputType = {
   tmdbId: number | null
   runtime: number | null
+  rewatchCount: number | null
 }
 
 export type MovieMinAggregateOutputType = {
@@ -51,6 +53,7 @@ export type MovieMinAggregateOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  rewatchCount: number | null
 }
 
 export type MovieMaxAggregateOutputType = {
@@ -68,6 +71,7 @@ export type MovieMaxAggregateOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  rewatchCount: number | null
 }
 
 export type MovieCountAggregateOutputType = {
@@ -85,6 +89,7 @@ export type MovieCountAggregateOutputType = {
   lastSyncedAt: number
   createdAt: number
   updatedAt: number
+  rewatchCount: number
   _all: number
 }
 
@@ -92,11 +97,13 @@ export type MovieCountAggregateOutputType = {
 export type MovieAvgAggregateInputType = {
   tmdbId?: true
   runtime?: true
+  rewatchCount?: true
 }
 
 export type MovieSumAggregateInputType = {
   tmdbId?: true
   runtime?: true
+  rewatchCount?: true
 }
 
 export type MovieMinAggregateInputType = {
@@ -114,6 +121,7 @@ export type MovieMinAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
 }
 
 export type MovieMaxAggregateInputType = {
@@ -131,6 +139,7 @@ export type MovieMaxAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
 }
 
 export type MovieCountAggregateInputType = {
@@ -148,6 +157,7 @@ export type MovieCountAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
   _all?: true
 }
 
@@ -252,6 +262,7 @@ export type MovieGroupByOutputType = {
   lastSyncedAt: Date
   createdAt: Date
   updatedAt: Date
+  rewatchCount: number
   _count: MovieCountAggregateOutputType | null
   _avg: MovieAvgAggregateOutputType | null
   _sum: MovieSumAggregateOutputType | null
@@ -292,9 +303,11 @@ export type MovieWhereInput = {
   lastSyncedAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Movie"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   genres?: Prisma.GenreListRelationFilter
   tracking?: Prisma.XOR<Prisma.MovieTrackingNullableScalarRelationFilter, Prisma.MovieTrackingWhereInput> | null
+  rewatchLogs?: Prisma.RewatchLogListRelationFilter
 }
 
 export type MovieOrderByWithRelationInput = {
@@ -312,9 +325,11 @@ export type MovieOrderByWithRelationInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   genres?: Prisma.GenreOrderByRelationAggregateInput
   tracking?: Prisma.MovieTrackingOrderByWithRelationInput
+  rewatchLogs?: Prisma.RewatchLogOrderByRelationAggregateInput
 }
 
 export type MovieWhereUniqueInput = Prisma.AtLeast<{
@@ -336,9 +351,11 @@ export type MovieWhereUniqueInput = Prisma.AtLeast<{
   lastSyncedAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Movie"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   genres?: Prisma.GenreListRelationFilter
   tracking?: Prisma.XOR<Prisma.MovieTrackingNullableScalarRelationFilter, Prisma.MovieTrackingWhereInput> | null
+  rewatchLogs?: Prisma.RewatchLogListRelationFilter
 }, "id" | "userId_tmdbId">
 
 export type MovieOrderByWithAggregationInput = {
@@ -356,6 +373,7 @@ export type MovieOrderByWithAggregationInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
   _count?: Prisma.MovieCountOrderByAggregateInput
   _avg?: Prisma.MovieAvgOrderByAggregateInput
   _max?: Prisma.MovieMaxOrderByAggregateInput
@@ -381,6 +399,7 @@ export type MovieScalarWhereWithAggregatesInput = {
   lastSyncedAt?: Prisma.DateTimeWithAggregatesFilter<"Movie"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Movie"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Movie"> | Date | string
+  rewatchCount?: Prisma.IntWithAggregatesFilter<"Movie"> | number
 }
 
 export type MovieCreateInput = {
@@ -397,9 +416,11 @@ export type MovieCreateInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutMoviesInput
   genres?: Prisma.GenreCreateNestedManyWithoutMoviesInput
   tracking?: Prisma.MovieTrackingCreateNestedOneWithoutMovieInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutMovieInput
 }
 
 export type MovieUncheckedCreateInput = {
@@ -417,8 +438,10 @@ export type MovieUncheckedCreateInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMoviesInput
   tracking?: Prisma.MovieTrackingUncheckedCreateNestedOneWithoutMovieInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutMovieInput
 }
 
 export type MovieUpdateInput = {
@@ -435,9 +458,11 @@ export type MovieUpdateInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutMoviesNestedInput
   genres?: Prisma.GenreUpdateManyWithoutMoviesNestedInput
   tracking?: Prisma.MovieTrackingUpdateOneWithoutMovieNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieUncheckedUpdateInput = {
@@ -455,8 +480,10 @@ export type MovieUncheckedUpdateInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   genres?: Prisma.GenreUncheckedUpdateManyWithoutMoviesNestedInput
   tracking?: Prisma.MovieTrackingUncheckedUpdateOneWithoutMovieNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieCreateManyInput = {
@@ -474,6 +501,7 @@ export type MovieCreateManyInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
 }
 
 export type MovieUpdateManyMutationInput = {
@@ -490,6 +518,7 @@ export type MovieUpdateManyMutationInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MovieUncheckedUpdateManyInput = {
@@ -507,6 +536,7 @@ export type MovieUncheckedUpdateManyInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MovieUserIdTmdbIdCompoundUniqueInput = {
@@ -529,11 +559,13 @@ export type MovieCountOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type MovieAvgOrderByAggregateInput = {
   tmdbId?: Prisma.SortOrder
   runtime?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type MovieMaxOrderByAggregateInput = {
@@ -551,6 +583,7 @@ export type MovieMaxOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type MovieMinOrderByAggregateInput = {
@@ -568,11 +601,13 @@ export type MovieMinOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type MovieSumOrderByAggregateInput = {
   tmdbId?: Prisma.SortOrder
   runtime?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type MovieListRelationFilter = {
@@ -588,6 +623,11 @@ export type MovieOrderByRelationAggregateInput = {
 export type MovieScalarRelationFilter = {
   is?: Prisma.MovieWhereInput
   isNot?: Prisma.MovieWhereInput
+}
+
+export type MovieNullableScalarRelationFilter = {
+  is?: Prisma.MovieWhereInput | null
+  isNot?: Prisma.MovieWhereInput | null
 }
 
 export type MovieCreateNestedManyWithoutGenresInput = {
@@ -684,6 +724,22 @@ export type MovieUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MovieScalarWhereInput | Prisma.MovieScalarWhereInput[]
 }
 
+export type MovieCreateNestedOneWithoutRewatchLogsInput = {
+  create?: Prisma.XOR<Prisma.MovieCreateWithoutRewatchLogsInput, Prisma.MovieUncheckedCreateWithoutRewatchLogsInput>
+  connectOrCreate?: Prisma.MovieCreateOrConnectWithoutRewatchLogsInput
+  connect?: Prisma.MovieWhereUniqueInput
+}
+
+export type MovieUpdateOneWithoutRewatchLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.MovieCreateWithoutRewatchLogsInput, Prisma.MovieUncheckedCreateWithoutRewatchLogsInput>
+  connectOrCreate?: Prisma.MovieCreateOrConnectWithoutRewatchLogsInput
+  upsert?: Prisma.MovieUpsertWithoutRewatchLogsInput
+  disconnect?: Prisma.MovieWhereInput | boolean
+  delete?: Prisma.MovieWhereInput | boolean
+  connect?: Prisma.MovieWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MovieUpdateToOneWithWhereWithoutRewatchLogsInput, Prisma.MovieUpdateWithoutRewatchLogsInput>, Prisma.MovieUncheckedUpdateWithoutRewatchLogsInput>
+}
+
 export type MovieCreateWithoutGenresInput = {
   id?: string
   tmdbId: number
@@ -698,8 +754,10 @@ export type MovieCreateWithoutGenresInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutMoviesInput
   tracking?: Prisma.MovieTrackingCreateNestedOneWithoutMovieInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutMovieInput
 }
 
 export type MovieUncheckedCreateWithoutGenresInput = {
@@ -717,7 +775,9 @@ export type MovieUncheckedCreateWithoutGenresInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   tracking?: Prisma.MovieTrackingUncheckedCreateNestedOneWithoutMovieInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutMovieInput
 }
 
 export type MovieCreateOrConnectWithoutGenresInput = {
@@ -759,6 +819,7 @@ export type MovieScalarWhereInput = {
   lastSyncedAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Movie"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Movie"> | number
 }
 
 export type MovieCreateWithoutTrackingInput = {
@@ -775,8 +836,10 @@ export type MovieCreateWithoutTrackingInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutMoviesInput
   genres?: Prisma.GenreCreateNestedManyWithoutMoviesInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutMovieInput
 }
 
 export type MovieUncheckedCreateWithoutTrackingInput = {
@@ -794,7 +857,9 @@ export type MovieUncheckedCreateWithoutTrackingInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMoviesInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutMovieInput
 }
 
 export type MovieCreateOrConnectWithoutTrackingInput = {
@@ -827,8 +892,10 @@ export type MovieUpdateWithoutTrackingInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutMoviesNestedInput
   genres?: Prisma.GenreUpdateManyWithoutMoviesNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieUncheckedUpdateWithoutTrackingInput = {
@@ -846,7 +913,9 @@ export type MovieUncheckedUpdateWithoutTrackingInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   genres?: Prisma.GenreUncheckedUpdateManyWithoutMoviesNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieCreateWithoutUserInput = {
@@ -863,8 +932,10 @@ export type MovieCreateWithoutUserInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   genres?: Prisma.GenreCreateNestedManyWithoutMoviesInput
   tracking?: Prisma.MovieTrackingCreateNestedOneWithoutMovieInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutMovieInput
 }
 
 export type MovieUncheckedCreateWithoutUserInput = {
@@ -881,8 +952,10 @@ export type MovieUncheckedCreateWithoutUserInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMoviesInput
   tracking?: Prisma.MovieTrackingUncheckedCreateNestedOneWithoutMovieInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutMovieInput
 }
 
 export type MovieCreateOrConnectWithoutUserInput = {
@@ -911,6 +984,102 @@ export type MovieUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.MovieUpdateManyMutationInput, Prisma.MovieUncheckedUpdateManyWithoutUserInput>
 }
 
+export type MovieCreateWithoutRewatchLogsInput = {
+  id?: string
+  tmdbId: number
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  releaseDate?: Date | string | null
+  status: string
+  runtime: number
+  tagline?: string | null
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rewatchCount?: number
+  user: Prisma.UserCreateNestedOneWithoutMoviesInput
+  genres?: Prisma.GenreCreateNestedManyWithoutMoviesInput
+  tracking?: Prisma.MovieTrackingCreateNestedOneWithoutMovieInput
+}
+
+export type MovieUncheckedCreateWithoutRewatchLogsInput = {
+  id?: string
+  tmdbId: number
+  userId: string
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  releaseDate?: Date | string | null
+  status: string
+  runtime: number
+  tagline?: string | null
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rewatchCount?: number
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutMoviesInput
+  tracking?: Prisma.MovieTrackingUncheckedCreateNestedOneWithoutMovieInput
+}
+
+export type MovieCreateOrConnectWithoutRewatchLogsInput = {
+  where: Prisma.MovieWhereUniqueInput
+  create: Prisma.XOR<Prisma.MovieCreateWithoutRewatchLogsInput, Prisma.MovieUncheckedCreateWithoutRewatchLogsInput>
+}
+
+export type MovieUpsertWithoutRewatchLogsInput = {
+  update: Prisma.XOR<Prisma.MovieUpdateWithoutRewatchLogsInput, Prisma.MovieUncheckedUpdateWithoutRewatchLogsInput>
+  create: Prisma.XOR<Prisma.MovieCreateWithoutRewatchLogsInput, Prisma.MovieUncheckedCreateWithoutRewatchLogsInput>
+  where?: Prisma.MovieWhereInput
+}
+
+export type MovieUpdateToOneWithWhereWithoutRewatchLogsInput = {
+  where?: Prisma.MovieWhereInput
+  data: Prisma.XOR<Prisma.MovieUpdateWithoutRewatchLogsInput, Prisma.MovieUncheckedUpdateWithoutRewatchLogsInput>
+}
+
+export type MovieUpdateWithoutRewatchLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  runtime?: Prisma.IntFieldUpdateOperationsInput | number
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutMoviesNestedInput
+  genres?: Prisma.GenreUpdateManyWithoutMoviesNestedInput
+  tracking?: Prisma.MovieTrackingUpdateOneWithoutMovieNestedInput
+}
+
+export type MovieUncheckedUpdateWithoutRewatchLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  runtime?: Prisma.IntFieldUpdateOperationsInput | number
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutMoviesNestedInput
+  tracking?: Prisma.MovieTrackingUncheckedUpdateOneWithoutMovieNestedInput
+}
+
 export type MovieUpdateWithoutGenresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -925,8 +1094,10 @@ export type MovieUpdateWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutMoviesNestedInput
   tracking?: Prisma.MovieTrackingUpdateOneWithoutMovieNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieUncheckedUpdateWithoutGenresInput = {
@@ -944,7 +1115,9 @@ export type MovieUncheckedUpdateWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   tracking?: Prisma.MovieTrackingUncheckedUpdateOneWithoutMovieNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieUncheckedUpdateManyWithoutGenresInput = {
@@ -962,6 +1135,7 @@ export type MovieUncheckedUpdateManyWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MovieCreateManyUserInput = {
@@ -978,6 +1152,7 @@ export type MovieCreateManyUserInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
 }
 
 export type MovieUpdateWithoutUserInput = {
@@ -994,8 +1169,10 @@ export type MovieUpdateWithoutUserInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   genres?: Prisma.GenreUpdateManyWithoutMoviesNestedInput
   tracking?: Prisma.MovieTrackingUpdateOneWithoutMovieNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieUncheckedUpdateWithoutUserInput = {
@@ -1012,8 +1189,10 @@ export type MovieUncheckedUpdateWithoutUserInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   genres?: Prisma.GenreUncheckedUpdateManyWithoutMoviesNestedInput
   tracking?: Prisma.MovieTrackingUncheckedUpdateOneWithoutMovieNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutMovieNestedInput
 }
 
 export type MovieUncheckedUpdateManyWithoutUserInput = {
@@ -1030,6 +1209,7 @@ export type MovieUncheckedUpdateManyWithoutUserInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -1039,10 +1219,12 @@ export type MovieUncheckedUpdateManyWithoutUserInput = {
 
 export type MovieCountOutputType = {
   genres: number
+  rewatchLogs: number
 }
 
 export type MovieCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   genres?: boolean | MovieCountOutputTypeCountGenresArgs
+  rewatchLogs?: boolean | MovieCountOutputTypeCountRewatchLogsArgs
 }
 
 /**
@@ -1062,6 +1244,13 @@ export type MovieCountOutputTypeCountGenresArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.GenreWhereInput
 }
 
+/**
+ * MovieCountOutputType without action
+ */
+export type MovieCountOutputTypeCountRewatchLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RewatchLogWhereInput
+}
+
 
 export type MovieSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1078,9 +1267,11 @@ export type MovieSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   genres?: boolean | Prisma.Movie$genresArgs<ExtArgs>
   tracking?: boolean | Prisma.Movie$trackingArgs<ExtArgs>
+  rewatchLogs?: boolean | Prisma.Movie$rewatchLogsArgs<ExtArgs>
   _count?: boolean | Prisma.MovieCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["movie"]>
 
@@ -1099,6 +1290,7 @@ export type MovieSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["movie"]>
 
@@ -1117,6 +1309,7 @@ export type MovieSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["movie"]>
 
@@ -1135,13 +1328,15 @@ export type MovieSelectScalar = {
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
 }
 
-export type MovieOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "userId" | "name" | "overview" | "posterPath" | "backdropPath" | "releaseDate" | "status" | "runtime" | "tagline" | "lastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["movie"]>
+export type MovieOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "userId" | "name" | "overview" | "posterPath" | "backdropPath" | "releaseDate" | "status" | "runtime" | "tagline" | "lastSyncedAt" | "createdAt" | "updatedAt" | "rewatchCount", ExtArgs["result"]["movie"]>
 export type MovieInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   genres?: boolean | Prisma.Movie$genresArgs<ExtArgs>
   tracking?: boolean | Prisma.Movie$trackingArgs<ExtArgs>
+  rewatchLogs?: boolean | Prisma.Movie$rewatchLogsArgs<ExtArgs>
   _count?: boolean | Prisma.MovieCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MovieIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1157,6 +1352,7 @@ export type $MoviePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     user: Prisma.$UserPayload<ExtArgs>
     genres: Prisma.$GenrePayload<ExtArgs>[]
     tracking: Prisma.$MovieTrackingPayload<ExtArgs> | null
+    rewatchLogs: Prisma.$RewatchLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1173,6 +1369,7 @@ export type $MoviePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     lastSyncedAt: Date
     createdAt: Date
     updatedAt: Date
+    rewatchCount: number
   }, ExtArgs["result"]["movie"]>
   composites: {}
 }
@@ -1570,6 +1767,7 @@ export interface Prisma__MovieClient<T, Null = never, ExtArgs extends runtime.Ty
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   genres<T extends Prisma.Movie$genresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Movie$genresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GenrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tracking<T extends Prisma.Movie$trackingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Movie$trackingArgs<ExtArgs>>): Prisma.Prisma__MovieTrackingClient<runtime.Types.Result.GetResult<Prisma.$MovieTrackingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  rewatchLogs<T extends Prisma.Movie$rewatchLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Movie$rewatchLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RewatchLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1613,6 +1811,7 @@ export interface MovieFieldRefs {
   readonly lastSyncedAt: Prisma.FieldRef<"Movie", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Movie", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Movie", 'DateTime'>
+  readonly rewatchCount: Prisma.FieldRef<"Movie", 'Int'>
 }
     
 
@@ -2054,6 +2253,30 @@ export type Movie$trackingArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.MovieTrackingInclude<ExtArgs> | null
   where?: Prisma.MovieTrackingWhereInput
+}
+
+/**
+ * Movie.rewatchLogs
+ */
+export type Movie$rewatchLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RewatchLog
+   */
+  select?: Prisma.RewatchLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RewatchLog
+   */
+  omit?: Prisma.RewatchLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RewatchLogInclude<ExtArgs> | null
+  where?: Prisma.RewatchLogWhereInput
+  orderBy?: Prisma.RewatchLogOrderByWithRelationInput | Prisma.RewatchLogOrderByWithRelationInput[]
+  cursor?: Prisma.RewatchLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RewatchLogScalarFieldEnum | Prisma.RewatchLogScalarFieldEnum[]
 }
 
 /**

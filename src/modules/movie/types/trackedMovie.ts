@@ -22,6 +22,7 @@ export type TrackedMovie = {
   posterDescription?: string;
   runtime: number;
   tagline?: string | null;
+  rewatchCount: number;
   tracking: MovieTracking | null;
 };
 

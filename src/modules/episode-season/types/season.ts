@@ -15,6 +15,7 @@ export type Season = {
   showId: string;
   seasonNumber: number;
   episodeCount: number;
+  rewatchCount: number;
   episodes: Episode[];
   airDate: Date | null;
 };

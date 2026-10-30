@@ -14,8 +14,9 @@ import { ShowDetailsEpisodeCardToggleButton } from '@/modules/episode-season/com
 import { ShowDetailsEpisodeCardProps } from '@/modules/episode-season/types/showDetailsEpisodeCardProps';
 import { LibraryDetailsLogModal } from '@/modules/library/components/details/LibraryDetailsLogModal';
 import { addEpisodeLog } from '@/modules/episode-season/actions/addEpisodeLog';
+import { RewatchHistoryButton } from '@/modules/rewatch';
 
-export const ShowDetailsEpisodeCard = ({ showId, episode }: ShowDetailsEpisodeCardProps) => {
+export const ShowDetailsEpisodeCard = ({ episode }: ShowDetailsEpisodeCardProps) => {
   const [isEditingEpisodeLog, setIsEditingEpisodeLog] = useState(false);
 
   const isWatched = episode.tracking?.watched ?? false;
@@ -55,9 +56,12 @@ export const ShowDetailsEpisodeCard = ({ showId, episode }: ShowDetailsEpisodeCa
           </div>
         ) : (
           <ShowDetailsEpisodeCardToggleButton
-            showId={showId}
+            key={`${episode.id}-${isWatched}-${episode.rewatchCount}`}
             episodeId={episode.id}
+            episodeName={episode.name}
+            episodeNumber={episode.episodeNumber}
             isWatched={isWatched}
+            rewatchCount={episode.rewatchCount}
           />
         )}
 
@@ -100,18 +104,29 @@ export const ShowDetailsEpisodeCard = ({ showId, episode }: ShowDetailsEpisodeCa
                 <span>&#34;{episode.tracking.notes}&#34;</span>
               </p>
             ) : null}
+
           </div>
         </div>
 
-        {isWatched && !isUpcomingEpisode && (
-          <button
-            onClick={() => setIsEditingEpisodeLog(true)}
-            aria-label={`Edit review for ${episode.name}`}
-            title="Edit review"
-            className="size-8 flex shrink-0 cursor-pointer items-center justify-center gap-1.5 self-center rounded-lg bg-white/6 text-xs text-zinc-300 hover:bg-white/12"
-          >
-            <IconEdit size={12} />
-          </button>
+        {!isUpcomingEpisode && (
+          <div className="flex shrink-0 items-center gap-1.5 self-center">
+            <RewatchHistoryButton
+              mediaType="episode"
+              mediaId={episode.id}
+              title={episode.name}
+              count={episode.rewatchCount}
+            />
+            {isWatched && (
+              <button
+                onClick={() => setIsEditingEpisodeLog(true)}
+                aria-label={`Edit review for ${episode.name}`}
+                title="Edit review"
+                className="size-8 flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white/6 text-xs text-zinc-300 hover:bg-white/12"
+              >
+                <IconEdit size={12} />
+              </button>
+            )}
+          </div>
         )}
       </li>
     </>
