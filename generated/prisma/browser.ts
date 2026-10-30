@@ -68,6 +68,26 @@ export type User = Prisma.UserModel
  */
 export type RewatchLog = Prisma.RewatchLogModel
 /**
+ * Model PublicComment
+ * 
+ */
+export type PublicComment = Prisma.PublicCommentModel
+/**
+ * Model CommentAttachment
+ * 
+ */
+export type CommentAttachment = Prisma.CommentAttachmentModel
+/**
+ * Model CommentMention
+ * 
+ */
+export type CommentMention = Prisma.CommentMentionModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
  * Model Account
  * 
  */

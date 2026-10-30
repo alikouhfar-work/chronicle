@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import { IconLoader2 } from '@tabler/icons-react';
+import { IconLoader2, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import { navigation } from '@/shared/lib/navigation';
 import Link from 'next/link';
@@ -93,6 +93,19 @@ export const Header = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/settings/profile"
+            aria-label="Profile settings"
+            title="Profile settings"
+            aria-current={isActiveRoute('/settings/profile') ? 'page' : undefined}
+            className={`flex size-9 items-center justify-center rounded-full border transition-colors ${
+              isActiveRoute('/settings/profile')
+                ? 'border-violet-400/50 bg-violet-500/15 text-violet-300'
+                : 'border-white/8 text-zinc-400 hover:border-violet-400/40 hover:text-white'
+            }`}
+          >
+            <IconUser size={16} />
+          </Link>
           <button
             type="button"
             onClick={handleSignOut}

@@ -4,6 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
+import { ensureUsername } from '@/modules/user/services/userService';
 
 export const hasGoogle = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
 export const hasGuestLogin = process.env.GUEST_LOGIN_ENABLED === 'true';
@@ -55,6 +56,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                   }
                 }
                 if (!user) return null;
+                await ensureUsername(user.id).catch((error: unknown) =>
+                  console.error('[auth][guest] username assignment failed:', error),
+                );
                 return { id: user.id, email: user.email, name: user.name };
               } catch (error) {
                 console.error('[auth][guest] authorize failed:', error);
@@ -90,6 +94,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  events: {
+    // OAuth users are created by the adapter, bypassing the register action.
+    createUser: async ({ user }) => {
+      if (!user.id) return;
+      await ensureUsername(user.id).catch((error: unknown) =>
+        console.error('[auth][createUser] username assignment failed:', error),
+      );
+    },
+  },
   callbacks: {
     jwt: ({ token, user }) => {
       if (user?.id) token.sub = user.id;

@@ -407,6 +407,10 @@ export const ModelName = {
   EpisodeTracking: 'EpisodeTracking',
   User: 'User',
   RewatchLog: 'RewatchLog',
+  PublicComment: 'PublicComment',
+  CommentAttachment: 'CommentAttachment',
+  CommentMention: 'CommentMention',
+  Notification: 'Notification',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -425,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "user" | "rewatchLog" | "account" | "session" | "verificationToken"
+    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "user" | "rewatchLog" | "publicComment" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1169,6 +1173,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PublicComment: {
+      payload: Prisma.$PublicCommentPayload<ExtArgs>
+      fields: Prisma.PublicCommentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PublicCommentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PublicCommentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>
+        }
+        findFirst: {
+          args: Prisma.PublicCommentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PublicCommentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>
+        }
+        findMany: {
+          args: Prisma.PublicCommentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>[]
+        }
+        create: {
+          args: Prisma.PublicCommentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>
+        }
+        createMany: {
+          args: Prisma.PublicCommentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PublicCommentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>[]
+        }
+        delete: {
+          args: Prisma.PublicCommentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>
+        }
+        update: {
+          args: Prisma.PublicCommentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PublicCommentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PublicCommentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PublicCommentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PublicCommentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicCommentPayload>
+        }
+        aggregate: {
+          args: Prisma.PublicCommentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePublicComment>
+        }
+        groupBy: {
+          args: Prisma.PublicCommentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PublicCommentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PublicCommentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PublicCommentCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommentAttachment: {
+      payload: Prisma.$CommentAttachmentPayload<ExtArgs>
+      fields: Prisma.CommentAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommentAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommentAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.CommentAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommentAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.CommentAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.CommentAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.CommentAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommentAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.CommentAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>
+        }
+        update: {
+          args: Prisma.CommentAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommentAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommentAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommentAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommentAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.CommentAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommentAttachment>
+        }
+        groupBy: {
+          args: Prisma.CommentAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommentAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommentMention: {
+      payload: Prisma.$CommentMentionPayload<ExtArgs>
+      fields: Prisma.CommentMentionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommentMentionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommentMentionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>
+        }
+        findFirst: {
+          args: Prisma.CommentMentionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommentMentionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>
+        }
+        findMany: {
+          args: Prisma.CommentMentionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>[]
+        }
+        create: {
+          args: Prisma.CommentMentionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>
+        }
+        createMany: {
+          args: Prisma.CommentMentionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommentMentionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>[]
+        }
+        delete: {
+          args: Prisma.CommentMentionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>
+        }
+        update: {
+          args: Prisma.CommentMentionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommentMentionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommentMentionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommentMentionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommentMentionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentMentionPayload>
+        }
+        aggregate: {
+          args: Prisma.CommentMentionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommentMention>
+        }
+        groupBy: {
+          args: Prisma.CommentMentionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentMentionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommentMentionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentMentionCountAggregateOutputType> | number
+        }
+      }
+    }
+    Notification: {
+      payload: Prisma.$NotificationPayload<ExtArgs>
+      fields: Prisma.NotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.NotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        findMany: {
+          args: Prisma.NotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        create: {
+          args: Prisma.NotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        createMany: {
+          args: Prisma.NotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        delete: {
+          args: Prisma.NotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        update: {
+          args: Prisma.NotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.NotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.NotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNotification>
+        }
+        groupBy: {
+          args: Prisma.NotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NotificationCountAggregateOutputType> | number
+        }
+      }
+    }
     Account: {
       payload: Prisma.$AccountPayload<ExtArgs>
       fields: Prisma.AccountFieldRefs
@@ -1566,7 +1866,8 @@ export const UserScalarFieldEnum = {
   image: 'image',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  username: 'username'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1585,6 +1886,57 @@ export const RewatchLogScalarFieldEnum = {
 } as const
 
 export type RewatchLogScalarFieldEnum = (typeof RewatchLogScalarFieldEnum)[keyof typeof RewatchLogScalarFieldEnum]
+
+
+export const PublicCommentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  mediaId: 'mediaId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type PublicCommentScalarFieldEnum = (typeof PublicCommentScalarFieldEnum)[keyof typeof PublicCommentScalarFieldEnum]
+
+
+export const CommentAttachmentScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  url: 'url',
+  width: 'width',
+  height: 'height',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentAttachmentScalarFieldEnum = (typeof CommentAttachmentScalarFieldEnum)[keyof typeof CommentAttachmentScalarFieldEnum]
+
+
+export const CommentMentionScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  mentionedUserId: 'mentionedUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentMentionScalarFieldEnum = (typeof CommentMentionScalarFieldEnum)[keyof typeof CommentMentionScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  recipientId: 'recipientId',
+  actorId: 'actorId',
+  type: 'type',
+  commentId: 'commentId',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {
@@ -1742,6 +2094,34 @@ export type EnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'RewatchMediaType[]'
  */
 export type ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PublicCommentMediaType'
+ */
+export type EnumPublicCommentMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicCommentMediaType'>
+    
+
+
+/**
+ * Reference to a field of type 'PublicCommentMediaType[]'
+ */
+export type ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicCommentMediaType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'NotificationType'
+ */
+export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+/**
+ * Reference to a field of type 'NotificationType[]'
+ */
+export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
     
 
 
@@ -1919,6 +2299,10 @@ export type GlobalOmitConfig = {
   episodeTracking?: Prisma.EpisodeTrackingOmit
   user?: Prisma.UserOmit
   rewatchLog?: Prisma.RewatchLogOmit
+  publicComment?: Prisma.PublicCommentOmit
+  commentAttachment?: Prisma.CommentAttachmentOmit
+  commentMention?: Prisma.CommentMentionOmit
+  notification?: Prisma.NotificationOmit
   account?: Prisma.AccountOmit
   session?: Prisma.SessionOmit
   verificationToken?: Prisma.VerificationTokenOmit

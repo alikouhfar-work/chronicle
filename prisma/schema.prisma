@@ -27,6 +27,16 @@ enum RewatchMediaType {
   MOVIE   @map("movie")
 }
 
+enum PublicCommentMediaType {
+  EPISODE @map("episode")
+  SHOW    @map("show")
+  MOVIE   @map("movie")
+}
+
+enum NotificationType {
+  COMMENT_MENTION @map("comment_mention")
+}
+
 model Show {
   id               String        @id @default(uuid())
   tmdbId           Int
@@ -82,16 +92,16 @@ model Movie {
 }
 
 model Season {
-  id           String    @id @default(uuid())
+  id           String       @id @default(uuid())
   tmdbId       Int
   showId       String
   seasonNumber Int
   name         String
   episodeCount Int
   airDate      DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  rewatchCount Int       @default(0) @map("rewatch_count")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  rewatchCount Int          @default(0) @map("rewatch_count")
   episodes     Episode[]
   rewatchLogs  RewatchLog[]
 
@@ -169,19 +179,25 @@ model EpisodeTracking {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  name         String?
-  email        String    @unique
-  emailVerified DateTime?
-  image        String?
-  passwordHash String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id                    String           @id @default(cuid())
+  name                  String?
+  email                 String           @unique
+  emailVerified         DateTime?
+  image                 String?
+  passwordHash          String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  /// Lowercase handle used for @mentions: 3-32 chars, [a-z0-9_].
+  username              String?          @unique
   accounts              Account[]
   sessions              Session[]
   shows                 Show[]
   movies                Movie[]
   rewatchLogs           RewatchLog[]
+  publicComments        PublicComment[]
+  mentions              CommentMention[] @relation("MentionsReceived")
+  notificationsReceived Notification[]   @relation("NotificationsReceived")
+  notificationsSent     Notification[]   @relation("NotificationsSent")
 }
 
 model RewatchLog {
@@ -209,6 +225,74 @@ model RewatchLog {
   @@index([episodeId])
   @@index([movieId])
   @@map("rewatch_logs")
+}
+
+model PublicComment {
+  id        String                 @id @default(uuid())
+  userId    String                 @map("user_id")
+  mediaType PublicCommentMediaType @map("media_type")
+  mediaId   String                 @map("media_id")
+  content   String                 @db.Text
+  createdAt DateTime               @default(now()) @map("created_at")
+  updatedAt DateTime               @updatedAt @map("updated_at")
+  deletedAt DateTime?              @map("deleted_at")
+
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments   CommentAttachment[]
+  mentions      CommentMention[]
+  notifications Notification[]
+
+  @@index([mediaType, mediaId, createdAt])
+  @@index([userId, createdAt])
+  @@map("public_comments")
+}
+
+model CommentAttachment {
+  id        String   @id @default(uuid())
+  commentId String   @map("comment_id")
+  url       String
+  width     Int?
+  height    Int?
+  mimeType  String   @map("mime_type")
+  sizeBytes Int      @map("size_bytes")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  comment PublicComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([commentId])
+  @@map("comment_attachments")
+}
+
+model CommentMention {
+  id              String   @id @default(uuid())
+  commentId       String   @map("comment_id")
+  mentionedUserId String   @map("mentioned_user_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  comment       PublicComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  mentionedUser User          @relation("MentionsReceived", fields: [mentionedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, mentionedUserId])
+  @@index([mentionedUserId, createdAt])
+  @@map("comment_mentions")
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String           @map("recipient_id")
+  actorId     String           @map("actor_id")
+  type        NotificationType
+  commentId   String           @map("comment_id")
+  isRead      Boolean          @default(false) @map("is_read")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  recipient User          @relation("NotificationsReceived", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor     User          @relation("NotificationsSent", fields: [actorId], references: [id], onDelete: Cascade)
+  comment   PublicComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, isRead, createdAt])
+  @@index([commentId])
+  @@map("notifications")
 }
 
 model Account {
