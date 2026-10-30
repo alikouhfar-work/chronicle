@@ -8,64 +8,64 @@ export type CreateCommentResult = {
   error?: string;
 };
 
+export type CreateCommentInput = {
+  mediaType: string;
+  mediaId: string;
+  content: string;
+  attachmentIds?: string[];
+};
+
 export const createComment = async (
   _prevState: unknown,
-  formData: FormData,
+  input: CreateCommentInput,
 ): Promise<CreateCommentResult> => {
   const userId = await requireUserId();
   if (!userId) {
     return { success: false, error: 'You must be signed in to comment.' };
   }
 
-  const content = (formData.get('content') as string).trim();
+  const content = (input.content ?? '').trim();
   if (content.length < 1 || content.length > 2000) {
     return { success: false, error: 'Comment must be between 1 and 2000 characters.' };
   }
 
-  const mediaType = (formData.get('mediaType') as string) as 'episode' | 'show' | 'movie';
-  const mediaId = formData.get('mediaId') as string;
-
-  // Handle attachments (up to 4)
-  const attachmentUrls: string[] = [];
-  for (let i = 0; i < 4; i += 1) {
-    const url = formData.get(`attachment${i}`) as string;
-    if (url && typeof url === 'string' && url.trim()) {
-      attachmentUrls.push(url.trim());
-    }
-  }
-
-  if (attachmentUrls.length > 4) {
+  // Validate attachment count.
+  const attachmentIds = input.attachmentIds ?? [];
+  if (attachmentIds.length > 4) {
     return { success: false, error: 'Maximum of 4 attachments allowed.' };
   }
 
-  // Reject attachments already claimed by another comment
-  if (attachmentUrls.length > 0) {
-    const existing = await prisma.commentAttachment.findMany({
-      where: { url: { in: attachmentUrls } },
+  // Validate attachments belong to this comment flow.
+  if (attachmentIds.length > 0) {
+    const attachments = await prisma.commentAttachment.findMany({
+      where: { id: { in: attachmentIds }, comment: { mediaType: input.mediaType as never, mediaId: input.mediaId } },
     });
-    const claimedUrls = new Set(existing.map((a) => a.url));
-    const duplicateUrls = attachmentUrls.filter((u) => claimedUrls.has(u));
-    if (duplicateUrls.length > 0) {
-      return { success: false, error: 'One or more attachments are already claimed.' };
+    if (attachments.length !== attachmentIds.length) {
+      return { success: false, error: 'One or more attachments are invalid.' };
     }
   }
 
   try {
-    await prisma.comment.create({
+    const comment = await prisma.comment.create({
       data: {
         userId,
         content,
-        mediaType,
-        mediaId,
-        attachments: {
-          create: attachmentUrls.map((url) => ({ url })),
-        },
-      } as never,
+        mediaType: input.mediaType as never,
+        mediaId: input.mediaId,
+      },
     });
+
+    // Attach verified attachments.
+    if (attachmentIds.length > 0) {
+      await prisma.commentAttachment.updateMany({
+        where: { id: { in: attachmentIds } },
+        data: { commentId: comment.id },
+      });
+    }
+
+    return { success: true };
   } catch (error) {
     console.error('createComment error:', error);
     return { success: false, error: 'Could not create comment.' };
   }
-
-  return { success: true };
 };

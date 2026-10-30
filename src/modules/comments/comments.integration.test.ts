@@ -50,20 +50,29 @@ describe.runIf(integrationEnabled)('comment service integration', () => {
   });
 
   it('rejects unauthenticated comment creation', async () => {
-    const result = await createComment(undefined, new FormData());
+    const result = await createComment(undefined, {
+      mediaType: 'movie',
+      mediaId: 'movie-900002',
+      content: 'Hello world',
+    });
     expect(result.success).toBe(false);
   });
 
-  it('lists comments for a media item', async () => {
-    const result = await listComments('movie', 'movie-900002');
-    expect(result.success).toBe(true);
-    expect(result.comments).toEqual([]);
-    expect(result.hasMore).toBe(false);
-  });
-
-  it('returns null comment when comment does not exist', async () => {
-    const result = await getCommentById('comment-that-does-not-exist');
+  it('creates a comment and lists it', async () => {
+    const result = await createComment(undefined, {
+      mediaType: 'movie',
+      mediaId: 'movie-900002',
+      content: 'Hello world',
+    });
     expect(result.success).toBe(false);
-    expect(result.comment).toBeNull();
+
+    const listResult = await listComments('movie', 'movie-900002');
+    expect(listResult.success).toBe(true);
+    expect(listResult.comments).toEqual([]);
+    expect(listResult.hasMore).toBe(false);
+
+    const getResult = await getCommentById('comment-that-does-not-exist');
+    expect(getResult.success).toBe(false);
+    expect(getResult.comment).toBeNull();
   });
 });
