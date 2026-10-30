@@ -92,10 +92,10 @@ export type User = Prisma.UserModel
  */
 export type RewatchLog = Prisma.RewatchLogModel
 /**
- * Model PublicComment
+ * Model Comment
  * 
  */
-export type PublicComment = Prisma.PublicCommentModel
+export type Comment = Prisma.CommentModel
 /**
  * Model CommentAttachment
  * 

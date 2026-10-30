@@ -41,7 +41,7 @@ export const LibraryDetailsHeaderSkeleton = () => {
           {/* Synopsis paragraph */}
           <div className="space-y-2 pt-1">
             <div className="h-3.5 w-24 animate-pulse rounded bg-zinc-700/80" />
-            <div className="max-w-3xl space-y-2">
+            <div className="space-y-2">
               <div className="h-3.5 w-full animate-pulse rounded-md bg-zinc-800" />
               <div className="h-3.5 w-11/12 animate-pulse rounded-md bg-zinc-800" />
               <div className="h-3.5 w-4/5 animate-pulse rounded-md bg-zinc-800/80" />

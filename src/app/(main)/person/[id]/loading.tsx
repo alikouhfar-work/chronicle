@@ -2,7 +2,7 @@ const PersonDetailsPageLoading = () => {
   return (
     <article
       id="actor-details-skeleton"
-      className="animate-fade-in mx-auto w-full max-w-5xl space-y-8 pb-12 font-sans select-none"
+      className="animate-fade-in mx-auto w-full space-y-8 pb-12 font-sans select-none"
     >
       {/* Navigation Header Skeleton */}
       <div className="flex items-center justify-between border-b border-white/8 pb-3">
@@ -51,7 +51,7 @@ const PersonDetailsPageLoading = () => {
             {/* Biography paragraph */}
             <div className="space-y-2.5 pt-2">
               <div className="h-3.5 w-24 animate-pulse rounded bg-zinc-700/80" />
-              <div className="max-w-3xl space-y-2">
+              <div className="space-y-2">
                 <div className="h-3.5 w-full animate-pulse rounded-md bg-zinc-800" />
                 <div className="h-3.5 w-11/12 animate-pulse rounded-md bg-zinc-800" />
                 <div className="h-3.5 w-4/5 animate-pulse rounded-md bg-zinc-800" />

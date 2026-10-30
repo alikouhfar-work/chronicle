@@ -1,0 +1,90 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { IconArrowLeft, IconAt, IconUser } from '@tabler/icons-react';
+import { auth } from '@/infra/auth/auth';
+import { prisma } from '@/infra/db/prisma';
+import { UsernameForm } from '@/modules/user';
+import { createMonogram } from '@/shared/lib/createMonogram';
+
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Profile',
+};
+
+const ProfileSettingsPage = async () => {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (!userId) redirect('/login?callbackUrl=/settings/profile');
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { username: true, name: true, email: true, image: true },
+  });
+
+  if (!user) redirect('/login');
+
+  const displayName = user.name?.trim() || user.username || 'Your account';
+  const monogram = createMonogram(displayName);
+
+  return (
+    <article className="animate-fade-in mx-auto w-full max-w-2xl space-y-6 font-sans">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition-colors hover:text-white"
+      >
+        <IconArrowLeft size={14} />
+        Back to dashboard
+      </Link>
+
+      <header className="space-y-1">
+        <h1 className="text-2xl font-bold tracking-tight text-white">Profile</h1>
+        <p className="text-sm text-zinc-400">
+          Your handle is how other people mention you in public reviews.
+        </p>
+      </header>
+
+      <section className="glass-card space-y-6 rounded-3xl border-white/10 p-6">
+        <div className="flex items-center gap-4">
+          {user.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={user.image}
+              alt=""
+              referrerPolicy="no-referrer"
+              className="size-14 shrink-0 rounded-2xl border border-white/10 object-cover"
+            />
+          ) : (
+            <div
+              aria-hidden
+              className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-violet-500/25 bg-violet-500/15 text-lg font-bold text-violet-300"
+            >
+              {monogram || <IconUser size={20} />}
+            </div>
+          )}
+          <div className="min-w-0">
+            <p className="truncate text-base font-bold text-white">{displayName}</p>
+            <p className="truncate text-xs text-zinc-400">{user.email}</p>
+          </div>
+        </div>
+
+        <div className="border-t border-white/8 pt-6">
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
+            <IconAt size={16} className="text-violet-400" />
+            Public handle
+          </div>
+          <UsernameForm initialUsername={user.username} />
+        </div>
+      </section>
+
+      <p className="text-xs text-zinc-500">
+        Your email is never shown on public reviews, mentions, or notifications — only your display
+        name, handle, and avatar.
+      </p>
+    </article>
+  );
+};
+
+export default ProfileSettingsPage;

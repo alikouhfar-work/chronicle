@@ -61,7 +61,7 @@ export const ModelName = {
   EpisodeTracking: 'EpisodeTracking',
   User: 'User',
   RewatchLog: 'RewatchLog',
-  PublicComment: 'PublicComment',
+  Comment: 'Comment',
   CommentAttachment: 'CommentAttachment',
   CommentMention: 'CommentMention',
   Notification: 'Notification',
@@ -244,7 +244,7 @@ export const RewatchLogScalarFieldEnum = {
 export type RewatchLogScalarFieldEnum = (typeof RewatchLogScalarFieldEnum)[keyof typeof RewatchLogScalarFieldEnum]
 
 
-export const PublicCommentScalarFieldEnum = {
+export const CommentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   mediaType: 'mediaType',
@@ -255,7 +255,7 @@ export const PublicCommentScalarFieldEnum = {
   deletedAt: 'deletedAt'
 } as const
 
-export type PublicCommentScalarFieldEnum = (typeof PublicCommentScalarFieldEnum)[keyof typeof PublicCommentScalarFieldEnum]
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
 
 
 export const CommentAttachmentScalarFieldEnum = {

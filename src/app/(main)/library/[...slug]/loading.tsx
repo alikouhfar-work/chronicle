@@ -8,7 +8,7 @@ import {
 
 const LibraryDetailsPageLoading = () => {
   return (
-    <article className="animate-fade-in mx-auto w-full max-w-5xl space-y-8 pb-12 font-sans select-none">
+    <article className="animate-fade-in mx-auto w-full space-y-8 pb-12 font-sans select-none">
       <LibraryDetailsNavigationSkeleton />
       <LibraryDetailsHeaderSkeleton />
       <LibraryDetailsSkeleton />

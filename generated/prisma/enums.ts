@@ -38,13 +38,13 @@ export const RewatchMediaType = {
 export type RewatchMediaType = (typeof RewatchMediaType)[keyof typeof RewatchMediaType]
 
 
-export const PublicCommentMediaType = {
+export const CommentMediaType = {
   EPISODE: 'EPISODE',
   SHOW: 'SHOW',
   MOVIE: 'MOVIE'
 } as const
 
-export type PublicCommentMediaType = (typeof PublicCommentMediaType)[keyof typeof PublicCommentMediaType]
+export type CommentMediaType = (typeof CommentMediaType)[keyof typeof CommentMediaType]
 
 
 export const NotificationType = {

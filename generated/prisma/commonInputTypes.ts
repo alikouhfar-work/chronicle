@@ -253,21 +253,21 @@ export type EnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
 }
 
-export type EnumPublicCommentMediaTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicCommentMediaType | Prisma.EnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicCommentMediaTypeFilter<$PrismaModel> | $Enums.PublicCommentMediaType
+export type EnumCommentMediaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentMediaType | Prisma.EnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel> | $Enums.CommentMediaType
 }
 
-export type EnumPublicCommentMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicCommentMediaType | Prisma.EnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicCommentMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.PublicCommentMediaType
+export type EnumCommentMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentMediaType | Prisma.EnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommentMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.CommentMediaType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPublicCommentMediaTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPublicCommentMediaTypeFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
 }
 
 export type EnumNotificationTypeFilter<$PrismaModel = never> = {
@@ -539,21 +539,21 @@ export type NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
 }
 
-export type NestedEnumPublicCommentMediaTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicCommentMediaType | Prisma.EnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicCommentMediaTypeFilter<$PrismaModel> | $Enums.PublicCommentMediaType
+export type NestedEnumCommentMediaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentMediaType | Prisma.EnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel> | $Enums.CommentMediaType
 }
 
-export type NestedEnumPublicCommentMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PublicCommentMediaType | Prisma.EnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PublicCommentMediaType[] | Prisma.ListEnumPublicCommentMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPublicCommentMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.PublicCommentMediaType
+export type NestedEnumCommentMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CommentMediaType | Prisma.EnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCommentMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.CommentMediaType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPublicCommentMediaTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPublicCommentMediaTypeFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {

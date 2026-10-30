@@ -88,7 +88,7 @@ const PublicMediaPreview = async ({ mediaType, id }: { mediaType: MediaType; id:
   const posterUrl = getTmdbImageUrl(details.posterPath, 'poster', 'w500');
 
   return (
-    <article className="mx-auto max-w-3xl space-y-4 px-4 py-8 font-sans">
+    <article className="mx-auto space-y-4 px-4 py-8 font-sans">
       <h1 className="text-2xl font-bold text-white">
         {details.name}
         {details.year && details.year !== 'N/A' ? ` (${details.year})` : ''}

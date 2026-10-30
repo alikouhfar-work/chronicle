@@ -7,7 +7,7 @@ export const PersonDetailsBiography = ({ biography }: PersonDetailsBiographyProp
   const [isBioExpanded, setIsBioExpanded] = useState<boolean>(false);
 
   return (
-    <div className="max-w-3xl space-y-2 text-xs leading-relaxed font-normal text-zinc-300">
+    <div className="space-y-2 text-xs leading-relaxed font-normal text-zinc-300">
       {biography ? (
         <>
           <p className={isBioExpanded ? '' : 'line-clamp-4'}>{biography}</p>
