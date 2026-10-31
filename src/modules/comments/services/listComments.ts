@@ -1,76 +1,83 @@
-'use action';
+'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { publicUserSelect } from '@/modules/user/lib/publicUser';
+import { toCommentView } from '@/modules/comments/lib/toCommentView';
+import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
+import {
+  DEFAULT_COMMENT_LIMIT,
+  type CommentCursor,
+  type CommentMediaType,
+  type ListCommentsResult,
+} from '@/modules/comments/types';
 
-export type ListCommentsResult = {
-  success: boolean;
-  error?: string;
-  comments: Array<{
-    id: string;
-    content: string;
-    authorUsername: string | null;
-    authorName: string | null;
-    authorImage: string | null;
-    createdAt: Date;
-    deletedAt: Date | null;
-    attachments: Array<{ url: string }>;
-  }>;
-  nextCursor?: { createdAt: Date; id: string };
-  hasMore: boolean;
+const MAX_LIMIT = 50;
+
+const normalizeCursor = (cursor?: CommentCursor | string): CommentCursor | undefined => {
+  if (!cursor) return undefined;
+  if (typeof cursor === 'string') {
+    const parsed = new Date(cursor);
+    return Number.isNaN(parsed.getTime()) ? undefined : { createdAt: parsed, id: '' };
+  }
+  return cursor;
 };
 
-const DEFAULT_LIMIT = 20;
-
 export const listComments = async (
-  mediaType: string,
-  mediaId: string,
-  cursor?: { createdAt: Date; id: string },
-  limit: number = DEFAULT_LIMIT,
+  mediaType: CommentMediaType,
+  tmdbId: number,
+  cursor?: CommentCursor,
+  limit: number = DEFAULT_COMMENT_LIMIT,
 ): Promise<ListCommentsResult> => {
+  if (!isCommentMediaType(mediaType) || !isTmdbId(tmdbId)) {
+    return { success: false, error: 'Invalid media reference.', comments: [], hasMore: false };
+  }
+
+  const pageSize = Math.min(MAX_LIMIT, Math.max(1, Math.floor(limit)));
+  const safeCursor = normalizeCursor(cursor);
+
   const where: Record<string, unknown> = {
-    mediaType,
-    mediaId,
+    mediaType: PRISMA_MEDIA_TYPE[mediaType],
+    tmdbId,
     deletedAt: null,
   };
 
-  if (cursor) {
+  if (safeCursor) {
     where.OR = [
-      { createdAt: { lt: cursor.createdAt } },
-      { createdAt: { equals: cursor.createdAt }, id: { lt: cursor.id } },
+      { createdAt: { lt: safeCursor.createdAt } },
+      { createdAt: { equals: safeCursor.createdAt }, id: { lt: safeCursor.id } },
     ];
   }
 
-  const items = await prisma.comment.findMany({
-    where: where as never,
-    include: {
-      user: { select: { username: true, name: true, image: true } },
-      attachments: { select: { url: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-    take: limit + 1,
-  });
+  try {
+    const items = await prisma.comment.findMany({
+      where: where as never,
+      include: {
+        user: { select: publicUserSelect },
+        attachments: {
+          select: { id: true, url: true, mimeType: true, width: true, height: true },
+        },
+      },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      take: pageSize + 1,
+    });
 
-  const comments = items.map((c) => ({
-    id: c.id,
-    content: c.content,
-    authorUsername: c.user.username,
-    authorName: c.user.name,
-    authorImage: c.user.image,
-    createdAt: c.createdAt,
-    deletedAt: c.deletedAt,
-    attachments: c.attachments.map((a) => ({ url: a.url })),
-  }));
+    const hasMore = items.length > pageSize;
+    const page = hasMore ? items.slice(0, pageSize) : items;
+    const last = page.at(-1);
 
-  const hasMore = comments.length > limit;
-  const page = hasMore ? comments.slice(0, limit) : comments;
-  const nextCursor = hasMore
-    ? { createdAt: page[page.length - 1].createdAt, id: page[page.length - 1].id }
-    : undefined;
-
-  return {
-    success: true,
-    comments: page,
-    nextCursor,
-    hasMore: !!hasMore,
-  };
+    return {
+      success: true,
+      comments: page.map(toCommentView),
+      hasMore,
+      nextCursor: hasMore && last ? { createdAt: last.createdAt, id: last.id } : undefined,
+    };
+  } catch (error) {
+    console.error('listComments error:', error);
+    return {
+      success: false,
+      error: 'Could not load reviews. Please try again.',
+      comments: [],
+      hasMore: false,
+    };
+  }
 };

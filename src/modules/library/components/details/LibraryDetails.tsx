@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { LibraryDetailsHeader } from '@/modules/library/components/details/LibraryDetailsHeader';
 import { LibraryShowDetailsProps } from '@/modules/library/types/libraryDetails';
 import { LibraryDetailsSeasons } from '@/modules/library/components/details/LibraryDetailsSeasons';
@@ -8,12 +9,15 @@ import { LibraryDetailsNavigation } from '@/modules/library/components/details/L
 import { LibraryDetailsActionsMenu } from '@/modules/library/components/details/LibraryDetailsActionsMenu';
 import { LibraryDetailsShareButton } from '@/modules/library/components/details/LibraryDetailsShareButton';
 import { RewatchButton } from '@/modules/rewatch';
+import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
+import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
 
 export const LibraryDetails = ({
   media,
   mediaType,
   credits,
   similarMedia,
+  viewer,
 }: LibraryShowDetailsProps) => {
   const showWatchToggle =
     mediaType === 'tv' ? (
@@ -38,18 +42,28 @@ export const LibraryDetails = ({
     </>
   );
 
+  const personalNotes =
+    mediaType === 'movie'
+      ? {
+          rating: media.tracking?.rating ?? null,
+          notes: media.tracking?.notes ?? null,
+        }
+      : {
+          rating: null,
+          notes: null,
+          trackingStatus: media.tracking?.status ?? null,
+          rewatchCount: media.rewatchCount,
+        };
+
   return (
-    <section className="mx-auto flex w-full min-w-0 max-w-7xl flex-1 flex-col gap-y-8 font-sans">
+    <section className="mx-auto flex w-full max-w-7xl min-w-0 flex-1 flex-col gap-y-8 font-sans">
       <LibraryDetailsNavigation
         actions={
           // Mobile: the actions menu lives at the top-right end of the back
           // row, where its right-aligned dropdown has room to open inside the
           // viewport. (On sm+ screens it stays in the header controls.)
           <div className="sm:hidden">
-            <LibraryDetailsActionsMenu
-              extraActions={menuActions}
-              shareButton={shareButton}
-            />
+            <LibraryDetailsActionsMenu extraActions={menuActions} shareButton={shareButton} />
           </div>
         }
       />
@@ -61,6 +75,14 @@ export const LibraryDetails = ({
       />
       {mediaType === 'movie' && <LibraryDetailsMovieLog movie={media} />}
       {mediaType === 'tv' && <LibraryDetailsSeasons show={media} />}
+      <Suspense fallback={<MediaCommentTabsSkeleton />}>
+        <MediaCommentTabs
+          mediaType={mediaType === 'tv' ? 'show' : 'movie'}
+          tmdbId={media.tmdbId}
+          personalNotes={personalNotes}
+          viewer={viewer}
+        />
+      </Suspense>
       <LibraryDetailsFooter credits={credits} similarMedia={similarMedia} />
     </section>
   );

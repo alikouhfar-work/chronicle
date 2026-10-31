@@ -23,14 +23,13 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
     (episode) => episode.airDate && episode.airDate <= new Date(),
   );
   const isSeasonWatched =
-    airedEpisodes.length > 0 &&
-    airedEpisodes.every((episode) => episode.tracking?.watched);
+    airedEpisodes.length > 0 && airedEpisodes.every((episode) => episode.tracking?.watched);
 
   return (
     <div className="grid w-full min-w-0 grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
       <div className="min-w-0 shrink-0 space-y-3">
         <h4 className="text-xs font-bold tracking-tight text-zinc-400 uppercase">Seasons</h4>
-        <div className="flex min-w-0 max-w-full flex-row gap-2 overflow-x-auto pb-2 md:flex-col md:overflow-visible md:pb-0">
+        <div className="flex max-w-full min-w-0 flex-row gap-2 overflow-x-auto pb-2 md:flex-col md:overflow-visible md:pb-0">
           {show.seasons.map((season) => {
             const totalEpisodes = season.episodeCount;
             const watchedEpisodes = season.episodes.filter(
@@ -98,6 +97,7 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
           {activeSeason.episodes.map((episode) => (
             <ShowDetailsEpisodeCard
               episode={episode}
+              showTmdbId={show.tmdbId}
               key={`${activeSeason.id}-${episode.episodeNumber}`}
             />
           ))}

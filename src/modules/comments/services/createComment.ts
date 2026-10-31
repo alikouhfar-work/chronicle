@@ -1,69 +1,147 @@
-'use action';
+'use server';
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-
-export type CreateCommentResult = {
-  success: boolean;
-  error?: string;
-};
+import {
+  COMMENT_MAX_ATTACHMENT_SIZE_BYTES,
+  COMMENT_MAX_ATTACHMENTS_PER_COMMENT,
+  COMMENT_STORAGE_MIME_TYPES,
+} from '@/infra/storage/storage';
+import { publicUserSelect } from '@/modules/user/lib/publicUser';
+import { toCommentView } from '@/modules/comments/lib/toCommentView';
+import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
+import {
+  COMMENT_MAX_LENGTH,
+  COMMENT_MIN_LENGTH,
+  type CommentAttachmentInput,
+  type CommentMediaType,
+  type CreateCommentResult,
+} from '@/modules/comments/types';
 
 export type CreateCommentInput = {
-  mediaType: string;
-  mediaId: string;
+  mediaType: CommentMediaType;
+  /** TMDB id, not the per-user internal database id. */
+  tmdbId: number;
   content: string;
-  attachmentIds?: string[];
+  attachments?: CommentAttachmentInput[];
 };
+
+const userOwnsMedia = async (
+  userId: string,
+  mediaType: CommentMediaType,
+  tmdbId: number,
+): Promise<boolean> => {
+  if (mediaType === 'movie') {
+    const movie = await prisma.movie.findFirst({
+      where: { tmdbId, userId },
+      select: { id: true },
+    });
+    return Boolean(movie);
+  }
+
+  if (mediaType === 'show') {
+    const show = await prisma.show.findFirst({
+      where: { tmdbId, userId },
+      select: { id: true },
+    });
+    return Boolean(show);
+  }
+
+  const episode = await prisma.episode.findFirst({
+    where: { tmdbId, season: { show: { userId } } },
+    select: { id: true },
+  });
+  return Boolean(episode);
+};
+
+const isValidAttachment = (attachment: CommentAttachmentInput): boolean =>
+  typeof attachment?.url === 'string' &&
+  attachment.url.length > 0 &&
+  typeof attachment.mimeType === 'string' &&
+  COMMENT_STORAGE_MIME_TYPES.includes(
+    attachment.mimeType as (typeof COMMENT_STORAGE_MIME_TYPES)[number],
+  ) &&
+  Number.isFinite(attachment.sizeBytes) &&
+  attachment.sizeBytes > 0 &&
+  attachment.sizeBytes <= COMMENT_MAX_ATTACHMENT_SIZE_BYTES;
 
 export const createComment = async (
   _prevState: unknown,
   input: CreateCommentInput,
 ): Promise<CreateCommentResult> => {
-  const userId = await requireUserId();
-  if (!userId) {
+  let userId: string;
+  try {
+    userId = await requireUserId();
+  } catch {
     return { success: false, error: 'You must be signed in to comment.' };
   }
 
+  if (!isCommentMediaType(input?.mediaType)) {
+    return { success: false, error: 'Unknown media type.' };
+  }
+
+  const tmdbId = input.tmdbId;
+  if (!isTmdbId(tmdbId)) {
+    return { success: false, error: 'Missing media TMDB id.' };
+  }
+
   const content = (input.content ?? '').trim();
-  if (content.length < 1 || content.length > 2000) {
-    return { success: false, error: 'Comment must be between 1 and 2000 characters.' };
+  if (content.length < COMMENT_MIN_LENGTH || content.length > COMMENT_MAX_LENGTH) {
+    return {
+      success: false,
+      error: `Comment must be between ${COMMENT_MIN_LENGTH} and ${COMMENT_MAX_LENGTH} characters.`,
+    };
   }
 
-  // Validate attachment count.
-  const attachmentIds = input.attachmentIds ?? [];
-  if (attachmentIds.length > 4) {
-    return { success: false, error: 'Maximum of 4 attachments allowed.' };
+  const attachments = input.attachments ?? [];
+  if (attachments.length > COMMENT_MAX_ATTACHMENTS_PER_COMMENT) {
+    return {
+      success: false,
+      error: `Maximum of ${COMMENT_MAX_ATTACHMENTS_PER_COMMENT} attachments allowed.`,
+    };
   }
 
-  // Validate attachments belong to this comment flow.
-  if (attachmentIds.length > 0) {
-    const attachments = await prisma.commentAttachment.findMany({
-      where: { id: { in: attachmentIds }, comment: { mediaType: input.mediaType as never, mediaId: input.mediaId } },
-    });
-    if (attachments.length !== attachmentIds.length) {
-      return { success: false, error: 'One or more attachments are invalid.' };
-    }
+  if (!attachments.every(isValidAttachment)) {
+    return { success: false, error: 'One or more attachments are invalid.' };
   }
 
   try {
+    if (!(await userOwnsMedia(userId, input.mediaType, tmdbId))) {
+      return { success: false, error: 'This title is not in your library anymore.' };
+    }
+
     const comment = await prisma.comment.create({
       data: {
         userId,
         content,
-        mediaType: input.mediaType as never,
-        mediaId: input.mediaId,
+        mediaType: PRISMA_MEDIA_TYPE[input.mediaType],
+        tmdbId,
+        // Set explicitly instead of relying on the DB default: production
+        // databases are UTC, but local Postgres instances often are not and
+        // the column is `timestamp without time zone`.
+        createdAt: new Date(),
+        attachments:
+          attachments.length > 0
+            ? {
+                create: attachments.map((attachment) => ({
+                  url: attachment.url,
+                  mimeType: attachment.mimeType,
+                  sizeBytes: attachment.sizeBytes,
+                  width: attachment.width ?? null,
+                  height: attachment.height ?? null,
+                })),
+              }
+            : undefined,
+      },
+      include: {
+        user: { select: publicUserSelect },
+        attachments: {
+          select: { id: true, url: true, mimeType: true, width: true, height: true },
+        },
       },
     });
 
-    // Attach verified attachments.
-    if (attachmentIds.length > 0) {
-      await prisma.commentAttachment.updateMany({
-        where: { id: { in: attachmentIds } },
-        data: { commentId: comment.id },
-      });
-    }
-
-    return { success: true };
+    return { success: true, comment: toCommentView(comment) };
   } catch (error) {
     console.error('createComment error:', error);
     return { success: false, error: 'Could not create comment.' };

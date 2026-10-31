@@ -1,28 +1,23 @@
-'use action';
+'use server';
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
+import type { DeleteCommentResult } from '@/modules/comments/types';
 
-export type DeleteCommentResult = {
-  success: boolean;
-  error?: string;
-};
-
-export const deleteComment = async (
-  commentId: string,
-): Promise<DeleteCommentResult> => {
-  const userId = await requireUserId();
-  if (!userId) {
+export const deleteComment = async (commentId: string): Promise<DeleteCommentResult> => {
+  let userId: string;
+  try {
+    userId = await requireUserId();
+  } catch {
     return { success: false, error: 'You must be signed in to delete comments.' };
   }
 
-  // Check ownership
   const comment = await prisma.comment.findUnique({
     where: { id: commentId },
-    select: { userId: true },
+    select: { userId: true, deletedAt: true },
   });
 
-  if (!comment) {
+  if (!comment || comment.deletedAt) {
     return { success: false, error: 'Comment not found.' };
   }
 
@@ -30,7 +25,6 @@ export const deleteComment = async (
     return { success: false, error: 'You are not the author of this comment.' };
   }
 
-  // Soft delete
   try {
     await prisma.comment.update({
       where: { id: commentId },

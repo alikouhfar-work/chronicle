@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { IconX } from '@tabler/icons-react';
 
 export type CommentAttachment = {
-  id: string;
+  id?: string;
   url: string;
-  mimeType: string;
+  mimeType?: string | null;
 };
 
 type CommentImageGridProps = {
@@ -91,7 +91,7 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
               type="button"
               onClick={closeLightbox}
               aria-label="Close lightbox"
-              className="absolute right-4 top-4 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
+              className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
             >
               <IconX size={20} />
             </button>

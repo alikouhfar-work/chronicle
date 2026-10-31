@@ -1,30 +1,31 @@
-'use action';
+'use server';
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-
-export type UpdateCommentResult = {
-  success: boolean;
-  error?: string;
-};
+import {
+  COMMENT_MAX_LENGTH,
+  COMMENT_MIN_LENGTH,
+  type UpdateCommentResult,
+} from '@/modules/comments/types';
 
 export const updateComment = async (
   commentId: string,
   _prevState: unknown,
   formData: FormData,
 ): Promise<UpdateCommentResult> => {
-  const userId = await requireUserId();
-  if (!userId) {
+  let userId: string;
+  try {
+    userId = await requireUserId();
+  } catch {
     return { success: false, error: 'You must be signed in to edit comments.' };
   }
 
-  // Check ownership
   const comment = await prisma.comment.findUnique({
     where: { id: commentId },
-    select: { userId: true, content: true },
+    select: { userId: true, deletedAt: true },
   });
 
-  if (!comment) {
+  if (!comment || comment.deletedAt) {
     return { success: false, error: 'Comment not found.' };
   }
 
@@ -32,7 +33,14 @@ export const updateComment = async (
     return { success: false, error: 'You are not the author of this comment.' };
   }
 
-  const content = (formData.get('content') as string).trim();
+  const raw = formData.get('content');
+  const content = typeof raw === 'string' ? raw.trim() : '';
+  if (content.length < COMMENT_MIN_LENGTH || content.length > COMMENT_MAX_LENGTH) {
+    return {
+      success: false,
+      error: `Comment must be between ${COMMENT_MIN_LENGTH} and ${COMMENT_MAX_LENGTH} characters.`,
+    };
+  }
 
   try {
     await prisma.comment.update({

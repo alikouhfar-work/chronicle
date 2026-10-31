@@ -1,0 +1,135 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const mocks = vi.hoisted(() => ({
+  findMany: vi.fn(),
+  create: vi.fn(),
+  findMovie: vi.fn(),
+  findShow: vi.fn(),
+  findEpisode: vi.fn(),
+  requireUserId: vi.fn(),
+}));
+
+vi.mock('@/infra/db/prisma', () => ({
+  prisma: {
+    comment: { findMany: mocks.findMany, create: mocks.create },
+    movie: { findFirst: mocks.findMovie },
+    show: { findFirst: mocks.findShow },
+    episode: { findFirst: mocks.findEpisode },
+  },
+}));
+
+vi.mock('@/infra/tmdb/forUser', () => ({
+  requireUserId: mocks.requireUserId,
+}));
+
+import { createComment } from '@/modules/comments/services/createComment';
+import { listComments } from '@/modules/comments/services/listComments';
+
+const commentRow = {
+  id: 'comment-1',
+  content: 'Great episode',
+  createdAt: new Date('2026-10-31T12:00:00Z'),
+  deletedAt: null,
+  user: { id: 'user-1', username: 'viewer', name: 'Viewer', image: null },
+  attachments: [],
+};
+
+describe('comment service TMDB scoping', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.requireUserId.mockResolvedValue('user-1');
+    mocks.findMany.mockResolvedValue([]);
+  });
+
+  it('lists comments by media type and TMDB id', async () => {
+    const result = await listComments('movie', 550);
+
+    expect(result.success).toBe(true);
+    expect(mocks.findMany).toHaveBeenCalledTimes(1);
+    expect(mocks.findMany.mock.calls[0][0].where).toMatchObject({
+      mediaType: 'MOVIE',
+      tmdbId: 550,
+      deletedAt: null,
+    });
+  });
+
+  it('scopes show and episode feeds by their TMDB ids', async () => {
+    await listComments('show', 95396);
+    await listComments('episode', 1982925);
+
+    expect(mocks.findMany.mock.calls[0][0].where).toMatchObject({
+      mediaType: 'SHOW',
+      tmdbId: 95396,
+    });
+    expect(mocks.findMany.mock.calls[1][0].where).toMatchObject({
+      mediaType: 'EPISODE',
+      tmdbId: 1982925,
+    });
+  });
+
+  it('rejects invalid TMDB ids without querying', async () => {
+    const result = await listComments('movie', 0);
+
+    expect(result.success).toBe(false);
+    expect(mocks.findMany).not.toHaveBeenCalled();
+  });
+
+  it('stores new comments against the TMDB id', async () => {
+    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.create.mockResolvedValue(commentRow);
+
+    const result = await createComment(undefined, {
+      mediaType: 'movie',
+      tmdbId: 550,
+      content: 'Great episode',
+    });
+
+    expect(result.success).toBe(true);
+    expect(mocks.findMovie).toHaveBeenCalledWith({
+      where: { tmdbId: 550, userId: 'user-1' },
+      select: { id: true },
+    });
+    expect(mocks.create.mock.calls[0][0].data).toMatchObject({
+      userId: 'user-1',
+      mediaType: 'MOVIE',
+      tmdbId: 550,
+    });
+    expect(mocks.create.mock.calls[0][0].data).not.toHaveProperty('mediaId');
+  });
+
+  it('validates the episode TMDB id for episode comments', async () => {
+    mocks.findEpisode.mockResolvedValue({ id: 'internal-episode-id' });
+    mocks.create.mockResolvedValue({
+      ...commentRow,
+      content: 'Episode thoughts',
+    });
+
+    await createComment(undefined, {
+      mediaType: 'episode',
+      tmdbId: 1982925,
+      content: 'Episode thoughts',
+    });
+
+    expect(mocks.findEpisode).toHaveBeenCalledWith({
+      where: { tmdbId: 1982925, season: { show: { userId: 'user-1' } } },
+      select: { id: true },
+    });
+    expect(mocks.create.mock.calls[0][0].data).toMatchObject({
+      mediaType: 'EPISODE',
+      tmdbId: 1982925,
+    });
+  });
+
+  it('rejects a comment when the title is not in the viewer library', async () => {
+    mocks.findMovie.mockResolvedValue(null);
+
+    const result = await createComment(undefined, {
+      mediaType: 'movie',
+      tmdbId: 550,
+      content: 'Not in library',
+    });
+
+    expect(result.success).toBe(false);
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+});

@@ -11,6 +11,7 @@ export type EpisodeRaw = {
 
 export type Episode = {
   id: string;
+  tmdbId: number;
   episodeNumber: number;
   name: string;
   overview: string;

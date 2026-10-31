@@ -1,0 +1,158 @@
+import { Suspense } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { format } from 'date-fns';
+import { IconArrowLeft, IconCalendar, IconClock, IconMessage, IconStar } from '@tabler/icons-react';
+import {
+  getTrackedEpisode,
+  getEpisodeDetails,
+} from '@/modules/episode-season/queries/getTrackedEpisode';
+import { getCommentViewer } from '@/modules/comments/queries/getCommentViewer';
+import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
+import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
+import { EpisodePersonalNotesEditor } from '@/modules/episode-season/components/EpisodePersonalNotesEditor';
+import { getTmdbImageUrl } from '@/infra/tmdb/images';
+import { formatMinutes } from '@/shared/lib/formatMinutes';
+
+export const dynamic = 'force-dynamic';
+
+type EpisodePageProps = {
+  params: Promise<{ id: string; episodeId: string }>;
+};
+
+export const generateMetadata = async ({ params }: EpisodePageProps): Promise<Metadata> => {
+  try {
+    const { id, episodeId } = await params;
+    const details = await getEpisodeDetails(id, episodeId);
+    if (!details) return {};
+    return {
+      title: `${details.episode.name} · ${details.show.name}`,
+      description: details.episode.overview || `Episode discussion for ${details.show.name}.`,
+    };
+  } catch {
+    return {};
+  }
+};
+
+const EpisodePage = async ({ params }: EpisodePageProps) => {
+  const { id, episodeId } = await params;
+  const viewer = await getCommentViewer();
+  const details = viewer
+    ? await getTrackedEpisode(id, episodeId)
+    : await getEpisodeDetails(id, episodeId);
+  if (!details) notFound();
+
+  const { show, season, episode } = details;
+  const backdropUrl = getTmdbImageUrl(show.backdropPath, 'backdrop', 'w1280');
+  const posterUrl = getTmdbImageUrl(show.posterPath, 'poster', 'w342');
+  const rating = viewer ? (episode.tracking?.rating ?? null) : null;
+  const notes = viewer ? (episode.tracking?.notes ?? null) : null;
+
+  return (
+    <article className="animate-fade-in mx-auto w-full max-w-7xl space-y-6 pb-12 font-sans">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Link
+          href={`/library/tv/${show.tmdbId}`}
+          className="apple-pill-btn border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12"
+        >
+          <IconArrowLeft size={14} />
+          Back to {show.name}
+        </Link>
+        <span className="apple-badge border border-violet-500/25 bg-violet-500/10 text-[11px] text-violet-300">
+          Season {season.seasonNumber} • Episode {episode.episodeNumber}
+        </span>
+      </div>
+
+      <section className="glass-panel relative overflow-hidden rounded-3xl border border-white/10 p-5 sm:p-7">
+        {backdropUrl && (
+          <Image
+            src={backdropUrl}
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="pointer-events-none object-cover opacity-15"
+          />
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-zinc-950/90 via-zinc-950/60 to-transparent" />
+
+        <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-end">
+          {posterUrl && (
+            <Image
+              src={posterUrl}
+              alt={show.name}
+              width={120}
+              height={180}
+              className="hidden shrink-0 rounded-2xl border border-white/10 object-cover shadow-2xl sm:block"
+            />
+          )}
+
+          <div className="min-w-0 flex-1 space-y-3">
+            <Link
+              href={`/library/tv/${show.tmdbId}`}
+              className="text-xs font-bold tracking-wide text-violet-300 uppercase hover:text-violet-200"
+            >
+              {show.name}
+            </Link>
+
+            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-4xl">
+              {episode.name}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-300">
+              {episode.airDate && (
+                <span className="inline-flex items-center gap-1.5">
+                  <IconCalendar size={14} className="text-zinc-500" />
+                  {format(episode.airDate, 'PPP')}
+                </span>
+              )}
+              {episode.runtime ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <IconClock size={14} className="text-zinc-500" />
+                  {formatMinutes(episode.runtime)}
+                </span>
+              ) : null}
+              {rating ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 font-bold text-amber-300">
+                  <IconStar size={12} className="fill-amber-400 text-amber-400" />
+                  {rating} / 5
+                </span>
+              ) : null}
+              <span className="inline-flex items-center gap-1.5 text-zinc-400">
+                <IconMessage size={14} className="text-zinc-500" />
+                Episode discussion
+              </span>
+            </div>
+
+            {episode.overview && (
+              <p className="max-w-3xl text-sm leading-relaxed text-zinc-300">{episode.overview}</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <Suspense fallback={<MediaCommentTabsSkeleton />}>
+        <MediaCommentTabs
+          mediaType="episode"
+          tmdbId={episode.tmdbId}
+          personalNotes={viewer ? { rating, notes } : undefined}
+          viewer={viewer}
+          personalNotesEditor={
+            viewer ? (
+              <EpisodePersonalNotesEditor
+                episodeId={episode.id}
+                episodeName={episode.name}
+                rating={rating}
+                notes={notes}
+              />
+            ) : undefined
+          }
+        />
+      </Suspense>
+    </article>
+  );
+};
+
+export default EpisodePage;

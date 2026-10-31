@@ -228,21 +228,24 @@ model RewatchLog {
 }
 
 model Comment {
-  id        String                 @id @default(uuid())
-  userId    String                 @map("user_id")
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
   mediaType CommentMediaType @map("media_type")
-  mediaId   String                 @map("media_id")
-  content   String                 @db.Text
-  createdAt DateTime               @default(now()) @map("created_at")
-  updatedAt DateTime               @updatedAt @map("updated_at")
-  deletedAt DateTime?              @map("deleted_at")
+  /// TMDB id of the reviewed title/episode. Public reviews are intentionally
+  /// scoped by TMDB id (never the per-user internal row id) so every user's
+  /// library shares the same conversation for the same media item.
+  tmdbId    Int              @map("tmdb_id")
+  content   String           @db.Text
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  deletedAt DateTime?        @map("deleted_at")
 
   user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   attachments   CommentAttachment[]
   mentions      CommentMention[]     @relation("CommentMentions")
   notifications Notification[]
 
-  @@index([mediaType, mediaId, createdAt])
+  @@index([mediaType, tmdbId, createdAt])
   @@index([userId, createdAt])
   @@map("comments")
 }

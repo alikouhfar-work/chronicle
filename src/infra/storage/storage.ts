@@ -25,7 +25,10 @@ export type StorageProvider = {
 
 export const localStorage: StorageProvider = {
   dir: process.env.COMMENT_STORAGE_DIR ?? '.data/comment-uploads',
-  publicUrl: (key: string) => `/${key}`,
+  // Stored outside `public/` in production, so reads are streamed by the
+  // comment files route rather than exposed as static assets.
+  publicUrl: (key: string) =>
+    `/api/comments/files/${key.split('/').map(encodeURIComponent).join('/')}`,
   generatePresignedUploadUrl: async (params: {
     fileName: string;
     contentType: string;

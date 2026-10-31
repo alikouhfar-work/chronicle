@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   IconCalendar,
@@ -9,6 +9,7 @@ import {
   IconStar,
 } from '@tabler/icons-react';
 import { useState } from 'react';
+import Link from 'next/link';
 import { format } from 'date-fns';
 import { ShowDetailsEpisodeCardToggleButton } from '@/modules/episode-season/components/ShowDetailsEpisodeCardToggleButton';
 import { ShowDetailsEpisodeCardProps } from '@/modules/episode-season/types/showDetailsEpisodeCardProps';
@@ -16,7 +17,7 @@ import { LibraryDetailsLogModal } from '@/modules/library/components/details/Lib
 import { addEpisodeLog } from '@/modules/episode-season/actions/addEpisodeLog';
 import { RewatchHistoryButton } from '@/modules/rewatch';
 
-export const ShowDetailsEpisodeCard = ({ episode }: ShowDetailsEpisodeCardProps) => {
+export const ShowDetailsEpisodeCard = ({ episode, showTmdbId }: ShowDetailsEpisodeCardProps) => {
   const [isEditingEpisodeLog, setIsEditingEpisodeLog] = useState(false);
 
   const isWatched = episode.tracking?.watched ?? false;
@@ -65,7 +66,11 @@ export const ShowDetailsEpisodeCard = ({ episode }: ShowDetailsEpisodeCardProps)
           />
         )}
 
-        <div className="flex-1 space-y-1">
+        <Link
+          href={`/library/tv/${showTmdbId}/episode/${episode.id}`}
+          className="flex-1 space-y-1 rounded-xl outline-offset-4 focus-visible:ring-2 focus-visible:ring-violet-400/60 focus-visible:outline-none"
+          aria-label={`Open ${episode.name} details and discussion`}
+        >
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-[10px] font-bold tracking-tight text-violet-400 uppercase">
               Episode {episode.episodeNumber}
@@ -79,7 +84,7 @@ export const ShowDetailsEpisodeCard = ({ episode }: ShowDetailsEpisodeCardProps)
           </div>
 
           <h5
-            className={`text-xs font-bold sm:text-sm ${isWatched ? 'text-zinc-400 line-through' : 'text-white'}`}
+            className={`text-xs font-bold transition-colors group-hover/ep:text-violet-300 sm:text-sm ${isWatched ? 'text-zinc-400 line-through' : 'text-white'}`}
           >
             {episode.name}
           </h5>
@@ -104,12 +109,19 @@ export const ShowDetailsEpisodeCard = ({ episode }: ShowDetailsEpisodeCardProps)
                 <span>&#34;{episode.tracking.notes}&#34;</span>
               </p>
             ) : null}
-
           </div>
-        </div>
+        </Link>
 
         {!isUpcomingEpisode && (
           <div className="flex shrink-0 items-center gap-1.5 self-center">
+            <Link
+              href={`/library/tv/${showTmdbId}/episode/${episode.id}`}
+              aria-label={`Open discussion for ${episode.name}`}
+              title="Open episode discussion"
+              className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white/6 text-zinc-300 hover:bg-violet-500/20 hover:text-violet-300"
+            >
+              <IconMessage size={12} />
+            </Link>
             <RewatchHistoryButton
               mediaType="episode"
               mediaId={episode.id}
@@ -121,7 +133,7 @@ export const ShowDetailsEpisodeCard = ({ episode }: ShowDetailsEpisodeCardProps)
                 onClick={() => setIsEditingEpisodeLog(true)}
                 aria-label={`Edit review for ${episode.name}`}
                 title="Edit review"
-                className="size-8 flex shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white/6 text-xs text-zinc-300 hover:bg-white/12"
+                className="flex size-8 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white/6 text-xs text-zinc-300 hover:bg-white/12"
               >
                 <IconEdit size={12} />
               </button>
