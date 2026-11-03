@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { format, formatDistanceToNow } from 'date-fns';
 import {
   IconAlertCircle,
@@ -89,8 +89,14 @@ export const PublicReviewsPanel = ({
   active = true,
 }: PublicReviewsPanelProps) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const reducedMotion = usePrefersReducedMotion();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Set by notification deep links (`?mention=unavailable`) when the target
+  // comment was deleted. Non-blocking: the feed stays fully usable.
+  const [showUnavailableNotice, setShowUnavailableNotice] = useState(
+    () => searchParams.get('mention') === 'unavailable',
+  );
 
   const [comments, setComments] = useState<CommentView[]>([]);
   const [cursor, setCursor] = useState<CommentCursor | undefined>(undefined);
@@ -306,6 +312,26 @@ export const PublicReviewsPanel = ({
 
   return (
     <div className="space-y-4">
+      {showUnavailableNotice && (
+        <div
+          role="status"
+          className="glass-card flex items-start gap-3 rounded-2xl border border-violet-400/25 bg-violet-500/8 p-4"
+        >
+          <IconAlertCircle size={16} className="mt-px shrink-0 text-violet-300" />
+          <p className="flex-1 text-xs leading-relaxed text-zinc-300">
+            That comment is unavailable — it may have been deleted. Showing the latest reviews
+            instead.
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowUnavailableNotice(false)}
+            aria-label="Dismiss notice"
+            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-white/8 hover:text-white"
+          >
+            <IconX size={13} />
+          </button>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit}
         className="glass-card space-y-3 rounded-3xl border border-white/10 p-5 sm:p-6"

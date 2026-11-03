@@ -29,32 +29,32 @@ export type CreateCommentInput = {
   mentionIds?: string[];
 };
 
-const userOwnsMedia = async (
+const userMediaName = async (
   userId: string,
   mediaType: CommentMediaType,
   tmdbId: number,
-): Promise<boolean> => {
+): Promise<string | null> => {
   if (mediaType === 'movie') {
     const movie = await prisma.movie.findFirst({
       where: { tmdbId, userId },
-      select: { id: true },
+      select: { name: true },
     });
-    return Boolean(movie);
+    return movie?.name ?? null;
   }
 
   if (mediaType === 'show') {
     const show = await prisma.show.findFirst({
       where: { tmdbId, userId },
-      select: { id: true },
+      select: { name: true },
     });
-    return Boolean(show);
+    return show?.name ?? null;
   }
 
   const episode = await prisma.episode.findFirst({
     where: { tmdbId, season: { show: { userId } } },
-    select: { id: true },
+    select: { name: true },
   });
-  return Boolean(episode);
+  return episode?.name ?? null;
 };
 
 const isValidAttachment = (attachment: CommentAttachmentInput): boolean =>
@@ -109,7 +109,8 @@ export const createComment = async (
   }
 
   try {
-    if (!(await userOwnsMedia(userId, input.mediaType, tmdbId))) {
+    const mediaTitle = await userMediaName(userId, input.mediaType, tmdbId);
+    if (!mediaTitle) {
       return { success: false, error: 'This title is not in your library anymore.' };
     }
 
@@ -134,6 +135,11 @@ export const createComment = async (
         recipientId: mentionedUser.id,
         actorId: userId,
         type: 'COMMENT_MENTION' as const,
+        // Snapshot the media reference at creation time: notifications keep
+        // rendering after the media leaves every library.
+        mediaType: PRISMA_MEDIA_TYPE[input.mediaType],
+        tmdbId,
+        mediaTitle,
       }));
 
     const comment = await prisma.comment.create({

@@ -77,7 +77,7 @@ describe('comment service TMDB scoping', () => {
   });
 
   it('stores new comments against the TMDB id', async () => {
-    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
     mocks.create.mockResolvedValue(commentRow);
 
     const result = await createComment(undefined, {
@@ -89,7 +89,7 @@ describe('comment service TMDB scoping', () => {
     expect(result.success).toBe(true);
     expect(mocks.findMovie).toHaveBeenCalledWith({
       where: { tmdbId: 550, userId: 'user-1' },
-      select: { id: true },
+      select: { name: true },
     });
     expect(mocks.create.mock.calls[0][0].data).toMatchObject({
       userId: 'user-1',
@@ -100,7 +100,7 @@ describe('comment service TMDB scoping', () => {
   });
 
   it('validates the episode TMDB id for episode comments', async () => {
-    mocks.findEpisode.mockResolvedValue({ id: 'internal-episode-id' });
+    mocks.findEpisode.mockResolvedValue({ name: 'Test Episode' });
     mocks.create.mockResolvedValue({
       ...commentRow,
       content: 'Episode thoughts',
@@ -114,7 +114,7 @@ describe('comment service TMDB scoping', () => {
 
     expect(mocks.findEpisode).toHaveBeenCalledWith({
       where: { tmdbId: 1982925, season: { show: { userId: 'user-1' } } },
-      select: { id: true },
+      select: { name: true },
     });
     expect(mocks.create.mock.calls[0][0].data).toMatchObject({
       mediaType: 'EPISODE',
@@ -140,7 +140,7 @@ describe('comment service TMDB scoping', () => {
       id: `user-${index + 2}`,
       username: `person${index}`,
     }));
-    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
     mocks.findUsers.mockResolvedValue(users);
     mocks.create.mockResolvedValue(commentRow);
 
@@ -160,13 +160,23 @@ describe('comment service TMDB scoping', () => {
       users.map(({ id }) => ({ mentionedUserId: id })),
     );
     expect(createData.notifications.createMany.data).toHaveLength(10);
+    expect(createData.notifications.createMany.data).toEqual(
+      users.map(({ id }) => ({
+        recipientId: id,
+        actorId: 'user-1',
+        type: 'COMMENT_MENTION',
+        mediaType: 'MOVIE',
+        tmdbId: 550,
+        mediaTitle: 'Test Movie',
+      })),
+    );
     expect(createData.mentions.createMany.data).not.toContainEqual({
       mentionedUserId: 'attacker-controlled-id',
     });
   });
 
   it('ignores unknown handles and does not create mention or notification rows', async () => {
-    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
     mocks.findUsers.mockResolvedValue([]);
     mocks.create.mockResolvedValue(commentRow);
 
@@ -182,7 +192,7 @@ describe('comment service TMDB scoping', () => {
   });
 
   it('records self-mentions without creating a notification for the author', async () => {
-    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
     mocks.findUsers.mockResolvedValue([{ id: 'user-1', username: 'viewer' }]);
     mocks.create.mockResolvedValue(commentRow);
 

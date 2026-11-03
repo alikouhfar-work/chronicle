@@ -286,6 +286,14 @@ model Notification {
   actorId     String           @map("actor_id")
   type        NotificationType
   commentId   String           @map("comment_id")
+  /// Denormalized snapshot of the commented-on media so notifications keep
+  /// rendering after the media leaves every library. Set at creation time.
+  mediaType   CommentMediaType @map("media_type")
+  /// TMDB id of the reviewed title/episode.
+  tmdbId      Int              @map("tmdb_id")
+  /// Title snapshot (movie/show/episode name) taken when the comment was
+  /// created. Never resolved live: the source media may be deleted.
+  mediaTitle  String           @map("media_title")
   isRead      Boolean          @default(false) @map("is_read")
   createdAt   DateTime         @default(now()) @map("created_at")
 
@@ -293,6 +301,7 @@ model Notification {
   actor     User          @relation("NotificationsSent", fields: [actorId], references: [id], onDelete: Cascade)
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
+  @@unique([recipientId, commentId])
   @@index([recipientId, isRead, createdAt])
   @@index([commentId])
   @@map("notifications")

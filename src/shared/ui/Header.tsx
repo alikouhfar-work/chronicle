@@ -7,6 +7,7 @@ import { IconLoader2, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import { navigation } from '@/shared/lib/navigation';
 import Link from 'next/link';
+import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
 
 export const Header = ({ isAuthenticated = true }: { isAuthenticated?: boolean }) => {
   const pathname = usePathname();
@@ -95,6 +96,7 @@ export const Header = ({ isAuthenticated = true }: { isAuthenticated?: boolean }
         <div className="flex items-center gap-2">
           {isAuthenticated ? (
             <>
+              <NotificationBell />
               <Link
                 href="/settings/profile"
                 aria-label="Profile settings"
