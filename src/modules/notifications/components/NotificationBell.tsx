@@ -7,9 +7,11 @@ import { IconBell, IconCheck, IconLoader2 } from '@tabler/icons-react';
 import {
   getUnreadCount,
   listNotifications,
+} from '@/modules/notifications/queries/notifications';
+import {
   markAllNotificationsRead,
   markNotificationRead,
-} from '@/modules/notifications/services/notifications';
+} from '@/modules/notifications/actions/notifications';
 import {
   MAX_UNREAD_BADGE,
   type NotificationItem,

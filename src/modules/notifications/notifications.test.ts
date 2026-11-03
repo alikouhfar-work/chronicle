@@ -26,9 +26,11 @@ vi.mock('@/infra/tmdb/forUser', () => ({
 import {
   getUnreadCount,
   listNotifications,
+} from '@/modules/notifications/queries/notifications';
+import {
   markAllNotificationsRead,
   markNotificationRead,
-} from '@/modules/notifications/services/notifications';
+} from '@/modules/notifications/actions/notifications';
 
 const actor = { id: 'actor-1', username: 'alice', name: 'Alice Adams', image: null };
 

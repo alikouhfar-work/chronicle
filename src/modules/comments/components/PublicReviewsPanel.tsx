@@ -13,8 +13,8 @@ import {
   IconSend,
   IconX,
 } from '@tabler/icons-react';
-import { createComment } from '@/modules/comments/services/createComment';
-import { listComments } from '@/modules/comments/services/listComments';
+import { createComment } from '@/modules/comments/actions/createComment';
+import { listComments } from '@/modules/comments/queries/listComments';
 import {
   CommentImageGrid,
   type CommentAttachment,

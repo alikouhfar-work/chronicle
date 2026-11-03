@@ -100,7 +100,7 @@ Goal: every module shaped alike; all shared types in `types/` files.
     in `discovery/search/queries/getSearchPreview.ts`,
     `movie/actions/addMovie.ts`, `show/actions/syncShow.ts`.
 - [ ] 2.2 Types extraction (raw #5 — types files hold types only, no values).
-      Move: `CreateCommentInput` (`comments/services/createComment.ts`),
+      Move: `CreateCommentInput` (`comments/actions/createComment.ts`),
       `CommentAttachment` (`comments/components/CommentImageGrid.tsx`),
       panel props (`PersonalNotesPanel`, `PublicReviewsPanel`),
       `TitleDetailsViewProps`, `SearchPreview` (merge with

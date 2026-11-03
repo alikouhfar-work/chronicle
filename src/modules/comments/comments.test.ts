@@ -24,8 +24,8 @@ vi.mock('@/infra/tmdb/forUser', () => ({
   requireUserId: mocks.requireUserId,
 }));
 
-import { createComment } from '@/modules/comments/services/createComment';
-import { listComments } from '@/modules/comments/services/listComments';
+import { createComment } from '@/modules/comments/actions/createComment';
+import { listComments } from '@/modules/comments/queries/listComments';
 
 const commentRow = {
   id: 'comment-1',

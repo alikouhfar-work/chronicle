@@ -3,9 +3,12 @@ export { NotificationBell } from '@/modules/notifications/components/Notificatio
 export {
   getUnreadCount,
   listNotifications,
+} from '@/modules/notifications/queries/notifications';
+
+export {
   markAllNotificationsRead,
   markNotificationRead,
-} from '@/modules/notifications/services/notifications';
+} from '@/modules/notifications/actions/notifications';
 
 export type {
   MarkReadResult,

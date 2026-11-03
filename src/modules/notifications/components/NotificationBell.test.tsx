@@ -12,7 +12,15 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/library/movie/550',
 }));
 
-vi.mock('@/modules/notifications/services/notifications', () => mocks);
+vi.mock('@/modules/notifications/queries/notifications', () => ({
+  getUnreadCount: mocks.getUnreadCount,
+  listNotifications: mocks.listNotifications,
+}));
+
+vi.mock('@/modules/notifications/actions/notifications', () => ({
+  markNotificationRead: mocks.markNotificationRead,
+  markAllNotificationsRead: mocks.markAllNotificationsRead,
+}));
 
 import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
 

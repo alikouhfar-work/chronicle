@@ -3,14 +3,14 @@ export { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCom
 export { PersonalNotesPanel } from '@/modules/comments/components/PersonalNotesPanel';
 export { PublicReviewsPanel } from '@/modules/comments/components/PublicReviewsPanel';
 export { getCommentViewer } from '@/modules/comments/queries/getCommentViewer';
+export { getCommentById } from '@/modules/comments/queries/getCommentById';
+export { listComments } from '@/modules/comments/queries/listComments';
 
 export {
   createComment,
   updateComment,
   deleteComment,
-  listComments,
-  getCommentById,
-} from '@/modules/comments/services';
+} from '@/modules/comments/actions';
 
 // Result types
 export type {
