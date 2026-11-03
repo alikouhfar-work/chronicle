@@ -19,6 +19,7 @@ import {
   CommentImageGrid,
   type CommentAttachment,
 } from '@/modules/comments/components/CommentImageGrid';
+import { MentionComposerTextarea } from '@/modules/comments/components/MentionComposerTextarea';
 import {
   COMMENT_MAX_LENGTH,
   MAX_ATTACHMENTS,
@@ -99,6 +100,7 @@ export const PublicReviewsPanel = ({
   const [feedError, setFeedError] = useState<string | null>(null);
 
   const [content, setContent] = useState('');
+  const [mentionIds, setMentionIds] = useState<Set<string>>(new Set());
   const [attachments, setAttachments] = useState<PendingCommentAttachment[]>([]);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -259,12 +261,15 @@ export const PublicReviewsPanel = ({
 
     setComments((previous) => [optimisticComment, ...previous]);
     setContent('');
+    setMentionIds(new Set());
     setAttachments([]);
 
     const result = await createComment(undefined, {
       mediaType,
       tmdbId,
       content: trimmed,
+      // Client hint only; the server re-extracts mentions from content.
+      mentionIds: [...mentionIds],
       attachments: attachments.map(({ url, mimeType, sizeBytes, width, height }) => ({
         url,
         mimeType,
@@ -310,19 +315,19 @@ export const PublicReviewsPanel = ({
           <span>Write a public review</span>
         </div>
 
-        <textarea
+        <MentionComposerTextarea
           value={content}
-          onChange={(event) => setContent(event.target.value)}
+          onChange={setContent}
+          mentionIds={mentionIds}
+          onMentionIdsChange={setMentionIds}
           disabled={!viewer || submitting}
           maxLength={COMMENT_MAX_LENGTH}
+          invalid={composerError !== null}
           placeholder={
             viewer
-              ? 'Share your thoughts with everyone...'
+              ? 'Share your thoughts with everyone... Type @ to mention someone.'
               : 'Sign in to share your thoughts with everyone.'
           }
-          rows={3}
-          aria-invalid={composerError ? true : undefined}
-          className="w-full resize-y rounded-2xl border border-white/10 bg-white/4 p-3 text-base leading-relaxed text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-400/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-xs"
         />
 
         {attachments.length > 0 && (

@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   findMovie: vi.fn(),
   findShow: vi.fn(),
   findEpisode: vi.fn(),
+  findUsers: vi.fn(),
   requireUserId: vi.fn(),
 }));
 
@@ -15,6 +16,7 @@ vi.mock('@/infra/db/prisma', () => ({
     movie: { findFirst: mocks.findMovie },
     show: { findFirst: mocks.findShow },
     episode: { findFirst: mocks.findEpisode },
+    user: { findMany: mocks.findUsers },
   },
 }));
 
@@ -131,5 +133,67 @@ describe('comment service TMDB scoping', () => {
 
     expect(result.success).toBe(false);
     expect(mocks.create).not.toHaveBeenCalled();
+  });
+
+  it('resolves ten distinct mentions with one batched lookup and persists ten rows', async () => {
+    const users = Array.from({ length: 10 }, (_, index) => ({
+      id: `user-${index + 2}`,
+      username: `person${index}`,
+    }));
+    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findUsers.mockResolvedValue(users);
+    mocks.create.mockResolvedValue(commentRow);
+
+    const result = await createComment(undefined, {
+      mediaType: 'movie',
+      tmdbId: 550,
+      content: users.map(({ username }) => `@${username}`).join(' '),
+      mentionIds: ['attacker-controlled-id'],
+    });
+
+    const createData = mocks.create.mock.calls[0][0].data;
+    expect(result.success).toBe(true);
+    expect(mocks.findUsers).toHaveBeenCalledTimes(1);
+    expect(mocks.findUsers.mock.calls[0][0].where.username.in).toHaveLength(10);
+    expect(createData.mentions.createMany.data).toHaveLength(10);
+    expect(createData.mentions.createMany.data).toEqual(
+      users.map(({ id }) => ({ mentionedUserId: id })),
+    );
+    expect(createData.notifications.createMany.data).toHaveLength(10);
+    expect(createData.mentions.createMany.data).not.toContainEqual({
+      mentionedUserId: 'attacker-controlled-id',
+    });
+  });
+
+  it('ignores unknown handles and does not create mention or notification rows', async () => {
+    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findUsers.mockResolvedValue([]);
+    mocks.create.mockResolvedValue(commentRow);
+
+    await createComment(undefined, {
+      mediaType: 'movie',
+      tmdbId: 550,
+      content: 'Hello @unknownuser',
+    });
+
+    expect(mocks.findUsers).toHaveBeenCalledTimes(1);
+    expect(mocks.create.mock.calls[0][0].data.mentions).toBeUndefined();
+    expect(mocks.create.mock.calls[0][0].data.notifications).toBeUndefined();
+  });
+
+  it('records self-mentions without creating a notification for the author', async () => {
+    mocks.findMovie.mockResolvedValue({ id: 'internal-movie-id' });
+    mocks.findUsers.mockResolvedValue([{ id: 'user-1', username: 'viewer' }]);
+    mocks.create.mockResolvedValue(commentRow);
+
+    await createComment(undefined, {
+      mediaType: 'movie',
+      tmdbId: 550,
+      content: 'I mention myself @viewer',
+    });
+
+    const createData = mocks.create.mock.calls[0][0].data;
+    expect(createData.mentions.createMany.data).toEqual([{ mentionedUserId: 'user-1' }]);
+    expect(createData.notifications).toBeUndefined();
   });
 });

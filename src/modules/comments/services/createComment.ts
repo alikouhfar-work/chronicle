@@ -9,6 +9,7 @@ import {
 } from '@/infra/storage/storage';
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
+import { extractMentionHandles } from '@/modules/comments/lib/mentions';
 import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
 import {
   COMMENT_MAX_LENGTH,
@@ -24,6 +25,8 @@ export type CreateCommentInput = {
   tmdbId: number;
   content: string;
   attachments?: CommentAttachmentInput[];
+  /** Client hint only; server-side content extraction is authoritative. */
+  mentionIds?: string[];
 };
 
 const userOwnsMedia = async (
@@ -110,6 +113,29 @@ export const createComment = async (
       return { success: false, error: 'This title is not in your library anymore.' };
     }
 
+    // Resolve every handle with one lookup. Never use client-supplied IDs to
+    // decide which users are mentioned.
+    const handles = extractMentionHandles(content);
+    const resolvedUsers = handles.length
+      ? await prisma.user.findMany({
+          where: { username: { in: handles, mode: 'insensitive' } },
+          select: { id: true, username: true },
+        })
+      : [];
+    const mentionedUsers = [
+      ...new Map(resolvedUsers.map((mentionedUser) => [mentionedUser.id, mentionedUser])).values(),
+    ];
+    const mentionRows = mentionedUsers.map((mentionedUser) => ({
+      mentionedUserId: mentionedUser.id,
+    }));
+    const notificationRows = mentionedUsers
+      .filter((mentionedUser) => mentionedUser.id !== userId)
+      .map((mentionedUser) => ({
+        recipientId: mentionedUser.id,
+        actorId: userId,
+        type: 'COMMENT_MENTION' as const,
+      }));
+
     const comment = await prisma.comment.create({
       data: {
         userId,
@@ -131,6 +157,14 @@ export const createComment = async (
                   height: attachment.height ?? null,
                 })),
               }
+            : undefined,
+        mentions:
+          mentionRows.length > 0
+            ? { createMany: { data: mentionRows } }
+            : undefined,
+        notifications:
+          notificationRows.length > 0
+            ? { createMany: { data: notificationRows } }
             : undefined,
       },
       include: {
