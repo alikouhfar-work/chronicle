@@ -1,6 +1,6 @@
 export { UsernameForm } from './components/UsernameForm';
-export type { UsernameState } from './actions/updateUsername';
-export { publicUserSelect, type PublicUser } from './lib/publicUser';
+export type { PublicUser, UsernameState } from './types';
+export { publicUserSelect } from './lib/publicUser';
 export {
   deriveUsernameBase,
   fallbackUsername,

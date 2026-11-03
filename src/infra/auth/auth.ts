@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
-import { ensureUsername } from '@/modules/user/services/userService';
+import { ensureUsername } from '@/modules/user/actions/ensureUsername';
 
 export const hasGoogle = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
 export const hasGuestLogin = process.env.GUEST_LOGIN_ENABLED === 'true';

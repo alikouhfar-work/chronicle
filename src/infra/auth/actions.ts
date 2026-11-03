@@ -3,7 +3,7 @@
 import { hash } from 'bcryptjs';
 import { prisma } from '@/infra/db/prisma';
 import { isValidPassword } from '@/infra/auth/auth';
-import { ensureUsername } from '@/modules/user/services/userService';
+import { ensureUsername } from '@/modules/user/actions/ensureUsername';
 
 const MAX_EMAIL_LENGTH = 254;
 

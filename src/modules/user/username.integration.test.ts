@@ -5,7 +5,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 const integrationEnabled = process.env.INTEGRATION_DB === '1';
 
 let prisma!: typeof import('@/infra/db/prisma').prisma;
-let ensureUsername!: typeof import('@/modules/user/services/userService').ensureUsername;
+let ensureUsername!: typeof import('@/modules/user/actions/ensureUsername').ensureUsername;
 
 const databaseName = (() => {
   try {
@@ -52,7 +52,7 @@ const clearUsers = async () => {
 describe.skipIf(!integrationEnabled)('username backfill', () => {
   beforeAll(async () => {
     ({ prisma } = await import('@/infra/db/prisma'));
-    ({ ensureUsername } = await import('@/modules/user/services/userService'));
+    ({ ensureUsername } = await import('@/modules/user/actions/ensureUsername'));
   });
 
   beforeEach(async () => {

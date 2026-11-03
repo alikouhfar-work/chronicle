@@ -2,7 +2,8 @@
 
 import { useActionState, useState } from 'react';
 import { IconAlertCircle, IconCheck, IconLoader2 } from '@tabler/icons-react';
-import { updateUsername, type UsernameState } from '@/modules/user/actions/updateUsername';
+import { updateUsername } from '@/modules/user/actions/updateUsername';
+import type { UsernameState } from '@/modules/user/types';
 import {
   isValidUsername,
   USERNAME_MAX_LENGTH,

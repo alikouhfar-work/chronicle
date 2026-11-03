@@ -9,9 +9,4 @@ export const publicUserSelect = {
   image: true,
 } as const;
 
-export type PublicUser = {
-  id: string;
-  username: string | null;
-  name: string | null;
-  image: string | null;
-};
+export type { PublicUser } from '@/modules/user/types';

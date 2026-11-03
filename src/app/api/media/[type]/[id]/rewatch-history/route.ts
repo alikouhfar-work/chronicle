@@ -1,5 +1,5 @@
 import { apiError, apiOk } from '@/modules/api/respond';
-import { getRewatchHistory } from '@/modules/rewatch/services/rewatchService';
+import { getRewatchHistory } from '@/modules/rewatch/queries/getRewatchHistory';
 import { requireUserId } from '@/infra/tmdb/forUser';
 
 type RouteContext = {
