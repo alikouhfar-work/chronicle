@@ -2,12 +2,7 @@
 
 import { useState } from 'react';
 import { IconX } from '@tabler/icons-react';
-
-export type CommentAttachment = {
-  id?: string;
-  url: string;
-  mimeType?: string | null;
-};
+import type { CommentAttachment } from '@/modules/comments/types/commentAttachment';
 
 type CommentImageGridProps = {
   attachments: CommentAttachment[];

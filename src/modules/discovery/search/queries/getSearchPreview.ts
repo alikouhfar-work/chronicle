@@ -2,15 +2,8 @@ import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import type {
   SearchResultRaw,
   SearchResultResponse,
+  SearchPreview,
 } from '@/modules/discovery/search/types/searchResult';
-
-export type SearchPreview = {
-  mediaType: 'movie' | 'tv';
-  tmdbId: number;
-  name: string;
-  overview: string | null;
-  posterPath: string | null;
-};
 
 const MAX_QUERY_LENGTH = 200;
 

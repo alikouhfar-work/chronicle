@@ -28,3 +28,20 @@ export type MediaCommentTabsProps = {
    */
   personalNotesEditor?: ReactNode;
 };
+
+export type PersonalNotesPanelProps = {
+  mediaType: CommentMediaType;
+  personalNotes?: MediaCommentPersonalNotes;
+  viewer?: { id: string } | null;
+  signInHref?: string;
+  /** Optional add/edit affordance supplied by the hosting page. */
+  editor?: ReactNode;
+};
+
+export type PublicReviewsPanelProps = {
+  mediaType: CommentMediaType;
+  tmdbId: number;
+  viewer: CommentAuthor | null;
+  /** Only highlight deep links while this panel is actually visible. */
+  active?: boolean;
+};

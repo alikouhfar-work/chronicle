@@ -1,8 +1,5 @@
 import { showStatusConfig } from '@/modules/show/lib/showStatusConfig';
-
-type LibraryCardStatusProps = {
-  status?: string;
-};
+import type { LibraryCardStatusProps } from '@/modules/library/types/libraryCardStatus';
 
 export const LibraryCardStatus = ({ status }: LibraryCardStatusProps) => {
   const statusConfig = status && showStatusConfig[status as keyof typeof showStatusConfig];

@@ -9,3 +9,11 @@ export type SearchResult =
 export type SearchResultResponse = {
   results: ShowSearchResultRaw[] | MovieSearchResultRaw[];
 };
+
+export type SearchPreview = {
+  mediaType: 'movie' | 'tv';
+  tmdbId: number;
+  name: string;
+  overview: string | null;
+  posterPath: string | null;
+};

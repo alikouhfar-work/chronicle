@@ -2,17 +2,7 @@
 
 import Link from 'next/link';
 import { IconDeviceTv, IconLock, IconMessage, IconStar } from '@tabler/icons-react';
-import type { CommentMediaType } from '@/modules/comments/types';
-import type { MediaCommentPersonalNotes } from '@/modules/comments/types/mediaCommentTabs';
-
-export type PersonalNotesPanelProps = {
-  mediaType: CommentMediaType;
-  personalNotes?: MediaCommentPersonalNotes;
-  viewer?: { id: string } | null;
-  signInHref?: string;
-  /** Optional add/edit affordance supplied by the hosting page. */
-  editor?: React.ReactNode;
-};
+import type { PersonalNotesPanelProps } from '@/modules/comments/types/mediaCommentTabs';
 
 const STATUS_LABELS: Record<string, string> = {
   PLAN_TO_WATCH: 'Plan to watch',

@@ -6,20 +6,10 @@ import { IconHistory, IconLoader2, IconRotateClockwise } from '@tabler/icons-rea
 import { useRouter } from 'next/navigation';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { RewatchHistoryModal } from '@/modules/rewatch/components/RewatchHistoryModal';
-import type { RewatchMediaType } from '@/modules/rewatch/types/rewatch';
+import type { RewatchButtonProps } from '@/modules/rewatch/types/rewatch';
 import { toastError } from '@/shared/lib/toast';
 
 const LONG_PRESS_MS = 550;
-
-type RewatchButtonProps = {
-  mediaType: RewatchMediaType;
-  mediaId: string;
-  initialCount: number;
-  historyTitle?: string;
-  variant?: 'pill' | 'compact';
-  fullWidth?: boolean;
-  className?: string;
-};
 
 export const RewatchButton = ({
   mediaType,

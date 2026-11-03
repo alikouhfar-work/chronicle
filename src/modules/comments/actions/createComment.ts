@@ -18,16 +18,7 @@ import {
   type CommentMediaType,
   type CreateCommentResult,
 } from '@/modules/comments/types';
-
-export type CreateCommentInput = {
-  mediaType: CommentMediaType;
-  /** TMDB id, not the per-user internal database id. */
-  tmdbId: number;
-  content: string;
-  attachments?: CommentAttachmentInput[];
-  /** Client hint only; server-side content extraction is authoritative. */
-  mentionIds?: string[];
-};
+import type { CreateCommentInput } from '@/modules/comments/types/createComment';
 
 const userMediaName = async (
   userId: string,

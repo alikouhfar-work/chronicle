@@ -1,7 +1,8 @@
 'use client';
 
 import toast from 'react-hot-toast';
-import { AppToast, type AppToastTone } from '@/shared/ui/AppToast';
+import { AppToast } from '@/shared/ui/AppToast';
+import type { AppToastTone } from '@/shared/types/appToast';
 import { getErrorMessage } from './errors';
 
 const showAppToast = (tone: AppToastTone, title: string, message?: string): string =>

@@ -1,4 +1,4 @@
-export type ShowLifecycle = 'continuing' | 'ended';
+import type { ShowLifecycle } from '@/modules/show/types/showLifecycle';
 
 export const showLifecycleConfig: Record<
   ShowLifecycle,

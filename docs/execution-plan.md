@@ -269,7 +269,11 @@ provider + bucket + credentials before provisioning anything.
 
 1. `npm run lint` clean (notably `react-hooks/set-state-in-effect`).
 2. `npm test` — full suite (currently 37 files / 173 passed / 12 skipped).
-3. `npm run build` — no prerender/type errors.
+3. `npm run build` — no prerender/type errors. (Blocked at Phase-2 close by
+   a pre-existing, environment-level `next/font/google` failure: 12 identical
+   `@vercel/turbopack-next/internal/font/google/font` errors on clean HEAD
+   and on Phase-2 trees alike. All `dns/fs/net/tls` server-leak errors were
+   fixed in Phase 2 via `'use server'` on the moved query modules.)
 4. Migrations proven on a scratch DB (`createdb …_check`, `migrate deploy`,
    backfill spot-check, drop) before touching the dev DB.
 5. Known pre-existing quirk: local `chronicle` DB has migration drift

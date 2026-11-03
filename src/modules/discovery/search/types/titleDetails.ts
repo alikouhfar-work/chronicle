@@ -1,5 +1,8 @@
 import type { GenreRaw } from '@/modules/discovery/genre';
 import type { MediaType } from '@/shared/types/media';
+import type { Credits } from '@/modules/discovery/credit';
+import type { SimilarMovie } from '@/modules/movie';
+import type { SimilarShow } from '@/modules/show';
 
 export type TitleDetails = {
   tmdbId: number;
@@ -27,4 +30,11 @@ export type TitleDetailsParams = {
 
 export type TitleDetailsPageProps = {
   params: Promise<TitleDetailsParams>;
+};
+
+export type TitleDetailsViewProps = {
+  details: TitleDetails;
+  credits: Credits | null;
+  similar: SimilarShow[] | SimilarMovie[];
+  isTracked: boolean;
 };

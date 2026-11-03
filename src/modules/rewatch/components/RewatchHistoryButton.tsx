@@ -4,15 +4,7 @@ import { useState } from 'react';
 import { IconHistory } from '@tabler/icons-react';
 import { clsx } from 'clsx';
 import { RewatchHistoryModal } from '@/modules/rewatch/components/RewatchHistoryModal';
-import type { RewatchMediaType } from '@/modules/rewatch/types/rewatch';
-
-type RewatchHistoryButtonProps = {
-  mediaType: RewatchMediaType;
-  mediaId: string;
-  title: string;
-  count?: number;
-  className?: string;
-};
+import type { RewatchHistoryButtonProps } from '@/modules/rewatch/types/rewatch';
 
 export const RewatchHistoryButton = ({
   mediaType,

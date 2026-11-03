@@ -1,13 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { IconDotsVertical } from '@tabler/icons-react';
-
-type LibraryDetailsActionsMenuProps = {
-  extraActions?: ReactNode;
-  shareButton: ReactNode;
-};
+import type { LibraryDetailsActionsMenuProps } from '@/modules/library/types/libraryDetailsActionsMenu';
 
 export const LibraryDetailsActionsMenu = ({
   extraActions,

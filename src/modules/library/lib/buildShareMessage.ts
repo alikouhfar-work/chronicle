@@ -1,16 +1,10 @@
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import type { Credits } from '@/modules/discovery/credit';
+import type { SharePayload } from '@/modules/library/types/shareMessage';
 import type { TrackedMedia } from '@/modules/library/types/trackedMedia';
 import type { MediaType } from '@/shared/types/media';
 
 const TOP_BILLED_COUNT = 5;
-
-export type SharePayload = {
-  title: string;
-  text: string;
-  url: string;
-  posterUrl: string | null;
-};
 
 const isShow = (media: TrackedMedia): media is Extract<TrackedMedia, { seasons: unknown }> =>
   'seasons' in media;

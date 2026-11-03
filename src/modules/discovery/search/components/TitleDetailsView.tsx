@@ -1,21 +1,11 @@
 import { IconDeviceTv, IconMovie, IconStar } from '@tabler/icons-react';
 import Link from 'next/link';
-import type { Credits } from '@/modules/discovery/credit';
-import type { SimilarMovie } from '@/modules/movie';
-import type { SimilarShow } from '@/modules/show';
 import { MediaPosterImage } from '@/shared/ui/MediaPosterImage';
 import { DetailsCastList } from '@/modules/library/components/details/DetailsCastList';
 import { SimilarMediaCarousel } from '@/modules/library/components/details/SimilarMediaCarousel';
 import { SearchResultCardActions } from '@/modules/discovery/search/components/SearchResultCardActions';
 import { PersonDetailsBackButton } from '@/modules/discovery/person/components/PersonDetailsBackButton';
-import type { TitleDetails } from '@/modules/discovery/search/types/titleDetails';
-
-export type TitleDetailsViewProps = {
-  details: TitleDetails;
-  credits: Credits | null;
-  similar: SimilarShow[] | SimilarMovie[];
-  isTracked: boolean;
-};
+import type { TitleDetailsViewProps } from '@/modules/discovery/search/types/titleDetails';
 
 export const TitleDetailsView = ({
   details,

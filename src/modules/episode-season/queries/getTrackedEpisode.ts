@@ -1,25 +1,8 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import type { Episode } from '@/modules/episode-season/types/episode';
+import type { TrackedEpisodeDetails } from '@/modules/episode-season/types/episode';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseDbId, parseTmdbId } from '@/shared/lib/validate';
-
-export type TrackedEpisodeDetails = {
-  show: {
-    id: string;
-    tmdbId: number;
-    name: string;
-    posterPath: string | null;
-    backdropPath: string | null;
-    overview: string;
-  };
-  season: {
-    id: string;
-    name: string;
-    seasonNumber: number;
-  };
-  episode: Episode;
-};
 
 const loadEpisode = async (
   showTmdbId: string,

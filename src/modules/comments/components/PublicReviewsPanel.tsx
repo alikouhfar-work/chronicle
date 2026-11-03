@@ -17,18 +17,17 @@ import { createComment } from '@/modules/comments/actions/createComment';
 import { listComments } from '@/modules/comments/queries/listComments';
 import {
   CommentImageGrid,
-  type CommentAttachment,
 } from '@/modules/comments/components/CommentImageGrid';
+import type { CommentAttachment } from '@/modules/comments/types/commentAttachment';
 import { MentionComposerTextarea } from '@/modules/comments/components/MentionComposerTextarea';
 import {
   COMMENT_MAX_LENGTH,
   MAX_ATTACHMENTS,
-  type CommentAuthor,
   type CommentCursor,
-  type CommentMediaType,
   type CommentView,
   type PendingCommentAttachment,
 } from '@/modules/comments/types';
+import type { PublicReviewsPanelProps } from '@/modules/comments/types/mediaCommentTabs';
 import { usePrefersReducedMotion } from '@/shared/hooks/usePrefersReducedMotion';
 import { createMonogram } from '@/shared/lib/createMonogram';
 import { toastError } from '@/shared/lib/toast';
@@ -36,14 +35,6 @@ import { toastError } from '@/shared/lib/toast';
 const PAGE_SIZE = 20;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-
-export type PublicReviewsPanelProps = {
-  mediaType: CommentMediaType;
-  tmdbId: number;
-  viewer: CommentAuthor | null;
-  /** Only highlight deep links while this panel is actually visible. */
-  active?: boolean;
-};
 
 type FeedStatus = 'loading' | 'ready' | 'error';
 

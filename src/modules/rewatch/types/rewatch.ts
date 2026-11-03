@@ -1,5 +1,32 @@
 export type RewatchMediaType = 'episode' | 'season' | 'show' | 'movie';
 
+export type RewatchButtonProps = {
+  mediaType: RewatchMediaType;
+  mediaId: string;
+  initialCount: number;
+  historyTitle?: string;
+  variant?: 'pill' | 'compact';
+  fullWidth?: boolean;
+  className?: string;
+};
+
+export type RewatchHistoryButtonProps = {
+  mediaType: RewatchMediaType;
+  mediaId: string;
+  title: string;
+  count?: number;
+  className?: string;
+};
+
+export type RewatchHistoryModalProps = {
+  mediaType: RewatchMediaType;
+  mediaId: string;
+  title: string;
+  initialCount: number;
+  onCountChange?: (count: number) => void;
+  onClose: () => void;
+};
+
 export type RewatchHistoryEntry = {
   id: string;
   rewatchedAt: string;

@@ -1,4 +1,4 @@
-import { apiError, apiOk } from '@/modules/api/respond';
+import { apiError, apiOk } from '@/modules/api/queries/respond';
 import { removeRewatchLog } from '@/modules/rewatch/services/rewatchService';
 import { requireUserId } from '@/infra/tmdb/forUser';
 

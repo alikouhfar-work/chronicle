@@ -1,3 +1,5 @@
+'use server';
+
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { publicUserSelect } from '@/modules/user/lib/publicUser';

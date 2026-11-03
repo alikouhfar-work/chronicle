@@ -20,3 +20,20 @@ export type Episode = {
   rewatchCount: number;
   tracking?: EpisodeTracking | null;
 };
+
+export type TrackedEpisodeDetails = {
+  show: {
+    id: string;
+    tmdbId: number;
+    name: string;
+    posterPath: string | null;
+    backdropPath: string | null;
+    overview: string;
+  };
+  season: {
+    id: string;
+    name: string;
+    seasonNumber: number;
+  };
+  episode: Episode;
+};

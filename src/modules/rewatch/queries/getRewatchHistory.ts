@@ -1,3 +1,5 @@
+'use server';
+
 import { prisma } from '@/infra/db/prisma';
 import { parseRewatchMediaType, toDbRewatchMediaType } from '@/modules/rewatch/lib/mediaType';
 import type { RewatchHistoryResult, RewatchMediaType } from '@/modules/rewatch/types/rewatch';

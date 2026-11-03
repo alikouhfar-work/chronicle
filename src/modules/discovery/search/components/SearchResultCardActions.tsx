@@ -1,12 +1,11 @@
 'use client';
 
 import { IconCircleCheck, IconPlus } from '@tabler/icons-react';
+import { ShowTrackingStatus } from '../../../../../generated/prisma/enums';
 import { addMediaAction } from '@/modules/library/actions/addMediaAction';
 import { SearchResultCardActionsProps } from '@/modules/discovery/search/types/searchResultCardActions';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
-
-type CommonTrackingStatus = 'PLAN_TO_WATCH' | 'COMPLETED';
 
 const actionOptions = {
   successMessage: 'Added to your library',
@@ -19,7 +18,7 @@ export const SearchResultCardActions = ({ id, mediaType }: SearchResultCardActio
     actionOptions,
   );
   const { execute: completeTitle, isPending: isDonePending } = useServerAction(
-    () => addMediaAction({ tmdbId: id, mediaType, trackingStatus: 'COMPLETED' satisfies CommonTrackingStatus }),
+    () => addMediaAction({ tmdbId: id, mediaType, trackingStatus: ShowTrackingStatus.COMPLETED }),
     actionOptions,
   );
 

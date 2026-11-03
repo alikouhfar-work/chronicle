@@ -3,13 +3,9 @@
 import { IconEye, IconEyeCheck } from '@tabler/icons-react';
 import { clsx } from 'clsx';
 import { setShowWatched } from '@/modules/show/actions/setShowWatched';
+import type { LibraryDetailsShowWatchToggleProps } from '@/modules/library/types/libraryDetailsShowWatchToggle';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
-
-type LibraryDetailsShowWatchToggleProps = {
-  showId: string;
-  seriesWatched: boolean;
-};
 
 export const LibraryDetailsShowWatchToggle = ({
   showId,

@@ -15,18 +15,9 @@ import { loadRewatchHistory } from '@/modules/rewatch/actions/loadRewatchHistory
 import { removeRewatch } from '@/modules/rewatch/actions/removeRewatch';
 import type {
   RewatchHistoryEntry,
-  RewatchMediaType,
+  RewatchHistoryModalProps,
 } from '@/modules/rewatch/types/rewatch';
 import { toastError } from '@/shared/lib/toast';
-
-type RewatchHistoryModalProps = {
-  mediaType: RewatchMediaType;
-  mediaId: string;
-  title: string;
-  initialCount: number;
-  onCountChange?: (count: number) => void;
-  onClose: () => void;
-};
 
 const toDateTimeInputValue = (date: Date = new Date()): string => {
   const local = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);

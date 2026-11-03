@@ -6,8 +6,7 @@ import {
   IconInfoCircle,
 } from '@tabler/icons-react';
 import { clsx } from 'clsx';
-
-export type AppToastTone = 'success' | 'error' | 'info';
+import type { AppToastTone } from '@/shared/types/appToast';
 
 const toneStyles: Record<
   AppToastTone,
