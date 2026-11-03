@@ -69,6 +69,10 @@ src/modules/media/          # shared entities, queries, tracking helpers, tmdb m
 src/modules/movie/          # queries/getTracked|Trending|Upcoming|Similar, actions/add|delete|updateStatus|addLog
 src/modules/show/           # queries/getTracked|Fresh|Trending|Similar, actions/add|sync|setWatched|delete|updateStatus
 src/modules/auth/           # LoginForm, SignupForm
+src/modules/comments/       # MentionComposerTextarea, MediaCommentTabs (personal/public tabs), services/create|update|delete (ownership-checked, soft-delete), lib/mentions (server extraction regex), queries/getCommentViewer
+src/modules/notifications/  # services/notifications (recipient-scoped list/count/mark-read), components/NotificationBell (header badge + popover deep-links)
+src/modules/rewatch/        # actions (thin) -> services/rewatchService (record/remove counts, cascade rules), components/RewatchButton|HistoryButton|HistoryModal
+src/modules/user/           # services/userService, actions/updateUsername, components/UsernameForm
 src/infra/db/prisma.ts       # singleton PrismaClient via PrismaPg (PRISMA_TARGET personal|demo)
 src/infra/auth/auth.ts       # NextAuth config (google/credentials/guest, PrismaAdapter, jwt)
 src/infra/tmdb/client.ts     # tmdbFetch (single server token, retry 3x, backoff, GET dedupe, 24h cache)
@@ -86,6 +90,9 @@ generated/prisma/           # generated client — never hand-edit
 
 - Module layout: `src/modules/<domain>/{queries/,actions/,components/,mappers/,lib/,types/,utils/,index.ts}`. Keep domain logic inside its module; shared code only in `src/shared/`.
 - Reads go in `queries/`, writes in `actions/` (server actions). TMDB mapping lives in `mappers/` (pure, unit-tested with `*.test.ts` next to source).
+- `services/` survives only as a thin-action→fat-service split (the `rewatch/` pattern). Known outliers to fold in on touch: `comments/services/` (reads + writes), `notifications/services/` (reads + writes, singular `types.ts`), `user/` writes in two places, `library/services/addMedia.ts` (orchestrator), `media/` flat files.
+- Comments: server re-extracts mentions with the strict regex (`comments/lib/mentions.ts`); client `mentionIds` is hint-only. Rendered content is JSX-escaped, never raw HTML. Editing a comment must re-extract mentions. One `Notification` per (recipient, comment) in the same transaction, `@@unique([recipientId, commentId])`, with a `mediaType/tmdbId/mediaTitle` snapshot; self-mentions create none.
+- Bell: badge capped at `9+` (`aria-live="polite"`), polls on mount/navigation/interval; deep links carry `#comment-<id>` + `?mention=unavailable` for deleted comments (dismissible notice in `PublicReviewsPanel`).
 - Server vs client: Prisma + TMDB token access are server-only. Client components (`"use client"`) only for interactive UI (filters, toggles, log modals, PWA install).
 - Imports: use `@/` alias (`@/modules/movie/queries`, `@/infra/db/prisma`). Never import from `generated/` by relative path confusion — canonical import is via `generated/prisma/client`.
 - Styling: Tailwind classes + `clsx`; gradients per title via `getGradientForTitle`; skeletons for loading states (`*Skeleton.tsx`, `loading.tsx`).
@@ -104,6 +111,8 @@ generated/prisma/           # generated client — never hand-edit
 - `EpisodeTracking`: watched/watchedAt + rating/notes per episode.
 - Auth tables: `Account`, `Session`, `VerificationToken` (standard PrismaAdapter shape).
 - Config: `prisma.config.ts` selects `DATABASE_URL` vs `DEMO_DATABASE_URL` by `PRISMA_TARGET=personal|demo`.
+- Gotchas: `.data/comment-uploads/` is untracked, unignored, CWD-relative (ephemeral under Docker) — S3 replaces it (local disk stays for dev). Migration drift: `20261030120000_public_reviews` was edited after apply, so `migrate dev` demands a reset — use `migrate deploy`. `chronicle_test` is mid-chain stale; prove migrations on a scratch DB first.
+- Locked decisions (`docs/execution-plan.md` Phase 0): app AES-GCM tokens-only encryption, AWS S3, notes tables for episodes + movies with standalone rating, keep standalone rewatch counter, strict queries/actions layout.
 
 ## Critical flows
 
