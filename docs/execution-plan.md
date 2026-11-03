@@ -19,6 +19,17 @@ path alias `@/*` → `./src/*`; commands run from project root
 Conventions used below: each phase lists **Goal → Tasks (with exact files)
 → Verify → Checkpoint** (pause and ask). Sizes: S <½d, M ½–2d, L >2d.
 
+> **Phase 0 decisions (locked 2026-11-03):**
+> - 0.1 Encryption: **app-level AES-GCM, tokens only** (`Account`
+>   refresh/access/id tokens, `Session.sessionToken`,
+>   `VerificationToken.token`). Email/content/notes deferred.
+> - 0.2 Object storage: **AWS S3** (local disk stays for dev).
+> - 0.3 Rating/notes: **notes tables for episodes + movies, rating
+>   standalone** on the tracking rows.
+> - 0.4 Rewatch: **keep standalone counter** (no derivation).
+> - 0.5 Layout: **strict queries/actions, fold outliers in**.
+> Phases below proceed on these answers.
+
 ---
 
 ## Phase 0 — Decisions & guardrails (S)
