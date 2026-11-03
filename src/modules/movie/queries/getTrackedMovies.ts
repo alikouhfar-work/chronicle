@@ -1,7 +1,7 @@
 import { TrackedMovie } from '@/modules/movie';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { MediaSortFilter, MediaStatusFilter } from '@/modules/media/entities';
+import { MediaSortFilter, MediaStatusFilter } from '@/modules/media/types/media';
 import { movieTrackingStatusMap } from '@/modules/movie/utils/trackingStatusMap';
 import { movieSortMap } from '@/modules/movie/utils/sortMap';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';

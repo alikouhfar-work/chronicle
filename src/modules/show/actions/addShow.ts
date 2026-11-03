@@ -1,6 +1,6 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { tmdbFetch } from '@/infra/tmdb/client';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { ShowDetailsRaw } from '@/modules/show/types/showDetails';
 import { SeasonRaw } from '@/modules/episode-season';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';

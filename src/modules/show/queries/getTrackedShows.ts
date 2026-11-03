@@ -1,7 +1,7 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { TrackedShow } from '@/modules/show';
-import { MediaSortFilter, MediaStatusFilter } from '@/modules/media/entities';
+import { MediaSortFilter, MediaStatusFilter } from '@/modules/media/types/media';
 import { showTrackingStatusMap } from '@/modules/show/utils/trackingStatusMap';
 import { showSortMap } from '@/modules/show/utils/sortMap';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';

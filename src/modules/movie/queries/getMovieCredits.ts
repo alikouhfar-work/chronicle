@@ -1,4 +1,4 @@
-import { fetchCredits } from '@/modules/media/queries';
+import { fetchCredits } from '@/modules/media/queries/mediaQueries';
 import { Credits } from '@/modules/discovery/credit';
 
 export const getMovieCredits = async (id: string): Promise<Credits | null> => {

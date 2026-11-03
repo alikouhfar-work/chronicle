@@ -1,4 +1,4 @@
-import { fetchTrendingRaw, withTrackedFlags } from '@/modules/media/queries';
+import { fetchTrendingRaw, withTrackedFlags } from '@/modules/media/queries/mediaQueries';
 import { mapTrendingShows } from '@/modules/show/mappers/mapTrendingShows';
 import { TrendingShow, TrendingShowRaw } from '@/modules/show/types/trendingShow';
 import { getTrackedShowsLookup } from '@/modules/show/queries/getTrackedShowsLookup';

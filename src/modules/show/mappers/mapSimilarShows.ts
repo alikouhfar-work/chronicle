@@ -1,4 +1,4 @@
-import { mapSimilar as mapSimilarBase } from '@/modules/media/mappers';
+import { mapSimilar as mapSimilarBase } from '@/modules/media/mappers/mediaMappers';
 import type { SimilarShow, SimilarShowRaw } from '@/modules/show/types/similarShow';
 
 export const mapSimilarShows = (

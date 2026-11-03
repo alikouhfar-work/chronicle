@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { AppError, getErrorMessage, toAppError } from '@/shared/lib/errors';
 import { MissingTmdbTokenError, hasTmdbToken, requireBearerUserId } from '@/infra/tmdb/forUser';
-
-export type ApiErrorBody = { ok: false; error: string; code: string };
+import type { ApiErrorBody } from '@/modules/api/types';
 
 const AUTH_MESSAGES = new Map([
   ['Unauthorized', 'Authentication required. Sign in again.'],

@@ -2,7 +2,7 @@ import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { getGenreDictionary } from '@/modules/discovery/genre';
 import { mapCredits } from '@/modules/discovery/credit/mappers/mapCredits';
 import type { Credits, CreditsRaw } from '@/modules/discovery/credit';
-import type { TmdbListItemRaw } from '@/modules/media/tmdb';
+import type { TmdbListItemRaw } from '@/modules/media/types/tmdbRaw';
 import { parseTmdbId } from '@/shared/lib/validate';
 import type { MediaType } from '@/shared/types/media';
 

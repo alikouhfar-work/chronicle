@@ -1,6 +1,6 @@
 import type { MediaType } from '@/shared/types/media';
-import type { MediaGenre, SimilarMediaBase, TrendingMediaBase } from '@/modules/media/entities';
-import type { TmdbListItemRaw } from '@/modules/media/tmdb';
+import type { MediaGenre, SimilarMediaBase, TrendingMediaBase } from '@/modules/media/types/media';
+import type { TmdbListItemRaw } from '@/modules/media/types/tmdbRaw';
 
 const mapGenreRefs = (
   genreIds: number[],

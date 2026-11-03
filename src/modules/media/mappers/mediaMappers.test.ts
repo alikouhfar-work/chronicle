@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { mapSimilar, mapTrending } from './mappers';
-import type { TmdbListItemRaw } from './tmdb';
+import { mapSimilar, mapTrending } from './mediaMappers';
+import type { TmdbListItemRaw } from '../types/tmdbRaw';
 
 const dictionary = new Map([
   [18, 'Drama'],

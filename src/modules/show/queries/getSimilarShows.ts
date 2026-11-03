@@ -1,4 +1,4 @@
-import { fetchSimilarRaw, withTrackedFlags } from '@/modules/media/queries';
+import { fetchSimilarRaw, withTrackedFlags } from '@/modules/media/queries/mediaQueries';
 import { mapSimilarShows } from '@/modules/show/mappers/mapSimilarShows';
 import { SimilarShow, SimilarShowRaw } from '@/modules/show/types/similarShow';
 import { getTrackedShowsLookup } from '@/modules/show/queries/getTrackedShowsLookup';

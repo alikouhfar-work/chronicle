@@ -2,8 +2,7 @@ import { compare } from 'bcryptjs';
 import { prisma } from '@/infra/db/prisma';
 import { guestEmail } from '@/infra/auth/auth';
 import { signMobileJwt } from '@/infra/auth/mobileJwt';
-
-export type ApiSession = { token: string; user: { id: string; email: string; name: string | null } };
+import type { ApiSession } from '@/modules/api/types';
 
 const toSession = async (user: {
   id: string;
