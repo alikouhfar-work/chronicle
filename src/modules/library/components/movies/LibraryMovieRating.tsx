@@ -11,7 +11,7 @@ export const LibraryMovieRating = ({ rating }: LibraryMovieRatingProps) => {
         </div>
       ) : (
         <div className="border-t border-white/10 pt-1.5">
-          <span className="text-xs font-medium text-zinc-500">Unrated</span>
+          <span className="text-xs font-medium text-zinc-400">Unrated</span>
         </div>
       )}
     </>

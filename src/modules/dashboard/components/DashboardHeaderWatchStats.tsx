@@ -45,7 +45,7 @@ export const DashboardHeaderWatchStats = ({
             Episodes
           </span>
           <p className="text-sm font-bold text-white">
-            {episodesCount} <span className="text-xs font-normal text-zinc-500">watched</span>
+            {episodesCount} <span className="text-xs font-normal text-zinc-400">watched</span>
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export const DashboardHeaderWatchStats = ({
             Films
           </span>
           <p className="text-sm font-bold text-white">
-            {moviesCount} <span className="text-xs font-normal text-zinc-500">logged</span>
+            {moviesCount} <span className="text-xs font-normal text-zinc-400">logged</span>
           </p>
         </div>
       </div>

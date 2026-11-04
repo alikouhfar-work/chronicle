@@ -165,7 +165,7 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
               Sign in
             </button>
           </form>
-          <p className="text-center text-xs text-zinc-500">
+          <p className="text-center text-xs text-zinc-400">
             New to Chronicle?{' '}
             <Link
               href="/signup"

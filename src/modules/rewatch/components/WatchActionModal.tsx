@@ -151,8 +151,8 @@ export const WatchActionModal = ({
               <span>{HEADINGS[mediaType]}</span>
             </h3>
             <p className="text-xs font-medium text-zinc-400">{title}</p>
-            {subtitle && <p className="text-[11px] text-zinc-500">{subtitle}</p>}
-            <p className="text-[11px] text-zinc-500">
+            {subtitle && <p className="text-[11px] text-zinc-400">{subtitle}</p>}
+            <p className="text-[11px] text-zinc-400">
               {watchCount} {watchCount === 1 ? 'watch' : 'watches'} logged
             </p>
           </div>

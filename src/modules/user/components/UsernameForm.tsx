@@ -34,7 +34,7 @@ export const UsernameForm = ({ initialUsername }: UsernameFormProps) => {
               : 'border-white/10 focus-within:border-violet-400/60 focus-within:ring-violet-500/20'
           }`}
         >
-          <span aria-hidden className="pl-3.5 text-sm text-zinc-500">
+          <span aria-hidden className="pl-3.5 text-sm text-zinc-400">
             @
           </span>
           <input
@@ -52,7 +52,7 @@ export const UsernameForm = ({ initialUsername }: UsernameFormProps) => {
             className="w-full bg-transparent px-2 py-2.5 pr-3.5 text-base text-zinc-100 placeholder:text-zinc-600 focus:outline-none sm:text-sm"
           />
         </div>
-        <p id="username-hint" className="mt-1.5 text-xs text-zinc-500">
+        <p id="username-hint" className="mt-1.5 text-xs text-zinc-400">
           {USERNAME_MIN_LENGTH}–{USERNAME_MAX_LENGTH} characters: lowercase letters, numbers, and
           underscores. People can mention you with @{trimmed || 'handle'}.
         </p>

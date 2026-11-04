@@ -139,7 +139,7 @@ export const SignupForm = ({ callbackUrl }: SignupFormProps) => {
           {mismatch ? (
             <p className="mt-1.5 text-xs text-red-400">Passwords do not match.</p>
           ) : (
-            <p className="mt-1.5 flex items-center gap-1.5 text-xs text-zinc-500">
+            <p className="mt-1.5 flex items-center gap-1.5 text-xs text-zinc-400">
               <IconCheck
                 size={13}
                 className={password.length >= 8 ? 'text-emerald-400' : 'text-zinc-600'}
@@ -164,7 +164,7 @@ export const SignupForm = ({ callbackUrl }: SignupFormProps) => {
         </button>
       </form>
 
-      <p className="text-center text-xs text-zinc-500">
+      <p className="text-center text-xs text-zinc-400">
         Already have an account?{' '}
         <Link
           href="/login"

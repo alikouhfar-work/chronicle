@@ -10,7 +10,7 @@ export const SearchResultError = ({ message }: SearchResultErrorProps) => {
         <p className="text-xs leading-relaxed text-red-400">
           {message ?? 'Could not load search results. Please try again.'}
         </p>
-        <p className="text-[11px] text-zinc-500">
+        <p className="text-[11px] text-zinc-400">
           If this persists, check your connection and TMDB configuration.
         </p>
       </div>

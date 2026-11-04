@@ -1,11 +1,12 @@
 import { searchMedia } from '@/modules/discovery/search/queries/searchMedia';
 import { SearchResultListProps } from '@/modules/discovery/search/types/searchResultList';
-import { IconSparkles } from '@tabler/icons-react';
+import { IconSearchOff, IconSparkles } from '@tabler/icons-react';
 import { SearchResultShowCard } from '@/modules/discovery/search/components/SearchResultShowCard';
 import Link from 'next/link';
 import { SearchResultMovieCard } from '@/modules/discovery/search/components/SearchResultMovieCard';
 import { SearchResultError } from '@/modules/discovery/search/components/SearchResultError';
 import { getErrorMessage } from '@/shared/lib/errors';
+import { EmptyState } from '@/shared/ui/EmptyState';
 
 export const SearchResultList = async ({ query }: SearchResultListProps) => {
   if (!query) return;
@@ -15,6 +16,25 @@ export const SearchResultList = async ({ query }: SearchResultListProps) => {
     searchResults = await searchMedia(query);
   } catch (error) {
     return <SearchResultError message={getErrorMessage(error, 'Could not load search results.')} />;
+  }
+
+  if (searchResults.length === 0) {
+    return (
+      <EmptyState
+        icon={IconSearchOff}
+        title={`No results for "${query}"`}
+        description="Check the spelling, try a shorter query, or search by a person's name."
+        action={
+          <Link
+            href="/search"
+            className="apple-pill-btn mt-1 cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12"
+          >
+            Clear search
+          </Link>
+        }
+        className="mx-auto max-w-xl"
+      />
+    );
   }
 
   return (

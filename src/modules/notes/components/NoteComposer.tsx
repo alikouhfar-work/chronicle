@@ -37,10 +37,10 @@ export const NoteComposer = ({
         rows={3}
         disabled={submitting}
         placeholder="Write a private note — only you can read it."
-        className="w-full resize-y rounded-2xl border border-white/10 bg-zinc-950/60 px-3.5 py-3 text-sm leading-relaxed text-zinc-100 placeholder:text-zinc-500 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/25 focus:outline-none disabled:opacity-60"
+        className="w-full resize-y rounded-2xl border border-white/10 bg-zinc-950/60 px-3.5 py-3 text-sm leading-relaxed text-zinc-100 placeholder:text-zinc-400 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/25 focus:outline-none disabled:opacity-60"
       />
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="text-[11px] text-zinc-500">
+        <span className="text-[11px] text-zinc-400">
           {value.trim().length}/{NOTE_MAX_LENGTH}
         </span>
         <div className="flex items-center gap-2">

@@ -219,7 +219,7 @@ export const RewatchHistoryModal = ({
                         <p className="text-xs font-semibold text-zinc-200">
                           {formatRewatchedAt(entry.rewatchedAt)}
                         </p>
-                        <p className="text-[10px] text-zinc-500">Watch logged</p>
+                        <p className="text-[10px] text-zinc-400">Watch logged</p>
                       </div>
                     </div>
                     <button

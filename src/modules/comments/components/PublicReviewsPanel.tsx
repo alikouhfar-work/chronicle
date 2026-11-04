@@ -464,7 +464,7 @@ export const PublicReviewsPanel = ({
               )}
               {uploading ? 'Uploading…' : 'Attach image'}
             </button>
-            <span className="text-[11px] text-zinc-500">
+            <span className="text-[11px] text-zinc-400">
               {attachments.length}/{MAX_ATTACHMENTS}
             </span>
           </div>
@@ -594,7 +594,7 @@ export const PublicReviewsPanel = ({
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                       <span className="text-sm font-bold text-white">{authorName}</span>
                       {handle && (
-                        <span className="text-xs font-medium text-zinc-500">@{handle}</span>
+                        <span className="text-xs font-medium text-zinc-400">@{handle}</span>
                       )}
                       <time
                         dateTime={new Date(comment.createdAt).toISOString()}

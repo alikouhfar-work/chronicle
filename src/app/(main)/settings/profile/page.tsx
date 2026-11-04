@@ -70,7 +70,7 @@ const ProfileSettingsPage = async () => {
         </div>
       </section>
 
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-400">
         Your email is never shown on public reviews, mentions, or notifications — only your display
         name, handle, and avatar.
       </p>

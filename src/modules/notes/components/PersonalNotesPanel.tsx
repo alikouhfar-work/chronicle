@@ -149,7 +149,7 @@ export const PersonalNotesPanel = ({
         {mediaType === 'show' && (
           <dl className="grid grid-cols-2 gap-2.5">
             <div className="rounded-2xl border border-white/6 bg-white/3 p-3">
-              <dt className="text-[10px] font-semibold tracking-wider text-zinc-500 uppercase">
+              <dt className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
                 Tracking
               </dt>
               <dd className="mt-1 text-xs font-bold text-zinc-200">
@@ -157,7 +157,7 @@ export const PersonalNotesPanel = ({
               </dd>
             </div>
             <div className="rounded-2xl border border-white/6 bg-white/3 p-3">
-              <dt className="text-[10px] font-semibold tracking-wider text-zinc-500 uppercase">
+              <dt className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
                 Rewatches
               </dt>
               <dd className="mt-1 text-xs font-bold text-zinc-200">{rewatchCount ?? 0}</dd>
@@ -209,7 +209,7 @@ export const PersonalNotesPanel = ({
         )}
 
         {notes.length === 0 ? (
-          <p className="py-3 text-center text-xs text-zinc-500">
+          <p className="py-3 text-center text-xs text-zinc-400">
             No personal notes yet. Notes are private and you can keep as many as you like.
           </p>
         ) : (
@@ -280,7 +280,7 @@ export const PersonalNotesPanel = ({
                           </button>
                         </div>
                       </div>
-                      <p className="mt-1.5 text-[11px] text-zinc-500">
+                      <p className="mt-1.5 text-[11px] text-zinc-400">
                         {relativeTime(note.createdAt)}
                         {note.updatedAt && note.updatedAt > note.createdAt ? ' · edited' : ''}
                       </p>

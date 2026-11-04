@@ -11,6 +11,7 @@ import { markNotificationRead } from '@/modules/notifications/actions/markNotifi
 import { MAX_UNREAD_BADGE } from '@/modules/notifications/constants';
 import type { NotificationItem } from '@/modules/notifications/types';
 import { createMonogram } from '@/shared/lib/createMonogram';
+import { EmptyState } from '@/shared/ui/EmptyState';
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -212,12 +213,13 @@ export const NotificationBell = () => {
             )}
 
             {!loadingItems && !error && items?.length === 0 && (
-              <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
-                <IconBell size={20} className="text-zinc-600" />
-                <p className="text-xs text-zinc-400">
-                  No notifications yet. When someone mentions you in a review, it will show up here.
-                </p>
-              </div>
+              <EmptyState
+                icon={IconBell}
+                title="No notifications yet"
+                description="When someone mentions you in a review, it will show up here."
+                compact
+                className="m-3 border-0 bg-transparent"
+              />
             )}
 
             {!loadingItems && !error && items && items.length > 0 && (

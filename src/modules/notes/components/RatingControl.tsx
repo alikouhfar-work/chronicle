@@ -42,7 +42,7 @@ export const RatingControl = ({ mediaType, targetId, value, label }: RatingContr
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[10px] font-semibold tracking-wider text-zinc-500 uppercase">
+        <span className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
           {label}
         </span>
         <span className="text-[11px] font-bold text-amber-300">
@@ -84,7 +84,7 @@ export const RatingControl = ({ mediaType, targetId, value, label }: RatingContr
           />
         )}
       </div>
-      <p className="text-[11px] text-zinc-500">
+      <p className="text-[11px] text-zinc-400">
         Rate {mediaType === 'movie' ? 'this movie' : 'this episode'} on its own — notes stay
         independent.
       </p>
