@@ -113,7 +113,7 @@ describe('notification services', () => {
 
     const result = await listNotifications();
 
-    expect(result.notifications[0]?.href).toBe('/library/show/95396?tab=reviews#comment-comment-1');
+    expect(result.notifications[0]?.href).toBe('/library/tv/95396?tab=reviews#comment-comment-1');
   });
 
   it('routes episode notifications to the recipient episode page with one batched lookup', async () => {

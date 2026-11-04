@@ -1,11 +1,14 @@
+export type StorageKind = 'local' | 's3';
+
+export type StorageWriteOptions = {
+  contentType?: string;
+};
+
 export type StorageProvider = {
-  dir: string;
+  kind: StorageKind;
+  /** Public URL the browser can render directly. */
   publicUrl: (key: string) => string;
-  generatePresignedUploadUrl: (params: {
-    fileName: string;
-    contentType: string;
-    contentLength: number;
-  }) => Promise<{ url: string; key: string }>;
-  writeBuffer: (key: string, buffer: Buffer) => Promise<void>;
+  writeBuffer: (key: string, buffer: Buffer, options?: StorageWriteOptions) => Promise<void>;
   readBuffer: (key: string) => Promise<Buffer>;
+  exists: (key: string) => Promise<boolean>;
 };

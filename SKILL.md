@@ -122,7 +122,7 @@ src/modules/<domain>/
 - `EpisodeTracking`: watched/watchedAt + rating/notes per episode.
 - Auth tables: `Account`, `Session`, `VerificationToken` (standard PrismaAdapter shape).
 - Config: `prisma.config.ts` selects `DATABASE_URL` vs `DEMO_DATABASE_URL` by `PRISMA_TARGET=personal|demo`.
-- Gotchas: `.data/comment-uploads/` is untracked, unignored, CWD-relative (ephemeral under Docker) — S3 replaces it (local disk stays for dev). Migration drift: `20261030120000_public_reviews` was edited after apply, so `migrate dev` demands a reset — use `migrate deploy`. `chronicle_test` is mid-chain stale; prove migrations on a scratch DB first.
+- Comment attachments: one `StorageProvider` (`src/infra/storage/types.ts`) with two backends — S3-compatible object storage when `S3_BUCKET` is set (`s3Storage.ts`, AWS/R2/MinIO/B2), local disk otherwise (`COMMENT_STORAGE_DIR`, default `.data/comment-uploads`, untracked + CWD-relative, dev only). Always resolve through `getCommentStorage()`; never reintroduce the removed `storage` singleton or presigned-upload stub. Uploads return `{key,url}`; `createComment` and `/api/comments/attachments` only accept keys/URLs this deployment minted (`isCommentAttachmentKey` / `isCommentAttachmentUrl`), and derive the stored URL server-side. Migration drift: `20261030120000_public_reviews` was edited after apply, so `migrate dev` demands a reset — use `migrate deploy`. `chronicle_test` is mid-chain stale; prove migrations on a scratch DB first.
 - Locked decisions (`docs/execution-plan.md` Phase 0): app AES-GCM tokens-only encryption, AWS S3, notes tables for episodes + movies with standalone rating, keep standalone rewatch counter, strict queries/actions layout.
 
 ## Critical flows

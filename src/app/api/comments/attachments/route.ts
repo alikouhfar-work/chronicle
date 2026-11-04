@@ -1,23 +1,48 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { COMMENT_MAX_ATTACHMENTS_PER_COMMENT } from '@/infra/storage/storage';
+import {
+  COMMENT_MAX_ATTACHMENTS_PER_COMMENT,
+  COMMENT_STORAGE_MIME_TYPES,
+  getCommentStorage,
+  isCommentAttachmentKey,
+} from '@/infra/storage/storage';
+import type { CommentMimeType } from '@/modules/comments/types/commentMimeType';
 
+/**
+ * Registers an already-uploaded object as a comment attachment. The URL is
+ * derived from the storage key server-side — never accepted from the client —
+ * and the object must exist in this deployment's bucket.
+ */
 export const POST = async (request: Request) => {
   try {
     const userId = await requireUserId();
 
     const body = (await request.json().catch(() => null)) as {
       commentId?: string;
-      url?: string;
       key?: string;
       mimeType?: string;
       sizeBytes?: number;
     } | null;
 
-    if (!body?.commentId || !body?.url || !body?.mimeType) {
+    if (!body?.commentId || !isCommentAttachmentKey(body.key) || !body?.mimeType) {
       return NextResponse.json(
-        { ok: false, error: 'commentId, url, and mimeType are required.' },
+        { ok: false, error: 'commentId, key, and mimeType are required.' },
+        { status: 400 },
+      );
+    }
+
+    if (!COMMENT_STORAGE_MIME_TYPES.includes(body.mimeType as CommentMimeType)) {
+      return NextResponse.json(
+        { ok: false, error: 'Unsupported image type. Allowed: jpeg, png, webp.' },
+        { status: 400 },
+      );
+    }
+
+    const storage = getCommentStorage();
+    if (!(await storage.exists(body.key))) {
+      return NextResponse.json(
+        { ok: false, error: 'Upload not found. Upload the image again.' },
         { status: 400 },
       );
     }
@@ -52,7 +77,7 @@ export const POST = async (request: Request) => {
     const attachment = await prisma.commentAttachment.create({
       data: {
         commentId: body.commentId,
-        url: body.url,
+        url: storage.publicUrl(body.key),
         mimeType: body.mimeType,
         sizeBytes: body.sizeBytes ?? 0,
       },

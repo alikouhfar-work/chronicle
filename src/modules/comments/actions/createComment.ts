@@ -6,6 +6,7 @@ import {
   COMMENT_MAX_ATTACHMENT_SIZE_BYTES,
   COMMENT_MAX_ATTACHMENTS_PER_COMMENT,
   COMMENT_STORAGE_MIME_TYPES,
+  isCommentAttachmentUrl,
 } from '@/infra/storage/storage';
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
@@ -48,8 +49,7 @@ const userMediaName = async (
 };
 
 const isValidAttachment = (attachment: CommentAttachmentInput): boolean =>
-  typeof attachment?.url === 'string' &&
-  attachment.url.length > 0 &&
+  isCommentAttachmentUrl(attachment?.url) &&
   typeof attachment.mimeType === 'string' &&
   COMMENT_STORAGE_MIME_TYPES.includes(
     attachment.mimeType as (typeof COMMENT_STORAGE_MIME_TYPES)[number],

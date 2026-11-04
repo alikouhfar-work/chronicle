@@ -9,24 +9,20 @@ import { navigation } from '@/shared/lib/navigation';
 /** Interactive navigation tabs: active-route + pending-navigation state only. */
 export const HeaderNav = () => {
   const pathname = usePathname();
-  const [pendingHref, setPendingHref] = useState<string | null>(null);
-  const [prevPathname, setPrevPathname] = useState(pathname);
+  // Pending navigation is derived, never stored-then-cleared: a stored flag
+  // would need a render-phase or effect write, and both re-render the header
+  // on every server-action payload (the refresh loop we just fixed).
+  const [pending, setPending] = useState<{ href: string; from: string } | null>(null);
 
   const isActiveRoute = (href: string) =>
     href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
-
-  // Clear the pending nav state once the route transition lands.
-  if (prevPathname !== pathname) {
-    setPrevPathname(pathname);
-    setPendingHref(null);
-  }
 
   return (
     <nav className="hidden items-center rounded-full border border-white/8 bg-zinc-900/80 p-1 shadow-inner backdrop-blur-xl md:flex">
       {navigation.map((item) => {
         const Icon = item.icon;
         const activeTab = isActiveRoute(item.href);
-        const isPendingNav = pendingHref === item.href;
+        const isPendingNav = pending?.href === item.href && pending.from === pathname;
 
         return (
           <Link
@@ -35,7 +31,7 @@ export const HeaderNav = () => {
             aria-current={activeTab ? 'page' : undefined}
             aria-busy={isPendingNav}
             onClick={() => {
-              if (item.href !== pathname) setPendingHref(item.href);
+              if (item.href !== pathname) setPending({ href: item.href, from: pathname });
             }}
             className={`flex cursor-pointer items-center space-x-2 rounded-full px-5 py-2 text-xs font-semibold tracking-tight transition-all duration-200 ${
               isPendingNav ? 'animate-pulse opacity-70' : ''

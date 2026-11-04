@@ -12,8 +12,11 @@ import type {
 import type { CommentMediaType } from '@/modules/comments/types';
 
 const toAppMediaType = (value: string): CommentMediaType => {
-  if (value === 'SHOW') return 'show';
-  if (value === 'EPISODE') return 'episode';
+  // Prisma hands back the enum *name* ("SHOW"), but rows written by older
+  // clients have shown up with the mapped label ("show") — compare loosely.
+  const normalized = typeof value === 'string' ? value.toUpperCase() : '';
+  if (normalized === 'SHOW') return 'show';
+  if (normalized === 'EPISODE') return 'episode';
   return 'movie';
 };
 
@@ -22,10 +25,11 @@ const movieHref = (tmdbId: number, commentId: string, commentAvailable: boolean)
     ? `/library/movie/${tmdbId}?tab=reviews#comment-${commentId}`
     : `/library/movie/${tmdbId}?tab=reviews&mention=unavailable`;
 
+// Library detail routes are `/library/tv/[tmdbId]` — `/library/show/...` 404s.
 const showHref = (tmdbId: number, commentId: string, commentAvailable: boolean): string =>
   commentAvailable
-    ? `/library/show/${tmdbId}?tab=reviews#comment-${commentId}`
-    : `/library/show/${tmdbId}?tab=reviews&mention=unavailable`;
+    ? `/library/tv/${tmdbId}?tab=reviews#comment-${commentId}`
+    : `/library/tv/${tmdbId}?tab=reviews&mention=unavailable`;
 
 const episodeHref = (
   showTmdbId: number | null,

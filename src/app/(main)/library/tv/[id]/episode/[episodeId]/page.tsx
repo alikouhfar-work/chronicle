@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
-import { IconArrowLeft, IconCalendar, IconClock, IconMessage, IconStar } from '@tabler/icons-react';
+import { IconCalendar, IconClock, IconMessage, IconStar } from '@tabler/icons-react';
 import {
   getTrackedEpisode,
   getEpisodeDetails,
@@ -18,6 +18,7 @@ import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
 import { EpisodePersonalNotesEditor } from '@/modules/episode-season/components/EpisodePersonalNotesEditor';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { formatMinutes } from '@/shared/lib/formatMinutes';
+import { BackButton } from '@/shared/ui/BackButton';
 
 import type { EpisodePageProps } from '@/modules/episode-season/types/episodePage';
 
@@ -57,13 +58,7 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
   return (
     <article className="animate-fade-in mx-auto w-full max-w-7xl space-y-6 pb-12 font-sans">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link
-          href={`/library/tv/${show.tmdbId}`}
-          className="apple-pill-btn border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12"
-        >
-          <IconArrowLeft size={14} />
-          Back to {show.name}
-        </Link>
+        <BackButton href={`/library/tv/${show.tmdbId}`} label={`Back to ${show.name}`} />
         <span className="apple-badge border border-violet-500/25 bg-violet-500/10 text-[11px] text-violet-300">
           Season {season.seasonNumber} • Episode {episode.episodeNumber}
         </span>

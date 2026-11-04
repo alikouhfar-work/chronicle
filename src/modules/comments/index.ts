@@ -1,3 +1,4 @@
+export { CommentContent } from '@/modules/comments/components/CommentContent';
 export { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
 export { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
 export { PersonalNotesPanel } from '@/modules/comments/components/PersonalNotesPanel';

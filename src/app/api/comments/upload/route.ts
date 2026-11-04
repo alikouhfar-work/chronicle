@@ -1,19 +1,17 @@
-import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import {
   COMMENT_MAX_ATTACHMENT_SIZE_BYTES,
   COMMENT_STORAGE_MIME_TYPES,
-  storage,
+  getCommentStorage,
 } from '@/infra/storage/storage';
-
-const EXTENSION_BY_MIME: Record<(typeof COMMENT_STORAGE_MIME_TYPES)[number], string> = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-};
-
+import { buildCommentAttachmentKey } from '@/modules/comments/lib/attachmentKey';
 import type { UploadPayload } from '@/modules/comments/types/uploadPayload';
+import type { CommentMimeType } from '@/modules/comments/types/commentMimeType';
+
+const isSupportedMime = (value: string): value is CommentMimeType =>
+  COMMENT_STORAGE_MIME_TYPES.includes(value as CommentMimeType);
+
 const readPayload = async (request: Request): Promise<UploadPayload | { error: string }> => {
   const requestContentType = request.headers.get('content-type') ?? '';
 
@@ -41,6 +39,8 @@ const readPayload = async (request: Request): Promise<UploadPayload | { error: s
   };
 };
 
+export const runtime = 'nodejs';
+
 export const POST = async (request: Request) => {
   try {
     await requireUserId();
@@ -56,11 +56,7 @@ export const POST = async (request: Request) => {
 
     const { buffer, fileName, contentType } = payload;
 
-    if (
-      !COMMENT_STORAGE_MIME_TYPES.includes(
-        contentType as (typeof COMMENT_STORAGE_MIME_TYPES)[number],
-      )
-    ) {
+    if (!isSupportedMime(contentType)) {
       return NextResponse.json(
         { ok: false, error: 'Unsupported image type. Allowed: jpeg, png, webp.' },
         { status: 400 },
@@ -81,16 +77,10 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const extension = EXTENSION_BY_MIME[contentType as keyof typeof EXTENSION_BY_MIME];
-    const baseName = fileName
-      .replace(/\.[^.]+$/, '')
-      .toLowerCase()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 48);
-    const storageKey = `comment-attachments/${Date.now()}-${randomUUID()}-${baseName || 'image'}.${extension}`;
+    const storage = getCommentStorage();
+    const storageKey = buildCommentAttachmentKey({ fileName, mimeType: contentType });
 
-    await storage.writeBuffer(storageKey, buffer);
+    await storage.writeBuffer(storageKey, buffer, { contentType });
 
     return NextResponse.json({
       ok: true,
@@ -98,6 +88,7 @@ export const POST = async (request: Request) => {
       url: storage.publicUrl(storageKey),
       mimeType: contentType,
       sizeBytes: buffer.length,
+      storage: storage.kind,
     });
   } catch (error) {
     console.error('comment upload error:', error);

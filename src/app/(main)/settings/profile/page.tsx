@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { IconArrowLeft, IconAt, IconUser } from '@tabler/icons-react';
+import { IconAt, IconLogout, IconUser } from '@tabler/icons-react';
 import { auth } from '@/infra/auth/auth';
-import { UsernameForm } from '@/modules/user';
+import { SignOutButton, UsernameForm } from '@/modules/user';
 import { getProfileSummary } from '@/modules/user/services/getProfileSummary';
 import { createMonogram } from '@/shared/lib/createMonogram';
+import { BackButton } from '@/shared/ui/BackButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,13 +28,7 @@ const ProfileSettingsPage = async () => {
 
   return (
     <article className="animate-fade-in mx-auto w-full max-w-2xl space-y-6 font-sans">
-      <Link
-        href="/"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-zinc-400 transition-colors hover:text-white"
-      >
-        <IconArrowLeft size={14} />
-        Back to dashboard
-      </Link>
+      <BackButton href="/" label="Back to dashboard" />
 
       <header className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight text-white">Profile</h1>
@@ -80,6 +74,17 @@ const ProfileSettingsPage = async () => {
         Your email is never shown on public reviews, mentions, or notifications — only your display
         name, handle, and avatar.
       </p>
+
+      <section className="glass-card space-y-4 rounded-3xl border-white/10 p-6">
+        <div className="flex items-center gap-2 text-sm font-semibold text-white">
+          <IconLogout size={16} className="text-red-400" />
+          Session
+        </div>
+        <p className="text-xs text-zinc-400">
+          Signing out ends the session on this device. Your library and reviews stay untouched.
+        </p>
+        <SignOutButton />
+      </section>
     </article>
   );
 };

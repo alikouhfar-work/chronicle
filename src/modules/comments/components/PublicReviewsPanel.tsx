@@ -15,9 +15,8 @@ import {
 } from '@tabler/icons-react';
 import { createComment } from '@/modules/comments/actions/createComment';
 import { listComments } from '@/modules/comments/services/listComments';
-import {
-  CommentImageGrid,
-} from '@/modules/comments/components/CommentImageGrid';
+import { CommentImageGrid } from '@/modules/comments/components/CommentImageGrid';
+import { CommentContent } from '@/modules/comments/components/CommentContent';
 import type { CommentAttachment } from '@/modules/comments/types/commentAttachment';
 import { MentionComposerTextarea } from '@/modules/comments/components/MentionComposerTextarea';
 import { COMMENT_MAX_LENGTH, MAX_ATTACHMENTS } from '@/modules/comments/constants';
@@ -531,9 +530,7 @@ export const PublicReviewsPanel = ({
                       )}
                     </div>
 
-                    <p className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200">
-                      {comment.content}
-                    </p>
+                    <CommentContent content={comment.content} className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200" />
 
                     <div className="mt-3">
                       <CommentImageGrid attachments={toGridAttachments(comment)} />

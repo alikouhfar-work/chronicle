@@ -1932,6 +1932,9 @@ export const NotificationScalarFieldEnum = {
   actorId: 'actorId',
   type: 'type',
   commentId: 'commentId',
+  mediaType: 'mediaType',
+  tmdbId: 'tmdbId',
+  mediaTitle: 'mediaTitle',
   isRead: 'isRead',
   createdAt: 'createdAt'
 } as const

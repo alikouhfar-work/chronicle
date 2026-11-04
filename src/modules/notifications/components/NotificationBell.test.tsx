@@ -106,4 +106,34 @@ describe('NotificationBell', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Notifications' }));
     expect(await screen.findByText(/no notifications yet/i)).toBeInTheDocument();
   });
+
+  it('survives a notification row missing its media snapshot fields', async () => {
+    // Regression: a stale Prisma client returned rows without mediaTitle and
+    // the popover threw, taking the whole page down.
+    mocks.getUnreadCount.mockResolvedValue({ success: true, unreadCount: 1 });
+    mocks.listNotifications.mockResolvedValue({
+      success: true,
+      notifications: [
+        item({ mediaTitle: undefined, actor: undefined, createdAt: undefined }),
+      ],
+    });
+    render(<NotificationBell />);
+
+    fireEvent.click(await screen.findByRole('button', { name: /1 unread/i }));
+
+    expect(
+      await screen.findByText('Someone mentioned you in a comment on a title you follow'),
+    ).toBeInTheDocument();
+  });
+
+  it('fetches the unread count once per pathname, not on every render', async () => {
+    const { rerender } = render(<NotificationBell />);
+    await screen.findByRole('button', { name: 'Notifications' });
+    await waitFor(() => expect(mocks.getUnreadCount).toHaveBeenCalledTimes(1));
+
+    rerender(<NotificationBell />);
+    rerender(<NotificationBell />);
+
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(1);
+  });
 });

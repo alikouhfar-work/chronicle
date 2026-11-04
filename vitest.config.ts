@@ -5,6 +5,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      // Server-only guards are a runtime/bundler concern; tests import these
+      // modules directly on Node.
+      'server-only': path.resolve(__dirname, 'node_modules/server-only/empty.js'),
     },
   },
   test: {

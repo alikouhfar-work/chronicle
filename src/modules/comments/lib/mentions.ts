@@ -1,4 +1,5 @@
-const MENTION_PATTERN = /(?<![\w@])@([a-z0-9_]{3,32})(?![a-z0-9_])/gi;
+/** Strict handle matcher shared by extraction and rendering. */
+export const MENTION_PATTERN = /(?<![\w@])@([a-z0-9_]{3,32})(?![a-z0-9_])/gi;
 
 const stripFencedCode = (content: string): string => {
   const lines = content.split(/\r?\n/);

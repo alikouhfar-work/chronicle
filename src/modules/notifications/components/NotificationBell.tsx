@@ -21,11 +21,29 @@ const POLL_INTERVAL_MS = 60_000;
 const formatBadge = (unreadCount: number): string =>
   unreadCount > MAX_UNREAD_BADGE ? `${MAX_UNREAD_BADGE}+` : String(unreadCount);
 
+/**
+ * Defensive by design: notifications are a denormalized snapshot, and rows
+ * written by an out-of-date Prisma client can reach the browser without the
+ * snapshot fields. A malformed row must never crash the header.
+ */
+const actorDisplayName = (item: NotificationItem): string =>
+  item.actor?.name?.trim() || item.actor?.username || 'Someone';
+
 const notificationText = (item: NotificationItem): string => {
-  const actorName = item.actor.name?.trim() || item.actor.username || 'Someone';
-  const title = item.mediaTitle.trim() || 'a title you follow';
-  return `${actorName} mentioned you in a comment on ${title}`;
+  const title = item.mediaTitle?.trim() || 'a title you follow';
+  return `${actorDisplayName(item)} mentioned you in a comment on ${title}`;
 };
+
+const notificationDate = (item: NotificationItem): Date | null => {
+  const created = new Date(item.createdAt);
+  return Number.isNaN(created.getTime()) ? null : created;
+};
+
+const notificationTime = (item: NotificationItem): string =>
+  notificationDate(item)?.toLocaleString() ?? '';
+
+const notificationIsoTime = (item: NotificationItem): string =>
+  notificationDate(item)?.toISOString() ?? '';
 
 /**
  * Header notification bell. Polls the unread count on mount, on every
@@ -51,27 +69,21 @@ export const NotificationBell = () => {
     }
   }, []);
 
-  const [prevPathname, setPrevPathname] = useState(pathname);
-
-  // Revalidate on navigation. Clearing the pending state once the route
-  // lands mirrors the Header's own pattern: setState-during-render for the
-  // narrow prev-value comparison, no setState inside an effect.
-  if (prevPathname !== pathname) {
-    setPrevPathname(pathname);
-    void refreshCount();
-  }
-
   useEffect(() => {
     const timer = setInterval(() => void refreshCount(), POLL_INTERVAL_MS);
     return () => clearInterval(timer);
   }, [refreshCount]);
 
+  // One fetch on mount and one per navigation. Deliberately an effect keyed on
+  // `pathname`: fetching from the render phase re-entered itself while a
+  // server-action response streamed a new tree, which queued the next action
+  // and looped.
   useEffect(() => {
-    // Initial count. The synchronous loading state is intentional: the badge
-    // must paint its true value as soon as the count resolves.
+    // refreshCount awaits the action before touching state, so nothing is set
+    // synchronously here.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void refreshCount();
-  }, [refreshCount]);
+  }, [pathname, refreshCount]);
 
   useEffect(() => {
     if (!open) return;
@@ -215,8 +227,7 @@ export const NotificationBell = () => {
             {!loadingItems && !error && items && items.length > 0 && (
               <ul className="max-h-96 divide-y divide-white/6 overflow-y-auto">
                 {items.map((item) => {
-                  const actorName =
-                    item.actor.name?.trim() || item.actor.username || 'Someone';
+                  const actorName = actorDisplayName(item);
                   return (
                     <li key={item.id}>
                       <Link
@@ -226,7 +237,7 @@ export const NotificationBell = () => {
                           item.isRead ? 'opacity-60' : ''
                         }`}
                       >
-                        {item.actor.image ? (
+                        {item.actor?.image ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={item.actor.image}
@@ -243,10 +254,10 @@ export const NotificationBell = () => {
                             {notificationText(item)}
                           </span>
                           <time
-                            dateTime={new Date(item.createdAt).toISOString()}
+                            dateTime={notificationIsoTime(item)}
                             className="mt-0.5 block text-[11px] text-zinc-500"
                           >
-                            {new Date(item.createdAt).toLocaleString()}
+                            {notificationTime(item)}
                           </time>
                         </span>
                         {!item.isRead && (

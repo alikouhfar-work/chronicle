@@ -1,11 +1,11 @@
 import { IconTrendingUp, IconUser } from '@tabler/icons-react';
 import { PersonDetailsNavigationProps } from '@/modules/discovery/person/types/personDetailsNavigation';
-import { PersonDetailsBackButton } from '@/modules/discovery/person/components/PersonDetailsBackButton';
+import { BackButton } from '@/shared/ui/BackButton';
 
 export const PersonDetailsNavigation = ({ person }: PersonDetailsNavigationProps) => {
   return (
     <div className="flex items-center justify-between border-b border-white/8 pb-3">
-      <PersonDetailsBackButton />
+      <BackButton href="/search" label="Back to search" />
 
       <div className="flex items-center gap-2">
         <span className="apple-badge flex items-center gap-1.5 border border-violet-500/30 bg-violet-500/15 text-xs text-violet-300">

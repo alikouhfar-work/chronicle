@@ -4,7 +4,7 @@ import { MediaPosterImage } from '@/shared/ui/MediaPosterImage';
 import { DetailsCastList } from '@/modules/library/components/details/DetailsCastList';
 import { SimilarMediaCarousel } from '@/modules/library/components/details/SimilarMediaCarousel';
 import { SearchResultCardActions } from '@/modules/discovery/search/components/SearchResultCardActions';
-import { PersonDetailsBackButton } from '@/modules/discovery/person/components/PersonDetailsBackButton';
+import { BackButton } from '@/shared/ui/BackButton';
 import type { TitleDetailsViewProps } from '@/modules/discovery/search/types/titleDetails';
 
 export const TitleDetailsView = ({
@@ -25,7 +25,7 @@ export const TitleDetailsView = ({
 
   return (
     <article className="animate-fade-in mx-auto w-full max-w-7xl space-y-6 px-3 font-sans sm:px-6 lg:px-8">
-      <PersonDetailsBackButton />
+      <BackButton href="/search" label="Back to search" />
 
       <div className="glass-panel relative flex flex-col gap-7 overflow-hidden rounded-3xl border border-white/8 p-6 shadow-2xl md:flex-row md:p-8">
         <div className="pointer-events-none absolute top-0 right-1/4 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />

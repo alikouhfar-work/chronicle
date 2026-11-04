@@ -1,6 +1,6 @@
 import type { FilesRouteContext } from '@/modules/api/types/routeContext';
 import { NextResponse } from 'next/server';
-import { storage } from '@/infra/storage/storage';
+import { getCommentStorage, isCommentAttachmentKey } from '@/infra/storage/storage';
 
 const MIME_BY_EXTENSION: Record<string, string> = {
   jpg: 'image/jpeg',
@@ -11,6 +11,11 @@ const MIME_BY_EXTENSION: Record<string, string> = {
 
 export const runtime = 'nodejs';
 
+/**
+ * Streams a stored attachment. With object storage configured the rendered URL
+ * points at the bucket/CDN directly; this route then only serves the local-disk
+ * development backend and pre-S3 rows.
+ */
 export const GET = async (_request: Request, { params }: FilesRouteContext) => {
   const { key } = await params;
 
@@ -19,12 +24,12 @@ export const GET = async (_request: Request, { params }: FilesRouteContext) => {
   }
 
   const storageKey = key.join('/');
-  if (!storageKey.startsWith('comment-attachments/')) {
+  if (!isCommentAttachmentKey(storageKey)) {
     return NextResponse.json({ error: 'Not found.' }, { status: 404 });
   }
 
   try {
-    const buffer = await storage.readBuffer(storageKey);
+    const buffer = await getCommentStorage().readBuffer(storageKey);
     const extension = storageKey.split('.').pop()?.toLowerCase() ?? '';
 
     return new NextResponse(new Uint8Array(buffer), {
