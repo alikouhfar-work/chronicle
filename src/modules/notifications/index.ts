@@ -1,14 +1,10 @@
 export { NotificationBell } from '@/modules/notifications/components/NotificationBell';
 
-export {
-  getUnreadCount,
-  listNotifications,
-} from '@/modules/notifications/services/notifications';
+export { getUnreadCount } from '@/modules/notifications/services/getUnreadCount';
+export { listNotifications } from '@/modules/notifications/services/listNotifications';
 
-export {
-  markAllNotificationsRead,
-  markNotificationRead,
-} from '@/modules/notifications/actions/notifications';
+export { markAllNotificationsRead } from '@/modules/notifications/actions/markAllNotificationsRead';
+export { markNotificationRead } from '@/modules/notifications/actions/markNotificationRead';
 
 export type {
   MarkReadResult,

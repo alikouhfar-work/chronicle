@@ -4,7 +4,11 @@ import { getTrackedShow } from '@/modules/show/services/getTrackedShow';
 import { shouldSyncShow } from '@/modules/show/utils/shouldSyncShow';
 import { syncShow } from '@/modules/show/actions/syncShow';
 
-export const getFreshTrackedShow = async (id: string) => {
+/**
+ * Reads a tracked show, refreshing it from TMDB first when the cached copy is
+ * stale. Sync failures fall back to the cached row so pages still render.
+ */
+export const getSyncedTrackedShow = async (id: string) => {
   const show = await getTrackedShow(id);
   if (!show) return null;
 

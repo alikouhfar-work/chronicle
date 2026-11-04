@@ -31,23 +31,3 @@ export const markNotificationRead = async (notificationId: string): Promise<Mark
     return { success: false, error: 'Could not mark notification as read.' };
   }
 };
-
-export const markAllNotificationsRead = async (): Promise<MarkReadResult> => {
-  let userId: string;
-  try {
-    userId = await requireUserId();
-  } catch {
-    return { success: false, error: 'You must be signed in to manage notifications.' };
-  }
-
-  try {
-    await prisma.notification.updateMany({
-      where: { recipientId: userId, isRead: false },
-      data: { isRead: true },
-    });
-    return { success: true };
-  } catch (error) {
-    console.error('markAllNotificationsRead error:', error);
-    return { success: false, error: 'Could not mark notifications as read.' };
-  }
-};

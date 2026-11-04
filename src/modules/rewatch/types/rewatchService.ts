@@ -1,7 +1,7 @@
 import type { Prisma } from '../../../../generated/prisma/client';
 import type { RewatchMediaType as DbRewatchMediaType } from '../../../../generated/prisma/enums';
 
-export type RewatchLogCreateData = {
+export type CreateRewatchLogData = {
   userId: string;
   mediaType: DbRewatchMediaType;
   mediaId: string;

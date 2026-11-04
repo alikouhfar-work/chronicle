@@ -1,6 +1,6 @@
 export type LibraryDetailsShowWatchToggleProps = {
   showId: string;
   showName: string;
-  seriesWatched: boolean;
+  showWatched: boolean;
   rewatchCount: number;
 };

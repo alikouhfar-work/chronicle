@@ -5,7 +5,7 @@ import { RewatchMediaType as DbRewatchMediaType } from '../../../../generated/pr
 import type {
   MediaRef,
   RewatchDbClient,
-  RewatchLogCreateData,
+  CreateRewatchLogData,
 } from '@/modules/rewatch/types/rewatchService';
 import { prisma } from '@/infra/db/prisma';
 import { buildTrackingTimestamps, deriveShowStatus } from '@/modules/media/tracking';
@@ -40,7 +40,7 @@ const chunk = <T>(items: readonly T[], size: number): T[][] => {
 
 const createRewatchLogs = async (
   tx: Prisma.TransactionClient,
-  logs: RewatchLogCreateData[],
+  logs: CreateRewatchLogData[],
 ): Promise<void> => {
   for (const logsChunk of chunk(logs, EPISODE_CHUNK_SIZE)) {
     if (logsChunk.length > 0) {
@@ -302,7 +302,7 @@ const recordSeasonRewatch = async (
     select: { id: true },
   });
 
-  const episodeLogs: RewatchLogCreateData[] = season.episodes.map((episode) => ({
+  const episodeLogs: CreateRewatchLogData[] = season.episodes.map((episode) => ({
     userId,
     mediaType: DbRewatchMediaType.EPISODE,
     mediaId: episode.id,
@@ -377,7 +377,7 @@ const recordShowRewatch = async (
     select: { id: true },
   });
 
-  const seasonLogs: RewatchLogCreateData[] = show.seasons.map((season) => ({
+  const seasonLogs: CreateRewatchLogData[] = show.seasons.map((season) => ({
     userId,
     mediaType: DbRewatchMediaType.SEASON,
     mediaId: season.id,
@@ -385,7 +385,7 @@ const recordShowRewatch = async (
     showId: show.id,
     seasonId: season.id,
   }));
-  const episodeLogs: RewatchLogCreateData[] = show.seasons.flatMap((season) =>
+  const episodeLogs: CreateRewatchLogData[] = show.seasons.flatMap((season) =>
     season.episodes.map((episode) => ({
       userId,
       mediaType: DbRewatchMediaType.EPISODE,

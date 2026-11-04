@@ -14,7 +14,7 @@ import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 
 /**
  * Clear the watch history of a movie, episode, season, or show. Unlike the legacy
- * `setShowWatched(false)` / `setSeasonWatched(..., false)` toggles this keeps
+ * `markShowWatched` / `markSeasonWatched` alternatives this keeps
  * the tracking rows, so ratings survive; only watches are removed.
  */
 export const unwatchMedia = async (

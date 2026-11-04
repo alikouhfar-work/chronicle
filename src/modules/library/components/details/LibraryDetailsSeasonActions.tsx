@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { setSeasonWatched } from '@/modules/episode-season/actions/setSeasonWatched';
+import { markSeasonWatched } from '@/modules/episode-season/actions/markSeasonWatched';
 import { LibraryDetailsSeasonActionsProps } from '@/modules/library/types/libraryDetailsSeasonActions';
 import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
 import { clsx } from 'clsx';
@@ -28,8 +28,8 @@ export const LibraryDetailsSeasonActions = ({
   const count = optimistic?.count ?? seasonRewatchCount;
   const displayCount = Math.max(count, watched ? 1 : 0);
 
-  const { execute: markSeasonWatched, isPending } = useServerAction(
-    () => setSeasonWatched(showId, seasonId, true),
+  const { execute: markWatched, isPending } = useServerAction(
+    () => markSeasonWatched(showId, seasonId),
     { errorMessage: 'Couldn’t mark the season as watched. Please try again.' },
   );
 
@@ -39,7 +39,7 @@ export const LibraryDetailsSeasonActions = ({
       return;
     }
 
-    void markSeasonWatched();
+    void markWatched();
   };
 
   return (

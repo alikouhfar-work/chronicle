@@ -2,9 +2,7 @@ import { RewatchMediaType as DbRewatchMediaType } from '../../../../generated/pr
 import type { RewatchMediaType } from '@/modules/rewatch/types/rewatch';
 import { ValidationError } from '@/shared/lib/errors';
 
-const MEDIA_TYPES: readonly RewatchMediaType[] = ['episode', 'season', 'show', 'movie'];
-
-export const REWATCH_MEDIA_TYPES = MEDIA_TYPES;
+const REWATCH_MEDIA_TYPES: readonly RewatchMediaType[] = ['episode', 'season', 'show', 'movie'];
 
 export const parseRewatchMediaType = (value: unknown): RewatchMediaType => {
   if (typeof value !== 'string') {
@@ -14,7 +12,7 @@ export const parseRewatchMediaType = (value: unknown): RewatchMediaType => {
   const normalized = value.trim().toLowerCase();
 
   if (normalized === 'tv') return 'show';
-  if (MEDIA_TYPES.includes(normalized as RewatchMediaType)) {
+  if (REWATCH_MEDIA_TYPES.includes(normalized as RewatchMediaType)) {
     return normalized as RewatchMediaType;
   }
 
@@ -36,4 +34,3 @@ export const toDbRewatchMediaType = (
   }
 };
 
-export const rewatchMediaTypeToUrl = (mediaType: RewatchMediaType): string => mediaType;

@@ -5,10 +5,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
 import { IconCalendar, IconClock, IconMessage, IconStar } from '@tabler/icons-react';
-import {
-  getTrackedEpisode,
-  getEpisodeDetails,
-} from '@/modules/episode-season/services/getTrackedEpisode';
+import { getTrackedEpisode } from '@/modules/episode-season/services/getTrackedEpisode';
+import { getEpisodeDetails } from '@/modules/episode-season/services/getEpisodeDetails';
 import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
 import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
 import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';

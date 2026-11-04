@@ -85,7 +85,7 @@ export const RatingControl = ({ mediaType, targetId, value, label }: RatingContr
         )}
       </div>
       <p className="text-[11px] text-zinc-500">
-        Rate {mediaType === 'movie' ? 'this film' : 'this episode'} on its own — notes stay
+        Rate {mediaType === 'movie' ? 'this movie' : 'this episode'} on its own — notes stay
         independent.
       </p>
     </div>

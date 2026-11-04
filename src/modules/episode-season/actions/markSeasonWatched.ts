@@ -7,7 +7,13 @@ import { parseDbId } from '@/shared/lib/validate';
 import { buildTrackingTimestamps, deriveShowStatus } from '@/modules/media/tracking';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 
-export const setSeasonWatched = async (showId: string, seasonId: string, watched: boolean) => {
+/**
+ * Marks every aired episode of a season as watched and re-derives the show's
+ * status. Removing a watch goes through `unwatchMedia`, which keeps tracking
+ * rows so ratings survive. Unaired episodes are skipped, mirroring how season
+ * progress is counted.
+ */
+export const markSeasonWatched = async (showId: string, seasonId: string) => {
   try {
     const sId = parseDbId(showId, 'showId');
     const snId = parseDbId(seasonId, 'seasonId');
@@ -38,15 +44,11 @@ export const setSeasonWatched = async (showId: string, seasonId: string, watched
     if (episodeIds.length === 0) return;
 
     const tmdbId = await prisma.$transaction(async (tx) => {
-      if (!watched) {
-        await tx.episodeTracking.deleteMany({ where: { episodeId: { in: episodeIds } } });
-      } else {
-        const now = new Date();
-        await tx.episodeTracking.createMany({
-          data: episodeIds.map((episodeId) => ({ episodeId, watched: true, watchedAt: now })),
-          skipDuplicates: true,
-        });
-      }
+      const now = new Date();
+      await tx.episodeTracking.createMany({
+        data: episodeIds.map((episodeId) => ({ episodeId, watched: true, watchedAt: now })),
+        skipDuplicates: true,
+      });
 
       const show = await tx.show.findUnique({
         where: { id: sId },
@@ -73,7 +75,6 @@ export const setSeasonWatched = async (showId: string, seasonId: string, watched
         select: { startedAt: true },
       });
 
-      const now = new Date();
       const timestamps = buildTrackingTimestamps(status, tracking?.startedAt, now);
 
       await tx.showTracking.upsert({
@@ -88,6 +89,6 @@ export const setSeasonWatched = async (showId: string, seasonId: string, watched
     revalidateMediaDetail('tv', tmdbId);
   } catch (error) {
     if (error instanceof ValidationError || error instanceof NotFoundError) throw error;
-    throw new DatabaseError('Failed to update season watched state', { cause: error });
+    throw new DatabaseError('Failed to mark season as watched', { cause: error });
   }
 };

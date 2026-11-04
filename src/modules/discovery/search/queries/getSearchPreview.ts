@@ -1,7 +1,7 @@
 import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import type {
   SearchResultRaw,
-  SearchResultResponse,
+  SearchResponse,
   SearchPreview,
 } from '@/modules/discovery/search/types/searchResult';
 
@@ -17,7 +17,7 @@ export const getSearchPreview = async (query: string): Promise<SearchPreview | n
   if (!trimmed || trimmed.length > MAX_QUERY_LENGTH) return null;
 
   try {
-    const response = await tmdbFetch<SearchResultResponse>(
+    const response = await tmdbFetch<SearchResponse>(
       `/search/multi?query=${encodeURIComponent(trimmed)}`,
       { next: { revalidate: 300 } },
     );

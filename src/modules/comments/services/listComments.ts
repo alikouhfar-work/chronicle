@@ -49,7 +49,7 @@ export const listComments = async (
   }
 
   try {
-    const items = await prisma.comment.findMany({
+    const commentRows = await prisma.comment.findMany({
       where: where as never,
       include: {
         user: { select: publicUserSelect },
@@ -61,15 +61,17 @@ export const listComments = async (
       take: pageSize + 1,
     });
 
-    const hasMore = items.length > pageSize;
-    const page = hasMore ? items.slice(0, pageSize) : items;
-    const last = page.at(-1);
+    // One extra row is fetched to detect whether another page exists.
+    const hasMore = commentRows.length > pageSize;
+    const pageRows = hasMore ? commentRows.slice(0, pageSize) : commentRows;
+    const lastRow = pageRows.at(-1);
 
     return {
       success: true,
-      comments: page.map(toCommentView),
+      comments: pageRows.map(toCommentView),
       hasMore,
-      nextCursor: hasMore && last ? { createdAt: last.createdAt, id: last.id } : undefined,
+      nextCursor:
+        hasMore && lastRow ? { createdAt: lastRow.createdAt, id: lastRow.id } : undefined,
     };
   } catch (error) {
     console.error('listComments error:', error);

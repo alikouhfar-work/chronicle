@@ -12,13 +12,19 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/library/movie/550',
 }));
 
-vi.mock('@/modules/notifications/services/notifications', () => ({
+vi.mock('@/modules/notifications/services/getUnreadCount', () => ({
   getUnreadCount: mocks.getUnreadCount,
+}));
+
+vi.mock('@/modules/notifications/services/listNotifications', () => ({
   listNotifications: mocks.listNotifications,
 }));
 
-vi.mock('@/modules/notifications/actions/notifications', () => ({
+vi.mock('@/modules/notifications/actions/markNotificationRead', () => ({
   markNotificationRead: mocks.markNotificationRead,
+}));
+
+vi.mock('@/modules/notifications/actions/markAllNotificationsRead', () => ({
   markAllNotificationsRead: mocks.markAllNotificationsRead,
 }));
 

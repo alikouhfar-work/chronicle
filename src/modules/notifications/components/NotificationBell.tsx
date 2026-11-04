@@ -4,14 +4,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconBell, IconCheck, IconLoader2 } from '@tabler/icons-react';
-import {
-  getUnreadCount,
-  listNotifications,
-} from '@/modules/notifications/services/notifications';
-import {
-  markAllNotificationsRead,
-  markNotificationRead,
-} from '@/modules/notifications/actions/notifications';
+import { getUnreadCount } from '@/modules/notifications/services/getUnreadCount';
+import { listNotifications } from '@/modules/notifications/services/listNotifications';
+import { markAllNotificationsRead } from '@/modules/notifications/actions/markAllNotificationsRead';
+import { markNotificationRead } from '@/modules/notifications/actions/markNotificationRead';
 import { MAX_UNREAD_BADGE } from '@/modules/notifications/constants';
 import type { NotificationItem } from '@/modules/notifications/types';
 import { createMonogram } from '@/shared/lib/createMonogram';

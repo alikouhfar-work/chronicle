@@ -6,7 +6,7 @@ export type SearchResultRaw = ShowSearchResultRaw | MovieSearchResultRaw;
 export type SearchResult =
   Omit<ShowSearchResult, 'isTracked'> | Omit<MovieSearchResult, 'isTracked'>;
 
-export type SearchResultResponse = {
+export type SearchResponse = {
   results: ShowSearchResultRaw[] | MovieSearchResultRaw[];
 };
 

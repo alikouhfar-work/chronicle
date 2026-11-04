@@ -1,6 +1,6 @@
 import {
   MappedUpcomingEpisode,
-  MappedUpcomingEpisodeItem,
+  UpcomingEpisodeItem,
   UpcomingEpisode,
 } from '@/modules/episode-season/types/upcomingEpisode';
 
@@ -12,7 +12,7 @@ export const mapUpcomingEpisodes = (episodes: UpcomingEpisode[]): MappedUpcoming
     const dateKey = episode.airDate!.toISOString().split('T')[0];
     const key = `${showId}:${dateKey}`;
 
-    const mappedEpisode: MappedUpcomingEpisodeItem = {
+    const mappedEpisode: UpcomingEpisodeItem = {
       id: episode.id,
       seasonNumber: episode.season.seasonNumber,
       episodeNumber: episode.episodeNumber,

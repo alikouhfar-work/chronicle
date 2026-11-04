@@ -25,7 +25,7 @@ export const LibraryDetails = ({
       <LibraryDetailsShowWatchToggle
         showId={media.id}
         showName={media.name}
-        seriesWatched={media.tracking?.status === 'COMPLETED'}
+        showWatched={media.tracking?.status === 'COMPLETED'}
         rewatchCount={media.rewatchCount}
       />
     ) : undefined;

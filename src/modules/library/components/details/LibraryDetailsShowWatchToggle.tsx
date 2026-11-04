@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { IconEye, IconEyeCheck } from '@tabler/icons-react';
 import { clsx } from 'clsx';
-import { setShowWatched } from '@/modules/show/actions/setShowWatched';
+import { markShowWatched } from '@/modules/show/actions/markShowWatched';
 import { WatchActionModal } from '@/modules/rewatch/components/WatchActionModal';
 import type { LibraryDetailsShowWatchToggleProps } from '@/modules/library/types/libraryDetailsShowWatchToggle';
 import { useServerAction } from '@/shared/hooks/useServerAction';
@@ -17,18 +17,18 @@ import { ActionButton } from '@/shared/ui/ActionButton';
 export const LibraryDetailsShowWatchToggle = ({
   showId,
   showName,
-  seriesWatched,
+  showWatched,
   rewatchCount,
 }: LibraryDetailsShowWatchToggleProps) => {
   const [optimistic, setOptimistic] = useState<{ watched: boolean; count: number } | null>(null);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
-  const watched = optimistic?.watched ?? seriesWatched;
+  const watched = optimistic?.watched ?? showWatched;
   const count = optimistic?.count ?? rewatchCount;
   const displayCount = Math.max(count, watched ? 1 : 0);
 
-  const { execute: markShowWatched, isPending } = useServerAction(
-    () => setShowWatched(showId, true),
+  const { execute: markWatched, isPending } = useServerAction(
+    () => markShowWatched(showId),
     { errorMessage: 'Couldn’t update the show. Please try again.' },
   );
 
@@ -38,7 +38,7 @@ export const LibraryDetailsShowWatchToggle = ({
       return;
     }
 
-    void markShowWatched();
+    void markWatched();
   };
 
   return (

@@ -2,10 +2,11 @@ import 'server-only';
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { getFreshTrackedShow } from '@/modules/show/services/getFreshTrackedShow';
+import { getSyncedTrackedShow } from '@/modules/show/services/getSyncedTrackedShow';
 import { DatabaseError } from '@/shared/lib/errors';
 
-export const getFreshTrackedShows = async (): Promise<void> => {
+/** Refreshes every show the viewer is currently watching, best-effort. */
+export const syncStaleTrackedShows = async (): Promise<void> => {
   try {
     const userId = await requireUserId();
     const watchingShows = await prisma.show.findMany({
@@ -15,7 +16,7 @@ export const getFreshTrackedShows = async (): Promise<void> => {
 
     // Best-effort refresh: individual sync failures resolve as stale data.
     await Promise.allSettled(
-      watchingShows.map(({ tmdbId }) => getFreshTrackedShow(tmdbId.toString())),
+      watchingShows.map(({ tmdbId }) => getSyncedTrackedShow(tmdbId.toString())),
     );
   } catch (error) {
     throw new DatabaseError('Failed to refresh tracked shows', { cause: error });

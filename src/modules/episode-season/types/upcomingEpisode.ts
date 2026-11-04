@@ -8,7 +8,7 @@ export type UpcomingEpisode = Episode & {
   };
 };
 
-export type MappedUpcomingEpisodeItem = {
+export type UpcomingEpisodeItem = {
   id: string;
   seasonNumber: number;
   episodeNumber: number;
@@ -23,5 +23,5 @@ export type MappedUpcomingEpisode = {
   showTmdbId: number;
   posterPath: string | null;
   airDate: Date | null;
-  episodes: MappedUpcomingEpisodeItem[];
+  episodes: UpcomingEpisodeItem[];
 };

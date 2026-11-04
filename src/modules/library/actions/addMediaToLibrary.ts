@@ -4,7 +4,7 @@ import { addMovie } from '@/modules/movie/actions/addMovie';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { ValidationError } from '@/shared/lib/errors';
 
-export const addMedia = async ({ tmdbId, mediaType, trackingStatus }: AddMediaParams) => {
+export const addMediaToLibrary = async ({ tmdbId, mediaType, trackingStatus }: AddMediaParams) => {
   if (!Number.isInteger(tmdbId) || tmdbId <= 0) {
     throw new ValidationError(`tmdbId must be a positive integer, got "${tmdbId}"`);
   }

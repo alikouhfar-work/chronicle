@@ -5,7 +5,7 @@ import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { GetUpcomingMediaOptions } from '@/modules/library/types/getUpcomingMedia';
 import { mapUpcomingEpisodes } from '@/modules/episode-season/mappers/mapUpcomingEpisodes';
-import { getFreshTrackedShows } from '@/modules/show/services/getFreshTrackedShows';
+import { syncStaleTrackedShows } from '@/modules/show/services/syncStaleTrackedShows';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseWindowDays } from '@/shared/lib/validate';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
@@ -15,7 +15,7 @@ export const getUpcomingEpisodes = async (options: GetUpcomingMediaOptions = {})
     const days = parseWindowDays(options.days);
 
     try {
-      await getFreshTrackedShows();
+      await syncStaleTrackedShows();
     } catch {
     }
 

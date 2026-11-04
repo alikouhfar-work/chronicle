@@ -1,4 +1,5 @@
-import { fetchSimilarRaw, withTrackedFlags } from '@/modules/media/queries/mediaQueries';
+import { fetchSimilarRaw } from '@/modules/media/queries/fetchSimilarRaw';
+import { attachTrackedFlags } from '@/modules/media/queries/attachTrackedFlags';
 import { mapSimilarShows } from '@/modules/show/mappers/mapSimilarShows';
 import { SimilarShow, SimilarShowRaw } from '@/modules/show/types/similarShow';
 import { getTrackedShowsLookup } from '@/modules/show/services/getTrackedShowsLookup';
@@ -8,7 +9,7 @@ export const getSimilarShows = async (id: string): Promise<SimilarShow[]> => {
     const { results, genreDictionary } = await fetchSimilarRaw<SimilarShowRaw>('tv', id);
     const mapped = mapSimilarShows(results, genreDictionary);
 
-    return withTrackedFlags(mapped, getTrackedShowsLookup);
+    return attachTrackedFlags(mapped, getTrackedShowsLookup);
   } catch {
     return [];
   }

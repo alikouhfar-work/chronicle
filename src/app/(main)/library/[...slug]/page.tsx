@@ -9,7 +9,7 @@ import { LibraryDetails } from '@/modules/library';
 import { getTrackedMovie } from '@/modules/movie/services/getTrackedMovie';
 import { getMovieCredits } from '@/modules/movie/queries/getMovieCredits';
 import { getSimilarMovies } from '@/modules/movie/queries/getSimilarMovies';
-import { getFreshTrackedShow } from '@/modules/show/services/getFreshTrackedShow';
+import { getSyncedTrackedShow } from '@/modules/show/services/getSyncedTrackedShow';
 import { getShowCredits } from '@/modules/show/queries/getShowCredits';
 import { getSimilarShows } from '@/modules/show/queries/getSimilarShows';
 import { getTitleDetails } from '@/modules/discovery/search/queries/getTitleDetails';
@@ -182,7 +182,7 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
   }
 
   const [show, tvCredits, similarShows, reviews, notes] = await Promise.all([
-    getFreshTrackedShow(id),
+    getSyncedTrackedShow(id),
     getShowCredits(id),
     getSimilarShows(id),
     tmdbId === null
