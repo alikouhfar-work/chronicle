@@ -1,42 +1,24 @@
 'use client';
 
-import {
-  IconCalendar,
-  IconCalendarTime,
-  IconEdit,
-  IconMessage,
-  IconMovie,
-  IconStar,
-} from '@tabler/icons-react';
-import { useState } from 'react';
+import { IconCalendar, IconCalendarTime, IconStar } from '@tabler/icons-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { ShowDetailsEpisodeCardToggleButton } from '@/modules/episode-season/components/ShowDetailsEpisodeCardToggleButton';
 import { ShowDetailsEpisodeCardProps } from '@/modules/episode-season/types/showDetailsEpisodeCardProps';
-import { LibraryDetailsLogModal } from '@/modules/library/components/details/LibraryDetailsLogModal';
-import { addEpisodeLog } from '@/modules/episode-season/actions/addEpisodeLog';
 import { RewatchHistoryButton } from '@/modules/rewatch';
 
+/**
+ * One episode row. The whole card is the click target for opening the episode
+ * page, so it carries no duplicated "discussion" / "edit review" buttons —
+ * only the actions that cannot be reached through the link (watch toggle,
+ * rewatch history).
+ */
 export const ShowDetailsEpisodeCard = ({ episode, showTmdbId }: ShowDetailsEpisodeCardProps) => {
-  const [isEditingEpisodeLog, setIsEditingEpisodeLog] = useState(false);
-
   const isWatched = episode.tracking?.watched ?? false;
   const isUpcomingEpisode = !episode.airDate || episode.airDate > new Date();
 
   return (
-    <>
-      {isEditingEpisodeLog && (
-        <LibraryDetailsLogModal
-          icon={<IconMovie size={18} className="text-violet-400" />}
-          title={`Review: ${episode.name}`}
-          hiddenFields={{ episodeId: episode.id }}
-          initialRating={episode.tracking?.rating ?? 0}
-          initialNotes={episode.tracking?.notes ?? ''}
-          action={addEpisodeLog}
-          onClose={() => setIsEditingEpisodeLog(false)}
-        />
-      )}
-      <li
+    <li
         className={`group/ep glass-card relative flex items-start gap-3.5 overflow-hidden rounded-2xl p-4 transition-all duration-150 hover:border-white/20 ${
           isUpcomingEpisode
             ? 'border-dashed border-violet-400/10'
@@ -102,45 +84,19 @@ export const ShowDetailsEpisodeCard = ({ episode, showTmdbId }: ShowDetailsEpiso
                 <span>{episode.tracking.rating} / 5</span>
               </div>
             ) : null}
-
-            {episode.tracking?.notes ? (
-              <p className="line-clamp-1 flex max-w-xl items-center gap-1.5 text-xs text-zinc-300 italic">
-                <IconMessage size={12} className="shrink-0 text-violet-400" />
-                <span>&#34;{episode.tracking.notes}&#34;</span>
-              </p>
-            ) : null}
           </div>
         </Link>
 
         {!isUpcomingEpisode && (
           <div className="flex shrink-0 items-center gap-1.5 self-center">
-            <Link
-              href={`/library/tv/${showTmdbId}/episode/${episode.id}`}
-              aria-label={`Open discussion for ${episode.name}`}
-              title="Open episode discussion"
-              className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white/6 text-zinc-300 hover:bg-violet-500/20 hover:text-violet-300"
-            >
-              <IconMessage size={12} />
-            </Link>
             <RewatchHistoryButton
               mediaType="episode"
               mediaId={episode.id}
               title={episode.name}
               count={episode.rewatchCount}
             />
-            {isWatched && (
-              <button
-                onClick={() => setIsEditingEpisodeLog(true)}
-                aria-label={`Edit review for ${episode.name}`}
-                title="Edit review"
-                className="flex size-8 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white/6 text-xs text-zinc-300 hover:bg-white/12"
-              >
-                <IconEdit size={12} />
-              </button>
-            )}
           </div>
         )}
-      </li>
-    </>
+    </li>
   );
 };

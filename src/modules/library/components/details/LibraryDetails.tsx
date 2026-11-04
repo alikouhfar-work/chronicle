@@ -3,7 +3,6 @@ import { LibraryDetailsHeader } from '@/modules/library/components/details/Libra
 import { LibraryShowDetailsProps } from '@/modules/library/types/libraryDetails';
 import { LibraryDetailsSeasons } from '@/modules/library/components/details/LibraryDetailsSeasons';
 import { LibraryDetailsFooter } from '@/modules/library/components/details/LibraryDetailsFooter';
-import { LibraryDetailsMovieLog } from '@/modules/library/components/details/LibraryDetailsMovieLog';
 import { LibraryDetailsShowWatchToggle } from '@/modules/library/components/details/LibraryDetailsShowWatchToggle';
 import { LibraryDetailsNavigation } from '@/modules/library/components/details/LibraryDetailsNavigation';
 import { LibraryDetailsActionsMenu } from '@/modules/library/components/details/LibraryDetailsActionsMenu';
@@ -18,6 +17,7 @@ export const LibraryDetails = ({
   credits,
   similarMedia,
   viewer,
+  initialNotes,
   initialReviews,
 }: LibraryShowDetailsProps) => {
   const showWatchToggle =
@@ -43,15 +43,17 @@ export const LibraryDetails = ({
     </>
   );
 
+  // Ratings are owned by the Movie/Episode tracking row and are rendered
+  // inside the Personal tab, next to (not merged with) the note list.
   const personalNotes =
     mediaType === 'movie'
       ? {
           rating: media.tracking?.rating ?? null,
-          notes: media.tracking?.notes ?? null,
+          ratingTargetId: media.id,
         }
       : {
           rating: null,
-          notes: null,
+          ratingTargetId: null,
           trackingStatus: media.tracking?.status ?? null,
           rewatchCount: media.rewatchCount,
         };
@@ -74,7 +76,6 @@ export const LibraryDetails = ({
         credits={credits}
         extraActions={menuActions}
       />
-      {mediaType === 'movie' && <LibraryDetailsMovieLog movie={media} />}
       {mediaType === 'tv' && <LibraryDetailsSeasons show={media} />}
       <Suspense fallback={<MediaCommentTabsSkeleton />}>
         <MediaCommentTabs
@@ -82,6 +83,7 @@ export const LibraryDetails = ({
           tmdbId={media.tmdbId}
           personalNotes={personalNotes}
           viewer={viewer}
+          initialNotes={initialNotes}
           initialReviews={initialReviews}
         />
       </Suspense>

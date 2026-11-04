@@ -15,7 +15,7 @@ import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCom
 import { listComments } from '@/modules/comments/services/listComments';
 import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
 import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
-import { EpisodePersonalNotesEditor } from '@/modules/episode-season/components/EpisodePersonalNotesEditor';
+import { listNotes } from '@/modules/notes/services/listNotes';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { formatMinutes } from '@/shared/lib/formatMinutes';
 import { BackButton } from '@/shared/ui/BackButton';
@@ -53,7 +53,7 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
   const backdropUrl = getTmdbImageUrl(show.backdropPath, 'backdrop', 'w1280');
   const posterUrl = getTmdbImageUrl(show.posterPath, 'poster', 'w342');
   const rating = viewer ? (episode.tracking?.rating ?? null) : null;
-  const notes = viewer ? (episode.tracking?.notes ?? null) : null;
+  const notes = viewer ? await listNotes('episode', episode.tmdbId) : null;
 
   return (
     <article className="animate-fade-in mx-auto w-full max-w-7xl space-y-6 pb-12 font-sans">
@@ -136,19 +136,19 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
         <MediaCommentTabs
           mediaType="episode"
           tmdbId={episode.tmdbId}
-          personalNotes={viewer ? { rating, notes } : undefined}
-          viewer={viewer}
-          initialReviews={initialReviews}
-          personalNotesEditor={
-            viewer ? (
-              <EpisodePersonalNotesEditor
-                episodeId={episode.id}
-                episodeName={episode.name}
-                rating={rating}
-                notes={notes}
-              />
-            ) : undefined
+          personalNotes={
+            viewer
+              ? {
+                  // The episode page is scoped to the tracked episode, so the
+                  // rating target is always its tracking row.
+                  rating,
+                  ratingTargetId: episode.id,
+                }
+              : undefined
           }
+          viewer={viewer}
+          initialNotes={notes?.success ? notes.notes : undefined}
+          initialReviews={initialReviews}
         />
       </Suspense>
     </article>

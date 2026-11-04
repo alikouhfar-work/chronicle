@@ -6,14 +6,19 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { format, formatDistanceToNow } from 'date-fns';
 import {
   IconAlertCircle,
+  IconCheck,
   IconLoader2,
   IconLock,
   IconMessage,
+  IconPencil,
   IconPhoto,
   IconSend,
+  IconTrash,
   IconX,
 } from '@tabler/icons-react';
 import { createComment } from '@/modules/comments/actions/createComment';
+import { deleteComment } from '@/modules/comments/actions/deleteComment';
+import { updateComment } from '@/modules/comments/actions/updateComment';
 import { listComments } from '@/modules/comments/services/listComments';
 import { CommentImageGrid } from '@/modules/comments/components/CommentImageGrid';
 import { CommentContent } from '@/modules/comments/components/CommentContent';
@@ -102,6 +107,15 @@ export const PublicReviewsPanel = ({
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [composerError, setComposerError] = useState<string | null>(null);
+
+  // Owner-only affordances on the viewer's own comments.
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState('');
+  const [editMentionIds, setEditMentionIds] = useState<Set<string>>(new Set());
+  const [savingEdit, setSavingEdit] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
+  const [feedActionError, setFeedActionError] = useState<string | null>(null);
 
   const loadInitial = useCallback(async () => {
     setStatus('loading');
@@ -300,6 +314,55 @@ export const PublicReviewsPanel = ({
     toastError(result.error, 'Couldn’t post comment.');
   };
 
+  const startEdit = (comment: CommentView) => {
+    setFeedActionError(null);
+    setConfirmingDeleteId(null);
+    setEditingId(comment.id);
+    setEditContent(comment.content);
+    setEditMentionIds(new Set());
+  };
+
+  const submitEdit = async (commentId: string) => {
+    const trimmed = editContent.trim();
+    if (!trimmed || savingEdit) return;
+
+    setFeedActionError(null);
+    setSavingEdit(true);
+
+    const result = await updateComment(commentId, { content: trimmed });
+    setSavingEdit(false);
+
+    if (!result.success || !result.comment) {
+      setFeedActionError(result.error ?? 'Could not update your comment.');
+      toastError(result.error, 'Couldn’t update comment.');
+      return;
+    }
+
+    const updated = result.comment;
+    setComments((previous) =>
+      previous.map((comment) => (comment.id === commentId ? updated : comment)),
+    );
+    setEditingId(null);
+  };
+
+  const handleDelete = async (commentId: string) => {
+    setFeedActionError(null);
+    setDeletingId(commentId);
+
+    const result = await deleteComment(commentId);
+    setDeletingId(null);
+    setConfirmingDeleteId(null);
+
+    if (!result.success) {
+      setFeedActionError(result.error ?? 'Could not delete your comment.');
+      toastError(result.error, 'Couldn’t delete comment.');
+      return;
+    }
+
+    setComments((previous) => previous.filter((comment) => comment.id !== commentId));
+    if (editingId === commentId) setEditingId(null);
+  };
+
   const signInHref = `/login?callbackUrl=${encodeURIComponent(`${pathname}?tab=reviews`)}`;
   const canSubmit = Boolean(viewer) && !submitting && !uploading && content.trim().length > 0;
 
@@ -482,12 +545,27 @@ export const PublicReviewsPanel = ({
         </div>
       )}
 
+      {feedActionError && (
+        <p
+          role="alert"
+          className="flex items-start gap-2 rounded-xl border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs text-rose-300"
+        >
+          <IconAlertCircle size={15} className="mt-px shrink-0" />
+          <span>{feedActionError}</span>
+        </p>
+      )}
+
       {status === 'ready' && comments.length > 0 && (
         <div className="space-y-3" aria-live="polite">
           {comments.map((comment) => {
             const authorName =
               comment.author.name?.trim() || comment.author.username || 'Chronicle user';
             const handle = comment.author.username;
+            // Ownership is decided by the server-provided viewer id only.
+            const isOwn = Boolean(viewer && viewer.id === comment.author.id);
+            const isEditing = editingId === comment.id;
+            const isConfirmingDelete = confirmingDeleteId === comment.id;
+            const isDeleting = deletingId === comment.id;
 
             return (
               <article
@@ -528,13 +606,95 @@ export const PublicReviewsPanel = ({
                       {comment.pending && (
                         <span className="text-[11px] font-semibold text-violet-300">Posting…</span>
                       )}
+
+                      {isOwn && !comment.pending && !isEditing && (
+                        <span className="ml-auto flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => startEdit(comment)}
+                            aria-label="Edit your comment"
+                            title="Edit comment"
+                            className="flex size-7 cursor-pointer items-center justify-center rounded-lg bg-white/6 text-zinc-300 transition-colors hover:bg-white/12 hover:text-white"
+                          >
+                            <IconPencil size={12} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              isConfirmingDelete
+                                ? void handleDelete(comment.id)
+                                : setConfirmingDeleteId(comment.id)
+                            }
+                            disabled={isDeleting}
+                            aria-label={
+                              isConfirmingDelete ? 'Confirm delete comment' : 'Delete your comment'
+                            }
+                            title={isConfirmingDelete ? 'Click again to delete' : 'Delete comment'}
+                            className={`flex size-7 cursor-pointer items-center justify-center rounded-lg transition-colors disabled:cursor-wait disabled:opacity-60 ${
+                              isConfirmingDelete
+                                ? 'bg-rose-600/80 text-white hover:bg-rose-500'
+                                : 'bg-white/6 text-zinc-300 hover:bg-rose-500/20 hover:text-rose-300'
+                            }`}
+                          >
+                            {isDeleting ? (
+                              <IconLoader2
+                                size={12}
+                                className="animate-spin motion-reduce:animate-none"
+                              />
+                            ) : isConfirmingDelete ? (
+                              <IconCheck size={12} />
+                            ) : (
+                              <IconTrash size={12} />
+                            )}
+                          </button>
+                        </span>
+                      )}
                     </div>
 
-                    <CommentContent content={comment.content} className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200" />
+                    {isEditing ? (
+                      <div className="mt-2 space-y-2">
+                        <MentionComposerTextarea
+                          value={editContent}
+                          onChange={setEditContent}
+                          mentionIds={editMentionIds}
+                          onMentionIdsChange={setEditMentionIds}
+                          disabled={savingEdit}
+                          maxLength={COMMENT_MAX_LENGTH}
+                        />
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setEditingId(null)}
+                            disabled={savingEdit}
+                            className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-3.5 py-2 text-xs font-semibold text-zinc-300 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => void submitEdit(comment.id)}
+                            disabled={savingEdit || editContent.trim().length === 0}
+                            className="apple-pill-btn cursor-pointer bg-violet-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {savingEdit ? (
+                              <IconLoader2
+                                size={13}
+                                className="animate-spin motion-reduce:animate-none"
+                              />
+                            ) : null}
+                            Save changes
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <CommentContent content={comment.content} className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200" />
 
-                    <div className="mt-3">
-                      <CommentImageGrid attachments={toGridAttachments(comment)} />
-                    </div>
+                        <div className="mt-3">
+                          <CommentImageGrid attachments={toGridAttachments(comment)} />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </article>

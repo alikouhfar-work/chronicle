@@ -82,6 +82,13 @@ export type MovieTracking = Prisma.MovieTrackingModel
  */
 export type EpisodeTracking = Prisma.EpisodeTrackingModel
 /**
+ * Model MediaNote
+ * Private notes about a title or episode. Deliberately many-per-media: notes
+ * are free-form and independent from the single rating on the tracking row,
+ * and independent from public comments (different audience, no mentions).
+ */
+export type MediaNote = Prisma.MediaNoteModel
+/**
  * Model User
  * 
  */

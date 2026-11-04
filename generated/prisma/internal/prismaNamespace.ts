@@ -405,6 +405,7 @@ export const ModelName = {
   ShowTracking: 'ShowTracking',
   MovieTracking: 'MovieTracking',
   EpisodeTracking: 'EpisodeTracking',
+  MediaNote: 'MediaNote',
   User: 'User',
   RewatchLog: 'RewatchLog',
   Comment: 'Comment',
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "user" | "rewatchLog" | "comment" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
+    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "mediaNote" | "user" | "rewatchLog" | "comment" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1022,6 +1023,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.EpisodeTrackingCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.EpisodeTrackingCountAggregateOutputType> | number
+        }
+      }
+    }
+    MediaNote: {
+      payload: Prisma.$MediaNotePayload<ExtArgs>
+      fields: Prisma.MediaNoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MediaNoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MediaNoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>
+        }
+        findFirst: {
+          args: Prisma.MediaNoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MediaNoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>
+        }
+        findMany: {
+          args: Prisma.MediaNoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>[]
+        }
+        create: {
+          args: Prisma.MediaNoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>
+        }
+        createMany: {
+          args: Prisma.MediaNoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MediaNoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>[]
+        }
+        delete: {
+          args: Prisma.MediaNoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>
+        }
+        update: {
+          args: Prisma.MediaNoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>
+        }
+        deleteMany: {
+          args: Prisma.MediaNoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MediaNoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MediaNoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>[]
+        }
+        upsert: {
+          args: Prisma.MediaNoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MediaNotePayload>
+        }
+        aggregate: {
+          args: Prisma.MediaNoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMediaNote>
+        }
+        groupBy: {
+          args: Prisma.MediaNoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaNoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MediaNoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MediaNoteCountAggregateOutputType> | number
         }
       }
     }
@@ -1835,7 +1910,6 @@ export const MovieTrackingScalarFieldEnum = {
   movieId: 'movieId',
   status: 'status',
   rating: 'rating',
-  notes: 'notes',
   addedAt: 'addedAt',
   startedAt: 'startedAt',
   completedAt: 'completedAt',
@@ -1851,11 +1925,24 @@ export const EpisodeTrackingScalarFieldEnum = {
   watched: 'watched',
   watchedAt: 'watchedAt',
   rating: 'rating',
-  notes: 'notes',
   updatedAt: 'updatedAt'
 } as const
 
 export type EpisodeTrackingScalarFieldEnum = (typeof EpisodeTrackingScalarFieldEnum)[keyof typeof EpisodeTrackingScalarFieldEnum]
+
+
+export const MediaNoteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  tmdbId: 'tmdbId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type MediaNoteScalarFieldEnum = (typeof MediaNoteScalarFieldEnum)[keyof typeof MediaNoteScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -2087,20 +2174,6 @@ export type ListEnumMovieTrackingStatusFieldRefInput<$PrismaModel> = FieldRefInp
 
 
 /**
- * Reference to a field of type 'RewatchMediaType'
- */
-export type EnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType'>
-    
-
-
-/**
- * Reference to a field of type 'RewatchMediaType[]'
- */
-export type ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType[]'>
-    
-
-
-/**
  * Reference to a field of type 'CommentMediaType'
  */
 export type EnumCommentMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommentMediaType'>
@@ -2111,6 +2184,20 @@ export type EnumCommentMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'CommentMediaType[]'
  */
 export type ListEnumCommentMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommentMediaType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RewatchMediaType'
+ */
+export type EnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType'>
+    
+
+
+/**
+ * Reference to a field of type 'RewatchMediaType[]'
+ */
+export type ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType[]'>
     
 
 
@@ -2300,6 +2387,7 @@ export type GlobalOmitConfig = {
   showTracking?: Prisma.ShowTrackingOmit
   movieTracking?: Prisma.MovieTrackingOmit
   episodeTracking?: Prisma.EpisodeTrackingOmit
+  mediaNote?: Prisma.MediaNoteOmit
   user?: Prisma.UserOmit
   rewatchLog?: Prisma.RewatchLogOmit
   comment?: Prisma.CommentOmit

@@ -14,9 +14,30 @@ vi.mock('@/shared/hooks/usePrefersReducedMotion', () => ({
   usePrefersReducedMotion: () => true,
 }));
 
-vi.mock('@/modules/comments/components/PersonalNotesPanel', () => ({
-  PersonalNotesPanel: ({ mediaType }: { mediaType: string }) => (
-    <div data-testid="personal-panel">Personal {mediaType}</div>
+vi.mock('@/modules/notes/components/PersonalNotesPanel', () => ({
+  PersonalNotesPanel: ({
+    mediaType,
+    tmdbId,
+    rating,
+    ratingTargetId,
+    initialNotes,
+  }: {
+    mediaType: string;
+    tmdbId: number;
+    rating: number | null;
+    ratingTargetId: string | null;
+    initialNotes?: unknown[];
+  }) => (
+    <div
+      data-testid="personal-panel"
+      data-media={mediaType}
+      data-tmdb={tmdbId}
+      data-rating={rating ?? ''}
+      data-rating-target={ratingTargetId ?? ''}
+      data-notes={initialNotes?.length ?? 0}
+    >
+      Personal {mediaType}
+    </div>
   ),
 }));
 
@@ -60,6 +81,30 @@ describe('MediaCommentTabs', () => {
     );
     expect(screen.getByTestId('reviews-panel')).toHaveAttribute('data-tmdb', '550');
     expect(screen.getByTestId('reviews-panel')).toHaveAttribute('data-active', 'false');
+  });
+
+  it('hands the rating target and private notes to the Personal tab', () => {
+    const note = {
+      id: 'note-1',
+      content: 'Quietly brilliant',
+      createdAt: new Date('2026-11-01T10:00:00Z'),
+      updatedAt: new Date('2026-11-01T10:00:00Z'),
+    };
+
+    render(
+      <MediaCommentTabs
+        mediaType="movie"
+        tmdbId={550}
+        viewer={viewer}
+        personalNotes={{ rating: 4, ratingTargetId: 'movie-row-1' }}
+        initialNotes={[note]}
+      />,
+    );
+
+    const panel = screen.getByTestId('personal-panel');
+    expect(panel).toHaveAttribute('data-rating', '4');
+    expect(panel).toHaveAttribute('data-rating-target', 'movie-row-1');
+    expect(panel).toHaveAttribute('data-notes', '1');
   });
 
   it('syncs the selected tab to ?tab=reviews', () => {

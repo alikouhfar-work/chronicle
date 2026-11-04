@@ -11,42 +11,12 @@ import {
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
 import { extractMentionHandles } from '@/modules/comments/lib/mentions';
+import { getUserMediaName } from '@/modules/comments/services/getUserMediaName';
+import { resolveMentionUsers } from '@/modules/comments/services/resolveMentionUsers';
 import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
 import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
-import type {
-  CommentAttachmentInput,
-  CommentMediaType,
-  CreateCommentResult,
-} from '@/modules/comments/types';
+import type { CommentAttachmentInput, CreateCommentResult } from '@/modules/comments/types';
 import type { CreateCommentInput } from '@/modules/comments/types/createComment';
-
-const userMediaName = async (
-  userId: string,
-  mediaType: CommentMediaType,
-  tmdbId: number,
-): Promise<string | null> => {
-  if (mediaType === 'movie') {
-    const movie = await prisma.movie.findFirst({
-      where: { tmdbId, userId },
-      select: { name: true },
-    });
-    return movie?.name ?? null;
-  }
-
-  if (mediaType === 'show') {
-    const show = await prisma.show.findFirst({
-      where: { tmdbId, userId },
-      select: { name: true },
-    });
-    return show?.name ?? null;
-  }
-
-  const episode = await prisma.episode.findFirst({
-    where: { tmdbId, season: { show: { userId } } },
-    select: { name: true },
-  });
-  return episode?.name ?? null;
-};
 
 const isValidAttachment = (attachment: CommentAttachmentInput): boolean =>
   isCommentAttachmentUrl(attachment?.url) &&
@@ -99,23 +69,14 @@ export const createComment = async (
   }
 
   try {
-    const mediaTitle = await userMediaName(userId, input.mediaType, tmdbId);
+    const mediaTitle = await getUserMediaName(userId, input.mediaType, tmdbId);
     if (!mediaTitle) {
       return { success: false, error: 'This title is not in your library anymore.' };
     }
 
     // Resolve every handle with one lookup. Never use client-supplied IDs to
     // decide which users are mentioned.
-    const handles = extractMentionHandles(content);
-    const resolvedUsers = handles.length
-      ? await prisma.user.findMany({
-          where: { username: { in: handles, mode: 'insensitive' } },
-          select: { id: true, username: true },
-        })
-      : [];
-    const mentionedUsers = [
-      ...new Map(resolvedUsers.map((mentionedUser) => [mentionedUser.id, mentionedUser])).values(),
-    ];
+    const mentionedUsers = await resolveMentionUsers(extractMentionHandles(content));
     const mentionRows = mentionedUsers.map((mentionedUser) => ({
       mentionedUserId: mentionedUser.id,
     }));

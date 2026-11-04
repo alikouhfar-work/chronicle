@@ -2,7 +2,7 @@
 
 import { useCallback, useRef } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { PersonalNotesPanel } from '@/modules/comments/components/PersonalNotesPanel';
+import { PersonalNotesPanel } from '@/modules/notes/components/PersonalNotesPanel';
 import { PublicReviewsPanel } from '@/modules/comments/components/PublicReviewsPanel';
 import type {
   MediaCommentTab,
@@ -35,7 +35,7 @@ export const MediaCommentTabs = ({
   tmdbId,
   personalNotes,
   viewer = null,
-  personalNotesEditor,
+  initialNotes,
   initialReviews,
 }: MediaCommentTabsProps) => {
   const router = useRouter();
@@ -142,10 +142,14 @@ export const MediaCommentTabs = ({
         >
           <PersonalNotesPanel
             mediaType={mediaType}
-            personalNotes={personalNotes}
+            tmdbId={tmdbId}
             viewer={viewer}
             signInHref={signInHref}
-            editor={personalNotesEditor}
+            rating={personalNotes?.rating ?? null}
+            ratingTargetId={personalNotes?.ratingTargetId ?? null}
+            trackingStatus={personalNotes?.trackingStatus ?? null}
+            rewatchCount={personalNotes?.rewatchCount}
+            initialNotes={initialNotes}
           />
         </div>
 

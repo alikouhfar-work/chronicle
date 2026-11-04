@@ -2,13 +2,27 @@
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
+import { publicUserSelect } from '@/modules/user/lib/publicUser';
+import { toCommentView } from '@/modules/comments/lib/toCommentView';
+import { extractMentionHandles } from '@/modules/comments/lib/mentions';
+import { APP_MEDIA_TYPE } from '@/modules/comments/lib/validation';
+import { getUserMediaName } from '@/modules/comments/services/getUserMediaName';
+import { resolveMentionUsers } from '@/modules/comments/services/resolveMentionUsers';
 import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
 import type { UpdateCommentResult } from '@/modules/comments/types';
+import type { UpdateCommentInput } from '@/modules/comments/types/updateComment';
+
+type CommentMediaRow = {
+  userId: string;
+  deletedAt: Date | null;
+  /** Prisma enum name, as stored. */
+  mediaType: 'MOVIE' | 'SHOW' | 'EPISODE';
+  tmdbId: number;
+};
 
 export const updateComment = async (
   commentId: string,
-  _prevState: unknown,
-  formData: FormData,
+  input: UpdateCommentInput,
 ): Promise<UpdateCommentResult> => {
   let userId: string;
   try {
@@ -17,10 +31,10 @@ export const updateComment = async (
     return { success: false, error: 'You must be signed in to edit comments.' };
   }
 
-  const comment = await prisma.comment.findUnique({
+  const comment = (await prisma.comment.findUnique({
     where: { id: commentId },
-    select: { userId: true, deletedAt: true },
-  });
+    select: { userId: true, deletedAt: true, mediaType: true, tmdbId: true },
+  })) as CommentMediaRow | null;
 
   if (!comment || comment.deletedAt) {
     return { success: false, error: 'Comment not found.' };
@@ -30,8 +44,7 @@ export const updateComment = async (
     return { success: false, error: 'You are not the author of this comment.' };
   }
 
-  const raw = formData.get('content');
-  const content = typeof raw === 'string' ? raw.trim() : '';
+  const content = (input?.content ?? '').trim();
   if (content.length < COMMENT_MIN_LENGTH || content.length > COMMENT_MAX_LENGTH) {
     return {
       success: false,
@@ -40,14 +53,67 @@ export const updateComment = async (
   }
 
   try {
-    await prisma.comment.update({
-      where: { id: commentId },
-      data: { content },
+    // Mentions are re-derived from the stored content, exactly like creation:
+    // an edit must not leave stale CommentMention/Notification rows behind.
+    const mentionedUsers = await resolveMentionUsers(extractMentionHandles(content));
+    const recipients = mentionedUsers.filter((mentionedUser) => mentionedUser.id !== userId);
+
+    const existingNotification = await prisma.notification.findFirst({
+      where: { commentId },
+      select: { mediaTitle: true },
     });
+    const mediaTitle =
+      existingNotification?.mediaTitle ||
+      (await getUserMediaName(userId, APP_MEDIA_TYPE[comment.mediaType], comment.tmdbId)) ||
+      '';
+
+    const updated = await prisma.$transaction(async (tx) => {
+      await tx.commentMention.deleteMany({ where: { commentId } });
+      if (mentionedUsers.length > 0) {
+        await tx.commentMention.createMany({
+          data: mentionedUsers.map((mentionedUser) => ({
+            commentId,
+            mentionedUserId: mentionedUser.id,
+          })),
+        });
+      }
+
+      // Drop notifications for handles that were removed from the text; the
+      // @@unique([recipientId, commentId]) pair keeps the rest stable.
+      const recipientIds = recipients.map((recipient) => recipient.id);
+      await tx.notification.deleteMany({
+        where: { commentId, recipientId: { notIn: recipientIds } },
+      });
+      if (recipients.length > 0) {
+        await tx.notification.createMany({
+          data: recipients.map((recipient) => ({
+            recipientId: recipient.id,
+            actorId: userId,
+            type: 'COMMENT_MENTION' as const,
+            commentId,
+            mediaType: comment.mediaType,
+            tmdbId: comment.tmdbId,
+            mediaTitle,
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return tx.comment.update({
+        where: { id: commentId },
+        data: { content },
+        include: {
+          user: { select: publicUserSelect },
+          attachments: {
+            select: { id: true, url: true, mimeType: true, width: true, height: true },
+          },
+        },
+      });
+    });
+
+    return { success: true, comment: toCommentView(updated) };
   } catch (error) {
     console.error('updateComment error:', error);
     return { success: false, error: 'Could not update comment.' };
   }
-
-  return { success: true };
 };

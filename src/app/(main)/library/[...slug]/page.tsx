@@ -22,6 +22,7 @@ import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs
 import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
 import { listComments } from '@/modules/comments/services/listComments';
 import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
+import { listNotes } from '@/modules/notes/services/listNotes';
 import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
 
 const resolveTmdbId = (value: string): number | null => {
@@ -155,13 +156,14 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
   const tmdbId = resolveTmdbId(id);
 
   if (mediaType === 'movie') {
-    const [movie, credits, similarMovies, reviews] = await Promise.all([
+    const [movie, credits, similarMovies, reviews, notes] = await Promise.all([
       getTrackedMovie(id),
       getMovieCredits(id),
       getSimilarMovies(id),
       tmdbId === null
         ? Promise.resolve(null)
         : listComments('movie', tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
+      tmdbId === null ? Promise.resolve(null) : listNotes('movie', tmdbId),
     ]);
 
     if (!movie) notFound();
@@ -173,18 +175,20 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
         credits={credits}
         similarMedia={similarMovies}
         viewer={viewer}
+        initialNotes={notes?.success ? notes.notes : undefined}
         initialReviews={reviews ? toInitialCommentPage(reviews) : undefined}
       />
     );
   }
 
-  const [show, tvCredits, similarShows, reviews] = await Promise.all([
+  const [show, tvCredits, similarShows, reviews, notes] = await Promise.all([
     getFreshTrackedShow(id),
     getShowCredits(id),
     getSimilarShows(id),
     tmdbId === null
       ? Promise.resolve(null)
       : listComments('show', tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
+    tmdbId === null ? Promise.resolve(null) : listNotes('show', tmdbId),
   ]);
 
   if (!show) notFound();
@@ -196,6 +200,7 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
       credits={tvCredits}
       similarMedia={similarShows}
       viewer={viewer}
+      initialNotes={notes?.success ? notes.notes : undefined}
       initialReviews={reviews ? toInitialCommentPage(reviews) : undefined}
     />
   );

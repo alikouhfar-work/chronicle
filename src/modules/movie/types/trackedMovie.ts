@@ -3,7 +3,7 @@ import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 
 type MovieTracking = {
   id: string;
-  notes?: string | null;
+  /** Rating only — private notes live in `MediaNote`, independent from this. */
   rating?: number | null;
   status: MovieTrackingStatus;
   addedAt: Date;

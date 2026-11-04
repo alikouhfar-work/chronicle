@@ -236,23 +236,6 @@ export type EnumMovieTrackingStatusWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumMovieTrackingStatusFilter<$PrismaModel>
 }
 
-export type EnumRewatchMediaTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel> | $Enums.RewatchMediaType
-}
-
-export type EnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.RewatchMediaType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
-}
-
 export type EnumCommentMediaTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.CommentMediaType | Prisma.EnumCommentMediaTypeFieldRefInput<$PrismaModel>
   in?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
@@ -268,6 +251,23 @@ export type EnumCommentMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
+}
+
+export type EnumRewatchMediaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel> | $Enums.RewatchMediaType
+}
+
+export type EnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.RewatchMediaType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
 }
 
 export type EnumNotificationTypeFilter<$PrismaModel = never> = {
@@ -522,23 +522,6 @@ export type NestedEnumMovieTrackingStatusWithAggregatesFilter<$PrismaModel = nev
   _max?: Prisma.NestedEnumMovieTrackingStatusFilter<$PrismaModel>
 }
 
-export type NestedEnumRewatchMediaTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel> | $Enums.RewatchMediaType
-}
-
-export type NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.RewatchMediaType
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
-}
-
 export type NestedEnumCommentMediaTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.CommentMediaType | Prisma.EnumCommentMediaTypeFieldRefInput<$PrismaModel>
   in?: $Enums.CommentMediaType[] | Prisma.ListEnumCommentMediaTypeFieldRefInput<$PrismaModel>
@@ -554,6 +537,23 @@ export type NestedEnumCommentMediaTypeWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCommentMediaTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumRewatchMediaTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel> | $Enums.RewatchMediaType
+}
+
+export type NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RewatchMediaType | Prisma.EnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RewatchMediaType[] | Prisma.ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRewatchMediaTypeWithAggregatesFilter<$PrismaModel> | $Enums.RewatchMediaType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRewatchMediaTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {

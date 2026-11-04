@@ -59,6 +59,7 @@ export const ModelName = {
   ShowTracking: 'ShowTracking',
   MovieTracking: 'MovieTracking',
   EpisodeTracking: 'EpisodeTracking',
+  MediaNote: 'MediaNote',
   User: 'User',
   RewatchLog: 'RewatchLog',
   Comment: 'Comment',
@@ -191,7 +192,6 @@ export const MovieTrackingScalarFieldEnum = {
   movieId: 'movieId',
   status: 'status',
   rating: 'rating',
-  notes: 'notes',
   addedAt: 'addedAt',
   startedAt: 'startedAt',
   completedAt: 'completedAt',
@@ -207,11 +207,24 @@ export const EpisodeTrackingScalarFieldEnum = {
   watched: 'watched',
   watchedAt: 'watchedAt',
   rating: 'rating',
-  notes: 'notes',
   updatedAt: 'updatedAt'
 } as const
 
 export type EpisodeTrackingScalarFieldEnum = (typeof EpisodeTrackingScalarFieldEnum)[keyof typeof EpisodeTrackingScalarFieldEnum]
+
+
+export const MediaNoteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  tmdbId: 'tmdbId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type MediaNoteScalarFieldEnum = (typeof MediaNoteScalarFieldEnum)[keyof typeof MediaNoteScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

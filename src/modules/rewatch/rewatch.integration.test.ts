@@ -344,7 +344,8 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
 
     await prisma.episodeTracking.update({
       where: { episodeId: fixtures.episodes.s1e1.id },
-      data: { rating: 4, notes: 'Keep this review' },
+      // Notes are a separate table now; the assertion only cares about rating.
+      data: { rating: 4 },
     });
 
     const result = await removeRewatchLog({
@@ -382,7 +383,7 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
 
     await prisma.episodeTracking.update({
       where: { episodeId: fixtures.episodes.s1e2.id },
-      data: { rating: 3, notes: 'Keep this review' },
+      data: { rating: 3 },
     });
 
     const result = await clearEpisodeWatchHistory({

@@ -156,8 +156,8 @@ model MovieTracking {
   id          String              @id @default(uuid())
   movieId     String              @unique
   status      MovieTrackingStatus @default(PLAN_TO_WATCH)
+  /// Independent of notes: a rating never creates, edits, or deletes a note.
   rating      Int?
-  notes       String?             @db.Text
   addedAt     DateTime            @default(now())
   startedAt   DateTime?
   completedAt DateTime?
@@ -171,11 +171,31 @@ model EpisodeTracking {
   episodeId String    @unique
   watched   Boolean   @default(false)
   watchedAt DateTime?
+  /// Independent of notes: rating an episode never touches its note list.
   rating    Int?
-  notes     String?   @db.Text
   updatedAt DateTime  @updatedAt
 
   episode Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+}
+
+/// Private notes about a title or episode. Deliberately many-per-media: notes
+/// are free-form and independent from the single rating on the tracking row,
+/// and independent from public comments (different audience, no mentions).
+model MediaNote {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  mediaType CommentMediaType @map("media_type")
+  /// TMDB id of the noted title/episode, matching Comment's scoping.
+  tmdbId    Int              @map("tmdb_id")
+  content   String           @db.Text
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  deletedAt DateTime?        @map("deleted_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, mediaType, tmdbId, createdAt])
+  @@map("media_notes")
 }
 
 model User {
@@ -194,6 +214,7 @@ model User {
   shows                 Show[]
   movies                Movie[]
   rewatchLogs           RewatchLog[]
+  notes                 MediaNote[]
   comments        Comment[]
   mentions              CommentMention[] @relation("MentionsReceived")
   notificationsReceived Notification[]   @relation("NotificationsReceived")

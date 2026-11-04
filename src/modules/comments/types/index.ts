@@ -59,6 +59,8 @@ export type CreateCommentResult = {
 export type UpdateCommentResult = {
   success: boolean;
   error?: string;
+  /** Present on success so the feed can swap the edited node in place. */
+  comment?: CommentView;
 };
 
 export type DeleteCommentResult = {

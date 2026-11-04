@@ -69,7 +69,8 @@ src/modules/media/          # shared entities, queries, tracking helpers, tmdb m
 src/modules/movie/          # services/getTracked*|Upcoming, queries/getTrending|Similar|Credits, actions/add|delete|updateStatus|addLog
 src/modules/show/           # services/getTracked*|Fresh*|Lookup, queries/getTrending|Similar|Credits, actions/add|sync|setWatched|delete|updateStatus
 src/modules/auth/           # LoginForm, SignupForm
-src/modules/comments/       # MentionComposerTextarea, MediaCommentTabs (personal/public tabs), services/{getCommentById,getCommentViewer,listComments} + actions/create|update|delete (ownership-checked, soft-delete), constants.ts, lib/mentions (server extraction regex)
+src/modules/comments/       # MentionComposerTextarea, MediaCommentTabs (personal/public tabs), PublicReviewsPanel (owner edit/delete), services/{getCommentById,getCommentViewer,listComments,resolveMentionUsers,getUserMediaName} + actions/create|update|delete (ownership-checked, soft-delete, mentions re-derived on edit), constants.ts, lib/mentions (server extraction regex)
+src/modules/notes/          # private per-media notes: services/listNotes + isMediaInUserLibrary, actions/create|update|delete (soft-delete), components/PersonalNotesPanel|NoteComposer|RatingControl
 src/modules/notifications/  # services/notifications (recipient-scoped list/count) + actions (mark-read), components/NotificationBell (header badge + popover deep-links)
 src/modules/rewatch/        # actions (thin) -> services/rewatchService (record/remove counts, cascade rules), components/RewatchButton|HistoryButton|HistoryModal
 src/modules/user/           # services/getProfileSummary (DB), actions/updateUsername|ensureUsername, components/UsernameForm
@@ -102,8 +103,9 @@ src/modules/<domain>/
 - Module layout: `src/modules/<domain>/{services/,queries/,actions/,components/,mappers/,lib/,types/,utils/,constants.ts,index.ts}`. Keep domain logic inside its module; shared code only in `src/shared/`.
 - Reads split by source (strict): **database reads go in `services/`** (`'server-only'`), **external API reads go in `queries/`** (TMDB). Writes go in `actions/` (server actions). A composite read (external + enrichment) lives in `queries/` and calls the `services/` lookup. TMDB mapping lives in `mappers/` (pure, unit-tested with `*.test.ts` next to source).
 - `services/` is the DB layer for every module (not just `rewatch/`). It also holds the thin-action→fat-service split. Types live in `types/` as type-only files (`import type` only, **zero runtime code**) — runtime constants go to `<module>/constants.ts` or `lib/`. `src/architecture.test.ts` enforces all of this.
-- Comments: server re-extracts mentions with the strict regex (`comments/lib/mentions.ts`); client `mentionIds` is hint-only. Rendered content is JSX-escaped, never raw HTML. Editing a comment must re-extract mentions. One `Notification` per (recipient, comment) in the same transaction, `@@unique([recipientId, commentId])`, with a `mediaType/tmdbId/mediaTitle` snapshot; self-mentions create none.
+- Comments: server re-extracts mentions with the strict regex (`comments/lib/mentions.ts`); client `mentionIds` is hint-only. Rendered content is JSX-escaped, never raw HTML. Editing a comment re-derives mentions and reconciles `CommentMention`/`Notification` rows in one transaction, so editing a handle out of the text stops the ping. Only the author sees edit/delete controls (`updateComment`/`deleteComment` also enforce ownership server-side). One `Notification` per (recipient, comment) in the same transaction, `@@unique([recipientId, commentId])`, with a `mediaType/tmdbId/mediaTitle` snapshot; self-mentions create none.
 - Bell: badge capped at `9+` (`aria-live="polite"`), polls on mount/navigation/interval; deep links carry `#comment-<id>` + `?mention=unavailable` for deleted comments (dismissible notice in `PublicReviewsPanel`).
+- Media detail pages render ONE tabbed component (`MediaCommentTabs`): Personal Notes (rating + private note list/composer) and Public Reviews. There is no separate notes block above it, and episode cards carry no duplicate "open discussion"/"edit review" buttons — the card itself is the link.
 - Server vs client: pages/layouts are Server Components and own primary data loading; `"use client"` belongs on interactive leaves (inputs, dropdowns, modals, toggles). Chrome is split: `Header` is server with `HeaderNav`/`HeaderActions` client leaves, `Footer` is the client nav leaf. The only client-owned data fetch left is `PublicReviewsPanel` pagination — its first page is server-rendered via `initialReviews`. Prisma + TMDB token access are server-only; `services/` files carry `import 'server-only'` (or `'use server'` when a client component calls them directly).
 - Imports: use `@/` alias (`@/modules/movie/queries`, `@/infra/db/prisma`). Never import from `generated/` by relative path confusion — canonical import is via `generated/prisma/client`.
 - Styling: Tailwind classes + `clsx`; gradients per title via `getGradientForTitle`; skeletons for loading states (`*Skeleton.tsx`, `loading.tsx`).
@@ -118,8 +120,9 @@ src/modules/<domain>/
 - `Movie`: `@@unique([userId, tmdbId])`, genres/tracking.
 - `Genre`: shared `tmdbId @unique`, M-N to shows/movies.
 - `ShowTracking`: `PLAN_TO_WATCH/WATCHING/COMPLETED/DROPPED` + added/started/completedAt.
-- `MovieTracking`: `PLAN_TO_WATCH/WATCHING/COMPLETED` + rating/notes + added/started/completedAt.
-- `EpisodeTracking`: watched/watchedAt + rating/notes per episode.
+- `MovieTracking`: `PLAN_TO_WATCH/WATCHING/COMPLETED` + rating + added/started/completedAt (no notes column).
+- `EpisodeTracking`: watched/watchedAt + rating per episode (no notes column).
+- `MediaNote` (`media_notes`): private notes, many per `(user, mediaType, tmdbId)`, soft-deleted. Ratings live only on the tracking rows — `media/actions/setMediaRating` writes them and never touches notes. Legacy `MovieTracking.notes` / `EpisodeTracking.notes` were backfilled into `media_notes` and dropped (migration `20261104120000_media_notes`).
 - Auth tables: `Account`, `Session`, `VerificationToken` (standard PrismaAdapter shape).
 - Config: `prisma.config.ts` selects `DATABASE_URL` vs `DEMO_DATABASE_URL` by `PRISMA_TARGET=personal|demo`.
 - Comment attachments: one `StorageProvider` (`src/infra/storage/types.ts`) with two backends — S3-compatible object storage when `S3_BUCKET` is set (`s3Storage.ts`, AWS/R2/MinIO/B2), local disk otherwise (`COMMENT_STORAGE_DIR`, default `.data/comment-uploads`, untracked + CWD-relative, dev only). Always resolve through `getCommentStorage()`; never reintroduce the removed `storage` singleton or presigned-upload stub. Uploads return `{key,url}`; `createComment` and `/api/comments/attachments` only accept keys/URLs this deployment minted (`isCommentAttachmentKey` / `isCommentAttachmentUrl`), and derive the stored URL server-side. Migration drift: `20261030120000_public_reviews` was edited after apply, so `migrate dev` demands a reset — use `migrate deploy`. `chronicle_test` is mid-chain stale; prove migrations on a scratch DB first.
@@ -129,8 +132,8 @@ src/modules/<domain>/
 
 - Add to library: `library/services/addMedia.ts` (+ `addMediaAction`) -> `show/actions/addShow.ts` or `movie/actions/addMovie.ts` — fetches TMDB details, creates Show/Movie + Season/Episode rows + Tracking row (`PLAN_TO_WATCH` default).
 - Show progress: `show/utils/getShowProgress.ts`, `shouldSyncShow.ts` decides TMDB re-sync (`lastSyncedAt`); `syncShow.ts` refreshes seasons/episodes.
-- Episode tracking: `toggleEpisodeWatched.ts`, `setSeasonWatched.ts`, `addEpisodeLog.ts` (rating/notes) -> updates `EpisodeTracking` + show status roll-up.
-- Movie tracking: `updateMovieTrackingStatus.ts`, `addMovieLog.ts` (rating/notes), `deleteMovieFromLibrary.ts` (cascade).
+- Episode tracking: `toggleEpisodeWatched.ts`, `setSeasonWatched.ts` -> `EpisodeTracking` + show status roll-up. Rating is separate (`media/actions/setMediaRating`).
+- Movie tracking: `updateMovieTrackingStatus.ts`, `media/actions/setMediaRating`, `deleteMovieFromLibrary.ts` (cascade). Notes go through `notes/actions/*`, not the tracking rows.
 - Discovery: search/trending/similar/credits/person via `tmdbFetch` / `tmdbFetchForUser` (both resolve the single server `TMDB_ACCESS_TOKEN`); mappers normalize TMDB shapes to app types.
 - Auth: Google if `AUTH_GOOGLE_ID/SECRET` set; email/password via Credentials + bcrypt; guest via `GUEST_LOGIN_ENABLED=true` + shared `DEMO_USER_EMAIL` account. No onboarding token step — `proxy.ts` is auth-only.
 - Demo reset: `GET /api/reset-demo` reseeds demo DB (cron Mon/Thu, see `.github/workflows/`).
