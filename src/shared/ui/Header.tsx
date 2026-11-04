@@ -1,34 +1,14 @@
-'use client';
-
-import { useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
-import { IconLoader2, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
-import { navigation } from '@/shared/lib/navigation';
-import Link from 'next/link';
-import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
+import type { HeaderProps } from '@/shared/types/header';
+import { HeaderActions } from '@/shared/ui/HeaderActions';
+import { HeaderNav } from '@/shared/ui/HeaderNav';
 
-export const Header = ({ isAuthenticated = true }: { isAuthenticated?: boolean }) => {
-  const pathname = usePathname();
-  const [signingOut, setSigningOut] = useState(false);
-  const [pendingHref, setPendingHref] = useState<string | null>(null);
-  const [prevPathname, setPrevPathname] = useState(pathname);
-  const isActiveRoute = (href: string) =>
-    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
-
-  // Clear the pending nav state once the route transition lands.
-  if (prevPathname !== pathname) {
-    setPrevPathname(pathname);
-    setPendingHref(null);
-  }
-
-  const handleSignOut = () => {
-    if (signingOut) return;
-    setSigningOut(true);
-    void signOut({ redirectTo: '/login' });
-  };
-
+/**
+ * Server Component: static masthead chrome. The two interactive islands
+ * (navigation tabs and account actions) are the only client boundaries,
+ * pushed to the leaves of the header tree.
+ */
+export const Header = ({ isAuthenticated = true }: HeaderProps) => {
   return (
     <header className="bg-canvas/80 sticky top-0 z-40 border-b border-white/8 py-3.5 shadow-xl backdrop-blur-2xl transition-all duration-300">
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -58,77 +38,9 @@ export const Header = ({ isAuthenticated = true }: { isAuthenticated?: boolean }
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <nav className="hidden items-center rounded-full border border-white/8 bg-zinc-900/80 p-1 shadow-inner backdrop-blur-xl md:flex">
-          {navigation.map((item) => {
-            const Icon = item.icon;
-            const activeTab = isActiveRoute(item.href);
-            const isPendingNav = pendingHref === item.href;
+        <HeaderNav />
 
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                aria-current={activeTab ? 'page' : undefined}
-                aria-busy={isPendingNav}
-                onClick={() => {
-                  if (item.href !== pathname) setPendingHref(item.href);
-                }}
-                className={`flex cursor-pointer items-center space-x-2 rounded-full px-5 py-2 text-xs font-semibold tracking-tight transition-all duration-200 ${
-                  isPendingNav ? 'animate-pulse opacity-70' : ''
-                } ${
-                  activeTab
-                    ? 'scale-100 bg-violet-500 font-bold text-white shadow-md shadow-violet-500/25'
-                    : 'text-zinc-400 hover:bg-white/4 hover:text-white'
-                }`}
-              >
-                {isPendingNav ? (
-                  <IconLoader2 size={14} className="animate-spin" />
-                ) : (
-                  <Icon size={14} className={activeTab ? 'text-white' : 'text-zinc-400'} />
-                )}
-                <span>{item.title}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          {isAuthenticated ? (
-            <>
-              <NotificationBell />
-              <Link
-                href="/settings/profile"
-                aria-label="Profile settings"
-                title="Profile settings"
-                aria-current={isActiveRoute('/settings/profile') ? 'page' : undefined}
-                className={`flex size-9 items-center justify-center rounded-full border transition-colors ${
-                  isActiveRoute('/settings/profile')
-                    ? 'border-violet-400/50 bg-violet-500/15 text-violet-300'
-                    : 'border-white/8 text-zinc-400 hover:border-violet-400/40 hover:text-white'
-                }`}
-              >
-                <IconUser size={16} />
-              </Link>
-              <button
-                type="button"
-                onClick={handleSignOut}
-                disabled={signingOut}
-                className="flex items-center gap-1.5 rounded-full border border-white/8 px-4 py-2 text-xs font-semibold text-zinc-400 transition-colors hover:text-white disabled:cursor-wait disabled:opacity-60"
-              >
-                {signingOut && <IconLoader2 size={13} className="animate-spin" />}
-                {signingOut ? 'Signing out…' : 'Sign out'}
-              </button>
-            </>
-          ) : (
-            <Link
-              href="/login"
-              className="apple-pill-btn border border-violet-400/40 bg-violet-500/15 px-4 py-2 text-xs font-bold text-violet-200 hover:bg-violet-500/25"
-            >
-              Sign in
-            </Link>
-          )}
-        </div>
+        <HeaderActions isAuthenticated={isAuthenticated} />
       </div>
     </header>
   );

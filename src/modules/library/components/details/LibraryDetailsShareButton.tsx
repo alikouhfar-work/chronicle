@@ -6,8 +6,7 @@ import { clsx } from 'clsx';
 import type { LibraryDetailsShareButtonProps } from '@/modules/library/types/libraryDetailsShareButton';
 import { buildShareMessage } from '@/modules/library/lib/buildShareMessage';
 import { toastError } from '@/shared/lib/toast';
-
-type ShareState = 'idle' | 'sharing' | 'copied';
+import type { ShareState } from '@/modules/library/types/shareState';
 
 const isDismissal = (error: unknown): boolean =>
   typeof error === 'object' &&

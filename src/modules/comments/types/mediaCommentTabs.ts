@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { CommentAuthor, CommentMediaType } from '@/modules/comments/types';
+import type { InitialCommentPage } from '@/modules/comments/types/initialCommentPage';
 
 export type MediaCommentTab = 'personal' | 'reviews';
 
@@ -27,6 +28,8 @@ export type MediaCommentTabsProps = {
    * Used by the episode page to reuse the existing EpisodeTracking log modal.
    */
   personalNotesEditor?: ReactNode;
+  /** Server-loaded first page of public reviews for this media. */
+  initialReviews?: InitialCommentPage;
 };
 
 export type PersonalNotesPanelProps = {
@@ -44,4 +47,6 @@ export type PublicReviewsPanelProps = {
   viewer: CommentAuthor | null;
   /** Only highlight deep links while this panel is actually visible. */
   active?: boolean;
+  /** Server-rendered first page; the client keeps pagination after this. */
+  initialReviews?: InitialCommentPage;
 };

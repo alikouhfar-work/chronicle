@@ -7,15 +7,9 @@ import {
   IconSparkles,
 } from '@tabler/icons-react';
 
-const MainError = ({
-  error,
-  reset,
-  onBack,
-}: {
-  error: Error;
-  reset: () => void;
-  onBack?: () => void;
-}) => {
+import type { ErrorBoundaryProps } from '@/shared/types/errorBoundary';
+
+const MainError = ({ error, reset, onBack }: ErrorBoundaryProps) => {
   return (
     <div className="bg-canvas min-h-screen font-sans antialiased">
       {/* Hero section with glass panel */}

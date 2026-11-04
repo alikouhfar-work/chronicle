@@ -1,46 +1,55 @@
-'use client';
-
-import { useQueryString } from '@/shared/hooks/useQueryString';
+import Link from 'next/link';
 import { IconDeviceTv, IconMovie } from '@tabler/icons-react';
+import type { LibraryMediaTypeSwitchProps } from '@/modules/library/types/libraryMediaTypeSwitch';
 
-export const LibraryMediaTypeSwitch = () => {
-  const { searchParams, createQueryString } = useQueryString();
-  const typeFilter = searchParams.get('type') || 'tv';
+const buildHref = (
+  type: 'tv' | 'movie',
+  { status, sort, search }: Pick<LibraryMediaTypeSwitchProps, 'status' | 'sort' | 'search'>,
+): string => {
+  const params = new URLSearchParams({ type });
+  if (status && status !== 'all') params.set('status', status);
+  if (sort && sort !== 'recent') params.set('sort', sort);
+  if (search) params.set('search', search);
+  return `/library?${params.toString()}`;
+};
+
+/**
+ * Server Component: media-type switch rendered as links. No client state or
+ * router hooks — the active segment comes from the page's searchParams.
+ */
+export const LibraryMediaTypeSwitch = ({
+  activeType,
+  status,
+  sort,
+  search,
+}: LibraryMediaTypeSwitchProps) => {
+  const options = [
+    { type: 'tv' as const, label: 'TV Series', Icon: IconDeviceTv },
+    { type: 'movie' as const, label: 'Movies', Icon: IconMovie },
+  ];
 
   return (
     <div className="flex items-center justify-between pt-1">
       <div className="flex shrink-0 gap-1 rounded-full border border-white/8 bg-zinc-900/90 p-1 shadow-md select-none">
-        <button
-          type="button"
-          onClick={() => createQueryString('type', 'tv')}
-          className={`apple-pill-btn flex cursor-pointer items-center gap-2 px-5 py-2 text-xs font-semibold tracking-tight transition-all duration-150 ${
-            typeFilter === 'tv'
-              ? 'bg-white font-bold text-zinc-950 shadow-md'
-              : 'text-zinc-400 hover:bg-white/4 hover:text-white'
-          }`}
-        >
-          <IconDeviceTv
-            size={15}
-            className={typeFilter === 'tv' ? 'text-zinc-950' : 'text-violet-400'}
-          />
-          <span>TV Series</span>
-        </button>
+        {options.map(({ type, label, Icon }) => {
+          const isActive = activeType === type;
 
-        <button
-          type="button"
-          onClick={() => createQueryString('type', 'movie')}
-          className={`apple-pill-btn flex cursor-pointer items-center gap-2 px-5 py-2 text-xs font-semibold tracking-tight transition-all duration-150 ${
-            typeFilter === 'movie'
-              ? 'bg-white font-bold text-zinc-950 shadow-md'
-              : 'text-zinc-400 hover:bg-white/4 hover:text-white'
-          }`}
-        >
-          <IconMovie
-            size={15}
-            className={typeFilter === 'movie' ? 'text-zinc-950' : 'text-violet-400'}
-          />
-          <span>Movies</span>
-        </button>
+          return (
+            <Link
+              key={type}
+              href={buildHref(type, { status, sort, search })}
+              aria-current={isActive ? 'page' : undefined}
+              className={`apple-pill-btn flex cursor-pointer items-center gap-2 px-5 py-2 text-xs font-semibold tracking-tight transition-all duration-150 ${
+                isActive
+                  ? 'bg-white font-bold text-zinc-950 shadow-md'
+                  : 'text-zinc-400 hover:bg-white/4 hover:text-white'
+              }`}
+            >
+              <Icon size={15} className={isActive ? 'text-zinc-950' : 'text-violet-400'} />
+              <span>{label}</span>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

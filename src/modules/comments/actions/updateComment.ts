@@ -2,11 +2,8 @@
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import {
-  COMMENT_MAX_LENGTH,
-  COMMENT_MIN_LENGTH,
-  type UpdateCommentResult,
-} from '@/modules/comments/types';
+import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
+import type { UpdateCommentResult } from '@/modules/comments/types';
 
 export const updateComment = async (
   commentId: string,

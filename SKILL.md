@@ -63,23 +63,23 @@ src/app/api/reset-demo/     # demo reseed endpoint (cron via .github/workflows/r
 src/proxy.ts                # auth-only route guard (no token gate)
 src/modules/dashboard/      # watch-stats header (components/, types/)
 src/modules/discovery/      # search/person/credit/genre — queries, mappers, types
-src/modules/episode-season/ # up-next/upcoming queries, toggleEpisodeWatched/setSeasonWatched actions
-src/modules/library/        # library cards/filters/details (incl. LibraryDetailsShareButton in details header), services/addMedia, actions/addMediaAction
+src/modules/episode-season/ # services for up-next/upcoming/episode reads, toggleEpisodeWatched/setSeasonWatched actions
+src/modules/library/        # library cards/filters/details (server-owned media-type switch), actions/addMedia + addMediaAction
 src/modules/media/          # shared entities, queries, tracking helpers, tmdb mappers (mappers.ts, tracking.ts)
-src/modules/movie/          # queries/getTracked|Trending|Upcoming|Similar, actions/add|delete|updateStatus|addLog
-src/modules/show/           # queries/getTracked|Fresh|Trending|Similar, actions/add|sync|setWatched|delete|updateStatus
+src/modules/movie/          # services/getTracked*|Upcoming, queries/getTrending|Similar|Credits, actions/add|delete|updateStatus|addLog
+src/modules/show/           # services/getTracked*|Fresh*|Lookup, queries/getTrending|Similar|Credits, actions/add|sync|setWatched|delete|updateStatus
 src/modules/auth/           # LoginForm, SignupForm
-src/modules/comments/       # MentionComposerTextarea, MediaCommentTabs (personal/public tabs), services/create|update|delete (ownership-checked, soft-delete), lib/mentions (server extraction regex), queries/getCommentViewer
-src/modules/notifications/  # services/notifications (recipient-scoped list/count/mark-read), components/NotificationBell (header badge + popover deep-links)
+src/modules/comments/       # MentionComposerTextarea, MediaCommentTabs (personal/public tabs), services/{getCommentById,getCommentViewer,listComments} + actions/create|update|delete (ownership-checked, soft-delete), constants.ts, lib/mentions (server extraction regex)
+src/modules/notifications/  # services/notifications (recipient-scoped list/count) + actions (mark-read), components/NotificationBell (header badge + popover deep-links)
 src/modules/rewatch/        # actions (thin) -> services/rewatchService (record/remove counts, cascade rules), components/RewatchButton|HistoryButton|HistoryModal
-src/modules/user/           # services/userService, actions/updateUsername, components/UsernameForm
+src/modules/user/           # services/getProfileSummary (DB), actions/updateUsername|ensureUsername, components/UsernameForm
 src/infra/db/prisma.ts       # singleton PrismaClient via PrismaPg (PRISMA_TARGET personal|demo)
 src/infra/auth/auth.ts       # NextAuth config (google/credentials/guest, PrismaAdapter, jwt)
 src/infra/tmdb/client.ts     # tmdbFetch (single server token, retry 3x, backoff, GET dedupe, 24h cache)
 src/infra/tmdb/forUser.ts    # requireUserId + tmdbFetchForUser alias (delegates to tmdbFetch, no per-user token)
 src/infra/tmdb/images.ts     # image URL helpers (TMDB_IMAGE_BASE_URL)
 src/shared/lib/             # formatMinutes, getDaysUntilAirDate, errors, validate, navigation, toast (custom AppToast helpers), revalidate
-src/shared/ui/ hooks/ types/ # shared UI incl. AppToast (glass-card hot-toast card), usePWAInstall/useQueryString/useServerAction/useWatchStats
+src/shared/ui/ hooks/ types/ # shared UI incl. AppToast, server-safe Header + client HeaderNav/HeaderActions, Footer nav leaf; hooks useQueryString/useServerAction/usePrefersReducedMotion; lib/computeWatchStats
 prisma/schema.prisma        # Show, Movie, Season, Episode, Genre, Show/Movie/EpisodeTracking, User/Account/Session
                              # Show/Movie: @@unique([userId, tmdbId]); Season: @@unique([showId, seasonNumber]) + @@index([tmdbId]); Episode: @@unique([seasonId, episodeNumber]) + @@index([tmdbId]) — Season/Episode tmdbId is NOT globally unique (multi-user)
 prisma/seed.ts              # trending seed with randomized tracking statuses
@@ -88,12 +88,23 @@ generated/prisma/           # generated client — never hand-edit
 
 ## Conventions
 
-- Module layout: `src/modules/<domain>/{queries/,actions/,components/,mappers/,lib/,types/,utils/,index.ts}`. Keep domain logic inside its module; shared code only in `src/shared/`.
-- Reads go in `queries/`, writes in `actions/` (server actions). TMDB mapping lives in `mappers/` (pure, unit-tested with `*.test.ts` next to source).
-- `services/` survives only as a thin-action→fat-service split (the `rewatch/` pattern). Known outliers to fold in on touch: `comments/actions|queries/` + `notifications/actions|queries/` (split done in Phase 2), `user/` writes in two places, `library/services/addMedia.ts` (orchestrator), `media/` flat files.
+```
+src/modules/<domain>/
+  services/     # DB reads only ('server-only' or 'use server')
+  queries/      # external API reads only (tmdbFetch)
+  actions/      # writes ('use server')
+  components/   # ui; 'use client' only on interactive leaves
+  mappers/ lib/ utils/
+  types/        # type-only files — no runtime code
+  constants.ts  # runtime constants (limits, maps)
+```
+
+- Module layout: `src/modules/<domain>/{services/,queries/,actions/,components/,mappers/,lib/,types/,utils/,constants.ts,index.ts}`. Keep domain logic inside its module; shared code only in `src/shared/`.
+- Reads split by source (strict): **database reads go in `services/`** (`'server-only'`), **external API reads go in `queries/`** (TMDB). Writes go in `actions/` (server actions). A composite read (external + enrichment) lives in `queries/` and calls the `services/` lookup. TMDB mapping lives in `mappers/` (pure, unit-tested with `*.test.ts` next to source).
+- `services/` is the DB layer for every module (not just `rewatch/`). It also holds the thin-action→fat-service split. Types live in `types/` as type-only files (`import type` only, **zero runtime code**) — runtime constants go to `<module>/constants.ts` or `lib/`. `src/architecture.test.ts` enforces all of this.
 - Comments: server re-extracts mentions with the strict regex (`comments/lib/mentions.ts`); client `mentionIds` is hint-only. Rendered content is JSX-escaped, never raw HTML. Editing a comment must re-extract mentions. One `Notification` per (recipient, comment) in the same transaction, `@@unique([recipientId, commentId])`, with a `mediaType/tmdbId/mediaTitle` snapshot; self-mentions create none.
 - Bell: badge capped at `9+` (`aria-live="polite"`), polls on mount/navigation/interval; deep links carry `#comment-<id>` + `?mention=unavailable` for deleted comments (dismissible notice in `PublicReviewsPanel`).
-- Server vs client: Prisma + TMDB token access are server-only. Client components (`"use client"`) only for interactive UI (filters, toggles, log modals, PWA install).
+- Server vs client: pages/layouts are Server Components and own primary data loading; `"use client"` belongs on interactive leaves (inputs, dropdowns, modals, toggles). Chrome is split: `Header` is server with `HeaderNav`/`HeaderActions` client leaves, `Footer` is the client nav leaf. The only client-owned data fetch left is `PublicReviewsPanel` pagination — its first page is server-rendered via `initialReviews`. Prisma + TMDB token access are server-only; `services/` files carry `import 'server-only'` (or `'use server'` when a client component calls them directly).
 - Imports: use `@/` alias (`@/modules/movie/queries`, `@/infra/db/prisma`). Never import from `generated/` by relative path confusion — canonical import is via `generated/prisma/client`.
 - Styling: Tailwind classes + `clsx`; gradients per title via `getGradientForTitle`; skeletons for loading states (`*Skeleton.tsx`, `loading.tsx`).
 - Images: always through `next/image` with `image.tmdb.org` remote pattern; base URL from `NEXT_PUBLIC_TMDB_IMAGE_BASE_URL`.
@@ -146,6 +157,6 @@ generated/prisma/           # generated client — never hand-edit
 
 - `npx tsc --noEmit` (strict, bundler resolution, `@/*` alias)
 - `npm run lint`
-- `npm test` (Vitest + jsdom, `src/**/*.test.{ts,tsx}`)
-- `npm run build`
+- `npm test` (Vitest + jsdom, `src/**/*.test.{ts,tsx}`) — includes `src/architecture.test.ts` (types-only rule, services/queries split, no client pages, no Prisma in client components)
+- `npm run build` — if it fails on `next/font/google` after a refactor, `rm -rf .next` and rebuild before suspecting the diff (stale Turbopack cache)
 - For DB/auth changes: `docker compose up -d`, `npx prisma migrate dev`, `npx prisma db seed`, `npm run dev`, smoke-test login/guest -> search -> add show/movie -> toggle episode -> library filters -> dashboard stats.

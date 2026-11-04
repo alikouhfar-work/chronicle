@@ -13,12 +13,7 @@ const EXTENSION_BY_MIME: Record<(typeof COMMENT_STORAGE_MIME_TYPES)[number], str
   'image/webp': 'webp',
 };
 
-type UploadPayload = {
-  buffer: Buffer;
-  fileName: string;
-  contentType: string;
-};
-
+import type { UploadPayload } from '@/modules/comments/types/uploadPayload';
 const readPayload = async (request: Request): Promise<UploadPayload | { error: string }> => {
   const requestContentType = request.headers.get('content-type') ?? '';
 

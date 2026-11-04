@@ -1,7 +1,7 @@
 import { fetchSimilarRaw, withTrackedFlags } from '@/modules/media/queries/mediaQueries';
 import { mapSimilarMovies } from '@/modules/movie/mappers/mapSimilarMovies';
 import { SimilarMovie, SimilarMovieRaw } from '@/modules/movie/types/similarMovie';
-import { getTrackedMoviesLookup } from '@/modules/movie/queries/getTrackedMoviesLookup';
+import { getTrackedMoviesLookup } from '@/modules/movie/services/getTrackedMoviesLookup';
 
 export const getSimilarMovies = async (id: string): Promise<SimilarMovie[]> => {
   try {

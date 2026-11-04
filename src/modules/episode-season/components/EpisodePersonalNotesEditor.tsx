@@ -4,13 +4,7 @@ import { useState } from 'react';
 import { IconEdit, IconPlus } from '@tabler/icons-react';
 import { LibraryDetailsLogModal } from '@/modules/library/components/details/LibraryDetailsLogModal';
 import { addEpisodeLog } from '@/modules/episode-season/actions/addEpisodeLog';
-
-type EpisodePersonalNotesEditorProps = {
-  episodeId: string;
-  episodeName: string;
-  rating: number | null;
-  notes: string | null;
-};
+import type { EpisodePersonalNotesEditorProps } from '@/modules/episode-season/types/episodePersonalNotesEditor';
 
 /**
  * Add/edit affordance for the Personal Notes tab on the episode detail page.

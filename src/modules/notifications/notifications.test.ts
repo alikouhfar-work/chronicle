@@ -26,7 +26,7 @@ vi.mock('@/infra/tmdb/forUser', () => ({
 import {
   getUnreadCount,
   listNotifications,
-} from '@/modules/notifications/queries/notifications';
+} from '@/modules/notifications/services/notifications';
 import {
   markAllNotificationsRead,
   markNotificationRead,

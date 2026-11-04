@@ -1,5 +1,12 @@
+import 'server-only';
+
 import type { Prisma } from '../../../../generated/prisma/client';
 import { RewatchMediaType as DbRewatchMediaType } from '../../../../generated/prisma/enums';
+import type {
+  MediaRef,
+  RewatchDbClient,
+  RewatchLogCreateData,
+} from '@/modules/rewatch/types/rewatchService';
 import { prisma } from '@/infra/db/prisma';
 import { buildTrackingTimestamps, deriveShowStatus } from '@/modules/media/tracking';
 import {
@@ -21,27 +28,6 @@ import {
 import { parseDbId } from '@/shared/lib/validate';
 
 const EPISODE_CHUNK_SIZE = 500;
-
-type RewatchLogCreateData = {
-  userId: string;
-  mediaType: DbRewatchMediaType;
-  mediaId: string;
-  rewatchedAt: Date;
-  showId?: string;
-  seasonId?: string;
-  episodeId?: string;
-  movieId?: string;
-};
-
-type MediaRef = {
-  tmdbId: number;
-  rewatchCount: number;
-};
-
-type RewatchDbClient = Pick<
-  Prisma.TransactionClient,
-  'show' | 'movie' | 'season' | 'episode' | 'rewatchLog' | 'episodeTracking'
->;
 
 const chunk = <T>(items: readonly T[], size: number): T[][] => {
   const chunks: T[][] = [];

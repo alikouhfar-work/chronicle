@@ -5,10 +5,8 @@ import type { Credits, CreditsRaw } from '@/modules/discovery/credit';
 import type { TmdbListItemRaw } from '@/modules/media/types/tmdbRaw';
 import { parseTmdbId } from '@/shared/lib/validate';
 import type { MediaType } from '@/shared/types/media';
+import type { PaginatedResponse } from '@/modules/media/types/paginatedResponse';
 
-type PaginatedResponse<T> = {
-  results: T[];
-};
 
 const TRENDING_REVALIDATE_SECONDS = 86400;
 const SIMILAR_REVALIDATE_SECONDS = 604800;

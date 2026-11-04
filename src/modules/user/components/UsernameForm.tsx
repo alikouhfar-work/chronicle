@@ -10,11 +10,9 @@ import {
   USERNAME_MIN_LENGTH,
 } from '@/modules/user/lib/username';
 
-const initialState: UsernameState = { success: false };
+import type { UsernameFormProps } from '@/modules/user/types/usernameForm';
 
-type UsernameFormProps = {
-  initialUsername: string | null;
-};
+const initialState: UsernameState = { success: false };
 
 export const UsernameForm = ({ initialUsername }: UsernameFormProps) => {
   const [value, setValue] = useState(initialUsername ?? '');

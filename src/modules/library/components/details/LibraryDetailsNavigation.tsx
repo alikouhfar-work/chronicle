@@ -1,8 +1,8 @@
 import { IconChevronLeft } from '@tabler/icons-react';
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+import type { LibraryDetailsNavigationProps } from '@/modules/library/types/libraryDetailsNavigation';
 
-export const LibraryDetailsNavigation = ({ actions }: { actions?: ReactNode }) => {
+export const LibraryDetailsNavigation = ({ actions }: LibraryDetailsNavigationProps) => {
   return (
     <div className="flex items-center justify-between gap-3 border-b border-white/8 pb-3">
       <Link

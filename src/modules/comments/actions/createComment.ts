@@ -11,12 +11,11 @@ import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
 import { extractMentionHandles } from '@/modules/comments/lib/mentions';
 import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
-import {
-  COMMENT_MAX_LENGTH,
-  COMMENT_MIN_LENGTH,
-  type CommentAttachmentInput,
-  type CommentMediaType,
-  type CreateCommentResult,
+import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
+import type {
+  CommentAttachmentInput,
+  CommentMediaType,
+  CreateCommentResult,
 } from '@/modules/comments/types';
 import type { CreateCommentInput } from '@/modules/comments/types/createComment';
 

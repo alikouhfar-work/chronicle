@@ -3,10 +3,13 @@ import { Credits } from '@/modules/discovery/credit';
 import { SimilarMovie, TrackedMovie } from '@/modules/movie';
 import { MediaType } from '@/shared/types/media';
 import type { CommentAuthor } from '@/modules/comments/types';
+import type { InitialCommentPage } from '@/modules/comments/types/initialCommentPage';
 
 type LibraryShowDetailsBaseProps = {
   credits: Credits | null;
   viewer: CommentAuthor | null;
+  /** Server-rendered first page of the public review feed. */
+  initialReviews?: InitialCommentPage;
 };
 
 export type LibraryShowDetailsProps =

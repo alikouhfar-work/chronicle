@@ -1,8 +1,5 @@
 import type { CommentMediaType } from '@/modules/comments/types';
 
-export const NOTIFICATION_LIST_LIMIT = 8;
-export const MAX_UNREAD_BADGE = 9;
-
 export type NotificationActor = {
   id: string;
   username: string | null;

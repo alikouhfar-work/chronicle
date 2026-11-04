@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import type { SignupFormProps } from '@/modules/auth/types/signupForm';
 import {
   IconAlertCircle,
   IconArrowRight,
@@ -14,7 +15,7 @@ import {
 } from '@tabler/icons-react';
 import { register } from '@/infra/auth/actions';
 
-export const SignupForm = ({ callbackUrl }: { callbackUrl: string }) => {
+export const SignupForm = ({ callbackUrl }: SignupFormProps) => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

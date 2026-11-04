@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import type { LoginFormProps } from '@/modules/auth/types/loginForm';
 import {
   IconAlertCircle,
   IconArrowRight,
@@ -22,15 +23,7 @@ const providerIcon = (id: AuthProviderId) => {
   return IconMail;
 };
 
-export const LoginForm = ({
-  providers,
-  callbackUrl,
-  authError,
-}: {
-  providers: { id: AuthProviderId; name: string }[];
-  callbackUrl: string;
-  authError: string | null;
-}) => {
+export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps) => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

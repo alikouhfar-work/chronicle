@@ -1,3 +1,4 @@
+import type { FilesRouteContext } from '@/modules/api/types/routeContext';
 import { NextResponse } from 'next/server';
 import { storage } from '@/infra/storage/storage';
 
@@ -10,10 +11,7 @@ const MIME_BY_EXTENSION: Record<string, string> = {
 
 export const runtime = 'nodejs';
 
-export const GET = async (
-  _request: Request,
-  { params }: { params: Promise<{ key: string[] }> },
-) => {
+export const GET = async (_request: Request, { params }: FilesRouteContext) => {
   const { key } = await params;
 
   if (!key?.length || key.some((segment) => segment === '..' || segment.includes('\0'))) {

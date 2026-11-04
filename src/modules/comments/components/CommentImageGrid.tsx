@@ -2,11 +2,7 @@
 
 import { useState } from 'react';
 import { IconX } from '@tabler/icons-react';
-import type { CommentAttachment } from '@/modules/comments/types/commentAttachment';
-
-type CommentImageGridProps = {
-  attachments: CommentAttachment[];
-};
+import type { CommentImageGridProps } from '@/modules/comments/types/commentImageGrid';
 
 /**
  * Renders an image grid for comment attachments with fixed aspect-ratio

@@ -14,18 +14,18 @@ import {
   IconX,
 } from '@tabler/icons-react';
 import { createComment } from '@/modules/comments/actions/createComment';
-import { listComments } from '@/modules/comments/queries/listComments';
+import { listComments } from '@/modules/comments/services/listComments';
 import {
   CommentImageGrid,
 } from '@/modules/comments/components/CommentImageGrid';
 import type { CommentAttachment } from '@/modules/comments/types/commentAttachment';
 import { MentionComposerTextarea } from '@/modules/comments/components/MentionComposerTextarea';
-import {
-  COMMENT_MAX_LENGTH,
-  MAX_ATTACHMENTS,
-  type CommentCursor,
-  type CommentView,
-  type PendingCommentAttachment,
+import { COMMENT_MAX_LENGTH, MAX_ATTACHMENTS } from '@/modules/comments/constants';
+import type { FeedStatus } from '@/modules/comments/types/feedStatus';
+import type {
+  CommentCursor,
+  CommentView,
+  PendingCommentAttachment,
 } from '@/modules/comments/types';
 import type { PublicReviewsPanelProps } from '@/modules/comments/types/mediaCommentTabs';
 import { usePrefersReducedMotion } from '@/shared/hooks/usePrefersReducedMotion';
@@ -35,8 +35,6 @@ import { toastError } from '@/shared/lib/toast';
 const PAGE_SIZE = 20;
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-
-type FeedStatus = 'loading' | 'ready' | 'error';
 
 const relativeTime = (value: Date): string => {
   const date = value instanceof Date ? value : new Date(value);
@@ -78,6 +76,7 @@ export const PublicReviewsPanel = ({
   tmdbId,
   viewer,
   active = true,
+  initialReviews,
 }: PublicReviewsPanelProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -89,10 +88,12 @@ export const PublicReviewsPanel = ({
     () => searchParams.get('mention') === 'unavailable',
   );
 
-  const [comments, setComments] = useState<CommentView[]>([]);
-  const [cursor, setCursor] = useState<CommentCursor | undefined>(undefined);
-  const [hasMore, setHasMore] = useState(false);
-  const [status, setStatus] = useState<FeedStatus>('loading');
+  // The first page arrives from the Server Component; only pagination,
+  // optimistic writes, and rollback resyncs run on the client.
+  const [comments, setComments] = useState<CommentView[]>(initialReviews?.comments ?? []);
+  const [cursor, setCursor] = useState<CommentCursor | undefined>(initialReviews?.nextCursor);
+  const [hasMore, setHasMore] = useState(Boolean(initialReviews?.hasMore));
+  const [status, setStatus] = useState<FeedStatus>(initialReviews ? 'ready' : 'loading');
   const [loadingMore, setLoadingMore] = useState(false);
   const [feedError, setFeedError] = useState<string | null>(null);
 
@@ -120,11 +121,13 @@ export const PublicReviewsPanel = ({
   }, [mediaType, tmdbId]);
 
   useEffect(() => {
-    // Initial feed fetch. The synchronous loading state is intentional: the
-    // skeleton must paint before the server action resolves.
+    // Skip the mount fetch when the server already rendered the first page.
+    if (initialReviews) return;
+    // Synchronous loading state is intentional: the skeleton must paint
+    // before the server action resolves.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadInitial();
-  }, [loadInitial]);
+  }, [loadInitial, initialReviews]);
 
   // Deep-link support: `#comment-<id>` scrolls the node into view once the
   // feed has rendered. The persistent highlight itself is pure CSS (`target:`)

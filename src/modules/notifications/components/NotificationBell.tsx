@@ -7,15 +7,13 @@ import { IconBell, IconCheck, IconLoader2 } from '@tabler/icons-react';
 import {
   getUnreadCount,
   listNotifications,
-} from '@/modules/notifications/queries/notifications';
+} from '@/modules/notifications/services/notifications';
 import {
   markAllNotificationsRead,
   markNotificationRead,
 } from '@/modules/notifications/actions/notifications';
-import {
-  MAX_UNREAD_BADGE,
-  type NotificationItem,
-} from '@/modules/notifications/types';
+import { MAX_UNREAD_BADGE } from '@/modules/notifications/constants';
+import type { NotificationItem } from '@/modules/notifications/types';
 import { createMonogram } from '@/shared/lib/createMonogram';
 
 const POLL_INTERVAL_MS = 60_000;

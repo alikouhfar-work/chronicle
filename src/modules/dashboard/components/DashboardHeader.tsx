@@ -1,7 +1,7 @@
 import { DashboardHeaderWatchStats } from '@/modules/dashboard/components/DashboardHeaderWatchStats';
 import { IconSparkles } from '@tabler/icons-react';
-import { getTrackedShows } from '@/modules/show/queries/getTrackedShows';
-import { getTrackedMovies } from '@/modules/movie/queries/getTrackedMovies';
+import { getTrackedShows } from '@/modules/show/services/getTrackedShows';
+import { getTrackedMovies } from '@/modules/movie/services/getTrackedMovies';
 
 export const DashboardHeader = async () => {
   const [trackedShows, trackedMovies] = await Promise.all([getTrackedShows(), getTrackedMovies()]);

@@ -1,3 +1,5 @@
+export type { ProfileSummary } from './profileSummary';
+
 export type UsernameState = {
   success: boolean;
   error?: string;

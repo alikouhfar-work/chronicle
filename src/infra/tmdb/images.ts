@@ -1,18 +1,5 @@
 import { getGradientForTitle } from '@/shared/lib/getGradientForTitle';
-
-type TmdbImageType = 'poster' | 'backdrop' | 'avatar';
-
-type TmdbImageSize =
-  | 'w45'
-  | 'w92'
-  | 'w154'
-  | 'w185'
-  | 'w300'
-  | 'w342'
-  | 'w500'
-  | 'w780'
-  | 'w1280'
-  | 'original';
+import type { TmdbImageSize, TmdbImageType } from '@/infra/tmdb/types';
 
 // Official TMDB image CDN. Used when no env override is set — in particular
 // on the client, where only NEXT_PUBLIC_* vars are inlined. Without this the

@@ -36,6 +36,7 @@ export const MediaCommentTabs = ({
   personalNotes,
   viewer = null,
   personalNotesEditor,
+  initialReviews,
 }: MediaCommentTabsProps) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -161,6 +162,7 @@ export const MediaCommentTabs = ({
             tmdbId={tmdbId}
             viewer={viewer}
             active={activeTab === 'reviews'}
+            initialReviews={initialReviews}
           />
         </div>
       </div>

@@ -2,9 +2,9 @@ export { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs
 export { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
 export { PersonalNotesPanel } from '@/modules/comments/components/PersonalNotesPanel';
 export { PublicReviewsPanel } from '@/modules/comments/components/PublicReviewsPanel';
-export { getCommentViewer } from '@/modules/comments/queries/getCommentViewer';
-export { getCommentById } from '@/modules/comments/queries/getCommentById';
-export { listComments } from '@/modules/comments/queries/listComments';
+export { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
+export { getCommentById } from '@/modules/comments/services/getCommentById';
+export { listComments } from '@/modules/comments/services/listComments';
 
 export {
   createComment,
@@ -27,8 +27,11 @@ export type {
   MediaCommentTabsProps,
 } from '@/modules/comments/types/mediaCommentTabs';
 
-// Constants
-export const COMMENT_MIN_LENGTH = 1;
-export const COMMENT_MAX_LENGTH = 2000;
-export const MAX_ATTACHMENTS = 4;
-export const DEFAULT_COMMENT_LIMIT = 20;
+// Constants (runtime values live outside the types barrel)
+export {
+  COMMENT_MIN_LENGTH,
+  COMMENT_MAX_LENGTH,
+  MAX_ATTACHMENTS,
+  DEFAULT_COMMENT_LIMIT,
+  COMMENT_SORT,
+} from '@/modules/comments/constants';

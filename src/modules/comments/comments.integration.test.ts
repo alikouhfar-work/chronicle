@@ -6,8 +6,8 @@ const integrationEnabled = process.env.INTEGRATION_DB === '1';
 
 let prisma!: typeof import('@/infra/db/prisma').prisma;
 let createComment!: typeof import('@/modules/comments/actions/createComment').createComment;
-let listComments!: typeof import('@/modules/comments/queries/listComments').listComments;
-let getCommentById!: typeof import('@/modules/comments/queries/getCommentById').getCommentById;
+let listComments!: typeof import('@/modules/comments/services/listComments').listComments;
+let getCommentById!: typeof import('@/modules/comments/services/getCommentById').getCommentById;
 
 const databaseName = (() => {
   try {
@@ -36,8 +36,8 @@ describe.runIf(integrationEnabled)('comment service integration', () => {
   beforeAll(async () => {
     ({ prisma } = await import('@/infra/db/prisma'));
     ({ createComment } = await import('@/modules/comments/actions/createComment'));
-    ({ listComments } = await import('@/modules/comments/queries/listComments'));
-    ({ getCommentById } = await import('@/modules/comments/queries/getCommentById'));
+    ({ listComments } = await import('@/modules/comments/services/listComments'));
+    ({ getCommentById } = await import('@/modules/comments/services/getCommentById'));
   });
 
   beforeEach(async () => {

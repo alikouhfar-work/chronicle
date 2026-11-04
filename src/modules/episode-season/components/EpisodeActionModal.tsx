@@ -7,8 +7,7 @@ import { unwatchEpisode } from '@/modules/episode-season/actions/unwatchEpisode'
 import { EpisodeActionModalProps } from '@/modules/episode-season/types/episodeActionModal';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { toastError } from '@/shared/lib/toast';
-
-type PendingAction = 'rewatch' | 'unwatch' | null;
+import type { PendingAction } from '@/modules/episode-season/types/pendingAction';
 
 export const EpisodeActionModal = ({
   episodeId,

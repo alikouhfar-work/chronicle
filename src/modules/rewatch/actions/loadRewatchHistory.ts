@@ -1,7 +1,7 @@
 'use server';
 
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { getRewatchHistory } from '@/modules/rewatch/queries/getRewatchHistory';
+import { getRewatchHistory } from '@/modules/rewatch/services/getRewatchHistory';
 import type {
   GetRewatchHistoryActionResult,
   RewatchMediaType,

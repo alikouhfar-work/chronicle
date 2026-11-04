@@ -8,19 +8,20 @@ import { IconArrowLeft, IconCalendar, IconClock, IconMessage, IconStar } from '@
 import {
   getTrackedEpisode,
   getEpisodeDetails,
-} from '@/modules/episode-season/queries/getTrackedEpisode';
-import { getCommentViewer } from '@/modules/comments/queries/getCommentViewer';
+} from '@/modules/episode-season/services/getTrackedEpisode';
+import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
 import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
 import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
+import { listComments } from '@/modules/comments/services/listComments';
+import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
+import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
 import { EpisodePersonalNotesEditor } from '@/modules/episode-season/components/EpisodePersonalNotesEditor';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { formatMinutes } from '@/shared/lib/formatMinutes';
 
-export const dynamic = 'force-dynamic';
+import type { EpisodePageProps } from '@/modules/episode-season/types/episodePage';
 
-type EpisodePageProps = {
-  params: Promise<{ id: string; episodeId: string }>;
-};
+export const dynamic = 'force-dynamic';
 
 export const generateMetadata = async ({ params }: EpisodePageProps): Promise<Metadata> => {
   try {
@@ -45,6 +46,9 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
   if (!details) notFound();
 
   const { show, season, episode } = details;
+  const initialReviews = toInitialCommentPage(
+    await listComments('episode', episode.tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
+  );
   const backdropUrl = getTmdbImageUrl(show.backdropPath, 'backdrop', 'w1280');
   const posterUrl = getTmdbImageUrl(show.posterPath, 'poster', 'w342');
   const rating = viewer ? (episode.tracking?.rating ?? null) : null;
@@ -139,6 +143,7 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
           tmdbId={episode.tmdbId}
           personalNotes={viewer ? { rating, notes } : undefined}
           viewer={viewer}
+          initialReviews={initialReviews}
           personalNotesEditor={
             viewer ? (
               <EpisodePersonalNotesEditor

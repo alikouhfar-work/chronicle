@@ -3,8 +3,8 @@ import { getGenreDictionary } from '@/modules/discovery/genre';
 import { GetCombinedCreditsResponse } from '@/modules/discovery/person/types/getCombinedCredits';
 import { CombinedCredit } from '@/modules/discovery/person/types/combinedCredit';
 import { mapCombinedCredits } from '@/modules/discovery/person/mappers/mapCombinedCredits';
-import { getTrackedMoviesLookup } from '@/modules/movie/queries/getTrackedMoviesLookup';
-import { getTrackedShowsLookup } from '@/modules/show/queries/getTrackedShowsLookup';
+import { getTrackedMoviesLookup } from '@/modules/movie/services/getTrackedMoviesLookup';
+import { getTrackedShowsLookup } from '@/modules/show/services/getTrackedShowsLookup';
 
 export const getCombinedCredits = async (id: string): Promise<CombinedCredit[]> => {
   try {

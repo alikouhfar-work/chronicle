@@ -18,6 +18,7 @@ export const LibraryDetails = ({
   credits,
   similarMedia,
   viewer,
+  initialReviews,
 }: LibraryShowDetailsProps) => {
   const showWatchToggle =
     mediaType === 'tv' ? (
@@ -81,6 +82,7 @@ export const LibraryDetails = ({
           tmdbId={media.tmdbId}
           personalNotes={personalNotes}
           viewer={viewer}
+          initialReviews={initialReviews}
         />
       </Suspense>
       <LibraryDetailsFooter credits={credits} similarMedia={similarMedia} />

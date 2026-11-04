@@ -1,8 +1,6 @@
-'use client';
-
 import { IconCircleCheck, IconClock, IconDeviceTv, IconMovie } from '@tabler/icons-react';
 import { DashboardHeaderWatchStatsProps } from '@/modules/dashboard/types/dashboardHeader';
-import { useWatchStats } from '@/shared/hooks/useWatchStats';
+import { computeWatchStats } from '@/shared/lib/computeWatchStats';
 import { formatMinutes } from '@/shared/lib/formatMinutes';
 
 export const DashboardHeaderWatchStats = ({
@@ -10,7 +8,7 @@ export const DashboardHeaderWatchStats = ({
   trackedMovies,
 }: DashboardHeaderWatchStatsProps) => {
   const { totalShowMinutes, totalMovieMinutes, episodesCount, moviesCount, completionRatePercent } =
-    useWatchStats(trackedShows, trackedMovies);
+    computeWatchStats(trackedShows, trackedMovies);
 
   return (
     <div className="glass-card space-y-4 rounded-2xl border border-white/10 p-6 shadow-2xl">

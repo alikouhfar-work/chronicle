@@ -4,11 +4,12 @@ import Image from 'next/image';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import type { MediaType } from '@/shared/types/media';
+import type { PublicMediaPreviewProps } from '@/modules/library/types/publicMediaPreview';
 import { LibraryDetails } from '@/modules/library';
-import { getTrackedMovie } from '@/modules/movie/queries/getTrackedMovie';
+import { getTrackedMovie } from '@/modules/movie/services/getTrackedMovie';
 import { getMovieCredits } from '@/modules/movie/queries/getMovieCredits';
 import { getSimilarMovies } from '@/modules/movie/queries/getSimilarMovies';
-import { getFreshTrackedShow } from '@/modules/show/queries/getFreshTrackedShow';
+import { getFreshTrackedShow } from '@/modules/show/services/getFreshTrackedShow';
 import { getShowCredits } from '@/modules/show/queries/getShowCredits';
 import { getSimilarShows } from '@/modules/show/queries/getSimilarShows';
 import { getTitleDetails } from '@/modules/discovery/search/queries/getTitleDetails';
@@ -16,9 +17,17 @@ import type { LibraryDetailsPageProps } from '@/modules/library/types/libraryDet
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { getAppBaseUrl } from '@/shared/lib/appUrl';
 import { auth } from '@/infra/auth/auth';
-import { getCommentViewer } from '@/modules/comments/queries/getCommentViewer';
+import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
 import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
 import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
+import { listComments } from '@/modules/comments/services/listComments';
+import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
+import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
+
+const resolveTmdbId = (value: string): number | null => {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+};
 
 export const dynamic = 'force-dynamic';
 
@@ -81,7 +90,7 @@ export const generateMetadata = async ({ params }: LibraryDetailsPageProps): Pro
   }
 };
 
-const PublicMediaPreview = async ({ mediaType, id }: { mediaType: MediaType; id: string }) => {
+const PublicMediaPreview = async ({ mediaType, id }: PublicMediaPreviewProps) => {
   // Reachable by signed-out readers and link-preview crawlers. The body is
   // session-free: TMDB supplies the public details, while the review feed is
   // keyed by TMDB id and is readable by everyone.
@@ -143,11 +152,16 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
 
   const viewer = await getCommentViewer();
 
+  const tmdbId = resolveTmdbId(id);
+
   if (mediaType === 'movie') {
-    const [movie, credits, similarMovies] = await Promise.all([
+    const [movie, credits, similarMovies, reviews] = await Promise.all([
       getTrackedMovie(id),
       getMovieCredits(id),
       getSimilarMovies(id),
+      tmdbId === null
+        ? Promise.resolve(null)
+        : listComments('movie', tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
     ]);
 
     if (!movie) notFound();
@@ -159,14 +173,18 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
         credits={credits}
         similarMedia={similarMovies}
         viewer={viewer}
+        initialReviews={reviews ? toInitialCommentPage(reviews) : undefined}
       />
     );
   }
 
-  const [show, tvCredits, similarShows] = await Promise.all([
+  const [show, tvCredits, similarShows, reviews] = await Promise.all([
     getFreshTrackedShow(id),
     getShowCredits(id),
     getSimilarShows(id),
+    tmdbId === null
+      ? Promise.resolve(null)
+      : listComments('show', tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
   ]);
 
   if (!show) notFound();
@@ -178,6 +196,7 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
       credits={tvCredits}
       similarMedia={similarShows}
       viewer={viewer}
+      initialReviews={reviews ? toInitialCommentPage(reviews) : undefined}
     />
   );
 };

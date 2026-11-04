@@ -1,10 +1,6 @@
-type TrackingTimestamps = {
-  startedAt: Date | null;
-  completedAt: Date | null;
-};
-
+import type { TrackingStatus, TrackingTimestamps } from '@/modules/media/types/trackingTimestamps';
 export const buildTrackingTimestamps = (
-  status: 'PLAN_TO_WATCH' | 'WATCHING' | 'COMPLETED' | 'DROPPED',
+  status: TrackingStatus,
   previousStartedAt: Date | null | undefined,
   now: Date = new Date(),
 ): TrackingTimestamps => {

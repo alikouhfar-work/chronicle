@@ -1,8 +1,8 @@
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import type { Credits } from '@/modules/discovery/credit';
-import type { SharePayload } from '@/modules/library/types/shareMessage';
+import type { BuildShareMessageInput, SharePayload } from '@/modules/library/types/shareMessage';
+import type { DateLike } from '@/modules/library/types/dateLike';
 import type { TrackedMedia } from '@/modules/library/types/trackedMedia';
-import type { MediaType } from '@/shared/types/media';
 
 const TOP_BILLED_COUNT = 5;
 
@@ -12,8 +12,6 @@ const isShow = (media: TrackedMedia): media is Extract<TrackedMedia, { seasons: 
 // Media crosses the RSC boundary on its way into the client share button,
 // so Date fields arrive as ISO strings at runtime even though the types say
 // Date. Normalize before calling any Date methods.
-type DateLike = Date | string | null | undefined;
-
 const toDate = (value: DateLike): Date | null => {
   if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
   if (typeof value === 'string' && value) {
@@ -51,12 +49,7 @@ export const buildShareMessage = ({
   media,
   credits,
   origin,
-}: {
-  media: TrackedMedia;
-  mediaType: MediaType;
-  credits: Credits | null;
-  origin: string;
-}): SharePayload => {
+}: BuildShareMessageInput): SharePayload => {
   const url = `${origin}/search?query=${encodeURIComponent(media.name)}`;
   const posterUrl = getTmdbImageUrl(media.posterPath);
 

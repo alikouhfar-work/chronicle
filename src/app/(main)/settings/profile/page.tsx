@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { IconArrowLeft, IconAt, IconUser } from '@tabler/icons-react';
 import { auth } from '@/infra/auth/auth';
-import { prisma } from '@/infra/db/prisma';
 import { UsernameForm } from '@/modules/user';
+import { getProfileSummary } from '@/modules/user/services/getProfileSummary';
 import { createMonogram } from '@/shared/lib/createMonogram';
 
 export const dynamic = 'force-dynamic';
@@ -19,10 +19,7 @@ const ProfileSettingsPage = async () => {
 
   if (!userId) redirect('/login?callbackUrl=/settings/profile');
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { username: true, name: true, email: true, image: true },
-  });
+  const user = await getProfileSummary(userId);
 
   if (!user) redirect('/login');
 

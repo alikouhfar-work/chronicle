@@ -2,19 +2,13 @@ import { clsx } from 'clsx';
 import { LibraryShowProgressProps } from '@/modules/library/types/libraryShowProgress';
 import { getShowProgress } from '@/modules/show/utils/getShowProgress';
 import { getShowPosition } from '@/modules/show/utils/getShowPosition';
+import {
+  COMPLETED_ENDED_HEADLINE,
+  STATUS_HEADLINES,
+} from '@/modules/library/lib/showStatusHeadlines';
+import type { ShowStatusKey } from '@/modules/library/types/showStatus';
 
-export const STATUS_HEADLINES = {
-  PLAN_TO_WATCH: ['On hold ⏳', 'Back burner 🔥'],
-  WATCHING: ['Binging 🍿', 'Obsessed 👁️👁️'],
-  COMPLETED: ['Next season waiting ⏳'],
-  DROPPED: ['Ghosted 👻', 'Dropped 🪦', 'Gave up 💔'],
-} as const;
-
-// COMPLETED + ended gets its own headline: the user finished a finished
-// show, which is different from merely reaching the finale untracked.
-export const COMPLETED_ENDED_HEADLINE = 'Conquered 🏆';
-
-export type ShowStatusKey = keyof typeof STATUS_HEADLINES;
+export { COMPLETED_ENDED_HEADLINE, STATUS_HEADLINES };
 
 export const getStatusHeadline = (
   status: string | undefined,

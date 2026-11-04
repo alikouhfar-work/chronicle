@@ -3,7 +3,7 @@ export { NotificationBell } from '@/modules/notifications/components/Notificatio
 export {
   getUnreadCount,
   listNotifications,
-} from '@/modules/notifications/queries/notifications';
+} from '@/modules/notifications/services/notifications';
 
 export {
   markAllNotificationsRead,
@@ -17,5 +17,7 @@ export type {
   UnreadCountResult,
 } from '@/modules/notifications/types';
 
-export const NOTIFICATION_LIST_LIMIT = 8;
-export const MAX_UNREAD_BADGE = 9;
+export {
+  NOTIFICATION_LIST_LIMIT,
+  MAX_UNREAD_BADGE,
+} from '@/modules/notifications/constants';

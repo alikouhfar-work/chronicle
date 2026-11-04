@@ -6,22 +6,13 @@
 
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import type { StorageProvider } from '@/infra/storage/types';
+
+export type { StorageProvider };
 
 export const COMMENT_STORAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 export const COMMENT_MAX_ATTACHMENT_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 export const COMMENT_MAX_ATTACHMENTS_PER_COMMENT = 4;
-
-export type StorageProvider = {
-  dir: string;
-  publicUrl: (key: string) => string;
-  generatePresignedUploadUrl: (params: {
-    fileName: string;
-    contentType: string;
-    contentLength: number;
-  }) => Promise<{ url: string; key: string }>;
-  writeBuffer: (key: string, buffer: Buffer) => Promise<void>;
-  readBuffer: (key: string) => Promise<Buffer>;
-};
 
 export const localStorage: StorageProvider = {
   dir: process.env.COMMENT_STORAGE_DIR ?? '.data/comment-uploads',

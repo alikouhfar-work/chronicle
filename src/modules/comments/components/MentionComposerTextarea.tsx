@@ -1,21 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import type { PublicUser } from '@/modules/user/lib/publicUser';
-
-type ActiveMention = { start: number; end: number; query: string };
-type SearchPayload = { users?: PublicUser[] };
-
-type MentionComposerTextareaProps = {
-  value: string;
-  onChange: (value: string) => void;
-  mentionIds: Set<string>;
-  onMentionIdsChange: (ids: Set<string>) => void;
-  disabled: boolean;
-  placeholder?: string;
-  maxLength?: number;
-  invalid?: boolean;
-};
+import type {
+  ActiveMention,
+  MentionComposerTextareaProps,
+  MentionSearchPayload as SearchPayload,
+} from '@/modules/comments/types/mentionComposerTextarea';
+import type { PublicUser } from '@/modules/user/types';
 
 const mentionAtCaret = (value: string, caret: number): ActiveMention | null => {
   const beforeCaret = value.slice(0, caret);

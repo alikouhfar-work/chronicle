@@ -12,7 +12,7 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/library/movie/550',
 }));
 
-vi.mock('@/modules/notifications/queries/notifications', () => ({
+vi.mock('@/modules/notifications/services/notifications', () => ({
   getUnreadCount: mocks.getUnreadCount,
   listNotifications: mocks.listNotifications,
 }));

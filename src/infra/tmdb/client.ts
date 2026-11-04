@@ -1,3 +1,6 @@
+import type { TmdbFetchOptions } from '@/infra/tmdb/types';
+
+export type { TmdbFetchOptions };
 import { ExternalServiceError } from '@/shared/lib/errors';
 
 class TmdbConfigError extends ExternalServiceError {
@@ -23,11 +26,6 @@ class TmdbNetworkError extends ExternalServiceError {
     super('TMDB', `network failure for "${path}"`, { ...opts, retryable: true });
   }
 }
-
-export type TmdbFetchOptions = RequestInit & {
-  next?: NextFetchRequestConfig;
-  timeoutMs?: number;
-};
 
 export const resolveTmdbBaseUrl = (): string => {
   const baseUrl = process.env.TMDB_BASE_URL;

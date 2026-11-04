@@ -1,7 +1,7 @@
 import { IconDeviceTv } from '@tabler/icons-react';
 import { UpcomingMediaSection } from '@/shared/ui/upcoming/UpcomingMediaSection';
 import { MappedUpcomingEpisode } from '@/modules/episode-season/types/upcomingEpisode';
-import { getUpcomingEpisodes } from '@/modules/episode-season/queries/getUpcomingEpisodes';
+import { getUpcomingEpisodes } from '@/modules/episode-season/services/getUpcomingEpisodes';
 
 export const UpcomingEpisodeList = async () => {
   const upcomingEpisodes = await getUpcomingEpisodes();

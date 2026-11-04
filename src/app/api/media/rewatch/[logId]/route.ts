@@ -1,12 +1,9 @@
-import { apiError, apiOk } from '@/modules/api/queries/respond';
+import type { RouteContext } from '@/modules/api/types/routeContext';
+import { apiError, apiOk } from '@/modules/api/lib/respond';
 import { removeRewatchLog } from '@/modules/rewatch/services/rewatchService';
 import { requireUserId } from '@/infra/tmdb/forUser';
 
-type RouteContext = {
-  params: Promise<{ logId: string }>;
-};
-
-export const DELETE = async (_request: Request, context: RouteContext) => {
+export const DELETE = async (_request: Request, context: RouteContext<{ logId: string }>) => {
   try {
     const { logId } = await context.params;
     const userId = await requireUserId();

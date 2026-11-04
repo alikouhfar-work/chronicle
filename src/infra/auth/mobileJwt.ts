@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
+import type { MobileJwtClaims } from '@/infra/auth/types';
 
 // Mobile/API JWT. Contract (stable for the future Java backend):
 //   alg HS256, claims { sub: userId, email, iat, exp }, key = SHA-256("chronicle-mobile-jwt:" + AUTH_SECRET).
@@ -7,11 +8,6 @@ import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 const ALGORITHM = 'HS256';
 const ISSUER = 'chronicle';
 const EXPIRY = '30d';
-
-export type MobileJwtClaims = JWTPayload & {
-  sub: string;
-  email: string;
-};
 
 const resolveKey = (): Uint8Array => {
   const secret = process.env.AUTH_SECRET;

@@ -5,15 +5,16 @@ import { compare } from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
 import { ensureUsername } from '@/modules/user/actions/ensureUsername';
+import type { AvailableProvider } from '@/infra/auth/types';
+
+export type { AuthProviderId, AvailableProvider } from '@/infra/auth/types';
 
 export const hasGoogle = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
 export const hasGuestLogin = process.env.GUEST_LOGIN_ENABLED === 'true';
 // Shared demo/guest account — provisioned by seed + demo reset on the demo DB.
 export const guestEmail = process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local';
 
-export type AuthProviderId = 'google' | 'credentials' | 'guest';
-
-export const availableProviders: { id: AuthProviderId; name: string }[] = [
+export const availableProviders: AvailableProvider[] = [
   ...(hasGoogle ? [{ id: 'google' as const, name: 'Google' }] : []),
   { id: 'credentials' as const, name: 'Email' },
   ...(hasGuestLogin ? [{ id: 'guest' as const, name: 'Guest' }] : []),

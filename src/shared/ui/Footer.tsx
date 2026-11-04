@@ -1,9 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { navigation } from '@/shared/lib/navigation';
 import { usePathname } from 'next/navigation';
+import { navigation } from '@/shared/lib/navigation';
 
+/**
+ * Interactive client leaf: mobile bottom navigation. Everything around it
+ * (layout shell, page content) stays on the server.
+ */
 export const Footer = () => {
   const pathname = usePathname();
   const isActiveRoute = (href: string) =>

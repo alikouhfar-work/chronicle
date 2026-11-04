@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { IconDeviceTv, IconLock, IconMessage, IconStar } from '@tabler/icons-react';
 import type { PersonalNotesPanelProps } from '@/modules/comments/types/mediaCommentTabs';
+import type { NotesEmptyStateProps } from '@/modules/comments/types/personalNotesPanel';
 
 const STATUS_LABELS: Record<string, string> = {
   PLAN_TO_WATCH: 'Plan to watch',
@@ -11,7 +12,7 @@ const STATUS_LABELS: Record<string, string> = {
   DROPPED: 'Dropped',
 };
 
-const EmptyState = ({ children }: { children: React.ReactNode }) => (
+const EmptyState = ({ children }: NotesEmptyStateProps) => (
   <div className="flex flex-col items-center justify-center space-y-2.5 py-8 text-center">
     {children}
   </div>

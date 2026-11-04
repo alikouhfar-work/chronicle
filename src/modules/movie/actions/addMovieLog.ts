@@ -5,10 +5,7 @@ import { requireUserId } from '@/infra/tmdb/forUser';
 import { parseDbId } from '@/shared/lib/validate';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 
-export type MovieLogState = {
-  success: boolean;
-  error?: string;
-};
+import type { MovieLogState } from '@/modules/movie/types/movieLogState';
 
 const MAX_NOTES_LENGTH = 5000;
 const MAX_RATING = 5;

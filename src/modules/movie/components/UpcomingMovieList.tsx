@@ -1,7 +1,7 @@
 import { IconMovie } from '@tabler/icons-react';
 import { UpcomingMediaSection } from '@/shared/ui/upcoming/UpcomingMediaSection';
 import { MappedUpcomingMovie } from '@/modules/movie/types/upcomingMovie';
-import { getUpcomingMovies } from '@/modules/movie/queries/getUpcomingMovies';
+import { getUpcomingMovies } from '@/modules/movie/services/getUpcomingMovies';
 
 export const UpcomingMovieList = async () => {
   const upcomingMovies = await getUpcomingMovies();

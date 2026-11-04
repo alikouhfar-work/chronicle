@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { ReactNode } from 'react';
+import type { AuthShellProps } from '@/shared/types/authShell';
 
 export const AuthShell = ({
   eyebrow,
@@ -8,14 +8,7 @@ export const AuthShell = ({
   children,
   footer,
   width = 'sm',
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  children: ReactNode;
-  footer?: ReactNode;
-  width?: 'sm' | 'md';
-}) => {
+}: AuthShellProps) => {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-16 font-sans">
       <div className="ambient-glow pointer-events-none fixed top-0 left-1/2 z-0 h-96 w-full max-w-7xl -translate-x-1/2 opacity-60" />

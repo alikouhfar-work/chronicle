@@ -1,10 +1,7 @@
-import { apiError, apiOk } from '@/modules/api/queries/respond';
-import { getRewatchHistory } from '@/modules/rewatch/queries/getRewatchHistory';
+import type { RouteContext } from '@/modules/api/types/routeContext';
+import { apiError, apiOk } from '@/modules/api/lib/respond';
+import { getRewatchHistory } from '@/modules/rewatch/services/getRewatchHistory';
 import { requireUserId } from '@/infra/tmdb/forUser';
-
-type RouteContext = {
-  params: Promise<{ type: string; id: string }>;
-};
 
 export const GET = async (_request: Request, context: RouteContext) => {
   try {

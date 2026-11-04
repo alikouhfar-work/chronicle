@@ -6,7 +6,7 @@ import {
   IconInfoCircle,
 } from '@tabler/icons-react';
 import { clsx } from 'clsx';
-import type { AppToastTone } from '@/shared/types/appToast';
+import type { AppToastProps, AppToastTone } from '@/shared/types/appToast';
 
 const toneStyles: Record<
   AppToastTone,
@@ -29,16 +29,7 @@ const toneStyles: Record<
   },
 };
 
-export const AppToast = ({
-  tone,
-  title,
-  message,
-}: {
-  id: string;
-  tone: AppToastTone;
-  title: string;
-  message?: string;
-}) => {
+export const AppToast = ({ tone, title, message }: AppToastProps) => {
   const { frame, chip, Icon } = toneStyles[tone];
 
   return (

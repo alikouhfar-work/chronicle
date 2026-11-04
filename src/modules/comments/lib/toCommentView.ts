@@ -1,19 +1,5 @@
-import type { CommentAttachmentView, CommentAuthor, CommentView } from '@/modules/comments/types';
-
-type CommentRecordShape = {
-  id: string;
-  content: string;
-  createdAt: Date;
-  user: CommentAuthor;
-  attachments: Array<{
-    id: string;
-    url: string;
-    mimeType: string;
-    width: number | null;
-    height: number | null;
-  }>;
-  deletedAt?: Date | null;
-};
+import type { CommentAttachmentView, CommentView } from '@/modules/comments/types';
+import type { CommentRecordShape } from '@/modules/comments/types/commentRecordShape';
 
 export const toCommentAttachmentView = (attachment: {
   id: string;
