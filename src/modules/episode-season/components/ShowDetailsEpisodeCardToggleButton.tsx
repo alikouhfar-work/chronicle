@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { IconCircle } from '@tabler/icons-react';
-import { EpisodeActionModal } from '@/modules/episode-season/components/EpisodeActionModal';
+import { WatchActionModal } from '@/modules/rewatch/components/WatchActionModal';
 import { ShowDetailsEpisodeCardToggleButtonProps } from '@/modules/episode-season/types/showDetailsEpisodeCardToggleButtonProps';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { toastError } from '@/shared/lib/toast';
@@ -58,10 +58,11 @@ export const ShowDetailsEpisodeCardToggleButton = ({
   return (
     <>
       {isOptionsOpen && (
-        <EpisodeActionModal
-          episodeId={episodeId}
-          episodeName={episodeName}
-          episodeNumber={episodeNumber}
+        <WatchActionModal
+          mediaType="episode"
+          mediaId={episodeId}
+          title={episodeName}
+          subtitle={`Episode ${episodeNumber}`}
           watchCount={displayCount}
           onRewatch={(nextCount) => setOptimistic({ watched: true, count: nextCount })}
           onUnwatch={(nextCount) => setOptimistic({ watched: false, count: nextCount })}

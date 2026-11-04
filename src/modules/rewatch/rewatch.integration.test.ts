@@ -259,11 +259,13 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
       mediaId: fixtures.seasonOne.id,
     });
 
-    expect(result.rewatchCount).toBe(1);
+    // Season counters are derived from episodes: one pass leaves every episode
+    // below the 4-watch baseline, so the season itself has not been rewatched.
+    expect(result.rewatchCount).toBe(0);
     const season = await prisma.season.findUniqueOrThrow({
       where: { id: fixtures.seasonOne.id },
     });
-    expect(season.rewatchCount).toBe(1);
+    expect(season.rewatchCount).toBe(0);
     const episodes = await countEpisodes({
       seasonId: fixtures.seasonOne.id,
     });
@@ -292,7 +294,8 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
       where: { showId: fixtures.show.id },
       orderBy: { seasonNumber: 'asc' },
     });
-    expect(seasons.map((season) => season.rewatchCount)).toEqual([1, 1]);
+    // One pass is below the season baseline, so every season stays at 0.
+    expect(seasons.map((season) => season.rewatchCount)).toEqual([0, 0]);
 
     const episodes = await countEpisodes({ season: { showId: fixtures.show.id } });
     expect(episodes).toHaveLength(4);
@@ -306,6 +309,69 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
       (await prisma.showTracking.findUniqueOrThrow({ where: { showId: fixtures.show.id } }))
         .status,
     ).toBe('COMPLETED');
+  });
+
+  it('derives the season rewatch count from the episode rule', async () => {
+    // Dedicated all-aired season: the shared Season 1 fixture contains an
+    // unaired episode, which can never satisfy "every episode >= 4".
+    const season = await prisma.season.create({
+      data: {
+        tmdbId: 740001,
+        seasonNumber: 9,
+        name: 'Season 9',
+        episodeCount: 3,
+        airDate: daysFromNow(-60),
+        showId: fixtures.show.id,
+        episodes: {
+          create: [
+            { tmdbId: 750001, episodeNumber: 1, name: 'S9E1', overview: 'A', airDate: daysFromNow(-50) },
+            { tmdbId: 750002, episodeNumber: 2, name: 'S9E2', overview: 'B', airDate: daysFromNow(-49) },
+            { tmdbId: 750003, episodeNumber: 3, name: 'S9E3', overview: 'C', airDate: daysFromNow(-48) },
+          ],
+        },
+      },
+      include: { episodes: { orderBy: { episodeNumber: 'asc' } } },
+    });
+
+    const [first, second, third] = season.episodes;
+    const rewatchEpisode = async (episodeId: string, times: number) => {
+      let count = 0;
+      for (let index = 0; index < times; index += 1) {
+        const result = await recordRewatch({
+          userId: fixtures.user.id,
+          mediaType: 'episode',
+          mediaId: episodeId,
+        });
+        count = result.rewatchCount;
+      }
+      return count;
+    };
+    const seasonCount = async () =>
+      (await prisma.season.findUniqueOrThrow({ where: { id: season.id } })).rewatchCount;
+
+    // Three rewatches each => 4 total watches per episode (1 + 3).
+    expect(await rewatchEpisode(first!.id, 3)).toBe(3);
+    await rewatchEpisode(second!.id, 3);
+    await rewatchEpisode(third!.id, 3);
+
+    // Baseline met everywhere, but no episode reached 5 watches yet.
+    expect(await seasonCount()).toBe(0);
+
+    // One deep episode is not enough.
+    await rewatchEpisode(first!.id, 1);
+    expect(await seasonCount()).toBe(0);
+
+    // Two deep episodes with the laggard on exactly 4 => one season rewatch.
+    await rewatchEpisode(second!.id, 1);
+    expect(await seasonCount()).toBe(1);
+
+    // Every episode now on 5 watches => a second complete pass.
+    await rewatchEpisode(third!.id, 1);
+    expect(await seasonCount()).toBe(2);
+
+    // A single episode running ahead does not inflate the count.
+    await rewatchEpisode(first!.id, 2);
+    expect(await seasonCount()).toBe(2);
   });
 
   it('removes a single log and decrements its counter', async () => {
@@ -363,7 +429,6 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
       watched: false,
       watchedAt: null,
       rating: 4,
-      notes: 'Keep this review',
     });
   });
 
@@ -401,7 +466,6 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
       watched: false,
       watchedAt: null,
       rating: 3,
-      notes: 'Keep this review',
     });
     expect(
       await prisma.rewatchLog.count({

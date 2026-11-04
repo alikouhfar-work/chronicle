@@ -2,26 +2,46 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { IconCircleX, IconLoader2, IconMovie, IconRotateClockwise } from '@tabler/icons-react';
-import { unwatchEpisode } from '@/modules/episode-season/actions/unwatchEpisode';
-import { EpisodeActionModalProps } from '@/modules/episode-season/types/episodeActionModal';
+import { IconCircleX, IconDeviceTv, IconLoader2, IconRotateClockwise } from '@tabler/icons-react';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
+import { unwatchMedia } from '@/modules/rewatch/actions/unwatchMedia';
+import type {
+  WatchActionModalProps,
+  WatchActionPending,
+} from '@/modules/rewatch/types/watchActionModal';
 import { toastError } from '@/shared/lib/toast';
-import type { PendingAction } from '@/modules/episode-season/types/pendingAction';
 
-export const EpisodeActionModal = ({
-  episodeId,
-  episodeName,
-  episodeNumber,
+const HEADINGS: Record<WatchActionModalProps['mediaType'], string> = {
+  episode: 'Episode Options',
+  season: 'Season Options',
+  show: 'Show Options',
+};
+
+const NOUNS: Record<WatchActionModalProps['mediaType'], string> = {
+  episode: 'episode',
+  season: 'season',
+  show: 'show',
+};
+
+/**
+ * Watched-media confirmation dialog shared by episodes, seasons, and shows:
+ * a second click on a watched badge asks whether this is another watch or an
+ * unwatch instead of silently adding one.
+ */
+export const WatchActionModal = ({
+  mediaType,
+  mediaId,
+  title,
+  subtitle,
   watchCount,
   onRewatch,
   onUnwatch,
   onClose,
-}: EpisodeActionModalProps) => {
+}: WatchActionModalProps) => {
   const router = useRouter();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isPending, startTransition] = useTransition();
-  const [pendingAction, setPendingAction] = useState<PendingAction>(null);
+  const [pendingAction, setPendingAction] = useState<WatchActionPending>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,7 +51,7 @@ export const EpisodeActionModal = ({
       try {
         dialog.showModal();
       } catch (dialogError) {
-        toastError(dialogError, 'Couldn’t open the episode options.');
+        toastError(dialogError, 'Couldn’t open the watch options.');
         onClose();
       }
     }
@@ -46,7 +66,7 @@ export const EpisodeActionModal = ({
     setPendingAction('rewatch');
 
     startTransition(async () => {
-      const result = await addRewatch('episode', episodeId);
+      const result = await addRewatch(mediaType, mediaId);
       setPendingAction(null);
 
       if (!result.success) {
@@ -68,7 +88,7 @@ export const EpisodeActionModal = ({
     setPendingAction('unwatch');
 
     startTransition(async () => {
-      const result = await unwatchEpisode(episodeId);
+      const result = await unwatchMedia(mediaType, mediaId);
       setPendingAction(null);
 
       if (!result.success) {
@@ -82,6 +102,8 @@ export const EpisodeActionModal = ({
       dialogRef.current?.close();
     });
   };
+
+  const noun = NOUNS[mediaType];
 
   return (
     <dialog
@@ -114,20 +136,19 @@ export const EpisodeActionModal = ({
       >
         <div
           role="document"
-          aria-labelledby="episode-options-title"
+          aria-labelledby="watch-options-title"
           className="glass-card animate-fade-in w-full max-w-sm space-y-5 rounded-3xl border-white/15 bg-zinc-950/90 p-6 shadow-2xl"
         >
           <div className="space-y-1">
             <h3
-              id="episode-options-title"
+              id="watch-options-title"
               className="flex items-center gap-2 text-base font-bold text-white"
             >
-              <IconMovie size={18} className="text-violet-400" />
-              <span>Episode Options</span>
+              <IconDeviceTv size={18} className="text-violet-400" />
+              <span>{HEADINGS[mediaType]}</span>
             </h3>
-            <p className="text-xs font-medium text-zinc-400">
-              Episode {episodeNumber} • {episodeName}
-            </p>
+            <p className="text-xs font-medium text-zinc-400">{title}</p>
+            {subtitle && <p className="text-[11px] text-zinc-500">{subtitle}</p>}
             <p className="text-[11px] text-zinc-500">
               {watchCount} {watchCount === 1 ? 'watch' : 'watches'} logged
             </p>
@@ -156,7 +177,7 @@ export const EpisodeActionModal = ({
                   {pendingAction === 'rewatch' ? 'Logging rewatch…' : 'Rewatch'}
                 </span>
                 <span className="block text-[11px] text-zinc-400">
-                  Log another watch with the current timestamp.
+                  Log another watch of this {noun} with the current timestamp.
                 </span>
               </span>
             </button>
@@ -180,7 +201,7 @@ export const EpisodeActionModal = ({
                   {pendingAction === 'unwatch' ? 'Clearing watches…' : 'Unwatch'}
                 </span>
                 <span className="block text-[11px] text-zinc-400">
-                  Clear watched status and remove all watch history.
+                  Clear the watched status and watch history of this {noun}. Ratings are kept.
                 </span>
               </span>
             </button>
@@ -200,7 +221,7 @@ export const EpisodeActionModal = ({
               type="button"
               onClick={() => dialogRef.current?.close()}
               disabled={isBusy}
-              className="apple-pill-btn cursor-pointer bg-white/6 px-4 py-2 text-xs text-zinc-300 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-60"
+              className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-300 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Cancel
             </button>
@@ -210,3 +231,5 @@ export const EpisodeActionModal = ({
     </dialog>
   );
 };
+
+export default WatchActionModal;

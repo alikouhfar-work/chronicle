@@ -24,7 +24,9 @@ export const LibraryDetails = ({
     mediaType === 'tv' ? (
       <LibraryDetailsShowWatchToggle
         showId={media.id}
+        showName={media.name}
         seriesWatched={media.tracking?.status === 'COMPLETED'}
+        rewatchCount={media.rewatchCount}
       />
     ) : undefined;
   const shareButton = (
