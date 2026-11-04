@@ -4,6 +4,8 @@ export type RewatchButtonProps = {
   mediaType: RewatchMediaType;
   mediaId: string;
   initialCount: number;
+  /** Already watched through tracking (a completed movie/show/season) even with 0 logged watches. */
+  watched?: boolean;
   historyTitle?: string;
   variant?: 'pill' | 'compact';
   fullWidth?: boolean;

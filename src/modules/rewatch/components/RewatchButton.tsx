@@ -6,6 +6,7 @@ import { IconHistory, IconLoader2, IconRotateClockwise } from '@tabler/icons-rea
 import { useRouter } from 'next/navigation';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { RewatchHistoryModal } from '@/modules/rewatch/components/RewatchHistoryModal';
+import { WatchActionModal } from '@/modules/rewatch/components/WatchActionModal';
 import type { RewatchButtonProps } from '@/modules/rewatch/types/rewatch';
 import { toastError } from '@/shared/lib/toast';
 
@@ -15,6 +16,7 @@ export const RewatchButton = ({
   mediaType,
   mediaId,
   initialCount,
+  watched = false,
   historyTitle,
   variant = 'pill',
   fullWidth = false,
@@ -29,7 +31,11 @@ export const RewatchButton = ({
   } | null>(null);
   const count =
     optimisticCount?.base === initialCount ? optimisticCount.value : initialCount;
+  // A completed movie/show/season has been watched even when no log exists yet.
+  const watchedOnce = count >= 1 || watched;
+  const displayCount = Math.max(count, watched ? 1 : 0);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [optionsOpen, setOptionsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didLongPress = useRef(false);
@@ -89,11 +95,31 @@ export const RewatchButton = ({
       didLongPress.current = false;
       return;
     }
+
+    // Anything already watched at least once asks first: another watch, or
+    // remove the watch instead of silently incrementing.
+    if (watchedOnce) {
+      setOptionsOpen(true);
+      return;
+    }
+
     handleAdd();
   };
 
   return (
     <>
+      {optionsOpen && (
+        <WatchActionModal
+          mediaType={mediaType}
+          mediaId={mediaId}
+          title={historyTitle ?? 'This item'}
+          watchCount={displayCount}
+          onRewatch={handleCountChange}
+          onUnwatch={handleCountChange}
+          onClose={() => setOptionsOpen(false)}
+        />
+      )}
+
       {historyOpen && (
         <RewatchHistoryModal
           mediaType={mediaType}
@@ -118,6 +144,7 @@ export const RewatchButton = ({
         <button
           type="button"
           onClick={handleClick}
+          aria-haspopup={watchedOnce ? 'dialog' : undefined}
           onPointerDown={handlePointerDown}
           onPointerUp={clearLongPress}
           onPointerLeave={clearLongPress}
@@ -129,9 +156,17 @@ export const RewatchButton = ({
           disabled={isPending}
           aria-busy={isPending}
           aria-label={
-            count > 0 ? `Log another watch. ${count} watches logged.` : 'Log a watch.'
+            watchedOnce
+              ? `Watch options. ${displayCount} ${
+                  displayCount === 1 ? 'watch' : 'watches'
+                } logged.`
+              : 'Log a watch.'
           }
-          title="Click to log a watch. Long-press or right-click for history."
+          title={
+            watchedOnce
+              ? 'Click for rewatch/unwatch options. Long-press or right-click for history.'
+              : 'Click to log a watch. Long-press or right-click for history.'
+          }
           className={clsx(
             'group flex cursor-pointer items-center gap-1.5 font-semibold transition-colors hover:bg-white/8 disabled:cursor-wait disabled:opacity-70',
             fullWidth && 'flex-1 justify-center',

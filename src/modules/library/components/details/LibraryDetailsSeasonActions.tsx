@@ -60,6 +60,7 @@ export const LibraryDetailsSeasonActions = ({
         mediaType="season"
         mediaId={seasonId}
         initialCount={displayCount}
+        watched={watched}
         historyTitle={seasonName}
         variant="compact"
       />

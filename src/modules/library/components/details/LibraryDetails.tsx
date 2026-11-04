@@ -38,6 +38,7 @@ export const LibraryDetails = ({
         mediaType={mediaType === 'tv' ? 'show' : 'movie'}
         mediaId={media.id}
         initialCount={media.rewatchCount}
+        watched={media.tracking?.status === 'COMPLETED'}
         historyTitle={media.name}
         fullWidth
       />

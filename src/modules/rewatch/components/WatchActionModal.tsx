@@ -15,18 +15,21 @@ const HEADINGS: Record<WatchActionModalProps['mediaType'], string> = {
   episode: 'Episode Options',
   season: 'Season Options',
   show: 'Show Options',
+  movie: 'Movie Options',
 };
 
 const NOUNS: Record<WatchActionModalProps['mediaType'], string> = {
   episode: 'episode',
   season: 'season',
   show: 'show',
+  movie: 'movie',
 };
 
 /**
- * Watched-media confirmation dialog shared by episodes, seasons, and shows:
- * a second click on a watched badge asks whether this is another watch or an
- * unwatch instead of silently adding one.
+ * Watched-media confirmation dialog shared by movies, shows, seasons, and
+ * episodes: once anything has been watched at least once, the watch control
+ * asks whether this is another watch or an unwatch instead of silently
+ * adding one.
  */
 export const WatchActionModal = ({
   mediaType,

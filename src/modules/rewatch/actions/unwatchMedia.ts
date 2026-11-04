@@ -3,6 +3,7 @@
 import { requireUserId } from '@/infra/tmdb/forUser';
 import {
   clearEpisodeWatchHistory,
+  clearMovieWatchHistory,
   clearSeasonWatchHistory,
   clearShowWatchHistory,
 } from '@/modules/rewatch/services/rewatchService';
@@ -12,7 +13,7 @@ import { getErrorMessage } from '@/shared/lib/errors';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 
 /**
- * Clear the watch history of an episode, season, or show. Unlike the legacy
+ * Clear the watch history of a movie, episode, season, or show. Unlike the legacy
  * `setShowWatched(false)` / `setSeasonWatched(..., false)` toggles this keeps
  * the tracking rows, so ratings survive; only watches are removed.
  */
@@ -31,14 +32,10 @@ export const unwatchMedia = async (
           ? await clearSeasonWatchHistory({ userId, mediaId })
           : mediaTypeValue === 'show'
             ? await clearShowWatchHistory({ userId, mediaId })
-            : null;
-
-    if (!result) {
-      return { success: false, error: 'Only episodes, seasons, and shows can be unwatched here.' };
-    }
+            : await clearMovieWatchHistory({ userId, mediaId });
 
     if (result.tmdbId !== null) {
-      revalidateMediaDetail('tv', result.tmdbId);
+      revalidateMediaDetail(result.mediaType === 'movie' ? 'movie' : 'tv', result.tmdbId);
     }
 
     return { success: true, rewatchCount: result.rewatchCount };

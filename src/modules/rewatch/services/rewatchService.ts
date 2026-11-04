@@ -778,6 +778,64 @@ export const clearEpisodeWatchHistory = async (input: {
 };
 
 /**
+ * Clear every watch recorded for a movie: drops its logs and resets the
+ * counter. A completed movie falls back to "plan to watch" (timestamps
+ * cleared) while the tracking row survives, so the rating is preserved.
+ */
+export const clearMovieWatchHistory = async (input: {
+  userId: string;
+  mediaId: unknown;
+}): Promise<RemoveRewatchResult> => {
+  const mediaId = parseDbId(input.mediaId, 'mediaId');
+
+  try {
+    const movie = await prisma.movie.findUnique({
+      where: { id: mediaId },
+      select: { id: true, tmdbId: true, userId: true, tracking: { select: { status: true } } },
+    });
+
+    if (!movie || movie.userId !== input.userId) {
+      throw new NotFoundError(`Movie not found: ${mediaId}`);
+    }
+
+    await prisma.$transaction(async (tx) => {
+      await tx.rewatchLog.deleteMany({
+        where: {
+          userId: input.userId,
+          mediaType: DbRewatchMediaType.MOVIE,
+          mediaId: movie.id,
+        },
+      });
+
+      await tx.movie.update({ where: { id: movie.id }, data: { rewatchCount: 0 } });
+
+      if (movie.tracking?.status === 'COMPLETED') {
+        await tx.movieTracking.update({
+          where: { movieId: movie.id },
+          data: {
+            status: 'PLAN_TO_WATCH',
+            startedAt: null,
+            completedAt: null,
+          },
+        });
+      }
+    });
+
+    return {
+      mediaType: 'movie',
+      mediaId: movie.id,
+      tmdbId: movie.tmdbId,
+      rewatchCount: 0,
+    };
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new DatabaseError(`Failed to clear watch history for movie "${mediaId}"`, {
+      cause: error,
+    });
+  }
+};
+
+/**
  * Clear every watch recorded for a season: removes the season's rewatch logs
  * (and the per-episode logs it cascaded), resets the counters, and clears the
  * watched flags. Tracking rows survive so ratings are never lost. The season

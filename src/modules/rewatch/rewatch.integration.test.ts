@@ -12,6 +12,7 @@ let recordRewatch!: typeof import('@/modules/rewatch/services/rewatchService').r
 let removeRewatchLog!: typeof import('@/modules/rewatch/services/rewatchService').removeRewatchLog;
 let getRewatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').getRewatchHistory;
 let clearEpisodeWatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').clearEpisodeWatchHistory;
+let clearMovieWatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').clearMovieWatchHistory;
 
 const databaseName = (() => {
   try {
@@ -202,8 +203,13 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
 
   beforeAll(async () => {
     ({ prisma } = await import('@/infra/db/prisma'));
-    ({ recordRewatch, removeRewatchLog, getRewatchHistory, clearEpisodeWatchHistory } =
-      await import('@/modules/rewatch/services/rewatchService'));
+    ({
+      recordRewatch,
+      removeRewatchLog,
+      getRewatchHistory,
+      clearEpisodeWatchHistory,
+      clearMovieWatchHistory,
+    } = await import('@/modules/rewatch/services/rewatchService'));
   });
 
   beforeEach(async () => {
@@ -492,6 +498,73 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
     });
     expect(movie.rewatchCount).toBe(1);
     expect(movie.tracking?.status).toBe('COMPLETED');
+  });
+
+  it('clears every movie watch and keeps the rating', async () => {
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      rewatchedAt: new Date('2024-03-01T00:00:00.000Z'),
+    });
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      rewatchedAt: new Date('2024-04-01T00:00:00.000Z'),
+    });
+
+    await prisma.movieTracking.update({
+      where: { movieId: fixtures.movie.id },
+      data: { rating: 5 },
+    });
+
+    const result = await clearMovieWatchHistory({
+      userId: fixtures.user.id,
+      mediaId: fixtures.movie.id,
+    });
+
+    expect(result.rewatchCount).toBe(0);
+    expect(result.tmdbId).toBe(fixtures.movie.tmdbId);
+
+    const movie = await prisma.movie.findUniqueOrThrow({
+      where: { id: fixtures.movie.id },
+      include: { tracking: true },
+    });
+    expect(movie.rewatchCount).toBe(0);
+    // Unwatching clears the completed state but never the rating.
+    expect(movie.tracking).toMatchObject({
+      status: 'PLAN_TO_WATCH',
+      rating: 5,
+      startedAt: null,
+      completedAt: null,
+    });
+    expect(
+      await prisma.rewatchLog.count({
+        where: { mediaType: 'MOVIE', mediaId: fixtures.movie.id },
+      }),
+    ).toBe(0);
+  });
+
+  it('keeps a watching movie in its status when watches are cleared', async () => {
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+    });
+    await prisma.movieTracking.update({
+      where: { movieId: fixtures.movie.id },
+      data: { status: 'WATCHING' },
+    });
+
+    await clearMovieWatchHistory({ userId: fixtures.user.id, mediaId: fixtures.movie.id });
+
+    const movie = await prisma.movie.findUniqueOrThrow({
+      where: { id: fixtures.movie.id },
+      include: { tracking: true },
+    });
+    expect(movie.rewatchCount).toBe(0);
+    expect(movie.tracking?.status).toBe('WATCHING');
   });
 
   it('rejects media owned by another user', async () => {
