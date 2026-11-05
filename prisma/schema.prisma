@@ -234,6 +234,9 @@ model RewatchLog {
   /// Batch identity: a season/show rewatch writes one group; children share the
   /// parent's id. Standalone logs are their own group.
   groupId     String           @map("group_id")
+  /// Client-minted idempotency key: a retried request with the same key must not
+  /// log a second watch. Null for requests that did not send one.
+  clientRequestId String?      @map("client_request_id")
   showId      String?          @map("show_id")
   seasonId    String?          @map("season_id")
   episodeId   String?          @map("episode_id")
@@ -253,6 +256,8 @@ model RewatchLog {
   @@index([seasonId])
   @@index([episodeId])
   @@index([movieId])
+  /// NULLs are distinct in Postgres, so rows without a request id are unconstrained.
+  @@unique([userId, clientRequestId])
   @@map("rewatch_logs")
 }
 

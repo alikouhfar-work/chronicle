@@ -10,6 +10,11 @@ export const POST = async (request: Request, context: RouteContext) => {
       | Record<string, unknown>
       | null;
     const rewatchedAt = payload?.rewatched_at ?? payload?.rewatchedAt ?? payload?.date;
+    // Retries reuse the key so a timeout cannot log the watch twice.
+    const clientRequestId =
+      request.headers.get('idempotency-key') ??
+      payload?.client_request_id ??
+      payload?.clientRequestId;
     const userId = await requireUserId();
 
     const result = await recordRewatch({
@@ -17,6 +22,7 @@ export const POST = async (request: Request, context: RouteContext) => {
       mediaType: type,
       mediaId: id,
       rewatchedAt,
+      clientRequestId,
     });
 
     return apiOk(

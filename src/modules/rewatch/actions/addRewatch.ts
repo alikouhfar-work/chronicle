@@ -10,10 +10,17 @@ export const addRewatch = async (
   mediaType: RewatchMediaType,
   mediaId: string,
   rewatchedAt?: string,
+  clientRequestId?: string,
 ): Promise<AddRewatchActionResult> => {
   try {
     const userId = await requireUserId();
-    const result = await recordRewatch({ userId, mediaType, mediaId, rewatchedAt });
+    const result = await recordRewatch({
+      userId,
+      mediaType,
+      mediaId,
+      rewatchedAt,
+      clientRequestId,
+    });
 
     revalidateMediaDetail(result.mediaType === 'movie' ? 'movie' : 'tv', result.tmdbId);
 

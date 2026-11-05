@@ -218,6 +218,7 @@ const recordEpisodeRewatch = async (
   mediaId: string,
   rewatchedAt: Date,
   dbMediaType: DbRewatchMediaType,
+  clientRequestId?: string,
 ): Promise<RecordRewatchResult> => {
   const episode = await tx.episode.findUnique({
     where: { id: mediaId },
@@ -244,6 +245,7 @@ const recordEpisodeRewatch = async (
     data: {
       id: groupId,
       groupId,
+      clientRequestId,
       userId,
       mediaType: dbMediaType,
       mediaId: episode.id,
@@ -279,6 +281,7 @@ const recordSeasonRewatch = async (
   mediaId: string,
   rewatchedAt: Date,
   dbMediaType: DbRewatchMediaType,
+  clientRequestId?: string,
 ): Promise<RecordRewatchResult> => {
   const season = await tx.season.findUnique({
     where: { id: mediaId },
@@ -302,6 +305,7 @@ const recordSeasonRewatch = async (
     data: {
       id: groupId,
       groupId,
+      clientRequestId,
       userId,
       mediaType: dbMediaType,
       mediaId: season.id,
@@ -356,6 +360,7 @@ const recordShowRewatch = async (
   mediaId: string,
   rewatchedAt: Date,
   dbMediaType: DbRewatchMediaType,
+  clientRequestId?: string,
 ): Promise<RecordRewatchResult> => {
   const show = await tx.show.findUnique({
     where: { id: mediaId },
@@ -382,6 +387,7 @@ const recordShowRewatch = async (
     data: {
       id: groupId,
       groupId,
+      clientRequestId,
       userId,
       mediaType: dbMediaType,
       mediaId: show.id,
@@ -452,6 +458,7 @@ const recordMovieRewatch = async (
   mediaId: string,
   rewatchedAt: Date,
   dbMediaType: DbRewatchMediaType,
+  clientRequestId?: string,
 ): Promise<RecordRewatchResult> => {
   const movie = await tx.movie.findUnique({
     where: { id: mediaId },
@@ -473,6 +480,7 @@ const recordMovieRewatch = async (
     data: {
       id: groupId,
       groupId,
+      clientRequestId,
       userId,
       mediaType: dbMediaType,
       mediaId: movie.id,
@@ -508,11 +516,22 @@ const recordMovieRewatch = async (
   };
 };
 
+const MAX_REQUEST_ID_LENGTH = 64;
+
+const parseClientRequestId = (value: unknown): string | undefined => {
+  if (value === undefined || value === null || value === '') return undefined;
+  if (typeof value !== 'string' || value.length > MAX_REQUEST_ID_LENGTH) {
+    throw new ValidationError('clientRequestId must be a string of at most 64 characters');
+  }
+  return value;
+};
+
 export const recordRewatch = async (input: {
   userId: string;
   mediaType: unknown;
   mediaId: unknown;
   rewatchedAt?: unknown;
+  clientRequestId?: unknown;
 }): Promise<RecordRewatchResult> => {
   const mediaType = parseRewatchMediaType(input.mediaType);
   const mediaId = parseDbId(input.mediaId, 'mediaId');
@@ -528,25 +547,87 @@ export const recordRewatch = async (input: {
   }
 
   const dbMediaType = toDbRewatchMediaType(mediaType);
+  const clientRequestId = parseClientRequestId(input.clientRequestId);
+
+  const replay = async (): Promise<RecordRewatchResult | null> => {
+    if (!clientRequestId) return null;
+
+    const existing = await prisma.rewatchLog.findUnique({
+      where: { userId_clientRequestId: { userId: input.userId, clientRequestId } },
+      select: { id: true, mediaId: true, rewatchedAt: true },
+    });
+    if (!existing) return null;
+
+    if (existing.mediaId !== mediaId) {
+      throw new ValidationError('clientRequestId was already used for a different watch');
+    }
+
+    const target = await getOwnedMediaRef(prisma, input.userId, mediaType, mediaId);
+    return {
+      mediaType,
+      mediaId,
+      tmdbId: target.tmdbId,
+      rewatchCount: target.rewatchCount,
+      logId: existing.id,
+      rewatchedAt: existing.rewatchedAt,
+    };
+  };
+
+  // A retry (timeout, double submit, second tab) must not log a second watch.
+  const replayed = await replay();
+  if (replayed) return replayed;
 
   try {
     return await prisma.$transaction(
       async (tx) => {
         switch (mediaType) {
           case 'episode':
-            return recordEpisodeRewatch(tx, input.userId, mediaId, rewatchedAt, dbMediaType);
+            return recordEpisodeRewatch(
+              tx,
+              input.userId,
+              mediaId,
+              rewatchedAt,
+              dbMediaType,
+              clientRequestId,
+            );
           case 'season':
-            return recordSeasonRewatch(tx, input.userId, mediaId, rewatchedAt, dbMediaType);
+            return recordSeasonRewatch(
+              tx,
+              input.userId,
+              mediaId,
+              rewatchedAt,
+              dbMediaType,
+              clientRequestId,
+            );
           case 'show':
-            return recordShowRewatch(tx, input.userId, mediaId, rewatchedAt, dbMediaType);
+            return recordShowRewatch(
+              tx,
+              input.userId,
+              mediaId,
+              rewatchedAt,
+              dbMediaType,
+              clientRequestId,
+            );
           case 'movie':
-            return recordMovieRewatch(tx, input.userId, mediaId, rewatchedAt, dbMediaType);
+            return recordMovieRewatch(
+              tx,
+              input.userId,
+              mediaId,
+              rewatchedAt,
+              dbMediaType,
+              clientRequestId,
+            );
         }
       },
       { timeout: 30_000, maxWait: 10_000 },
     );
   } catch (error) {
     if (error instanceof AppError) throw error;
+
+    // Two concurrent requests with one key: the loser re-reads the winner.
+    const concurrent = await replay().catch(() => null);
+    if (concurrent) return concurrent;
+
     throw new DatabaseError(
       `Failed to record a watch for ${mediaType} "${mediaId}"`,
       { cause: error },

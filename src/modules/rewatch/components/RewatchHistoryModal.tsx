@@ -40,6 +40,8 @@ export const RewatchHistoryModal = ({
 }: RewatchHistoryModalProps) => {
   const router = useRouter();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  // Stable per attempt so a retried add cannot double-log the watch.
+  const addRequestId = useRef<string>(crypto.randomUUID());
   const [history, setHistory] = useState<RewatchHistoryEntry[] | null>(null);
   const [count, setCount] = useState(initialCount);
   const [customDate, setCustomDate] = useState(() => toDateTimeInputValue());
@@ -103,7 +105,12 @@ export const RewatchHistoryModal = ({
 
     setError(null);
     startAdd(async () => {
-      const result = await addRewatch(mediaType, mediaId, selectedDate.toISOString());
+      const result = await addRewatch(
+        mediaType,
+        mediaId,
+        selectedDate.toISOString(),
+        addRequestId.current,
+      );
       if (!result.success) {
         setError(result.error);
         toastError(result.error);

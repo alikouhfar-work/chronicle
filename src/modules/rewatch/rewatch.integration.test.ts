@@ -1,6 +1,7 @@
 // @vitest-environment node
 
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { randomUUID } from 'node:crypto';
 import type { Prisma } from '../../../generated/prisma/client';
 import {
   clearRewatchDatabase,
@@ -409,6 +410,68 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
     });
     expect(movie.rewatchCount).toBe(0);
     expect(movie.tracking?.status).toBe('WATCHING');
+  });
+
+  it('does not log a second watch when the same request id is replayed', async () => {
+    const clientRequestId = randomUUID();
+
+    const first = await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      clientRequestId,
+    });
+    const replay = await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      clientRequestId,
+    });
+
+    expect(replay.logId).toBe(first.logId);
+    expect(replay.rewatchCount).toBe(1);
+    expect(await prisma.rewatchLog.count({ where: { userId: fixtures.user.id } })).toBe(1);
+    expect(
+      (await prisma.movie.findUniqueOrThrow({ where: { id: fixtures.movie.id } })).rewatchCount,
+    ).toBe(1);
+  });
+
+  it('treats a different request id as a separate watch', async () => {
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      clientRequestId: randomUUID(),
+    });
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      clientRequestId: randomUUID(),
+    });
+
+    expect(await prisma.rewatchLog.count({ where: { userId: fixtures.user.id } })).toBe(2);
+  });
+
+  it('rejects a request id reused for a different media item', async () => {
+    const clientRequestId = randomUUID();
+    const episodeId = fixtures.episodes.s1e1.id;
+
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'episode',
+      mediaId: episodeId,
+      clientRequestId,
+    });
+
+    await expect(
+      recordRewatch({
+        userId: fixtures.user.id,
+        mediaType: 'episode',
+        mediaId: fixtures.episodes.s1e2.id,
+        clientRequestId,
+      }),
+    ).rejects.toThrow(/different watch/i);
   });
 
   it('rejects media owned by another user', async () => {

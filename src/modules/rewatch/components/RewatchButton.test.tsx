@@ -145,7 +145,9 @@ describe('RewatchButton', () => {
       fireEvent.click(rewatch!);
     });
 
-    await waitFor(() => expect(addRewatch).toHaveBeenCalledWith('movie', 'movie-1'));
+    await waitFor(() =>
+      expect(addRewatch).toHaveBeenCalledWith('movie', 'movie-1', undefined, expect.any(String)),
+    );
     await waitFor(() => expect(screen.getByText('Watch (3)')).toBeTruthy());
   });
 });

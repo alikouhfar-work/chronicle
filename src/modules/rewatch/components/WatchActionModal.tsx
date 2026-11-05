@@ -43,6 +43,9 @@ export const WatchActionModal = ({
 }: WatchActionModalProps) => {
   const router = useRouter();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  // One idempotency key per dialog session: retrying inside the same dialog
+  // (or a retried request) cannot log the same watch twice.
+  const requestId = useRef<string>(crypto.randomUUID());
   const [isPending, startTransition] = useTransition();
   const [pendingAction, setPendingAction] = useState<WatchActionPending>(null);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +72,7 @@ export const WatchActionModal = ({
     setPendingAction('rewatch');
 
     startTransition(async () => {
-      const result = await addRewatch(mediaType, mediaId);
+      const result = await addRewatch(mediaType, mediaId, undefined, requestId.current);
       setPendingAction(null);
 
       if (!result.success) {
