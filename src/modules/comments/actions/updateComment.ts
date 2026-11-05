@@ -12,6 +12,7 @@ import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/const
 import type { UpdateCommentResult } from '@/modules/comments/types';
 import type { UpdateCommentInput } from '@/modules/comments/types/updateComment';
 import { logError } from '@/infra/logging/logger';
+import { revalidateUnreadCount } from '@/modules/notifications/services/countUnreadNotifications';
 
 type CommentMediaRow = {
   userId: string;
@@ -111,6 +112,9 @@ export const updateComment = async (
       });
     });
 
+    // Editing can add or remove mentions, which adds or removes the recipients'
+    // unread rows.
+    revalidateUnreadCount();
     return { success: true, comment: toCommentView(updated) };
   } catch (error) {
     logError({ event: 'comment.update', action: 'updateComment', error });

@@ -210,3 +210,22 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   403 logs); dashboard, show page and library load with no error state and the
   dashboard still resolves "Next episode".
 - Notes: `createComment`'s timestamp workaround is now redundant but harmless.
+
+## 2026-11-05 — WP-12 bell polling: visibility-aware, cached, reconciled
+- Change: the bell's two effects merged into one keyed on `pathname`; nothing is
+  fetched while `document.visibilityState === 'hidden'` and one refresh runs when
+  the tab becomes visible again; the unread count is served through
+  `unstable_cache` (`notifications/services/countUnreadNotifications`) tagged
+  `notifications`, invalidated by `updateTag` + `revalidateTag` on every write
+  that changes it (create, edit, delete comment, mark one, mark all); after a
+  mark-read the bell reconciles once the action resolves, because the click also
+  navigates and the next mount could otherwise restore the stale number.
+- Migration: none.
+- Verified: three new fake-timer tests (visible tab → 6 reads in 5 minutes;
+  hidden tab → 0 in 5 minutes, then one on `visibilitychange`; hidden on mount →
+  no fetch), 20 notification tests, live checks — badge reads 1 with a warm
+  cache on repeat navigation and falls to 0 after marking read and stays there.
+- Notes: `revalidateTag`/`updateTag` throw without a Next cache store (Vitest,
+  scripts), so invalidation is guarded: it can never fail the write, and the
+  60 s TTL is the backstop. Invalidation is coarse (one tag for all recipients)
+  — at this scale a shared tag costs one recount and avoids a tag per user.

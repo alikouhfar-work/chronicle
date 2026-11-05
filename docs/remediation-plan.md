@@ -287,7 +287,7 @@ navigation; a rating change invalidates exactly the affected tags; page data is 
 stale for longer than one request after a write.
 **Effort:** 2.5 days.
 
-## WP-12 · Bell polling
+## WP-12 · Bell polling — **done**
 **Covers:** E4.
 
 - Merge the mount and pathname effects into one; skip the interval when

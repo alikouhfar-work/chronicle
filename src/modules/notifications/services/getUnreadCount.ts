@@ -1,6 +1,6 @@
 'use server';
 
-import { prisma } from '@/infra/db/prisma';
+import { countUnreadNotifications } from '@/modules/notifications/services/countUnreadNotifications';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import type { UnreadCountResult } from '@/modules/notifications/types';
 import { logError } from '@/infra/logging/logger';
@@ -18,9 +18,7 @@ export const getUnreadCount = async (): Promise<UnreadCountResult> => {
   }
 
   try {
-    const unreadCount = await prisma.notification.count({
-      where: { recipientId: userId, isRead: false },
-    });
+    const unreadCount = await countUnreadNotifications(userId);
     return { success: true, unreadCount };
   } catch (error) {
     logError({ event: 'notification.unreadCount', action: 'getUnreadCount', error });

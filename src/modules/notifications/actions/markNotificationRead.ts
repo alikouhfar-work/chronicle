@@ -4,6 +4,7 @@ import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import type { MarkReadResult } from '@/modules/notifications/types';
 import { logError } from '@/infra/logging/logger';
+import { revalidateUnreadCount } from '@/modules/notifications/services/countUnreadNotifications';
 
 export const markNotificationRead = async (notificationId: string): Promise<MarkReadResult> => {
   let userId: string;
@@ -26,6 +27,7 @@ export const markNotificationRead = async (notificationId: string): Promise<Mark
     if (updated.count === 0) {
       return { success: false, error: 'Notification not found.' };
     }
+    revalidateUnreadCount();
     return { success: true };
   } catch (error) {
     logError({ event: 'notification.read', action: 'markNotificationRead', error });

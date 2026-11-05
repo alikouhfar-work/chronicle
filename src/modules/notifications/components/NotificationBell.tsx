@@ -15,6 +15,9 @@ import { EmptyState } from '@/shared/ui/EmptyState';
 
 const POLL_INTERVAL_MS = 60_000;
 
+const documentVisible = (): boolean =>
+  typeof document === 'undefined' || document.visibilityState !== 'hidden';
+
 const formatBadge = (unreadCount: number): string =>
   unreadCount > MAX_UNREAD_BADGE ? `${MAX_UNREAD_BADGE}+` : String(unreadCount);
 
@@ -66,20 +69,33 @@ export const NotificationBell = () => {
     }
   }, []);
 
+  // One effect for mount, navigation and polling. A hidden tab does no work at
+  // all — nobody can see the badge, and a backgrounded tab used to keep a
+  // request per minute alive — then refreshes once when it becomes visible.
+  // Deliberately keyed on `pathname`: fetching from the render phase re-entered
+  // itself while a server-action response streamed a new tree, which queued the
+  // next action and looped.
   useEffect(() => {
-    const timer = setInterval(() => void refreshCount(), POLL_INTERVAL_MS);
-    return () => clearInterval(timer);
-  }, [refreshCount]);
+    if (!documentVisible()) return;
 
-  // One fetch on mount and one per navigation. Deliberately an effect keyed on
-  // `pathname`: fetching from the render phase re-entered itself while a
-  // server-action response streamed a new tree, which queued the next action
-  // and looped.
-  useEffect(() => {
     // refreshCount awaits the action before touching state, so nothing is set
     // synchronously here.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void refreshCount();
+
+    const timer = setInterval(() => {
+      if (documentVisible()) void refreshCount();
+    }, POLL_INTERVAL_MS);
+
+    const onVisibilityChange = () => {
+      if (documentVisible()) void refreshCount();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
   }, [pathname, refreshCount]);
 
   useEffect(() => {
@@ -129,7 +145,12 @@ export const NotificationBell = () => {
       previous?.map((entry) => (entry.id === item.id ? { ...entry, isRead: true } : entry)) ?? previous,
     );
     setOpen(false);
-    void markNotificationRead(item.id).catch(() => undefined);
+    // Reconcile once the server has invalidated the cached count: the click
+    // also navigates, and the next page's mount fetch can otherwise win the
+    // race and restore the stale number for a full poll interval.
+    void markNotificationRead(item.id)
+      .then(() => refreshCount())
+      .catch(() => undefined);
   };
 
   const handleMarkAll = async () => {

@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   getUnreadCount: vi.fn(),
@@ -30,6 +30,16 @@ vi.mock('@/modules/notifications/actions/markAllNotificationsRead', () => ({
 
 import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
 
+let visibility: DocumentVisibilityState = 'visible';
+
+const setVisibility = (next: DocumentVisibilityState): void => {
+  visibility = next;
+  Object.defineProperty(document, 'visibilityState', {
+    configurable: true,
+    get: () => visibility,
+  });
+};
+
 const item = (overrides: Record<string, unknown> = {}) => ({
   id: 'notif-1',
   isRead: false,
@@ -46,11 +56,16 @@ const item = (overrides: Record<string, unknown> = {}) => ({
 
 describe('NotificationBell', () => {
   beforeEach(() => {
+    setVisibility('visible');
     vi.clearAllMocks();
     mocks.getUnreadCount.mockResolvedValue({ success: true, unreadCount: 0 });
     mocks.listNotifications.mockResolvedValue({ success: true, notifications: [] });
     mocks.markNotificationRead.mockResolvedValue({ success: true });
     mocks.markAllNotificationsRead.mockResolvedValue({ success: true });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('announces the unread count and caps the badge at 9+', async () => {
@@ -139,6 +154,63 @@ describe('NotificationBell', () => {
 
     rerender(<NotificationBell />);
     rerender(<NotificationBell />);
+
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(1);
+  });
+
+  it('polls once a minute while visible and stops while the tab is hidden', async () => {
+    vi.useFakeTimers();
+    await act(async () => {
+      render(<NotificationBell />);
+    });
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      vi.advanceTimersByTime(5 * 60_000);
+    });
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(6);
+
+    // Hidden: five more minutes, not one request.
+    setVisibility('hidden');
+    await act(async () => {
+      vi.advanceTimersByTime(5 * 60_000);
+    });
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(6);
+
+    // Back to the tab: one immediate refresh, then the interval resumes.
+    setVisibility('visible');
+    await act(async () => {
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(7);
+
+    await act(async () => {
+      vi.advanceTimersByTime(60_000);
+    });
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(8);
+  });
+
+  it('fetches nothing on mount while the tab is already hidden', async () => {
+    setVisibility('hidden');
+    await act(async () => {
+      render(<NotificationBell />);
+    });
+
+    expect(mocks.getUnreadCount).not.toHaveBeenCalled();
+  });
+
+  it('stops polling after unmount', async () => {
+    vi.useFakeTimers();
+    let unmount: () => void = () => undefined;
+    await act(async () => {
+      unmount = render(<NotificationBell />).unmount;
+    });
+    expect(mocks.getUnreadCount).toHaveBeenCalledTimes(1);
+
+    unmount();
+    await act(async () => {
+      vi.advanceTimersByTime(5 * 60_000);
+    });
 
     expect(mocks.getUnreadCount).toHaveBeenCalledTimes(1);
   });

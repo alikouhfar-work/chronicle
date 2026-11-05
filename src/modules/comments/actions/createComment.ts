@@ -20,6 +20,7 @@ import {
   COMMENT_MAX_MENTIONS,
   COMMENT_MIN_LENGTH,
 } from '@/modules/comments/constants';
+import { revalidateUnreadCount } from '@/modules/notifications/services/countUnreadNotifications';
 import type { CommentAttachmentInput, CreateCommentResult } from '@/modules/comments/types';
 import type { CreateCommentInput } from '@/modules/comments/types/createComment';
 import { logError } from '@/infra/logging/logger';
@@ -149,6 +150,7 @@ export const createComment = async (
       },
     });
 
+    revalidateUnreadCount();
     return { success: true, comment: toCommentView(comment) };
   } catch (error) {
     logError({ event: 'comment.create', action: 'createComment', error });

@@ -5,6 +5,7 @@ import { requireUserId } from '@/infra/tmdb/forUser';
 import { getCommentStorage } from '@/infra/storage/storage';
 import type { DeleteCommentResult } from '@/modules/comments/types';
 import { logError } from '@/infra/logging/logger';
+import { revalidateUnreadCount } from '@/modules/notifications/services/countUnreadNotifications';
 
 /**
  * Permanently deletes a comment: the row goes (cascading its mentions,
@@ -43,6 +44,10 @@ export const deleteComment = async (commentId: string): Promise<DeleteCommentRes
     logError({ event: 'comment.delete', action: 'deleteComment', error });
     return { success: false, error: 'Could not delete comment.' };
   }
+
+  // The row took its notifications with it (cascade), so any recipient's badge
+  // is now stale.
+  revalidateUnreadCount();
 
   // Objects are removed after the row: a failed delete leaves an orphan that the
   // attachment sweep collects, which beats failing the user's delete.
