@@ -366,22 +366,35 @@ set); the suite documents the intended UX, not the current quirks.
 
 # Phase 3 — P2
 
-## WP-17 · Rating placement (D1: episode and film only)
+## WP-17 · Rating placement (D1: episode and film only) — **done**
 **Covers:** B2. B1 is closed as intended — no `ShowTracking.rating` / `Season.rating`.
 
-- Rating control in the details header (same `setMediaRating` action, no new endpoint),
-  labelled per scope ("Rate this movie" / "Rate this episode") so the limitation reads
-  as a decision rather than an omission.
-- Tests: header rating writes and re-renders without opening the notes tab.
+- `RatingControl` gained `variant: 'panel' | 'compact'`. The compact form sits in the
+  movie details header (replacing the read-only "Your Score" card, which only appeared
+  for completed films) and in the episode header, both labelled per scope ("Rate this
+  movie" / "Rate this episode") with the same `setMediaRating` action — no new endpoint,
+  no new schema.
+- The panel copy in the notes tab stays, and the control now adopts a value written by
+  the other copy once the server revalidates the page.
+- Tests: 5 unit tests on the control (write, clear, compact label, prop adoption, failed
+  write reverts); the Playwright rating journey clicks the header group, which also
+  proves the placement, and had to be scoped because "Rate 4 of 5" now matches twice.
 
 **Effort:** 0.5 day.
 
-## WP-18 · `/notes` index
+## WP-18 · `/notes` index — **done**
 **Covers:** B3.
 
-- `src/app/(main)/notes/page.tsx` + `listNotesForUser(search?)` over the existing
-  `(user_id, media_type, tmdb_id, created_at)` index; nav entry; empty state via the
-  shared `EmptyState`.
+- `src/app/(main)/notes/page.tsx` (session-gated, `force-dynamic`) renders every private
+  note newest-first with a GET search form; `notes/services/listNotesForUser({ userId,
+  search })` filters `content` case-insensitively and resolves each title from the
+  viewer's own library in three batched reads (films, shows, episodes).
+- `notes/lib/noteMediaTarget` maps a resolved title to its `/library` link and subtitle
+  ("Film", "Series", "House of the Dragon · S3E2"); a note whose title left the library
+  stays listed with no link and the subtitle "No longer in your library".
+- Nav entry "Notes" (`shared/lib/navigation`); empty state and "no results" state both
+  use the shared `EmptyState`; timestamps render client-side via `NoteTimestamp` so the
+  server timezone never leaks into a user-visible date.
 
 **Effort:** 1 day.
 
@@ -393,12 +406,20 @@ set); the suite documents the intended UX, not the current quirks.
 
 **Effort:** 2 days.
 
-## WP-20 · Demo, cron and env hardening (D3: shared account confirmed)
+## WP-20 · Demo, cron and env hardening (D3: shared account confirmed) — **done**
 **Covers:** F5, D6. F4 is accepted: one shared visitor account.
 
-- Fix `reset-demo.yml` (cron `30 1 * * 1,4` or amend the comment), move the URL to a
-  repository variable, add an advisory lock so two runs cannot interleave.
-- Demo banner keeps stating that the library is shared; nothing session-scoped.
+- `reset-demo.yml`: cron is now `0 2 * * 1,4` (Monday and Thursday, 05:30 IRST) and
+  the comment no longer promises something else; the target URL comes from the
+  `DEMO_RESET_URL` repository variable with a named error when it is unset; the job
+  has its own `concurrency` group, a timeout, and prints the response body so a
+  failed seed lists the failing titles.
+- `GET /api/reset-demo` takes a Postgres advisory lock
+  (`infra/db/advisoryLock.acquireAdvisoryLock`, dedicated client because the lock is
+  session-scoped and Prisma pools connections) and answers 409 while another reset
+  holds it; the workflow treats 409 as "nothing to do", not a failure.
+- The demo copy already says "Shared demo library on its own database. Resets
+  periodically." on the login form; nothing is session-scoped, so no change.
 
 **Effort:** 0.5 day.
 

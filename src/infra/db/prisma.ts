@@ -35,6 +35,13 @@ const createPrismaClient = (): PrismaClient => {
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
+/**
+ * A dedicated client with its own pool. Needed when correctness depends on one
+ * pinned connection — a Postgres advisory lock is session-scoped, and the shared
+ * client would hand the lock and the unlock to different connections.
+ */
+export const createPrismaSession = (): PrismaClient => createPrismaClient();
+
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;
 }

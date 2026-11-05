@@ -2,22 +2,54 @@ name: Reset Demo Database
 
 on:
   schedule:
-    # Runs every Monday and Thursday at 5:00 AM IRST (01:30 UTC)
-    - cron: '30 1 * * 5'
+    # Every Monday and Thursday at 05:30 IRST (02:00 UTC). The old expression
+    # ('30 1 * * 5') disagreed with its own comment: it ran once a week, on
+    # Fridays in Tehran, while the comment promised twice.
+    - cron: '0 2 * * 1,4'
   workflow_dispatch:
+
+# GitHub-level serialisation: a manual run and the scheduled run must not
+# overlap. The route holds a Postgres advisory lock as the second line of
+# defence, because anything can curl it.
+concurrency:
+  group: reset-demo
+  cancel-in-progress: false
 
 jobs:
   reset:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Trigger demo reset
+        env:
+          # Repository variable, not a hard-coded deployment URL: the demo host
+          # moved twice, and each move needed a code edit.
+          DEMO_RESET_URL: ${{ vars.DEMO_RESET_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X GET "https://chronicle-release.vercel.app/api/reset-demo" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          set -euo pipefail
+
+          if [ -z "${DEMO_RESET_URL:-}" ]; then
+            echo "::error::Set the DEMO_RESET_URL repository variable (Settings -> Secrets and variables -> Actions -> Variables)."
+            exit 1
+          fi
+          if [ -z "${CRON_SECRET:-}" ]; then
+            echo "::error::Set the CRON_SECRET repository secret."
+            exit 1
+          fi
+
+          response=$(curl -sS --max-time 120 -o /tmp/reset.json -w "%{http_code}" \
+            -X GET "${DEMO_RESET_URL%/}/api/reset-demo" \
+            -H "Authorization: Bearer ${CRON_SECRET}")
           echo "HTTP status: $response"
+          cat /tmp/reset.json || true
+
+          if [ "$response" = "409" ]; then
+            echo "::notice::Another reset is already running; nothing to do."
+            exit 0
+          fi
           if [ "$response" != "200" ]; then
-            echo "Reset failed with status $response"
+            echo "::error::Reset failed with status $response"
             exit 1
           fi
           echo "Demo database reset successfully"

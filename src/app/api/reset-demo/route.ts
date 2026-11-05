@@ -9,11 +9,15 @@ import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/p
 import { addMovie } from '@/modules/movie/actions/addMovie';
 import { addShow } from '@/modules/show/actions/addShow';
 import { revalidatePath } from 'next/cache';
+import { acquireAdvisoryLock } from '@/infra/db/advisoryLock';
 import { getErrorMessage } from '@/shared/lib/errors';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
+
+/** Stable int32 shared by every reset attempt; nothing else in the app uses it. */
+const RESET_DEMO_LOCK_KEY = 727_214;
 
 const MAX_MOVIES = 5;
 const MAX_SHOWS = 5;
@@ -56,6 +60,18 @@ export const GET = async (request: Request) => {
 
   if (!process.env.TMDB_ACCESS_TOKEN && !process.env.DEMO_TMDB_TOKEN) {
     return NextResponse.json({ ok: false, error: 'TMDB_ACCESS_TOKEN is not set' }, { status: 500 });
+  }
+
+  // Two resets must never interleave: the second wipe would run against a
+  // half-seeded library, and the counters would describe neither run. The lock
+  // is engine-wide, so a second Vercel instance sees it too.
+  const lock = await acquireAdvisoryLock(RESET_DEMO_LOCK_KEY).catch(() => null);
+
+  if (!lock) {
+    return NextResponse.json(
+      { ok: false, error: 'A demo reset is already running.' },
+      { status: 409 },
+    );
   }
 
   try {
@@ -120,5 +136,9 @@ export const GET = async (request: Request) => {
       { ok: false, error: 'Reset failed', message: getErrorMessage(error) },
       { status: 500 },
     );
+  } finally {
+    // Released even when a seed failed, so the next scheduled run is not locked
+    // out until the connection times out.
+    await lock.release().catch(() => undefined);
   }
 };

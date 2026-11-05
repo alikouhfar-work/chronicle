@@ -143,6 +143,12 @@ the "Personal notes" tab, and a user who has no notes may never find it.
 **Recommendation.** Duplicate the rating control into the media header next to
 the watch state; it writes the same action and needs no new endpoint.
 
+**Fixed (WP-17).** `RatingControl` has a `compact` variant, rendered in
+`LibraryDetailsHeader` (movie) and in the episode page header, labelled "Rate
+this movie" / "Rate this episode". The previous header card only appeared once a
+film was completed; the control is there for any tracked title, so a rating no
+longer requires finishing the film or opening the notes tab.
+
 ### B3. Notes have no home outside their media page (P2)
 
 `MediaNote` is many-per-media, soft-deleted and private, but there is no "my
@@ -151,6 +157,12 @@ write-only feature.
 
 **Recommendation.** A `/notes` route (list + search over `content`) is a filter on
 the existing index, and it makes the privacy promise of notes tangible.
+
+**Fixed (WP-18).** `/notes` lists every non-deleted note newest-first with a content
+search, resolves each title from the owner's library in three batched reads
+(`notes/services/listNotesForUser`), and links to the details page — an episode note
+links through its show. A note whose title was removed from the library is still
+listed, unlinked, rather than disappearing.
 
 ### B4. Notes and comments share a shape but not a lifecycle (P2)
 
@@ -398,6 +410,11 @@ hardcodes a Vercel URL and reads `secrets.CRON_SECRET`.
 
 **Recommendation.** Fix the cron (`30 1 * * 1,4`) or the comment, and make the URL
 a repository variable.
+
+**Fixed (WP-20).** The workflow schedules `0 2 * * 1,4` (Monday and Thursday, 05:30
+IRST), reads `vars.DEMO_RESET_URL` (error when unset), and serialises runs with a
+`concurrency` group; the route itself takes a Postgres advisory lock and answers 409
+to a second caller, so a manual curl cannot interleave with the cron either.
 
 ---
 

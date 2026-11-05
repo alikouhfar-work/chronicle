@@ -383,3 +383,77 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   read of `rewatch_logs` — counters, history, reconcile — would have had to learn
   to filter tombstones. The snapshot keeps read paths untouched: removed watches
   are simply absent. The plan and gap-analysis now describe what shipped.
+
+## 2026-11-05 — WP-17 rating in the details header
+- Change: `notes/components/RatingControl` gained `variant: 'panel' | 'compact'`
+  and now adopts its `value` prop when the page revalidates (scoped
+  `eslint-disable-next-line react-hooks/set-state-in-effect`, because the rule's
+  render-phase alternative cannot express "a prop arrives later"). The compact
+  form renders in `LibraryDetailsHeader` for movies — replacing the read-only
+  "Your Score" card, which only showed once a film was COMPLETED — and in the
+  episode page header, both labelled per scope ("Rate this movie" / "Rate this
+  episode") and both writing `setMediaRating`, so no new endpoint and no schema
+  change. Shows stay unratable per D1; the label is what makes that read as a
+  decision.
+- Migration: none.
+- Verified: 5 unit tests (`RatingControl.test.tsx`): write, clear via the filled
+  star, compact label without the panel copy, prop adoption after the other copy
+  writes, failed write reverts. 325 unit tests, `tsc`, `eslint`, build exit 0 on
+  the advisory retry, 9/9 Playwright journeys. Live: header rating on a
+  COMPLETED movie wrote 2, both copies showed 2/5, restored to 4 in the header;
+  episode header wrote 5 and cleared it back to "Not rated", with the database
+  left as found (movie rating 4, no stray episode tracking row).
+- Notes: the Playwright rating journey had to be scoped to the header
+  `role="group"` — "Rate 4 of 5" now matches twice on a movie page.
+
+## 2026-11-05 — WP-18 the /notes index
+- Change: new `src/app/(main)/notes/page.tsx` (session-gated with `redirect('/login')`,
+  `force-dynamic`) lists every private note newest-first, with a GET search form and
+  the shared `EmptyState` for both "no notes yet" and "no notes match". The service
+  `notes/services/listNotesForUser({ userId, search })` filters `content` with
+  `contains`/`insensitive`, orders by `created_at` desc, caps at `NOTE_PAGE_SIZE` (50,
+  with a "+" on the badge) and resolves titles from the owner's own library in three
+  batched reads instead of per-note lookups. `notes/lib/noteMediaTarget` turns a
+  resolved title into its `/library` link and subtitle (Film / Series / "Show · S1E2");
+  a note whose title left the library stays listed, unlinked, subtitled "No longer in
+  your library". Timestamps render through a client `NoteTimestamp` so the server zone
+  never reaches the UI. `shared/lib/navigation` gained the "Notes" tab.
+- Migration: none.
+- Verified: 9 new unit tests (4 on the target mapper, 5 on the service incl. the
+  search filter, the unavailable-title case and "no media queries when there are no
+  notes"). 334 unit tests, `tsc`, `eslint`, build exit 0 on the advisory retry, 9/9
+  Playwright journeys. Live: `/notes` showed the user's one episode note as
+  "Queen's Landing / House of the Dragon · S3E2 / 6 days ago", the nav tab appeared,
+  `?q=queen` matched it, `?q=zzzzz` showed the search-empty state, the link opened the
+  episode page, and `/notes` without a cookie redirected to `/login`.
+- Notes: ordering is global `created_at desc`, which is the right UX but not the
+  index's leading column; at personal scale (50 notes max) it is a small sort, and a
+  `(user_id, created_at)` index is the follow-up if the page ever pages.
+
+## 2026-11-05 — WP-20 demo reset: cron, variable, advisory lock
+- Change: `reset-demo.yml` now runs `0 2 * * 1,4` (Monday and Thursday at 05:30
+  IRST) instead of the single weekly `30 1 * * 5` that disagreed with its own
+  comment; the URL comes from the `DEMO_RESET_URL` repository variable (named error
+  when unset), the job has a `concurrency` group and a timeout, and a failed seed
+  prints the response body so the failing titles are visible in the log.
+  `GET /api/reset-demo` acquires `acquireAdvisoryLock(727214)` before doing anything
+  destructive and returns 409 "A demo reset is already running." when another run
+  holds it; the lock is released in a `finally`. New
+  `infra/db/advisoryLock.ts` opens its own client (`createPrismaSession` in
+  `infra/db/prisma.ts`) because `pg_advisory_lock` is session-scoped and Prisma's
+  shared client is a pool — the lock and the unlock would land on different
+  connections. The workflow treats 409 as "nothing to do". The login form already
+  says the demo library is shared and resets periodically; nothing is
+  session-scoped, so no copy changed.
+- Migration: none.
+- Verified: 3 integration tests on the lock (a second caller is refused while held,
+  a lock held by another `pg` connection is seen, release is idempotent) — 3/3 pass
+  against `chronicle_rewatch_test`. Live against a production build on port 3300
+  with a temporary `CRON_SECRET`: 401 without a bearer, and 409 with the route's key
+  held from a `psql` session. **Caveat, recorded honestly:** the first 409 probe hit
+  a stale build (the running server predated the lock), so the request went through
+  and re-seeded the demo account's library on the dev database — 5 movies and 5
+  shows, which is exactly what the weekly job does. The probe was repeated after a
+  rebuild and returned 409.
+- Notes: 409 is deliberate, not 429 — it is a state conflict, and the caller (the
+  workflow) should treat it as a no-op.
