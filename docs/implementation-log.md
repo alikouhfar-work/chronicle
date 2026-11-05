@@ -192,3 +192,21 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   derived counts) against a freshly migrated database; build green.
 - Notes: the per-season round trip was the last O(seasons) read pattern in the
   rewatch service; episode and season writes still use the single-season helper.
+
+## 2026-11-05 — WP-10 timestamptz migration (commit pending)
+- Change: all 39 application DateTime columns moved to `timestamptz(3)` in
+  `schema.prisma`, with the migration converting existing values via
+  `AT TIME ZONE 'UTC'`. Queries that compare `airDate` to `now()` now compare
+  instants instead of UTC wall time against the server's local wall time
+  (Asia/Tehran, +03:30 that the upcoming window was silently shifted by).
+  `createComment` keeps its explicit `createdAt` but the workaround comment was
+  corrected — the DB default is a real instant now.
+- Migration: `20261105180000_timestamptz` (39 ALTER statements).
+- Verified: a probe write through Prisma proved the app stores UTC wall time
+  (stored 08:07 while local was 11:37); rehearsal on a dump-restored copy kept
+  every row and instant exactly (2026-11-03 15:57:34.142 UTC before and after);
+  a fresh database built from the whole chain yields an empty `migrate diff`;
+  applied to dev (0 naive columns, counts unchanged: 12 comments, 274 episodes,
+  403 logs); dashboard, show page and library load with no error state and the
+  dashboard still resolves "Next episode".
+- Notes: `createComment`'s timestamp workaround is now redundant but harmless.

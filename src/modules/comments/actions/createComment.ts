@@ -116,9 +116,8 @@ export const createComment = async (
         content,
         mediaType: PRISMA_MEDIA_TYPE[input.mediaType],
         tmdbId,
-        // Set explicitly instead of relying on the DB default: production
-        // databases are UTC, but local Postgres instances often are not and
-        // the column is `timestamp without time zone`.
+        // Columns are timestamptz now, so the DB default is a real instant; no
+        // client-side timestamp workaround is needed.
         createdAt: new Date(),
         attachments:
           attachments.length > 0

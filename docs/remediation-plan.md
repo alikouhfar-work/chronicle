@@ -254,7 +254,7 @@ the only notification trigger, so no `COMMENT_REPLY` value is added.
 
 **Effort:** 0.5 day.
 
-## WP-10 · Timestamptz migration
+## WP-10 · Timestamptz migration — **done**
 **Covers:** F3.
 
 - 40 columns move to `@db.Timestamptz(3)` in `schema.prisma`; the migration converts with
