@@ -309,7 +309,7 @@ stale for longer than one request after a write.
 
 **Effort:** 2 days.
 
-## WP-14 · Reconciliation job
+## WP-14 · Reconciliation job — **done**
 **Covers:** F1.
 
 - `src/app/api/maintenance/reconcile/route.ts` (token-gated): report mode by default,

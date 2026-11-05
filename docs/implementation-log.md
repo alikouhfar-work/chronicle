@@ -277,3 +277,24 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   10-minute toast undo and a purge pass — a schema change plus a background job
   that deserves its own package (`WP-13b`). Until then unwatch stays final, as
   it has been.
+
+## 2026-11-05 — WP-14 counter reconciliation
+- Change: `rewatch/lib/planCounterReconcile` compares every derived counter with
+  its source of truth — episode/show/movie counters against their log rows, the
+  season counter against the season rule (which can move by more than one per
+  watch, hence the different authority) — and returns a drift list.
+  `rewatch/services/reconcileCounters` reads the snapshot, then writes the
+  expected values grouped by target value (one statement per distinct value) when
+  asked to fix. `GET /api/maintenance/reconcile` is `CRON_SECRET`-gated; report is
+  the default, `?fix=1` repairs.
+- Migration: none.
+- Verified: 5 unit tests on the planner (clean catalog, three kinds of drift, season
+  derived not read, checked count), 2 integration tests on a scratch database
+  (drift injected for episode/season/movie, report leaves the rows untouched, fix
+  restores 2/0/1, the follow-up report is empty; clean database reports nothing),
+  51 rewatch tests total. Live on the dev server with a temporary `CRON_SECRET`:
+  401 without the bearer, report `checked: 295, drift: [], fixed: 0`, `?fix=1`
+  identical — the dev database has no drift.
+- Notes: the route reports TMDB metadata drift nowhere; that belongs to the sync
+  paths. The snapshot is four full reads, fine at this size and noted in the
+  service if it ever needs paging.
