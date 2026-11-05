@@ -3,6 +3,7 @@ export { NoteComposer } from '@/modules/notes/components/NoteComposer';
 export { RatingControl } from '@/modules/notes/components/RatingControl';
 
 export { listNotes } from '@/modules/notes/services/listNotes';
+export { listNotesForUser } from '@/modules/notes/services/listNotesForUser';
 
 export { createNote, updateNote, deleteNote } from '@/modules/notes/actions';
 
@@ -14,6 +15,7 @@ export type {
   NoteMediaType,
   NoteView,
   UpdateNoteInput,
+  UserNoteEntry,
   UpdateNoteResult,
 } from '@/modules/notes/types';
 

@@ -45,3 +45,16 @@ export type ListNotesResult = {
   error?: string;
   notes: NoteView[];
 };
+
+/**
+ * One row of the private `/notes` index: the note, its scope, and the title it
+ * belongs to. `mediaTitle`/`mediaHref` are null when the title left the library
+ * — the note is the user's, so it stays listed but cannot link anywhere.
+ */
+export type UserNoteEntry = NoteView & {
+  mediaType: NoteMediaType;
+  tmdbId: number;
+  mediaTitle: string | null;
+  mediaSubtitle: string | null;
+  mediaHref: string | null;
+};
