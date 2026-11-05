@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   computeSeasonRewatchCount,
+  describeSeasonRewatch,
   episodeWatchCount,
   qualifiesForSeasonRewatch,
 } from '@/modules/rewatch/lib/seasonRewatch';
@@ -76,5 +77,60 @@ describe('season rewatch rule (all episodes >= 4, at least two >= 5)', () => {
     expect(qualifiesForSeasonRewatch(season, thresholds)).toBe(true);
     // The laggard (2 watches = exactly the custom baseline) still decides.
     expect(computeSeasonRewatchCount(season, thresholds)).toBe(1);
+  });
+});
+
+describe('describeSeasonRewatch', () => {
+  it('reports the shortfall that gates a watched season', () => {
+    const progress = describeSeasonRewatch([2, 2, 1, 4].map(episode));
+
+    expect(progress).toEqual({
+      count: 0,
+      lowestWatches: 1,
+      episodesBelowBaseline: 3,
+      episodesAtDeepThreshold: 0,
+    });
+  });
+
+  it('reports a qualified season with its derived count', () => {
+    const progress = describeSeasonRewatch([5, 5, 4, 4].map(episode));
+
+    expect(progress.count).toBe(1);
+    expect(progress.lowestWatches).toBe(4);
+    expect(progress.episodesBelowBaseline).toBe(0);
+    expect(progress.episodesAtDeepThreshold).toBe(2);
+  });
+
+  it('distinguishes "baseline met but not deep enough" from "below baseline"', () => {
+    const progress = describeSeasonRewatch([4, 4, 4, 5].map(episode));
+
+    expect(progress.episodesBelowBaseline).toBe(0);
+    expect(progress.episodesAtDeepThreshold).toBe(1);
+    expect(progress.count).toBe(0);
+  });
+
+  it('returns zeros for an empty season', () => {
+    expect(describeSeasonRewatch([])).toEqual({
+      count: 0,
+      lowestWatches: 0,
+      episodesBelowBaseline: 0,
+      episodesAtDeepThreshold: 0,
+    });
+  });
+
+  it('agrees with computeSeasonRewatchCount at every threshold step', () => {
+    const seasons = [
+      [0, 0, 0],
+      [1, 1, 1],
+      [3, 4, 4],
+      [4, 4, 4],
+      [4, 4, 5],
+      [5, 5, 5],
+      [6, 5, 4],
+    ].map((counts) => counts.map(episode));
+
+    for (const season of seasons) {
+      expect(describeSeasonRewatch(season).count).toBe(computeSeasonRewatchCount(season));
+    }
   });
 });

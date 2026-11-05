@@ -175,6 +175,35 @@ describe('comment service TMDB scoping', () => {
     });
   });
 
+  it('rejects more than ten distinct mentions before writing anything', async () => {
+    mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
+
+    const handles = Array.from({ length: 11 }, (_, index) => `@person${index}`).join(' ');
+    const result = await createComment(undefined, {
+      mediaType: 'movie',
+      tmdbId: 550,
+      content: handles,
+    });
+
+    expect(result.success).toBe(false);
+    expect(result.success === false && result.error).toMatch(/at most 10/i);
+    expect(mocks.findUsers).not.toHaveBeenCalled();
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+
+  it('counts repeated handles once against the mention cap', async () => {
+    mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
+    mocks.findUsers.mockResolvedValue([{ id: 'user-2', username: 'person0' }]);
+    mocks.create.mockResolvedValue(commentRow);
+
+    // 30 mentions, but only two distinct handles.
+    const content = Array.from({ length: 30 }, () => '@person0').join(' ');
+    const result = await createComment(undefined, { mediaType: 'movie', tmdbId: 550, content });
+
+    expect(result.success).toBe(true);
+    expect(mocks.findUsers.mock.calls[0][0].where.username.in).toEqual(['person0']);
+  });
+
   it('ignores unknown handles and does not create mention or notification rows', async () => {
     mocks.findMovie.mockResolvedValue({ name: 'Test Movie' });
     mocks.findUsers.mockResolvedValue([]);

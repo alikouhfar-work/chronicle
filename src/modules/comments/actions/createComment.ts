@@ -15,7 +15,11 @@ import { parseCommentAttachmentKey } from '@/modules/comments/lib/attachmentKey'
 import { getUserMediaName } from '@/modules/comments/services/getUserMediaName';
 import { resolveMentionUsers } from '@/modules/comments/services/resolveMentionUsers';
 import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
-import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
+import {
+  COMMENT_MAX_LENGTH,
+  COMMENT_MAX_MENTIONS,
+  COMMENT_MIN_LENGTH,
+} from '@/modules/comments/constants';
 import type { CommentAttachmentInput, CreateCommentResult } from '@/modules/comments/types';
 import type { CreateCommentInput } from '@/modules/comments/types/createComment';
 import { logError } from '@/infra/logging/logger';
@@ -77,9 +81,19 @@ export const createComment = async (
       return { success: false, error: 'This title is not in your library anymore.' };
     }
 
+    // Each handle becomes a notification, so the fan-out is capped before any
+    // write. Duplicates of the same handle count once.
+    const handles = [...new Set(extractMentionHandles(content))];
+    if (handles.length > COMMENT_MAX_MENTIONS) {
+      return {
+        success: false,
+        error: `Mention at most ${COMMENT_MAX_MENTIONS} people in one review.`,
+      };
+    }
+
     // Resolve every handle with one lookup. Never use client-supplied IDs to
     // decide which users are mentioned.
-    const mentionedUsers = await resolveMentionUsers(extractMentionHandles(content));
+    const mentionedUsers = await resolveMentionUsers(handles);
     const mentionRows = mentionedUsers.map((mentionedUser) => ({
       mentionedUserId: mentionedUser.id,
     }));

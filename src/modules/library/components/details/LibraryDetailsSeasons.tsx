@@ -6,6 +6,7 @@ import { clsx } from 'clsx';
 import { LibraryDetailsSeasonsProps } from '@/modules/library/types/libraryDetailsSeasons';
 import { ShowDetailsEpisodeCard } from '@/modules/episode-season';
 import { LibraryDetailsSeasonActions } from '@/modules/library/components/details/LibraryDetailsSeasonActions';
+import { describeSeasonRewatch } from '@/modules/rewatch/lib/seasonRewatch';
 
 export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
   // Track only the selected id so the season object is always derived from
@@ -24,6 +25,12 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
   );
   const isSeasonWatched =
     airedEpisodes.length > 0 && airedEpisodes.every((episode) => episode.tracking?.watched);
+  const seasonRewatchProgress = describeSeasonRewatch(
+    airedEpisodes.map((episode) => ({
+      watched: episode.tracking?.watched ?? false,
+      rewatchCount: episode.rewatchCount,
+    })),
+  );
 
   return (
     <div className="grid w-full min-w-0 grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
@@ -90,6 +97,7 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
             seasonName={activeSeason.name}
             seasonWatched={isSeasonWatched}
             seasonRewatchCount={activeSeason.rewatchCount}
+            episodesBelowBaseline={seasonRewatchProgress.episodesBelowBaseline}
           />
         </div>
 

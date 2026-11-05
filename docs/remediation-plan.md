@@ -82,7 +82,7 @@ Two consequences worth confirming, since they are user-visible:
 
 # Phase 0 — safety net
 
-## WP-01 · Rewatch cascade and concurrency tests
+## WP-01 · Rewatch cascade and concurrency tests — **done**
 **Covers:** A1 (precondition), G1.
 **Why first:** every later rewatch change needs a failing test to prove it.
 
@@ -98,7 +98,7 @@ Two consequences worth confirming, since they are user-visible:
 red test, and passes after WP-04 with no test edits.
 **Effort:** 1 day.
 
-## WP-02 · CI gates
+## WP-02 · CI gates — **done**
 **Covers:** G3, and protects every migration.
 
 - `.github/workflows/ci.yml`: Node 22, Postgres 17 service, `npm ci`, `tsc`, `lint`,
@@ -110,7 +110,7 @@ red test, and passes after WP-04 with no test edits.
 migration both fail CI.
 **Effort:** 0.5 day.
 
-## WP-03 · Structured logging
+## WP-03 · Structured logging — **done**
 **Covers:** G2; makes WP-07/WP-11 measurable.
 
 - `src/infra/logging/logger.ts` + `types.ts`: `logEvent({ level, event, route, action,
@@ -127,7 +127,7 @@ migration both fail CI.
 
 # Phase 1 — P0
 
-## WP-04 · Give cascade groups an identity
+## WP-04 · Give cascade groups an identity — **done**
 **Covers:** A1.
 
 - Migration `20261105xxxxxx_rewatch_group_id`:
@@ -145,7 +145,7 @@ logs with a null `group_id`; deletion of one batch leaves sibling batches intact
 **Risk:** low (additive column, nullable, backfill idempotent).
 **Effort:** 1.5 days.
 
-## WP-05 · Upload hardening
+## WP-05 · Upload hardening — **done**
 **Covers:** D1, D2.
 
 - `upload/route.ts`: reject on `Content-Length` > limit with 413 before reading; read the
@@ -160,7 +160,7 @@ logs with a null `group_id`; deletion of one batch leaves sibling batches intact
 **Acceptance:** the three tests above pass; no `arrayBuffer()` of an unbounded body.
 **Effort:** 1.5 days.
 
-## WP-06 · Security headers
+## WP-06 · Security headers — **done**
 **Covers:** D3.
 
 - `next.config.ts` `headers()` for all routes: `X-Content-Type-Options: nosniff`,
@@ -176,7 +176,7 @@ logs with a null `group_id`; deletion of one batch leaves sibling batches intact
 route; CSP violations are reported but nothing breaks.
 **Effort:** 1 day.
 
-## WP-07 · Attachment quota and garbage collection
+## WP-07 · Attachment quota and garbage collection — **done**
 **Covers:** D4, D5, D6.
 
 - Schema: `CommentAttachment.storageKey String @unique @map("storage_key")` (backfill from
@@ -200,7 +200,7 @@ returns 413/429 with a clear message; production without S3 fails fast.
 reference and a 24 h grace period.
 **Effort:** 2.5 days.
 
-## WP-23 · Hard-delete comments and their attachments
+## WP-23 · Hard-delete comments and their attachments — **done**
 **Covers:** D4 (delete means delete) and the removal half of C2.
 **Depends on:** WP-07 (storage `delete`, `storage_key`).
 
@@ -226,7 +226,7 @@ delete (sweep is backstop only), and the bell shows no dead entries.
 deleted, and the pre-migration dump is kept until verified.
 **Effort:** 1.5 days.
 
-## WP-08 · Idempotent rewatch
+## WP-08 · Idempotent rewatch — **done**
 **Covers:** A2.
 
 - Schema (same migration as WP-04): `clientRequestId String? @map("client_request_id")`,
@@ -243,7 +243,7 @@ deleted, and the pre-migration dump is kept until verified.
 
 # Phase 2 — P1
 
-## WP-09 · Mention cap (C1 closed by D2)
+## WP-09 · Mention cap (C1 closed by D2) — **done**
 **Covers:** C3. C1 is an accepted limitation: the feed stays flat and mentions remain
 the only notification trigger, so no `COMMENT_REPLY` value is added.
 
@@ -331,7 +331,7 @@ stale for longer than one request after a write.
 UX, not the current quirks.
 **Effort:** 2.5 days.
 
-## WP-16 · Season-rule affordance
+## WP-16 · Season-rule affordance — **done**
 **Covers:** A5.
 
 - `computeSeasonRewatchCount` returns `{ count, lowestWatches, episodesBelowBaseline }`;

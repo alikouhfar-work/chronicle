@@ -6,6 +6,7 @@ import { LibraryDetailsSeasonActionsProps } from '@/modules/library/types/librar
 import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
 import { clsx } from 'clsx';
 import { RewatchButton, WatchActionModal } from '@/modules/rewatch';
+import { SEASON_REWATCH_THRESHOLDS } from '@/modules/rewatch/lib/seasonRewatch';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
 
@@ -20,6 +21,7 @@ export const LibraryDetailsSeasonActions = ({
   seasonName,
   seasonWatched,
   seasonRewatchCount,
+  episodesBelowBaseline = 0,
 }: LibraryDetailsSeasonActionsProps) => {
   const [optimistic, setOptimistic] = useState<{ watched: boolean; count: number } | null>(null);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -42,9 +44,19 @@ export const LibraryDetailsSeasonActions = ({
     void markWatched();
   };
 
+  // Watched but zero is the confusing case: say what is still missing instead
+  // of leaving a season that has plainly been watched twice showing "0".
+  const shortfall =
+    watched && count === 0 && episodesBelowBaseline > 0
+      ? `${episodesBelowBaseline} ${
+          episodesBelowBaseline === 1 ? 'episode' : 'episodes'
+        } below ${SEASON_REWATCH_THRESHOLDS.baselineWatches} watches`
+      : null;
+
   return (
-    <div className="flex flex-wrap items-center gap-1.5 self-end">
-      {isOptionsOpen && (
+    <div className="flex flex-col items-end gap-1 self-end">
+      <div className="flex flex-wrap items-center gap-1.5">
+        {isOptionsOpen && (
         <WatchActionModal
           mediaType="season"
           mediaId={seasonId}
@@ -86,6 +98,14 @@ export const LibraryDetailsSeasonActions = ({
       >
         <span>{watched ? 'Season Watched' : 'Mark Season Watched'}</span>
       </ActionButton>
+      </div>
+
+      {shortfall ? (
+        <p className="text-[11px] text-zinc-400">
+          Season rewatch unlocks at {SEASON_REWATCH_THRESHOLDS.baselineWatches} watches per episode
+          — {shortfall}.
+        </p>
+      ) : null}
     </div>
   );
 };

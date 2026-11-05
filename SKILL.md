@@ -87,6 +87,17 @@ prisma/seed.ts              # trending seed with randomized tracking statuses
 generated/prisma/           # generated client — never hand-edit
 ```
 
+## Documentation is part of done
+
+Every change is documented, not just committed:
+
+1. **`docs/implementation-log.md`** — append a dated entry for every work package or fix: what changed, why, migrations, verification, commit hash. An undocumented change counts as unfinished.
+2. **`docs/remediation-plan.md`** — keep package status current and record product decisions (D1–D4) in its Decisions table.
+3. **`docs/gap-analysis.md`** — mark fixed findings with the fix + commit; add new gaps with severity and `file:line` evidence.
+4. **`SKILL.md`** — update contracts when behaviour or invariants move (schema, UI states, storage, rewatch rules).
+
+Entry format: `## YYYY-MM-DD — WP-XX · Title (commit abc1234)` then `Change` / `Migration` / `Verified` / `Notes` bullets.
+
 ## Conventions
 
 ```

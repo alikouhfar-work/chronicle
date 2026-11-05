@@ -39,6 +39,54 @@ export const qualifiesForSeasonRewatch = (
   );
 };
 
+export type SeasonRewatchProgress = {
+  count: number;
+  /** Watches on the least-watched episode (0 for an empty season). */
+  lowestWatches: number;
+  /** Episodes still under the baseline, i.e. what gates the season. */
+  episodesBelowBaseline: number;
+  /** Episodes that reached the deeper threshold. */
+  episodesAtDeepThreshold: number;
+};
+
+/**
+ * The rule plus the reasons it is not met. The UI uses the shortfall to explain
+ * why a twice-watched season still shows zero — otherwise the counter looks
+ * broken.
+ */
+export const describeSeasonRewatch = (
+  episodes: readonly EpisodeWatchState[],
+  thresholds: SeasonRewatchThresholds = SEASON_REWATCH_THRESHOLDS,
+): SeasonRewatchProgress => {
+  if (episodes.length === 0) {
+    return {
+      count: 0,
+      lowestWatches: 0,
+      episodesBelowBaseline: 0,
+      episodesAtDeepThreshold: 0,
+    };
+  }
+
+  const counts = episodes.map(episodeWatchCount);
+  const lowestWatches = Math.min(...counts);
+  const episodesBelowBaseline = counts.filter(
+    (count) => count < thresholds.baselineWatches,
+  ).length;
+  const episodesAtDeepThreshold = counts.filter(
+    (count) => count >= thresholds.deepWatches,
+  ).length;
+
+  const qualifies =
+    episodesBelowBaseline === 0 && episodesAtDeepThreshold >= thresholds.deepEpisodes;
+
+  return {
+    count: qualifies ? Math.max(1, lowestWatches - (thresholds.baselineWatches - 1)) : 0,
+    lowestWatches,
+    episodesBelowBaseline,
+    episodesAtDeepThreshold,
+  };
+};
+
 /**
  * Season rewatch count derived from its episodes. Returns 0 unless the whole
  * season qualifies, so a partial binge never shows a season-level rewatch.
@@ -46,9 +94,4 @@ export const qualifiesForSeasonRewatch = (
 export const computeSeasonRewatchCount = (
   episodes: readonly EpisodeWatchState[],
   thresholds: SeasonRewatchThresholds = SEASON_REWATCH_THRESHOLDS,
-): number => {
-  if (!qualifiesForSeasonRewatch(episodes, thresholds)) return 0;
-
-  const lowest = Math.min(...episodes.map(episodeWatchCount));
-  return Math.max(1, lowest - (thresholds.baselineWatches - 1));
-};
+): number => describeSeasonRewatch(episodes, thresholds).count;

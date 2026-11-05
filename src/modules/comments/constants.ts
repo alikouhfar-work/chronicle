@@ -2,5 +2,7 @@
 export const COMMENT_MIN_LENGTH = 1;
 export const COMMENT_MAX_LENGTH = 2000;
 export const MAX_ATTACHMENTS = 4;
+/** Distinct @handles one comment may ping; each one creates a notification. */
+export const COMMENT_MAX_MENTIONS = 10;
 export const DEFAULT_COMMENT_LIMIT = 20;
 export const COMMENT_SORT = { createdAt: 'desc' } as const;
