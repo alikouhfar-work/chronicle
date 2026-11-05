@@ -38,7 +38,11 @@ export const unwatchMedia = async (
       revalidateMediaDetail(result.mediaType === 'movie' ? 'movie' : 'tv', result.tmdbId);
     }
 
-    return { success: true, rewatchCount: result.rewatchCount };
+    return {
+      success: true,
+      rewatchCount: result.rewatchCount,
+      removedLogs: result.removedLogs,
+    };
   } catch (error) {
     return {
       success: false,

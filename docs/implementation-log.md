@@ -254,3 +254,26 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   fixes its tags when the wrapper is built, so per-title tags would need one
   wrapper per title. A per-title cache would need `"use cache"` + `cacheTag()`,
   which this app does not enable yet.
+
+## 2026-11-05 — WP-13 (part) unwatch accounting + editable watch dates
+- Change: `RemoveRewatchResult` / `RemoveRewatchActionResult` carry
+  `removedLogs`, counted inside the same transaction (parent row plus every
+  cascaded child), and the unwatch toast states what actually went away —
+  "Watch removed." versus "12 logged watches removed." New
+  `updateRewatchLog` service + action moves one log to a different date, scoped
+  to the owner (another account's log id reads as missing), leaving counts
+  untouched because the season rule depends on how many watches happened, not
+  when. `RewatchHistoryModal` rows gained an edit control that swaps the label
+  for a `datetime-local` input with save/cancel.
+- Migration: none (no soft-delete column yet — see notes).
+- Verified: 3 new integration tests (date moved, counts and watched flag
+  unchanged; another account's log rejected; a show unwatch reports ≥ 7 removed
+  rows for 2 seasons/4 episodes), 44/44 rewatch integration tests, 303 unit
+  tests, lint, build exit 0. Live: added a watch in the history dialog, changed
+  its date from Nov 5 2026 to Mar 15 2024 9:30 AM through the new control, count
+  stayed at 1; probe row and counters then restored.
+- Notes: **the undo half of WP-13 is not built.** It needs
+  `rewatch_logs.deleted_at`, a soft-delete variant of the clear paths, a
+  10-minute toast undo and a purge pass — a schema change plus a background job
+  that deserves its own package (`WP-13b`). Until then unwatch stays final, as
+  it has been.

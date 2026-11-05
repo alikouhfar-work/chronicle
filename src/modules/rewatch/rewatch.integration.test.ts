@@ -19,6 +19,8 @@ let removeRewatchLog!: typeof import('@/modules/rewatch/services/rewatchService'
 let getRewatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').getRewatchHistory;
 let clearEpisodeWatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').clearEpisodeWatchHistory;
 let clearMovieWatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').clearMovieWatchHistory;
+let updateRewatchLog!: typeof import('@/modules/rewatch/services/rewatchService').updateRewatchLog;
+let clearShowWatchHistory!: typeof import('@/modules/rewatch/services/rewatchService').clearShowWatchHistory;
 
 const databaseName = (() => {
   try {
@@ -54,6 +56,8 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
       getRewatchHistory,
       clearEpisodeWatchHistory,
       clearMovieWatchHistory,
+      clearShowWatchHistory,
+      updateRewatchLog,
     } = await import('@/modules/rewatch/services/rewatchService'));
   });
 
@@ -472,6 +476,77 @@ describe.runIf(integrationEnabled)('rewatch tracking integration', () => {
         clientRequestId,
       }),
     ).rejects.toThrow(/different watch/i);
+  });
+
+  it('moves a log to another date without touching counts', async () => {
+    const first = await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'episode',
+      mediaId: fixtures.episodes.s1e1.id,
+      rewatchedAt: new Date('2026-01-01T20:00:00Z'),
+    });
+
+    const before = await prisma.episode.findUnique({
+      where: { id: fixtures.episodes.s1e1.id },
+      select: { rewatchCount: true },
+    });
+
+    const moved = await updateRewatchLog({
+      userId: fixtures.user.id,
+      logId: first.logId,
+      rewatchedAt: new Date('2025-06-02T18:30:00Z'),
+    });
+
+    expect(moved.rewatchedAt.toISOString()).toBe('2025-06-02T18:30:00.000Z');
+
+    const after = await prisma.episode.findUnique({
+      where: { id: fixtures.episodes.s1e1.id },
+      select: { rewatchCount: true, tracking: { select: { watched: true } } },
+    });
+    expect(after?.rewatchCount).toBe(before?.rewatchCount);
+    expect(after?.tracking?.watched).toBe(true);
+
+    const history = await getRewatchHistory({
+      userId: fixtures.user.id,
+      mediaType: 'episode',
+      mediaId: fixtures.episodes.s1e1.id,
+    });
+    expect(history.history[0]?.rewatchedAt.toISOString()).toBe('2025-06-02T18:30:00.000Z');
+  });
+
+  it('refuses to move another account\'s log', async () => {
+    const log = await recordRewatch({
+      userId: fixtures.otherUser.id,
+      mediaType: 'episode',
+      mediaId: fixtures.otherEpisode.id,
+    });
+
+    await expect(
+      updateRewatchLog({
+        userId: fixtures.user.id,
+        logId: log.logId,
+        rewatchedAt: new Date('2025-06-02T18:30:00Z'),
+      }),
+    ).rejects.toThrow(/not found/i);
+  });
+
+  it('reports how many logs an unwatch removed', async () => {
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'show',
+      mediaId: fixtures.show.id,
+    });
+
+    const cleared = await clearShowWatchHistory({
+      userId: fixtures.user.id,
+      mediaId: fixtures.show.id,
+    });
+
+    // One show row + one season row per season + one row per episode.
+    expect(cleared.removedLogs).toBeGreaterThanOrEqual(1 + 2 + 4);
+    expect(
+      await prisma.rewatchLog.count({ where: { userId: fixtures.user.id } }),
+    ).toBe(0);
   });
 
   it('rejects media owned by another user', async () => {

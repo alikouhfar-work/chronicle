@@ -704,6 +704,9 @@ export const removeRewatchLog = async (input: {
       log.mediaId,
     );
 
+    // The parent row itself is one removed watch; children add to it.
+    let removedLogs = 1;
+
     const rewatchCount = await prisma.$transaction(async (tx) => {
       await tx.rewatchLog.delete({ where: { id: log.id } });
 
@@ -766,9 +769,10 @@ export const removeRewatchLog = async (input: {
             })
           : [];
         if (cascaded.length > 0) {
-          await tx.rewatchLog.deleteMany({
+          const removed = await tx.rewatchLog.deleteMany({
             where: { id: { in: cascaded.map((entry) => entry.id) } },
           });
+          removedLogs += removed.count;
           const episodeIds = cascaded
             .map((entry) => entry.episodeId)
             .filter((episodeId): episodeId is string => episodeId !== null);
@@ -803,9 +807,10 @@ export const removeRewatchLog = async (input: {
             })
           : [];
         if (cascaded.length > 0) {
-          await tx.rewatchLog.deleteMany({
+          const removed = await tx.rewatchLog.deleteMany({
             where: { id: { in: cascaded.map((entry) => entry.id) } },
           });
+          removedLogs += removed.count;
           const episodeIds = cascaded
             .map((entry) => entry.episodeId)
             .filter((episodeId): episodeId is string => episodeId !== null);
@@ -848,10 +853,61 @@ export const removeRewatchLog = async (input: {
       // Authoritative post-delete value, not `previous - 1`: season counts are
       // derived from episodes and can move by more than one.
       rewatchCount,
+      removedLogs,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new DatabaseError(`Failed to remove watch log "${logId}"`, { cause: error });
+  }
+};
+
+/**
+ * Move one logged watch to a different date. Counts are unaffected — the season
+ * rule looks at how many watches happened, not when — so nothing is recomputed;
+ * only the history ordering changes.
+ */
+export const updateRewatchLog = async (input: {
+  userId: string;
+  logId: unknown;
+  rewatchedAt: unknown;
+}): Promise<{
+  logId: string;
+  rewatchedAt: Date;
+  mediaType: RewatchMediaType;
+  tmdbId: number | null;
+}> => {
+  const logId = parseDbId(input.logId, 'logId');
+  const rewatchedAt =
+    input.rewatchedAt instanceof Date ? input.rewatchedAt : new Date(String(input.rewatchedAt));
+
+  if (Number.isNaN(rewatchedAt.getTime())) {
+    throw new ValidationError('rewatched_at must be a valid date');
+  }
+
+  try {
+    const log = await prisma.rewatchLog.findUnique({
+      where: { id: logId },
+      select: { id: true, userId: true, mediaType: true, mediaId: true },
+    });
+
+    // Scoped by owner: another account's log id must look missing, not forbidden.
+    if (!log || log.userId !== input.userId) {
+      throw new NotFoundError(`Watch log not found: ${logId}`);
+    }
+
+    const mediaType = parseRewatchMediaType(String(log.mediaType).toLowerCase());
+    const target = await getOwnedMediaRef(prisma, input.userId, mediaType, log.mediaId);
+
+    const updated = await prisma.rewatchLog.update({
+      where: { id: logId },
+      data: { rewatchedAt },
+      select: { rewatchedAt: true },
+    });
+
+    return { logId, rewatchedAt: updated.rewatchedAt, mediaType, tmdbId: target.tmdbId };
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new DatabaseError(`Failed to update watch log "${logId}"`, { cause: error });
   }
 };
 
@@ -885,14 +941,16 @@ export const clearEpisodeWatchHistory = async (input: {
       throw new NotFoundError(`Episode not found: ${mediaId}`);
     }
 
+    let removedLogs = 0;
     await prisma.$transaction(async (tx) => {
-      await tx.rewatchLog.deleteMany({
+      const removed = await tx.rewatchLog.deleteMany({
         where: {
           userId: input.userId,
           mediaType: DbRewatchMediaType.EPISODE,
           mediaId: episode.id,
         },
       });
+      removedLogs += removed.count;
 
       await tx.episode.update({
         where: { id: episode.id },
@@ -913,6 +971,7 @@ export const clearEpisodeWatchHistory = async (input: {
       mediaId: episode.id,
       tmdbId: episode.season.show.tmdbId,
       rewatchCount: 0,
+      removedLogs,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -943,14 +1002,16 @@ export const clearMovieWatchHistory = async (input: {
       throw new NotFoundError(`Movie not found: ${mediaId}`);
     }
 
+    let removedLogs = 0;
     await prisma.$transaction(async (tx) => {
-      await tx.rewatchLog.deleteMany({
+      const removed = await tx.rewatchLog.deleteMany({
         where: {
           userId: input.userId,
           mediaType: DbRewatchMediaType.MOVIE,
           mediaId: movie.id,
         },
       });
+      removedLogs += removed.count;
 
       await tx.movie.update({ where: { id: movie.id }, data: { rewatchCount: 0 } });
 
@@ -971,6 +1032,7 @@ export const clearMovieWatchHistory = async (input: {
       mediaId: movie.id,
       tmdbId: movie.tmdbId,
       rewatchCount: 0,
+      removedLogs,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -1009,8 +1071,9 @@ export const clearSeasonWatchHistory = async (input: {
 
     const episodeIds = season.episodes.map((episode) => episode.id);
 
+    let removedLogs = 0;
     await prisma.$transaction(async (tx) => {
-      await tx.rewatchLog.deleteMany({
+      const removed = await tx.rewatchLog.deleteMany({
         where: {
           userId: input.userId,
           OR: [
@@ -1022,6 +1085,7 @@ export const clearSeasonWatchHistory = async (input: {
           ],
         },
       });
+      removedLogs += removed.count;
 
       await tx.season.update({ where: { id: season.id }, data: { rewatchCount: 0 } });
 
@@ -1044,6 +1108,7 @@ export const clearSeasonWatchHistory = async (input: {
       mediaId: season.id,
       tmdbId: season.show.tmdbId,
       rewatchCount: 0,
+      removedLogs,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -1073,8 +1138,9 @@ export const clearShowWatchHistory = async (input: {
       throw new NotFoundError(`Show not found: ${mediaId}`);
     }
 
+    let removedLogs = 0;
     await prisma.$transaction(async (tx) => {
-      await tx.rewatchLog.deleteMany({
+      const removed = await tx.rewatchLog.deleteMany({
         where: {
           userId: input.userId,
           showId: show.id,
@@ -1083,6 +1149,7 @@ export const clearShowWatchHistory = async (input: {
           },
         },
       });
+      removedLogs += removed.count;
 
       await tx.show.update({ where: { id: show.id }, data: { rewatchCount: 0 } });
       await tx.season.updateMany({
@@ -1109,6 +1176,7 @@ export const clearShowWatchHistory = async (input: {
       mediaId: show.id,
       tmdbId: show.tmdbId,
       rewatchCount: 0,
+      removedLogs,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;

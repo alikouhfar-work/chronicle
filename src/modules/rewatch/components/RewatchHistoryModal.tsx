@@ -4,20 +4,24 @@ import { useEffect, useRef, useState, useTransition } from 'react';
 import { format } from 'date-fns';
 import {
   IconCalendarPlus,
+  IconCheck,
   IconHistory,
   IconLoader2,
+  IconPencil,
   IconRotateClockwise,
   IconTrash,
+  IconX,
 } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { loadRewatchHistory } from '@/modules/rewatch/actions/loadRewatchHistory';
 import { removeRewatch } from '@/modules/rewatch/actions/removeRewatch';
+import { updateRewatchLog } from '@/modules/rewatch/actions/updateRewatchLog';
 import type {
   RewatchHistoryEntry,
   RewatchHistoryModalProps,
 } from '@/modules/rewatch/types/rewatch';
-import { toastError } from '@/shared/lib/toast';
+import { toastError, toastSuccess } from '@/shared/lib/toast';
 
 const toDateTimeInputValue = (date: Date = new Date()): string => {
   const local = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
@@ -147,7 +151,51 @@ export const RewatchHistoryModal = ({
     });
   };
 
-  const isPending = isAdding || isDeleting;
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [isSavingEdit, startSaveEdit] = useTransition();
+
+  const isPending = isAdding || isDeleting || isSavingEdit;
+
+  const beginEdit = (entry: RewatchHistoryEntry) => {
+    setError(null);
+    setEditingId(entry.id);
+    setEditValue(toDateTimeInputValue(new Date(entry.rewatchedAt)));
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditValue('');
+  };
+
+  const handleSaveEdit = (logId: string) => {
+    const next = new Date(editValue);
+    if (Number.isNaN(next.getTime())) {
+      setError('Choose a valid date and time.');
+      return;
+    }
+
+    setError(null);
+    startSaveEdit(async () => {
+      const result = await updateRewatchLog(logId, next.toISOString());
+      if (!result.success) {
+        setError(result.error);
+        toastError(result.error);
+        return;
+      }
+
+      setHistory((current) =>
+        (current ?? [])
+          .map((entry) =>
+            entry.id === logId ? { ...entry, rewatchedAt: result.rewatchedAt } : entry,
+          )
+          .sort((a, b) => a.rewatchedAt.localeCompare(b.rewatchedAt)),
+      );
+      cancelEdit();
+      toastSuccess('Watch date updated.', 'Saved');
+      router.refresh();
+    });
+  };
   const reversedHistory = [...(history ?? [])].reverse();
 
   return (
@@ -223,26 +271,81 @@ export const RewatchHistoryModal = ({
                         <IconRotateClockwise size={14} />
                       </span>
                       <div>
-                        <p className="text-xs font-semibold text-zinc-200">
-                          {formatRewatchedAt(entry.rewatchedAt)}
+                        {editingId === entry.id ? (
+                          <input
+                            type="datetime-local"
+                            value={editValue}
+                            onChange={(event) => setEditValue(event.target.value)}
+                            aria-label="Watch date and time"
+                            className="rounded-lg border border-white/10 bg-black/30 px-2 py-1 text-xs text-zinc-100"
+                          />
+                        ) : (
+                          <p className="text-xs font-semibold text-zinc-200">
+                            {formatRewatchedAt(entry.rewatchedAt)}
+                          </p>
+                        )}
+                        <p className="text-[10px] text-zinc-400">
+                          {editingId === entry.id ? 'Edit the date' : 'Watch logged'}
                         </p>
-                        <p className="text-[10px] text-zinc-400">Watch logged</p>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(entry.id)}
-                      disabled={isPending}
-                      aria-label="Delete watch entry"
-                      title="Delete watch entry"
-                      className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-red-500/15 hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      {isDeleting && deletingId === entry.id ? (
-                        <IconLoader2 size={14} className="animate-spin" />
+                    <div className="flex items-center gap-1.5">
+                      {editingId === entry.id ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => handleSaveEdit(entry.id)}
+                            disabled={isPending}
+                            aria-label="Save watch date"
+                            title="Save watch date"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-violet-500/20 hover:text-violet-200 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {isSavingEdit ? (
+                              <IconLoader2 size={14} className="animate-spin" />
+                            ) : (
+                              <IconCheck size={14} />
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={cancelEdit}
+                            disabled={isPending}
+                            aria-label="Cancel date edit"
+                            title="Cancel date edit"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            <IconX size={14} />
+                          </button>
+                        </>
                       ) : (
-                        <IconTrash size={14} />
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => beginEdit(entry)}
+                            disabled={isPending}
+                            aria-label="Edit watch date"
+                            title="Edit watch date"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            <IconPencil size={14} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(entry.id)}
+                            disabled={isPending}
+                            aria-label="Delete watch entry"
+                            title="Delete watch entry"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-red-500/15 hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {isDeleting && deletingId === entry.id ? (
+                              <IconLoader2 size={14} className="animate-spin" />
+                            ) : (
+                              <IconTrash size={14} />
+                            )}
+                          </button>
+                        </>
                       )}
-                    </button>
+                    </div>
                   </li>
                 ))}
               </ul>

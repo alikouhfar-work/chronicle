@@ -297,7 +297,7 @@ stale for longer than one request after a write.
 
 **Effort:** 0.5 day.
 
-## WP-13 · Unwatch safety and log editing
+## WP-13 · Unwatch safety and log editing — **part done** (dates + accounting; undo → WP-13b)
 **Covers:** A3, A4.
 
 - `WatchActionModal` shows the destructive count for show/season unwatch.

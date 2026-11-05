@@ -23,6 +23,10 @@ vi.mock('@/modules/rewatch/actions/removeRewatch', () => ({
   removeRewatch: vi.fn(),
 }));
 
+vi.mock('@/modules/rewatch/actions/updateRewatchLog', () => ({
+  updateRewatchLog: vi.fn(),
+}));
+
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ refresh: vi.fn() }),
 }));

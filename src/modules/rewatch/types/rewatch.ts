@@ -48,10 +48,19 @@ export type AddRewatchActionResult =
     }
   | RewatchActionFailure;
 
+export type UpdateRewatchActionResult =
+  | {
+      success: true;
+      logId: string;
+      rewatchedAt: string;
+    }
+  | RewatchActionFailure;
+
 export type RemoveRewatchActionResult =
   | {
       success: true;
       rewatchCount: number;
+      removedLogs: number;
     }
   | RewatchActionFailure;
 
@@ -77,6 +86,8 @@ export type RemoveRewatchResult = {
   mediaId: string;
   tmdbId: number | null;
   rewatchCount: number;
+  /** How many log rows the operation deleted, including cascaded children. */
+  removedLogs: number;
 };
 
 export type RewatchHistoryResult = {

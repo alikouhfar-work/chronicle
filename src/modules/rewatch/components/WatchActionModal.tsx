@@ -9,7 +9,7 @@ import type {
   WatchActionModalProps,
   WatchActionPending,
 } from '@/modules/rewatch/types/watchActionModal';
-import { toastError } from '@/shared/lib/toast';
+import { toastError, toastSuccess } from '@/shared/lib/toast';
 
 const HEADINGS: Record<WatchActionModalProps['mediaType'], string> = {
   episode: 'Episode Options',
@@ -103,6 +103,13 @@ export const WatchActionModal = ({
         return;
       }
 
+      const removed = result.removedLogs;
+      toastSuccess(
+        removed === 1
+          ? 'Watch removed.'
+          : `${removed} logged watches removed.`,
+        'Unwatched',
+      );
       onUnwatch(result.rewatchCount);
       router.refresh();
       dialogRef.current?.close();
