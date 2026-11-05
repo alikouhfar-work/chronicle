@@ -1,8 +1,10 @@
 import 'server-only';
 
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -87,6 +89,37 @@ export const createS3Storage = (config: ObjectStorageConfig): StorageProvider =>
       } catch {
         return false;
       }
+    },
+    list: async (prefix) => {
+      const objects: { key: string; lastModified: Date | null; size: number }[] = [];
+      let continuationToken: string | undefined;
+
+      do {
+        const page = await client.send(
+          new ListObjectsV2Command({
+            Bucket: config.bucket,
+            Prefix: prefix,
+            ContinuationToken: continuationToken,
+          }),
+        );
+
+        for (const object of page.Contents ?? []) {
+          if (!object.Key) continue;
+          objects.push({
+            key: object.Key,
+            lastModified: object.LastModified ?? null,
+            size: object.Size ?? 0,
+          });
+        }
+
+        continuationToken = page.IsTruncated ? page.NextContinuationToken : undefined;
+      } while (continuationToken);
+
+      return objects;
+    },
+    remove: async (key) => {
+      // S3 deletes are idempotent: removing a missing key succeeds.
+      await client.send(new DeleteObjectCommand({ Bucket: config.bucket, Key: key }));
     },
   };
 };

@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { buildSecurityHeaders } from './src/infra/http/securityHeaders';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -10,6 +11,9 @@ const nextConfig: NextConfig = {
         pathname: '/t/p/**',
       },
     ],
+  },
+  async headers() {
+    return [{ source: '/(.*)', headers: buildSecurityHeaders() }];
   },
 };
 

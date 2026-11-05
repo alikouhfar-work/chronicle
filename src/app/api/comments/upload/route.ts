@@ -4,7 +4,8 @@ import { COMMENT_MAX_ATTACHMENT_SIZE_BYTES, getCommentStorage } from '@/infra/st
 import { buildCommentAttachmentKey } from '@/modules/comments/lib/attachmentKey';
 import { readCappedBody } from '@/modules/comments/lib/readCappedBody';
 import { sniffImageType } from '@/modules/comments/lib/sniffImageType';
-import { logError } from '@/infra/logging/logger';
+import { checkAttachmentQuota } from '@/modules/comments/services/checkAttachmentQuota';
+import { logError, logInfo } from '@/infra/logging/logger';
 
 export const runtime = 'nodejs';
 
@@ -36,13 +37,22 @@ const declaredLength = (request: Request): number | null => {
  *   are derived from that, not from `file.type`.
  */
 export const POST = async (request: Request) => {
+  let userId: string;
   try {
-    await requireUserId();
+    userId = await requireUserId();
   } catch {
     return NextResponse.json(
       { ok: false, error: 'Sign in to upload images.' },
       { status: 401, headers: NOSNIFF },
     );
+  }
+
+  // Quota is checked before the body is read: a rejected upload should not cost
+  // any memory or bandwidth.
+  const quota = await checkAttachmentQuota(userId);
+  if (!quota.ok) {
+    logInfo({ event: 'comment.upload.quota', userId });
+    return NextResponse.json({ ok: false, error: quota.error }, { status: 429, headers: NOSNIFF });
   }
 
   const length = declaredLength(request);

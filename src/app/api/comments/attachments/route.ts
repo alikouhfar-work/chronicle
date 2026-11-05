@@ -77,6 +77,7 @@ export const POST = async (request: Request) => {
     const attachment = await prisma.commentAttachment.create({
       data: {
         commentId: body.commentId,
+        storageKey: body.key,
         url: storage.publicUrl(body.key),
         mimeType: body.mimeType,
         sizeBytes: body.sizeBytes ?? 0,

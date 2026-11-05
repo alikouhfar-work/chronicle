@@ -19,6 +19,10 @@ export const COMMENT_STORAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/web
 export const COMMENT_MAX_ATTACHMENT_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 export const COMMENT_MAX_ATTACHMENTS_PER_COMMENT = 4;
 export const COMMENT_ATTACHMENT_PREFIX = 'comment-attachments';
+/** Total bytes one account may keep in attachments. */
+export const COMMENT_USER_QUOTA_BYTES = 250 * 1024 * 1024;
+/** Uploads allowed per account per rolling day. */
+export const COMMENT_DAILY_UPLOAD_LIMIT = 40;
 
 const localRoot = (): string => process.env.COMMENT_STORAGE_DIR ?? '.data/comment-uploads';
 
@@ -40,6 +44,43 @@ export const localStorage: StorageProvider = {
       return false;
     }
   },
+  list: async (prefix) => {
+    const walk = async (directory: string): Promise<string[]> => {
+      let entries;
+      try {
+        entries = await fs.readdir(directory, { withFileTypes: true });
+      } catch {
+        return [];
+      }
+
+      const files: string[] = [];
+      for (const entry of entries) {
+        const full = path.join(directory, entry.name);
+        if (entry.isDirectory()) {
+          files.push(...(await walk(full)));
+        } else if (entry.isFile()) {
+          files.push(path.relative(localRoot(), full).split(path.sep).join('/'));
+        }
+      }
+      return files;
+    };
+
+    const keys = (await walk(path.join(localRoot(), prefix))).filter((key) => key.startsWith(prefix));
+
+    return Promise.all(
+      keys.map(async (key) => {
+        const stats = await fs.stat(path.join(localRoot(), key));
+        return { key, lastModified: stats.mtime, size: stats.size };
+      }),
+    );
+  },
+  remove: async (key) => {
+    try {
+      await fs.unlink(path.join(localRoot(), key));
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+  },
 };
 
 /**
@@ -48,7 +89,19 @@ export const localStorage: StorageProvider = {
  */
 export const getCommentStorage = (env: NodeJS.ProcessEnv = process.env): StorageProvider => {
   const config = readObjectStorageConfig(env);
-  return config ? createS3Storage(config) : localStorage;
+
+  if (config) return createS3Storage(config);
+
+  // The disk fallback is a development convenience: on a server the filesystem
+  // is ephemeral and each instance sees only its own uploads.
+  if (env.NODE_ENV === 'production') {
+    throw new Error(
+      'S3_BUCKET is not configured. Comment attachments need S3-compatible object ' +
+        'storage in production (set S3_BUCKET, S3_REGION and credentials).',
+    );
+  }
+
+  return localStorage;
 };
 
 /** A key is only ever a `comment-attachments/...` object name. */

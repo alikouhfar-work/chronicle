@@ -34,3 +34,17 @@ export const buildCommentAttachmentKey = (params: {
 
   return `${COMMENT_ATTACHMENT_PREFIX}/${timestamp}-${uuid}-${baseName}.${extensionForMime(params.mimeType)}`;
 };
+
+/**
+ * Extracts the object key from a minted attachment URL (public bucket URL or
+ * the `/api/comments/files/...` route). Returns null for anything that is not
+ * an attachment key this app could have produced.
+ */
+export const parseCommentAttachmentKey = (url: string): string | null => {
+  const marker = `${COMMENT_ATTACHMENT_PREFIX}/`;
+  const index = url.lastIndexOf(marker);
+  if (index === -1) return null;
+
+  const key = url.slice(index);
+  return key.length > marker.length ? key : null;
+};

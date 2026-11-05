@@ -1,4 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
+import { promises as fs } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const sdk = vi.hoisted(() => ({
   send: vi.fn().mockResolvedValue({}),
@@ -20,11 +23,28 @@ vi.mock('@aws-sdk/client-s3', () => {
       sdk.head(input);
     }
   }
+  class DeleteObjectCommand {
+    constructor(input: unknown) {
+      sdk.put({ deleted: input });
+    }
+  }
+  class ListObjectsV2Command {
+    constructor(public input: unknown) {
+      sdk.put({ listed: input });
+    }
+  }
   class S3Client {
     constructor(public config: unknown) {}
     send = sdk.send;
   }
-  return { S3Client, PutObjectCommand, GetObjectCommand, HeadObjectCommand };
+  return {
+    S3Client,
+    PutObjectCommand,
+    GetObjectCommand,
+    HeadObjectCommand,
+    DeleteObjectCommand,
+    ListObjectsV2Command,
+  };
 });
 
 const {
@@ -116,5 +136,86 @@ describe('attachment key and URL validation', () => {
     expect(isCommentAttachmentUrl('/api/comments/files/comment-attachments/a.png')).toBe(true);
     expect(isCommentAttachmentUrl('https://evil.example.com/a.png')).toBe(false);
     expect(isCommentAttachmentUrl('javascript:alert(1)')).toBe(false);
+  });
+});
+
+describe('local provider maintenance operations', () => {
+  const prepare = async () => {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'chronicle-attachments-'));
+    process.env.COMMENT_STORAGE_DIR = dir;
+    return dir;
+  };
+
+  afterEach(async () => {
+    const dir = process.env.COMMENT_STORAGE_DIR;
+    delete process.env.COMMENT_STORAGE_DIR;
+    if (dir?.includes('chronicle-attachments-')) {
+      await fs.rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('lists objects under the attachment prefix with mtimes', async () => {
+    const dir = await prepare();
+    await fs.mkdir(path.join(dir, 'comment-attachments'), { recursive: true });
+    await fs.writeFile(path.join(dir, 'comment-attachments', 'a.png'), 'x');
+    await fs.writeFile(path.join(dir, 'other.txt'), 'y');
+
+    const objects = await localStorage.list('comment-attachments/');
+
+    expect(objects.map((object) => object.key)).toEqual(['comment-attachments/a.png']);
+    expect(objects[0]?.size).toBe(1);
+    expect(objects[0]?.lastModified).toBeInstanceOf(Date);
+  });
+
+  it('removes an object and tolerates a missing one', async () => {
+    const dir = await prepare();
+    await fs.mkdir(path.join(dir, 'comment-attachments'), { recursive: true });
+    await fs.writeFile(path.join(dir, 'comment-attachments', 'a.png'), 'x');
+
+    await localStorage.remove('comment-attachments/a.png');
+    await expect(fs.access(path.join(dir, 'comment-attachments', 'a.png'))).rejects.toThrow();
+
+    await expect(localStorage.remove('comment-attachments/a.png')).resolves.toBeUndefined();
+  });
+
+  it('refuses to build a storage provider without a bucket in production', () => {
+    expect(() => getCommentStorage(env({ NODE_ENV: 'production' }))).toThrow(/S3_BUCKET/);
+  });
+});
+
+describe('S3 maintenance operations', () => {
+  it('deletes an object through DeleteObject', async () => {
+    const storage = getCommentStorage(env({ S3_BUCKET: 'chronicle' }));
+
+    await storage.remove('comment-attachments/a.png');
+
+    expect(sdk.put).toHaveBeenCalledWith({
+      deleted: { Bucket: 'chronicle', Key: 'comment-attachments/a.png' },
+    });
+  });
+
+  it('pages through ListObjectsV2 results', async () => {
+    const storage = getCommentStorage(env({ S3_BUCKET: 'chronicle' }));
+
+    sdk.send
+      .mockResolvedValueOnce({
+        Contents: [{ Key: 'comment-attachments/a.png', Size: 10, LastModified: new Date() }],
+        IsTruncated: true,
+        NextContinuationToken: 'page-2',
+      })
+      .mockResolvedValueOnce({
+        Contents: [{ Key: 'comment-attachments/b.png', Size: 20, LastModified: new Date() }],
+        IsTruncated: false,
+      });
+
+    const objects = await storage.list('comment-attachments/');
+
+    expect(objects.map((object) => object.key)).toEqual([
+      'comment-attachments/a.png',
+      'comment-attachments/b.png',
+    ]);
+    expect(sdk.put).toHaveBeenLastCalledWith({
+      listed: expect.objectContaining({ ContinuationToken: 'page-2' }),
+    });
   });
 });

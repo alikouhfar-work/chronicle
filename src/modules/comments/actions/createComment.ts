@@ -11,6 +11,7 @@ import {
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
 import { extractMentionHandles } from '@/modules/comments/lib/mentions';
+import { parseCommentAttachmentKey } from '@/modules/comments/lib/attachmentKey';
 import { getUserMediaName } from '@/modules/comments/services/getUserMediaName';
 import { resolveMentionUsers } from '@/modules/comments/services/resolveMentionUsers';
 import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
@@ -21,6 +22,7 @@ import { logError } from '@/infra/logging/logger';
 
 const isValidAttachment = (attachment: CommentAttachmentInput): boolean =>
   isCommentAttachmentUrl(attachment?.url) &&
+  parseCommentAttachmentKey(attachment.url) !== null &&
   typeof attachment.mimeType === 'string' &&
   COMMENT_STORAGE_MIME_TYPES.includes(
     attachment.mimeType as (typeof COMMENT_STORAGE_MIME_TYPES)[number],
@@ -108,6 +110,7 @@ export const createComment = async (
           attachments.length > 0
             ? {
                 create: attachments.map((attachment) => ({
+                  storageKey: parseCommentAttachmentKey(attachment.url) ?? '',
                   url: attachment.url,
                   mimeType: attachment.mimeType,
                   sizeBytes: attachment.sizeBytes,

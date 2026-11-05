@@ -282,6 +282,9 @@ model Comment {
 model CommentAttachment {
   id        String   @id @default(uuid())
   commentId String   @map("comment_id")
+  /// Object key inside the bucket (or local root). Derived server-side, never
+  /// from the client, so the sweep can match rows to stored objects.
+  storageKey String  @unique @map("storage_key")
   url       String
   width     Int?
   height    Int?
