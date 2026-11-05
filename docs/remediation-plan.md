@@ -340,7 +340,7 @@ UX, not the current quirks.
 
 **Effort:** 0.5 day.
 
-## WP-22 · Grouped season recompute
+## WP-22 · Grouped season recompute — **done**
 **Covers:** F2.
 
 - One grouped query for all seasons of a show; `updateMany` per distinct value instead of

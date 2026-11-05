@@ -212,6 +212,47 @@ const getOwnedMediaRef = async (
   return { tmdbId: episode.season.show.tmdbId, rewatchCount: episode.rewatchCount };
 };
 
+/**
+ * Recomputes every season of a show from one query instead of one round trip per
+ * season, then writes the changes grouped by new value. A show rewatch touches
+ * all seasons at once, and a ten-season show should not mean ten extra reads.
+ */
+const syncShowSeasonRewatchCounts = async (
+  tx: Prisma.TransactionClient,
+  showId: string,
+): Promise<void> => {
+  const seasons = await tx.season.findMany({
+    where: { showId },
+    select: {
+      id: true,
+      rewatchCount: true,
+      episodes: {
+        select: { rewatchCount: true, tracking: { select: { watched: true } } },
+      },
+    },
+  });
+
+  const pending = seasons
+    .map((season) => ({
+      id: season.id,
+      next: computeSeasonRewatchCount(
+        season.episodes.map((episode) => ({
+          watched: episode.tracking?.watched ?? false,
+          rewatchCount: episode.rewatchCount,
+        })),
+      ),
+    }))
+    .filter((entry) => entry.next !== seasons.find((season) => season.id === entry.id)?.rewatchCount);
+
+  const values = [...new Set(pending.map((entry) => entry.next))];
+  for (const value of values) {
+    await tx.season.updateMany({
+      where: { id: { in: pending.filter((entry) => entry.next === value).map((entry) => entry.id) } },
+      data: { rewatchCount: value },
+    });
+  }
+};
+
 const recordEpisodeRewatch = async (
   tx: Prisma.TransactionClient,
   userId: string,
@@ -420,7 +461,6 @@ const recordShowRewatch = async (
   );
   await createRewatchLogs(tx, [...seasonLogs, ...episodeLogs]);
 
-  const seasonIds = show.seasons.map((season) => season.id);
   const episodeIds = show.seasons.flatMap((season) =>
     season.episodes.map((episode) => episode.id),
   );
@@ -437,9 +477,7 @@ const recordShowRewatch = async (
   }
 
   await markEpisodesWatched(tx, episodeIds, rewatchedAt);
-  for (const seasonId of seasonIds) {
-    await syncSeasonRewatchCount(tx, seasonId);
-  }
+  await syncShowSeasonRewatchCounts(tx, show.id);
   await refreshShowTracking(tx, show.id, userId, rewatchedAt);
 
   return {
@@ -777,16 +815,7 @@ export const removeRewatchLog = async (input: {
           });
         }
 
-        const touchedSeasons = [
-          ...new Set(
-            cascaded
-              .map((entry) => entry.seasonId)
-              .filter((seasonId): seasonId is string => seasonId !== null),
-          ),
-        ];
-        for (const seasonId of touchedSeasons) {
-          await syncSeasonRewatchCount(tx, seasonId);
-        }
+        await syncShowSeasonRewatchCounts(tx, log.mediaId);
 
         await tx.show.updateMany({
           where: { id: log.mediaId, rewatchCount: { gt: 0 } },

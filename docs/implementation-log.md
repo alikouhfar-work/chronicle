@@ -180,3 +180,15 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   threshold step) and a live check on a real season with 8 episodes at 1 watch.
 - Notes: the threshold text comes from `SEASON_REWATCH_THRESHOLDS`, so changing
   the rule updates the copy automatically.
+
+## 2026-11-05 — WP-22 grouped season recompute (commit pending)
+- Change: `syncShowSeasonRewatchCounts` loads every season of a show with its
+  episode counters in one query, computes each derived count, and writes the
+  changes grouped by new value (`updateMany` per distinct value). Used by the
+  show-rewatch path and by show-log removal, replacing a per-season loop that
+  issued one reload per season inside the transaction.
+- Migration: none.
+- Verified: 41/41 rewatch integration tests (cascade, groups, idempotency,
+  derived counts) against a freshly migrated database; build green.
+- Notes: the per-season round trip was the last O(seasons) read pattern in the
+  rewatch service; episode and season writes still use the single-season helper.
