@@ -231,6 +231,9 @@ model RewatchLog {
   mediaType   RewatchMediaType @map("media_type")
   mediaId     String           @map("media_id")
   rewatchedAt DateTime         @default(now()) @map("rewatched_at")
+  /// Batch identity: a season/show rewatch writes one group; children share the
+  /// parent's id. Standalone logs are their own group.
+  groupId     String           @map("group_id")
   showId      String?          @map("show_id")
   seasonId    String?          @map("season_id")
   episodeId   String?          @map("episode_id")
@@ -244,6 +247,7 @@ model RewatchLog {
 
   @@index([userId, mediaType, mediaId, rewatchedAt])
   @@index([mediaType, mediaId])
+  @@index([groupId])
   @@index([userId, rewatchedAt])
   @@index([showId])
   @@index([seasonId])

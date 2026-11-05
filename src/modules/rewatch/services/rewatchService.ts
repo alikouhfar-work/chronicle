@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { randomUUID } from 'node:crypto';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { RewatchMediaType as DbRewatchMediaType } from '../../../../generated/prisma/enums';
 import type {
@@ -237,8 +238,12 @@ const recordEpisodeRewatch = async (
     throw new NotFoundError(`Episode not found: ${mediaId}`);
   }
 
+  // A standalone watch is its own cascade group of one.
+  const groupId = randomUUID();
   const log = await tx.rewatchLog.create({
     data: {
+      id: groupId,
+      groupId,
       userId,
       mediaType: dbMediaType,
       mediaId: episode.id,
@@ -290,8 +295,13 @@ const recordSeasonRewatch = async (
     throw new NotFoundError(`Season not found: ${mediaId}`);
   }
 
+  // One group for the whole batch: the season log and every episode log share
+  // it, so a delete can target exactly this rewatch.
+  const groupId = randomUUID();
   const log = await tx.rewatchLog.create({
     data: {
+      id: groupId,
+      groupId,
       userId,
       mediaType: dbMediaType,
       mediaId: season.id,
@@ -307,6 +317,7 @@ const recordSeasonRewatch = async (
     mediaType: DbRewatchMediaType.EPISODE,
     mediaId: episode.id,
     rewatchedAt,
+    groupId,
     showId: season.showId,
     seasonId: season.id,
     episodeId: episode.id,
@@ -366,8 +377,11 @@ const recordShowRewatch = async (
     throw new NotFoundError(`Show not found: ${mediaId}`);
   }
 
+  const groupId = randomUUID();
   const log = await tx.rewatchLog.create({
     data: {
+      id: groupId,
+      groupId,
       userId,
       mediaType: dbMediaType,
       mediaId: show.id,
@@ -382,6 +396,7 @@ const recordShowRewatch = async (
     mediaType: DbRewatchMediaType.SEASON,
     mediaId: season.id,
     rewatchedAt,
+    groupId,
     showId: show.id,
     seasonId: season.id,
   }));
@@ -391,6 +406,7 @@ const recordShowRewatch = async (
       mediaType: DbRewatchMediaType.EPISODE,
       mediaId: episode.id,
       rewatchedAt,
+      groupId,
       showId: show.id,
       seasonId: season.id,
       episodeId: episode.id,
@@ -452,8 +468,11 @@ const recordMovieRewatch = async (
     throw new NotFoundError(`Movie not found: ${mediaId}`);
   }
 
+  const groupId = randomUUID();
   const log = await tx.rewatchLog.create({
     data: {
+      id: groupId,
+      groupId,
       userId,
       mediaType: dbMediaType,
       mediaId: movie.id,
@@ -550,6 +569,7 @@ export const removeRewatchLog = async (input: {
         mediaType: true,
         mediaId: true,
         rewatchedAt: true,
+        groupId: true,
       },
     });
 
@@ -608,25 +628,33 @@ export const removeRewatchLog = async (input: {
         return row?.rewatchCount ?? 0;
       }
 
+      // Only a batch parent owns a cascade. A season row inside a show batch is
+      // a child: deleting it removes that row, never the whole show rewatch.
+      const isBatchParent = log.groupId === log.id;
+
       if (mediaType === 'season') {
-        // A season rewatch cascades one log per episode at the same timestamp.
-        // Drop them together, otherwise the episode counters stay inflated and
-        // the derived season count would never drop.
-        const cascaded = await tx.rewatchLog.findMany({
-          where: {
-            userId: input.userId,
-            mediaType: DbRewatchMediaType.EPISODE,
-            seasonId: log.mediaId,
-            rewatchedAt: log.rewatchedAt,
-          },
-          select: { id: true },
-        });
+        // Drop exactly this batch: the episode logs that share the group id.
+        // Timestamps are history, not identity — two batches can share one.
+        const cascaded = isBatchParent
+          ? await tx.rewatchLog.findMany({
+              where: {
+                userId: input.userId,
+                groupId: log.groupId,
+                mediaType: DbRewatchMediaType.EPISODE,
+                id: { not: log.id },
+              },
+              select: { id: true, episodeId: true },
+            })
+          : [];
         if (cascaded.length > 0) {
           await tx.rewatchLog.deleteMany({
             where: { id: { in: cascaded.map((entry) => entry.id) } },
           });
+          const episodeIds = cascaded
+            .map((entry) => entry.episodeId)
+            .filter((episodeId): episodeId is string => episodeId !== null);
           await tx.episode.updateMany({
-            where: { seasonId: log.mediaId, rewatchCount: { gt: 0 } },
+            where: { id: { in: episodeIds }, rewatchCount: { gt: 0 } },
             data: { rewatchCount: { decrement: 1 } },
           });
         }
@@ -643,33 +671,40 @@ export const removeRewatchLog = async (input: {
       }
 
       if (mediaType === 'show') {
-        // Same cascade idea, one level up: season and episode logs created by
-        // this show rewatch share its timestamp.
-        const cascaded = await tx.rewatchLog.findMany({
-          where: {
-            userId: input.userId,
-            mediaType: { in: [DbRewatchMediaType.SEASON, DbRewatchMediaType.EPISODE] },
-            showId: log.mediaId,
-            rewatchedAt: log.rewatchedAt,
-          },
-          select: { id: true },
-        });
+        // Same idea one level up: season and episode logs of this batch.
+        const cascaded = isBatchParent
+          ? await tx.rewatchLog.findMany({
+              where: {
+                userId: input.userId,
+                groupId: log.groupId,
+                mediaType: { in: [DbRewatchMediaType.SEASON, DbRewatchMediaType.EPISODE] },
+                id: { not: log.id },
+              },
+              select: { id: true, episodeId: true, seasonId: true },
+            })
+          : [];
         if (cascaded.length > 0) {
           await tx.rewatchLog.deleteMany({
             where: { id: { in: cascaded.map((entry) => entry.id) } },
           });
+          const episodeIds = cascaded
+            .map((entry) => entry.episodeId)
+            .filter((episodeId): episodeId is string => episodeId !== null);
           await tx.episode.updateMany({
-            where: { season: { showId: log.mediaId }, rewatchCount: { gt: 0 } },
+            where: { id: { in: episodeIds }, rewatchCount: { gt: 0 } },
             data: { rewatchCount: { decrement: 1 } },
           });
         }
 
-        const seasons = await tx.season.findMany({
-          where: { showId: log.mediaId },
-          select: { id: true },
-        });
-        for (const season of seasons) {
-          await syncSeasonRewatchCount(tx, season.id);
+        const touchedSeasons = [
+          ...new Set(
+            cascaded
+              .map((entry) => entry.seasonId)
+              .filter((seasonId): seasonId is string => seasonId !== null),
+          ),
+        ];
+        for (const seasonId of touchedSeasons) {
+          await syncSeasonRewatchCount(tx, seasonId);
         }
 
         await tx.show.updateMany({

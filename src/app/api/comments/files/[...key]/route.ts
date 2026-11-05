@@ -37,6 +37,8 @@ export const GET = async (_request: Request, { params }: FilesRouteContext) => {
         'Content-Type': MIME_BY_EXTENSION[extension] ?? 'application/octet-stream',
         'Content-Length': String(buffer.length),
         'Cache-Control': 'public, max-age=31536000, immutable',
+        // Never let a browser sniff an attachment into a document.
+        'X-Content-Type-Options': 'nosniff',
       },
     });
   } catch {

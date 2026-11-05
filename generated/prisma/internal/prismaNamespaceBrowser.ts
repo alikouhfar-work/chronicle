@@ -248,6 +248,7 @@ export const RewatchLogScalarFieldEnum = {
   mediaType: 'mediaType',
   mediaId: 'mediaId',
   rewatchedAt: 'rewatchedAt',
+  groupId: 'groupId',
   showId: 'showId',
   seasonId: 'seasonId',
   episodeId: 'episodeId',

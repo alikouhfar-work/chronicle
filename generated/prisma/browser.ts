@@ -71,7 +71,9 @@ export type MediaNote = Prisma.MediaNoteModel
 export type User = Prisma.UserModel
 /**
  * Model RewatchLog
- * 
+ * Invariants enforced by DB CHECK constraints (migration 20261104160000):
+ * media_id equals the deepest typed id, exactly one media-type branch is
+ * populated, and ratings stay within 1-5.
  */
 export type RewatchLog = Prisma.RewatchLogModel
 /**

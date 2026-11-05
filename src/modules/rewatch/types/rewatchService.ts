@@ -6,6 +6,7 @@ export type CreateRewatchLogData = {
   mediaType: DbRewatchMediaType;
   mediaId: string;
   rewatchedAt: Date;
+  groupId: string;
   showId?: string;
   seasonId?: string;
   episodeId?: string;

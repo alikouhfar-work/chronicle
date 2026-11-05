@@ -87,7 +87,7 @@ describe.runIf(integrationEnabled)('rewatch cascade isolation', () => {
     });
   });
 
-  it.fails('keeps an unrelated episode log written in the same millisecond', async () => {
+  it('keeps an unrelated episode log written in the same millisecond', async () => {
     const sameInstant = new Date('2025-03-01T10:00:00.000Z');
 
     await recordRewatch({
@@ -110,17 +110,16 @@ describe.runIf(integrationEnabled)('rewatch cascade isolation', () => {
     });
 
     const remaining = await prisma.rewatchLog.findMany({ where: { userId: fixtures.user.id } });
-    // Exactly the separately logged episode survives; S1E2 also exists in the
-    // season batch, so a correct implementation leaves two rows for it.
-    expect(remaining).toHaveLength(2);
-    expect(
-      remaining.every(
-        (log) => log.mediaType === 'EPISODE' && log.mediaId === fixtures.episodes.s1e2.id,
-      ),
-    ).toBe(true);
+    // Only the separately logged episode survives; the batch (including its own
+    // S1E2 row) is gone.
+    expect(remaining).toHaveLength(1);
+    expect(remaining[0]).toMatchObject({
+      mediaType: 'EPISODE',
+      mediaId: fixtures.episodes.s1e2.id,
+    });
   });
 
-  it.fails('keeps a sibling batch written in the same millisecond', async () => {
+  it('keeps a sibling batch written in the same millisecond', async () => {
     const sameInstant = new Date('2025-03-01T10:00:00.000Z');
 
     // Double submit / retry: two identical season rewatches at one instant.
@@ -153,6 +152,67 @@ describe.runIf(integrationEnabled)('rewatch cascade isolation', () => {
       select: { rewatchCount: true },
     });
     expect(episodes.map((episode) => episode.rewatchCount)).toEqual([1, 1, 1]);
+  });
+
+  it('gives every log a group id and batches share it', async () => {
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'season',
+      mediaId: fixtures.seasonOne.id,
+      rewatchedAt: new Date('2025-03-01T10:00:00.000Z'),
+    });
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'movie',
+      mediaId: fixtures.movie.id,
+      rewatchedAt: new Date('2025-03-01T11:00:00.000Z'),
+    });
+
+    const logs = await prisma.rewatchLog.findMany({ where: { userId: fixtures.user.id } });
+    expect(logs).toHaveLength(5);
+    expect(logs.every((log) => typeof log.groupId === 'string' && log.groupId.length > 0)).toBe(
+      true,
+    );
+
+    const batch = logs.filter((log) => log.seasonId === fixtures.seasonOne.id);
+    const groups = new Set(batch.map((log) => log.groupId));
+    expect(groups.size).toBe(1);
+    // The season log is the batch id, standalone movie log is its own group.
+    const seasonLog = batch.find((log) => log.mediaType === 'SEASON');
+    expect(seasonLog?.groupId).toBe(seasonLog?.id);
+    const movieLog = logs.find((log) => log.mediaType === 'MOVIE');
+    expect(movieLog?.groupId).toBe(movieLog?.id);
+  });
+
+  it('removes a single child row without deleting the show batch', async () => {
+    await recordRewatch({
+      userId: fixtures.user.id,
+      mediaType: 'show',
+      mediaId: fixtures.show.id,
+      rewatchedAt: new Date('2025-03-01T10:00:00.000Z'),
+    });
+
+    // 1 show + 2 season + 4 episode logs.
+    expect(await logCount()).toBe(7);
+
+    const seasonRow = await prisma.rewatchLog.findFirstOrThrow({
+      where: {
+        userId: fixtures.user.id,
+        mediaType: 'SEASON',
+        seasonId: fixtures.seasonOne.id,
+      },
+    });
+    // A season row inside a show batch is a child, not a batch parent.
+    expect(seasonRow.groupId).not.toBe(seasonRow.id);
+
+    await removeRewatchLog({ userId: fixtures.user.id, logId: seasonRow.id });
+
+    // Only that row goes; the rest of the show batch survives.
+    expect(await logCount()).toBe(6);
+    const showLog = await prisma.rewatchLog.findFirstOrThrow({
+      where: { userId: fixtures.user.id, mediaType: 'SHOW' },
+    });
+    expect(showLog.groupId).toBe(showLog.id);
   });
 
   it('decrements only the episodes of the deleted batch', async () => {
