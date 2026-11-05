@@ -1,4 +1,4 @@
-import { IconBook, IconDeviceTv, IconMovie, IconRefresh, IconStar } from '@tabler/icons-react';
+import { IconBook, IconDeviceTv, IconMovie, IconRefresh } from '@tabler/icons-react';
 import type { LibraryDetailsHeaderProps } from '@/modules/library/types/libraryDetailsHeader';
 import { format } from 'date-fns';
 import { getAverageEpisodeRuntime } from '@/modules/show/utils/getAverageEpisodeRuntime';
@@ -7,6 +7,7 @@ import { TrackingStatusSwitch } from '@/modules/library/components/details/Track
 import { ShowLifecycleBadge } from '@/modules/library/components/details/ShowLifecycleBadge';
 import { LibraryDetailsShareButton } from '@/modules/library/components/details/LibraryDetailsShareButton';
 import { LibraryDetailsActionsMenu } from '@/modules/library/components/details/LibraryDetailsActionsMenu';
+import { RatingControl } from '@/modules/notes/components/RatingControl';
 
 export const LibraryDetailsHeader = ({
   media,
@@ -127,19 +128,6 @@ export const LibraryDetailsHeader = ({
           {controls ?? <TrackingStatusSwitch media={media} />}
 
           <div className="flex w-full min-w-0 flex-wrap items-center gap-3 sm:w-auto">
-            {movie && movie.tracking?.status === 'COMPLETED' && (
-              <div className="glass-card flex items-center gap-3 rounded-2xl border border-white/10 p-3 shadow-md">
-                <div className="space-y-0.5">
-                  <p className="text-[10px] font-semibold tracking-tight text-zinc-400 uppercase">
-                    Your Score
-                  </p>
-                  <div className="flex items-center gap-1 text-xs font-bold text-amber-400">
-                    <IconStar className="fill-amber-400 text-amber-400" size={13} />
-                    <span>{movie?.tracking.rating ? `${movie.tracking.rating} / 5` : 'Unrated'}</span>
-                  </div>
-                </div>
-              </div>
-            )}
             {/* Desktop: actions stay in the header controls. On mobile the
                 menu lives at the top-right end of the back row (see
                 LibraryDetails), where its dropdown fits the viewport. */}

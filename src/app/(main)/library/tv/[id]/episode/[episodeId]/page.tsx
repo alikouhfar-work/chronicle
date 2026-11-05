@@ -10,6 +10,7 @@ import { getEpisodeDetails } from '@/modules/episode-season/services/getEpisodeD
 import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
 import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
 import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
+import { RatingControl } from '@/modules/notes/components/RatingControl';
 import { listComments } from '@/modules/comments/services/listComments';
 import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
 import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
@@ -109,12 +110,6 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
                 <span className="inline-flex items-center gap-1.5">
                   <IconClock size={14} className="text-zinc-500" />
                   {formatMinutes(episode.runtime)}
-                </span>
-              ) : null}
-              {rating ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 font-bold text-amber-300">
-                  <IconStar size={12} className="fill-amber-400 text-amber-400" />
-                  {rating} / 5
                 </span>
               ) : null}
               <span className="inline-flex items-center gap-1.5 text-zinc-400">

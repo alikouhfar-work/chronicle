@@ -58,11 +58,16 @@ test.describe('engagement', () => {
     await ensureOwnedMovie(await userIdFor(account.email));
     await page.goto(`/library/movie/${TMDB_MOVIE}`);
 
-    await page.getByRole('button', { name: 'Rate 4 of 5' }).click();
-    await expect(page.getByRole('button', { name: 'Clear rating (4 of 5)' })).toBeVisible();
+    // The header carries the rating control (WP-17) and the notes tab keeps
+    // its own copy, so the click is scoped to the header group rather than
+    // "the button named Rate 4 of 5", which now matches twice.
+    const headerRating = page.getByRole('group', { name: 'Rate this movie' });
+
+    await headerRating.getByRole('button', { name: 'Rate 4 of 5' }).click();
+    await expect(headerRating.getByRole('button', { name: 'Clear rating (4 of 5)' })).toBeVisible();
 
     await page.reload();
-    await expect(page.getByRole('button', { name: 'Clear rating (4 of 5)' })).toBeVisible();
+    await expect(headerRating.getByRole('button', { name: 'Clear rating (4 of 5)' })).toBeVisible();
   });
 
   test('posts a review that mentions a neighbour and notifies them', async ({ page, browser }) => {
