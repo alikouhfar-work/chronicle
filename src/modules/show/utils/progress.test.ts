@@ -20,11 +20,24 @@ const season = (seasonNumber: number, watched: boolean[]): Season =>
 describe('getShowProgress', () => {
   it('computes the watched percentage excluding specials', () => {
     const seasons = [season(0, [true, true]), season(1, [true, false, false, false])];
-    expect(getShowProgress(seasons, 4)).toBe(25);
+    expect(getShowProgress(seasons)).toBe(25);
+  });
+
+  it('counts stored episodes, not the drifting TMDB total', () => {
+    // TMDB reported 26 for this show while 115 episodes were stored; deriving
+    // both sides from the rows keeps the bar at 100% instead of 400%.
+    const seasons = [season(1, new Array(115).fill(true))];
+    expect(getShowProgress(seasons)).toBe(100);
+  });
+
+  it('caps at 100 even if tracking data is inconsistent', () => {
+    const seasons = [season(1, [true, true])];
+    expect(getShowProgress(seasons)).toBe(100);
   });
 
   it('guards division by zero', () => {
-    expect(getShowProgress([], 0)).toBe(0);
+    expect(getShowProgress([])).toBe(0);
+    expect(getShowProgress([season(0, [true])])).toBe(0);
   });
 });
 

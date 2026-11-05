@@ -16,7 +16,6 @@ describe('LibraryShowProgress', () => {
     const { container } = render(
       <LibraryShowProgress
         seasons={[season(1, [true, true]), season(2, [true, false])]}
-        numberOfEpisodes={4}
         lifecycle="continuing"
       />,
     );
@@ -36,7 +35,6 @@ describe('LibraryShowProgress', () => {
     const { container } = render(
       <LibraryShowProgress
         seasons={[season(1, [true, true])]}
-        numberOfEpisodes={2}
         lifecycle="ended"
       />,
     );
@@ -52,7 +50,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true])]}
-        numberOfEpisodes={1}
         lifecycle="continuing"
       />,
     );
@@ -64,7 +61,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="DROPPED"
       />,
@@ -84,7 +80,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="dropped"
       />,
@@ -98,7 +93,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="WATCHING"
       />,
@@ -112,7 +106,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, true])]}
-        numberOfEpisodes={2}
         lifecycle="ended"
         trackingStatus="COMPLETED"
       />,
@@ -130,7 +123,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, true])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="COMPLETED"
       />,
@@ -143,7 +135,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [false, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="PLAN_TO_WATCH"
       />,

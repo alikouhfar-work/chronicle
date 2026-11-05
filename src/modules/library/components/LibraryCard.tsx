@@ -63,7 +63,6 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
             {'seasons' in media && (
               <LibraryShowProgress
                 seasons={media.seasons}
-                numberOfEpisodes={media.numberOfEpisodes}
                 lifecycle={getShowLifecycle(media.status, media.inProduction)}
                 trackingStatus={media.tracking?.status}
               />

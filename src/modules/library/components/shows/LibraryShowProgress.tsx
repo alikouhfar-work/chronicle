@@ -28,11 +28,10 @@ export const getStatusHeadline = (
 
 export const LibraryShowProgress = ({
   seasons,
-  numberOfEpisodes,
   lifecycle,
   trackingStatus,
 }: LibraryShowProgressProps) => {
-  const progress = getShowProgress(seasons, numberOfEpisodes);
+  const progress = getShowProgress(seasons);
   const { nextLabel, segments } = getShowPosition(seasons);
   const isEnded = lifecycle === 'ended';
   const normalizedStatus = trackingStatus?.toUpperCase();

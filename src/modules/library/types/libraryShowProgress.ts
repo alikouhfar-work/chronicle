@@ -3,7 +3,6 @@ import type { ShowLifecycle } from '@/modules/show/types/showLifecycle';
 
 export type LibraryShowProgressProps = {
   seasons: Season[];
-  numberOfEpisodes: number;
   lifecycle: ShowLifecycle | null;
   trackingStatus?: string;
 };

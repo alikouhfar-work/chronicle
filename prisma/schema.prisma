@@ -62,8 +62,8 @@ model Show {
   tracking         ShowTracking?
   rewatchLogs      RewatchLog[]
 
+  // userId alone is the leftmost prefix of the unique key below — no separate index.
   @@unique([userId, tmdbId])
-  @@index([userId])
 }
 
 model Movie {
@@ -88,7 +88,6 @@ model Movie {
   rewatchLogs  RewatchLog[]
 
   @@unique([userId, tmdbId])
-  @@index([userId])
 }
 
 model Season {
@@ -130,6 +129,8 @@ model Episode {
 
   @@unique([seasonId, episodeNumber])
   @@index([tmdbId])
+  /// Drives the upcoming / up-next scans, which filter an air-date window.
+  @@index([airDate, episodeNumber])
 }
 
 model Genre {
@@ -221,6 +222,9 @@ model User {
   notificationsSent     Notification[]   @relation("NotificationsSent")
 }
 
+/// Invariants enforced by DB CHECK constraints (migration 20261104160000):
+/// media_id equals the deepest typed id, exactly one media-type branch is
+/// populated, and ratings stay within 1-5.
 model RewatchLog {
   id          String           @id @default(uuid())
   userId      String           @map("user_id")
@@ -266,7 +270,7 @@ model Comment {
   mentions      CommentMention[]     @relation("CommentMentions")
   notifications Notification[]
 
-  @@index([mediaType, tmdbId, createdAt])
+  @@index([mediaType, tmdbId, createdAt, id])
   @@index([userId, createdAt])
   @@map("comments")
 }
@@ -323,7 +327,7 @@ model Notification {
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@unique([recipientId, commentId])
-  @@index([recipientId, isRead, createdAt])
+  @@index([recipientId, isRead, createdAt, id])
   @@index([commentId])
   @@map("notifications")
 }
