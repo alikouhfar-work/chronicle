@@ -7,6 +7,7 @@ import { toNoteView } from '@/modules/notes/lib/toNoteView';
 import { isMediaInUserLibrary } from '@/modules/notes/services/isMediaInUserLibrary';
 import { NOTE_MAX_LENGTH, NOTE_MIN_LENGTH } from '@/modules/notes/constants';
 import type { CreateNoteInput, CreateNoteResult } from '@/modules/notes/types';
+import { logError } from '@/infra/logging/logger';
 
 export const createNote = async (input: CreateNoteInput): Promise<CreateNoteResult> => {
   let userId: string;
@@ -51,7 +52,7 @@ export const createNote = async (input: CreateNoteInput): Promise<CreateNoteResu
 
     return { success: true, note: toNoteView(note) };
   } catch (error) {
-    console.error('createNote error:', error);
+    logError({ event: 'note.create', action: 'createNote', error });
     return { success: false, error: 'Could not save your note.' };
   }
 };

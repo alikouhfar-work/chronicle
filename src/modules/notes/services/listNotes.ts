@@ -6,6 +6,7 @@ import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comme
 import { toNoteView } from '@/modules/notes/lib/toNoteView';
 import { NOTE_PAGE_SIZE } from '@/modules/notes/constants';
 import type { ListNotesResult, NoteMediaType } from '@/modules/notes/types';
+import { logError } from '@/infra/logging/logger';
 
 /**
  * Private notes for one media item. Scoped by the session user: a note is
@@ -40,7 +41,7 @@ export const listNotes = async (
 
     return { success: true, notes: notes.map(toNoteView) };
   } catch (error) {
-    console.error('listNotes error:', error);
+    logError({ event: 'note.list', action: 'listNotes', error });
     return { success: false, error: 'Could not load your notes.', notes: [] };
   }
 };

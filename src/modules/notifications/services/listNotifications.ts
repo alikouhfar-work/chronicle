@@ -6,6 +6,7 @@ import { attachNotificationHrefs } from '@/modules/notifications/services/attach
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { NOTIFICATION_LIST_LIMIT } from '@/modules/notifications/constants';
 import type { NotificationListResult } from '@/modules/notifications/types';
+import { logError } from '@/infra/logging/logger';
 
 export const listNotifications = async (): Promise<NotificationListResult> => {
   let userId: string;
@@ -32,7 +33,7 @@ export const listNotifications = async (): Promise<NotificationListResult> => {
 
     return { success: true, notifications: await attachNotificationHrefs(userId, rows) };
   } catch (error) {
-    console.error('listNotifications error:', error);
+    logError({ event: 'notification.list', action: 'listNotifications', error });
     return { success: false, error: 'Could not load notifications.', notifications: [] };
   }
 };

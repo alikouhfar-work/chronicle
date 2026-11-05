@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
+import { logError } from '@/infra/logging/logger';
 
 const MIN_QUERY_LENGTH = 2;
 const MAX_USERNAME_LENGTH = 32;
@@ -64,7 +65,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ users });
   } catch (error) {
-    console.error('user mention search error:', error);
+    logError({ event: 'user.search', route: '/api/users/search', error });
     return NextResponse.json({ error: 'Could not search users.' }, { status: 500 });
   }
 }

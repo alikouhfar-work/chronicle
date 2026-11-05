@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches: [demo, main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Types, lint, unit, migrations, integration, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: chronicle_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U admin -d chronicle_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://admin:postgres@localhost:5432/chronicle_test?schema=public
+      AUTH_SECRET: ci-only-secret-not-used-in-production
+      AUTH_TRUST_HOST: 'true'
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_TMDB_IMAGE_BASE_URL: https://image.tmdb.org/t/p
+      GUEST_LOGIN_ENABLED: 'false'
+      PRISMA_TARGET: personal
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit and component tests
+        run: npm test
+
+      - name: Apply migrations to a fresh database
+        run: npx prisma migrate deploy
+
+      # Fails when a schema change has no migration of its own, or when a
+      # historical migration was edited after being applied.
+      - name: Schema and migration chain agree
+        run: npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code
+
+      - name: Integration tests (real Postgres)
+        run: npx vitest run src/modules/rewatch
+        env:
+          INTEGRATION_DB: '1'
+
+      # The Next.js security advisory makes the first build attempt exit 1 with
+      # no compile errors; the documented remedy is to run it again.
+      - name: Build
+        run: |
+          if ! npm run build; then
+            echo "Retrying the build after the Next.js advisory gate"
+            npm run build
+          fi

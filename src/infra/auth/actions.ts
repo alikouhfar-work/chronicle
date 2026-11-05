@@ -4,6 +4,7 @@ import { hash } from 'bcryptjs';
 import { prisma } from '@/infra/db/prisma';
 import { isValidPassword } from '@/infra/auth/auth';
 import { ensureUsername } from '@/modules/user/actions/ensureUsername';
+import { logError } from '@/infra/logging/logger';
 
 const MAX_EMAIL_LENGTH = 254;
 
@@ -40,7 +41,7 @@ export const register = async (
   if (user) {
     // Never block signup on handle allocation; the profile page can retry.
     await ensureUsername(user.id).catch((error: unknown) =>
-      console.error('[auth][register] username assignment failed:', error),
+      logError({ event: 'auth.register.username', action: 'register', userId: user.id, error }),
     );
   }
 

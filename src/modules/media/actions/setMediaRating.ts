@@ -5,6 +5,7 @@ import { requireUserId } from '@/infra/tmdb/forUser';
 import { parseDbId } from '@/shared/lib/validate';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 import type { SetMediaRatingInput, SetMediaRatingResult } from '@/modules/media/types/mediaRating';
+import { logError } from '@/infra/logging/logger';
 
 const MAX_RATING = 5;
 
@@ -79,7 +80,7 @@ export const setMediaRating = async ({
     revalidateMediaDetail('tv', episode.season.show.tmdbId);
     return { success: true };
   } catch (error) {
-    console.error('setMediaRating error:', error);
+    logError({ event: 'media.rating.set', action: 'setMediaRating', error });
     return { success: false, error: 'Could not save your rating.' };
   }
 };

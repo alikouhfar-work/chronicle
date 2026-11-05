@@ -3,6 +3,7 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import type { DeleteCommentResult } from '@/modules/comments/types';
+import { logError } from '@/infra/logging/logger';
 
 export const deleteComment = async (commentId: string): Promise<DeleteCommentResult> => {
   let userId: string;
@@ -31,7 +32,7 @@ export const deleteComment = async (commentId: string): Promise<DeleteCommentRes
       data: { deletedAt: new Date() },
     });
   } catch (error) {
-    console.error('deleteComment error:', error);
+    logError({ event: 'comment.delete', action: 'deleteComment', error });
     return { success: false, error: 'Could not delete comment.' };
   }
 

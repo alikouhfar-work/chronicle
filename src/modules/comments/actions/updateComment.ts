@@ -11,6 +11,7 @@ import { resolveMentionUsers } from '@/modules/comments/services/resolveMentionU
 import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
 import type { UpdateCommentResult } from '@/modules/comments/types';
 import type { UpdateCommentInput } from '@/modules/comments/types/updateComment';
+import { logError } from '@/infra/logging/logger';
 
 type CommentMediaRow = {
   userId: string;
@@ -113,7 +114,7 @@ export const updateComment = async (
 
     return { success: true, comment: toCommentView(updated) };
   } catch (error) {
-    console.error('updateComment error:', error);
+    logError({ event: 'comment.update', action: 'updateComment', error });
     return { success: false, error: 'Could not update comment.' };
   }
 };

@@ -6,6 +6,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
 import { ensureUsername } from '@/modules/user/actions/ensureUsername';
 import type { AvailableProvider } from '@/infra/auth/types';
+import { logError } from '@/infra/logging/logger';
 
 export type { AuthProviderId, AvailableProvider } from '@/infra/auth/types';
 
@@ -58,11 +59,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 }
                 if (!user) return null;
                 await ensureUsername(user.id).catch((error: unknown) =>
-                  console.error('[auth][guest] username assignment failed:', error),
+                  logError({ event: 'auth.guest.username', action: 'authorize', error }),
                 );
                 return { id: user.id, email: user.email, name: user.name };
               } catch (error) {
-                console.error('[auth][guest] authorize failed:', error);
+                logError({ event: 'auth.guest.authorize', action: 'authorize', error });
                 return null;
               }
             },
@@ -89,7 +90,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           return { id: user.id, email: user.email, name: user.name };
         } catch (error) {
-          console.error('[auth][credentials] authorize failed:', error);
+          logError({ event: 'auth.credentials.authorize', action: 'authorize', error });
           return null;
         }
       },
@@ -100,7 +101,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     createUser: async ({ user }) => {
       if (!user.id) return;
       await ensureUsername(user.id).catch((error: unknown) =>
-        console.error('[auth][createUser] username assignment failed:', error),
+        logError({ event: 'auth.createUser.username', action: 'createUser', userId: user.id, error }),
       );
     },
   },

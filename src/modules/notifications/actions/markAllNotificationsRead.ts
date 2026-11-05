@@ -3,6 +3,7 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import type { MarkReadResult } from '@/modules/notifications/types';
+import { logError } from '@/infra/logging/logger';
 
 export const markAllNotificationsRead = async (): Promise<MarkReadResult> => {
   let userId: string;
@@ -19,7 +20,7 @@ export const markAllNotificationsRead = async (): Promise<MarkReadResult> => {
     });
     return { success: true };
   } catch (error) {
-    console.error('markAllNotificationsRead error:', error);
+    logError({ event: 'notification.readAll', action: 'markAllNotificationsRead', error });
     return { success: false, error: 'Could not mark notifications as read.' };
   }
 };

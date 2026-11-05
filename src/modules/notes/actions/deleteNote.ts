@@ -3,6 +3,7 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import type { DeleteNoteResult } from '@/modules/notes/types';
+import { logError } from '@/infra/logging/logger';
 
 export const deleteNote = async (noteId: string): Promise<DeleteNoteResult> => {
   let userId: string;
@@ -32,7 +33,7 @@ export const deleteNote = async (noteId: string): Promise<DeleteNoteResult> => {
       data: { deletedAt: new Date() },
     });
   } catch (error) {
-    console.error('deleteNote error:', error);
+    logError({ event: 'note.delete', action: 'deleteNote', error });
     return { success: false, error: 'Could not delete your note.' };
   }
 

@@ -16,5 +16,8 @@ export default defineConfig({
     include: ['src/**/*.test.{ts,tsx}'],
     setupFiles: ['./vitest.setup.ts'],
     css: false,
+    // Integration suites share one Postgres database and truncate it between
+    // tests, so their files must not run concurrently.
+    ...(process.env.INTEGRATION_DB === '1' ? { fileParallelism: false, maxWorkers: 1 } : {}),
   },
 });

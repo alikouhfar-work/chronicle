@@ -3,6 +3,7 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import type { UnreadCountResult } from '@/modules/notifications/types';
+import { logError } from '@/infra/logging/logger';
 
 export const getUnreadCount = async (): Promise<UnreadCountResult> => {
   let userId: string;
@@ -22,7 +23,7 @@ export const getUnreadCount = async (): Promise<UnreadCountResult> => {
     });
     return { success: true, unreadCount };
   } catch (error) {
-    console.error('getUnreadCount error:', error);
+    logError({ event: 'notification.unreadCount', action: 'getUnreadCount', error });
     return { success: false, error: 'Could not load notification count.', unreadCount: 0 };
   }
 };

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { logError } from '@/infra/logging/logger';
 
 type LibraryDetailsErrorProps = {
   error: Error & { digest?: string };
@@ -10,7 +11,7 @@ type LibraryDetailsErrorProps = {
 
 const LibraryDetailsError = ({ error, reset }: LibraryDetailsErrorProps) => {
   useEffect(() => {
-    console.error('Library details error boundary:', error);
+    logError({ event: 'route.error', route: 'library.details', digest: error.digest, error });
   }, [error]);
 
   return (

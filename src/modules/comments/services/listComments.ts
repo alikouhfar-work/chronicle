@@ -10,6 +10,7 @@ import type {
   CommentMediaType,
   ListCommentsResult,
 } from '@/modules/comments/types';
+import { logError } from '@/infra/logging/logger';
 
 const MAX_LIMIT = 50;
 
@@ -74,7 +75,7 @@ export const listComments = async (
         hasMore && lastRow ? { createdAt: lastRow.createdAt, id: lastRow.id } : undefined,
     };
   } catch (error) {
-    console.error('listComments error:', error);
+    logError({ event: 'comment.list', action: 'listComments', error });
     return {
       success: false,
       error: 'Could not load reviews. Please try again.',

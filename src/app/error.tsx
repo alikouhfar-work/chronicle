@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { logError } from '@/infra/logging/logger';
 
 type RootErrorProps = {
   error: Error & { digest?: string };
@@ -15,7 +16,7 @@ type RootErrorProps = {
  */
 const RootError = ({ error, reset }: RootErrorProps) => {
   useEffect(() => {
-    console.error('Root error boundary:', error);
+    logError({ event: 'route.error', route: 'root', digest: error.digest, error });
   }, [error]);
 
   return (

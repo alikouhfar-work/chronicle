@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { logError } from '@/infra/logging/logger';
 
 type MainErrorProps = {
   error: Error & { digest?: string };
@@ -11,7 +12,7 @@ type MainErrorProps = {
 const MainError = ({ error, reset }: MainErrorProps) => {
   useEffect(() => {
     // Diagnostics belong in the console/log sink, never in the user's face.
-    console.error('Route error boundary:', error);
+    logError({ event: 'route.error', route: 'main', digest: error.digest, error });
   }, [error]);
 
   return (

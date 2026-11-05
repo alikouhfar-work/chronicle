@@ -5,6 +5,7 @@ import { requireUserId } from '@/infra/tmdb/forUser';
 import { toNoteView } from '@/modules/notes/lib/toNoteView';
 import { NOTE_MAX_LENGTH, NOTE_MIN_LENGTH } from '@/modules/notes/constants';
 import type { UpdateNoteInput, UpdateNoteResult } from '@/modules/notes/types';
+import { logError } from '@/infra/logging/logger';
 
 export const updateNote = async (
   noteId: string,
@@ -46,7 +47,7 @@ export const updateNote = async (
 
     return { success: true, note: toNoteView(updated) };
   } catch (error) {
-    console.error('updateNote error:', error);
+    logError({ event: 'note.update', action: 'updateNote', error });
     return { success: false, error: 'Could not update your note.' };
   }
 };

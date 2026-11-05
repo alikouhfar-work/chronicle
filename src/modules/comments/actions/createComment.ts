@@ -17,6 +17,7 @@ import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comme
 import { COMMENT_MAX_LENGTH, COMMENT_MIN_LENGTH } from '@/modules/comments/constants';
 import type { CommentAttachmentInput, CreateCommentResult } from '@/modules/comments/types';
 import type { CreateCommentInput } from '@/modules/comments/types/createComment';
+import { logError } from '@/infra/logging/logger';
 
 const isValidAttachment = (attachment: CommentAttachmentInput): boolean =>
   isCommentAttachmentUrl(attachment?.url) &&
@@ -134,7 +135,7 @@ export const createComment = async (
 
     return { success: true, comment: toCommentView(comment) };
   } catch (error) {
-    console.error('createComment error:', error);
+    logError({ event: 'comment.create', action: 'createComment', error });
     return { success: false, error: 'Could not create comment.' };
   }
 };

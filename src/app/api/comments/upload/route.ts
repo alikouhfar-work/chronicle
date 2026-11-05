@@ -8,6 +8,7 @@ import {
 import { buildCommentAttachmentKey } from '@/modules/comments/lib/attachmentKey';
 import type { UploadPayload } from '@/modules/comments/types/uploadPayload';
 import type { CommentMimeType } from '@/modules/comments/types/commentMimeType';
+import { logError } from '@/infra/logging/logger';
 
 const isSupportedMime = (value: string): value is CommentMimeType =>
   COMMENT_STORAGE_MIME_TYPES.includes(value as CommentMimeType);
@@ -91,7 +92,7 @@ export const POST = async (request: Request) => {
       storage: storage.kind,
     });
   } catch (error) {
-    console.error('comment upload error:', error);
+    logError({ event: 'comment.upload', route: '/api/comments/upload', error });
     return NextResponse.json(
       { ok: false, error: error instanceof Error ? error.message : 'Upload failed.' },
       { status: 500 },

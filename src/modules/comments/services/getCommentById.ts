@@ -4,6 +4,7 @@ import { prisma } from '@/infra/db/prisma';
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
 import type { GetCommentByIdResult } from '@/modules/comments/types';
+import { logError } from '@/infra/logging/logger';
 
 export const getCommentById = async (commentId: string): Promise<GetCommentByIdResult> => {
   if (typeof commentId !== 'string' || !commentId.trim()) {
@@ -27,7 +28,7 @@ export const getCommentById = async (commentId: string): Promise<GetCommentByIdR
 
     return { success: true, comment: toCommentView(comment) };
   } catch (error) {
-    console.error('getCommentById error:', error);
+    logError({ event: 'comment.get', action: 'getCommentById', error });
     return { success: false, error: 'Could not retrieve comment.', comment: null };
   }
 };
