@@ -31,7 +31,6 @@ const commentRow = {
   id: 'comment-1',
   content: 'Great episode',
   createdAt: new Date('2026-10-31T12:00:00Z'),
-  deletedAt: null,
   user: { id: 'user-1', username: 'viewer', name: 'Viewer', image: null },
   attachments: [],
 };
@@ -51,8 +50,9 @@ describe('comment service TMDB scoping', () => {
     expect(mocks.findMany.mock.calls[0][0].where).toMatchObject({
       mediaType: 'MOVIE',
       tmdbId: 550,
-      deletedAt: null,
     });
+    // Comments are hard-deleted, so the feed has no tombstone filter.
+    expect(mocks.findMany.mock.calls[0][0].where).not.toHaveProperty('deletedAt');
   });
 
   it('scopes show and episode feeds by their TMDB ids', async () => {

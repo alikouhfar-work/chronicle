@@ -8,5 +8,5 @@ export type NotificationRow = {
   tmdbId: number;
   mediaTitle: string;
   commentId: string;
-  comment: { deletedAt: Date | null } | null;
+  comment: { id: string } | null;
 };

@@ -22,7 +22,7 @@ export const getCommentById = async (commentId: string): Promise<GetCommentByIdR
       },
     });
 
-    if (!comment || comment.deletedAt) {
+    if (!comment) {
       return { success: false, error: 'Comment not found.', comment: null };
     }
 

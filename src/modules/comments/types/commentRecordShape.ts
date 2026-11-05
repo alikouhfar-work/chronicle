@@ -12,5 +12,4 @@ export type CommentRecordShape = {
     width: number | null;
     height: number | null;
   }>;
-  deletedAt?: Date | null;
 };

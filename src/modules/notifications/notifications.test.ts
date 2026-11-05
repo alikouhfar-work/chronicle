@@ -40,7 +40,7 @@ const notificationRow = (overrides: Record<string, unknown> = {}) => ({
   tmdbId: 550,
   mediaTitle: 'Test Movie',
   commentId: 'comment-1',
-  comment: { deletedAt: null },
+  comment: { id: 'comment-1' },
   ...overrides,
 });
 
@@ -91,10 +91,10 @@ describe('notification services', () => {
     });
   });
 
-  it('links a deleted comment to the media page with an unavailable flag', async () => {
-    mocks.findManyNotifications.mockResolvedValue([
-      notificationRow({ comment: { deletedAt: new Date() } }),
-    ]);
+  it('flags a notification whose comment row is gone', async () => {
+    // Comment rows cascade with the comment; a surviving notification without
+    // one means the data predates that constraint.
+    mocks.findManyNotifications.mockResolvedValue([notificationRow({ comment: null })]);
 
     const result = await listNotifications();
 

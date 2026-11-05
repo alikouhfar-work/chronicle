@@ -39,7 +39,6 @@ export const listComments = async (
   const where: Record<string, unknown> = {
     mediaType: PRISMA_MEDIA_TYPE[mediaType],
     tmdbId,
-    deletedAt: null,
   };
 
   if (safeCursor) {

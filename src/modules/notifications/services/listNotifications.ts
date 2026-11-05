@@ -25,7 +25,7 @@ export const listNotifications = async (): Promise<NotificationListResult> => {
       where: { recipientId: userId },
       include: {
         actor: { select: publicUserSelect },
-        comment: { select: { deletedAt: true } },
+        comment: { select: { id: true } },
       },
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       take: NOTIFICATION_LIST_LIMIT,

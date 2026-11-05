@@ -1984,8 +1984,7 @@ export const CommentScalarFieldEnum = {
   tmdbId: 'tmdbId',
   content: 'content',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  updatedAt: 'updatedAt'
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]

@@ -57,7 +57,8 @@ export const attachNotificationHrefs = async (
 
   return rows.map((row) => {
     const mediaType = toAppMediaType(row.mediaType);
-    const commentAvailable = row.comment !== null && row.comment.deletedAt === null;
+    // Comment rows cascade with the comment, so presence is the whole check.
+    const commentAvailable = row.comment !== null;
 
     let href: string;
     if (mediaType === 'movie') {

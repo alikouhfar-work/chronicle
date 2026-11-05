@@ -119,8 +119,8 @@ describe('updateComment', () => {
     expect(tx.comment.update).not.toHaveBeenCalled();
   });
 
-  it('treats a soft-deleted comment as missing', async () => {
-    mocks.findComment.mockResolvedValue({ ...commentRow, deletedAt: new Date() });
+  it('treats a missing comment as missing', async () => {
+    mocks.findComment.mockResolvedValue(null);
 
     const result = await updateComment('comment-1', { content: 'Zombie edit' });
 

@@ -15,7 +15,6 @@ import { logError } from '@/infra/logging/logger';
 
 type CommentMediaRow = {
   userId: string;
-  deletedAt: Date | null;
   /** Prisma enum name, as stored. */
   mediaType: 'MOVIE' | 'SHOW' | 'EPISODE';
   tmdbId: number;
@@ -34,10 +33,10 @@ export const updateComment = async (
 
   const comment = (await prisma.comment.findUnique({
     where: { id: commentId },
-    select: { userId: true, deletedAt: true, mediaType: true, tmdbId: true },
+    select: { userId: true, mediaType: true, tmdbId: true },
   })) as CommentMediaRow | null;
 
-  if (!comment || comment.deletedAt) {
+  if (!comment) {
     return { success: false, error: 'Comment not found.' };
   }
 
