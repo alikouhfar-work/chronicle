@@ -229,3 +229,28 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   scripts), so invalidation is guarded: it can never fail the write, and the
   60 s TTL is the backstop. Invalidation is coarse (one tag for all recipients)
   — at this scale a shared tag costs one recount and avoids a tag per user.
+
+## 2026-11-05 — WP-11 cached TMDB fragments, tag-based invalidation
+- Change: the non-user fragments are cached with `unstable_cache` and explicit
+  tags (`shared/lib/cacheTags.ts`):genre dictionary (`genres`, 7 days),
+  trending rails (`trending`, 1 day), similar titles and credits (`media`,
+  7 days). Genre tuples are cached instead of a `Map` because a Map does not
+  survive serialisation; the dictionary is rebuilt from them. User-owned reads
+  (tracked flags, library rows, ratings) are untouched and stay dynamic.
+- `revalidateMediaDetail` now invalidates the `media` tag, the catch-all page
+  pattern `/library/[...slug]` and the concrete path — the E2 defect where a
+  concrete path under the catch-all route silently stops invalidating. Every
+  call is guarded: without a Next cache store (Vitest, scripts) it throws and
+  invalidation must never fail the write.
+- Migration: none.
+- Verified: 4 new invalidation tests (tag + pattern + concrete path, guard
+  behaviour, library-only invalidation), 303 unit tests, lint, build; live
+  timings on the dev server — first view of a title ~0.79 s, repeat views
+  ~0.12 s (550: 1.14 s cold → 0.13 s warm), home renders trending rails with
+  genre labels from the cached dictionary, and a real title page renders 40
+  cast links from cached credits.
+- Notes: `force-dynamic` stays on the five user-scoped pages; the win is inside
+  the render, not static rendering. Tags are deliberately coarse: `unstable_cache`
+  fixes its tags when the wrapper is built, so per-title tags would need one
+  wrapper per title. A per-title cache would need `"use cache"` + `cacheTag()`,
+  which this app does not enable yet.

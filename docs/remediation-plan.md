@@ -271,7 +271,7 @@ tests around a DST boundary pass; no `timestamp without time zone` left.
 verified.
 **Effort:** 2 days.
 
-## WP-11 · Cache the non-user fragments
+## WP-11 · Cache the non-user fragments — **done (coarse tags)**
 **Covers:** E1, E2.
 
 - Tag TMDB-derived reads (`trending`, `similar`, `credits`, genre dictionary) with
