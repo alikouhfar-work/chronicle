@@ -298,3 +298,88 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Notes: the route reports TMDB metadata drift nowhere; that belongs to the sync
   paths. The snapshot is four full reads, fine at this size and noted in the
   service if it ever needs paging.
+
+## 2026-11-05 — WP-15 (harness + 6 journeys) Playwright end-to-end
+- Change: `playwright.config.ts` runs a **production** server on port 3100 (never
+  3000, so a dev server keeps running) against `E2E_DATABASE_URL`, which must end
+  in `_test`; `e2e/global-setup.ts` shells out to `e2e/seed.ts` via `tsx` because
+  Playwright's CJS loader cannot import the ESM Prisma client; helpers use raw
+  `pg` for fixtures and assertions for the same reason. Journeys: credentials
+  sign-in, sign-out from the profile page, wrong-password rejection (3), and
+  rewatch idempotency — two parallel POSTs with one `Idempotency-Key` produce one
+  log, a second key produces a second, and an unauthenticated retry is 401 (3).
+  `npm run test:e2e`; a CI job installs Chromium, migrates the e2e database, runs
+  the journeys and uploads the report on failure.
+- Migration: none.
+- Verified: 6/6 journeys green locally (20.6 s), `tsc`, `eslint`, unit suite
+  unchanged.
+- Notes: `e2e/engagement.spec.ts` adds two journeys — rate a title (persisted
+  across a reload) and post a review that mentions a neighbour, asserted through
+  that neighbour's bell in a second browser context. Both failed at first for
+  fixture reasons, not product reasons, and the fixes are worth remembering: a
+  rating is written to `MovieTracking`, so a `Movie` row without a tracking row
+  accepts the click and stores nothing; and the e2e database survives between
+  runs, so a leftover rating hides the `Rate 4 of 5` button the journey starts
+  from — the fixture now resets it. Still unwritten: add-a-movie from search.
+
+## 2026-11-05 — WP-15 (finish) add-a-movie journey
+- Change: `e2e/library-add.spec.ts` adds the last journey of the set — navigate to
+  `/search?query=The Godfather`, click `Add title to library` on the TMDB id 238
+  card, assert the "Added to your library" toast, reload and assert the card
+  switched to "View in Library", then assert the `Movie` row exists in the e2e
+  database. `e2e/helpers/db.ts` gained `forgetMovie` / `movieInLibrary`. The
+  journey uses its own title because the engagement spec owns 550. It is the only
+  TMDB-backed journey, so it skips with a named reason when no token is present;
+  `playwright.config.ts` now imports `dotenv/config` so a local run reads `.env`
+  the same way the server does, and CI supplies `DEMO_TMDB_TOKEN` from the
+  `TMDB_ACCESS_TOKEN` secret plus `TMDB_BASE_URL`.
+- Migration: none.
+- Verified: 9/9 journeys green locally against `chronicle_e2e_test` (22.8 s). The
+  one failure on the way was a locator bug, not a product bug: `getByLabel('Add
+  title to library')` prefix-matched `Add title to library as completed`; the
+  click needs `{ exact: true }`.
+- Notes: the e2e job is new and unverified on GitHub until a push; the repo needs
+  the `TMDB_ACCESS_TOKEN` secret or the search journey reports as skipped.
+
+## 2026-11-05 — WP-13b undoable unwatch (10-minute window + purge)
+- Change: every delete path (`removeRewatchLog`, `clearEpisodeWatchHistory`,
+  `clearMovieWatchHistory`, `clearSeasonWatchHistory`, `clearShowWatchHistory`)
+  now snapshots what it is about to destroy into `rewatch_log_removals` before it
+  destroys it: the removed rows with their ids, group ids and timestamps, plus
+  every episode/season/show/movie counter and the episode/show/movie tracking
+  values the unwatch changes. `RemoveRewatchResult`/`RemoveRewatchActionResult`
+  carry `undoToken`; `restoreWatchRemoval` + the `undoUnwatch` action replay the
+  snapshot (byte-for-byte, original ids included) and consume it. Both toasts
+  (`WatchActionModal`, `RewatchHistoryModal`) offer **Undo** through a new inline
+  action on `AppToast` (`toastSuccess(message, title, action)`, 10 s). The server
+  honours 10 minutes (`REWATCH_UNDO_WINDOW_MS`), refuses a second undo, refuses a
+  removal older than the window, refuses another account's token, and refuses
+  when the title's live log count no longer matches the count the removal left
+  behind (`payload.remaining`, show-scoped for TV, movie-scoped for film) — the
+  count comparison, not an existence check, so one row of a still-live season
+  batch can still be undone. Expired snapshots
+  are purged opportunistically on each new removal and by
+  `GET /api/maintenance/rewatch-removals` (Bearer `CRON_SECRET`).
+- Migration: `20261105190000_rewatch_log_removals` — new table
+  `rewatch_log_removals` (`id`, `user_id`, `media_type`, `media_id`, `payload`
+  jsonb, `created_at timestamptz(3)`), two indexes, FK to `User` cascade.
+  Additive only; rollback is `DROP TABLE`. Proved on a dump-restored scratch
+  database (`chronicle_undo_ck`, 400 existing logs untouched, `migrate diff`
+  empty) before touching dev, then applied to dev, `chronicle_rewatch_test` and
+  `chronicle_e2e_test`.
+- Verified: 10 new integration tests (`undo.integration.test.ts`) — deep-equality
+  of logs, counters and tracking before/after undo for movie, episode, season,
+  show and a single history entry; undo twice, past the window, cross-account and
+  after new activity all refused; both purge paths. 73/73 rewatch tests, 319 unit
+  tests, `tsc`, `eslint`, build exit 0 on the advisory retry. Live on the dev
+  server: unwatched Heartstopper Forever from the movie actions menu, toast read
+  "Watch removed. / Undo", clicked Undo, pill returned to `Watch (1)`, and the
+  row came back with the same id, group id, timestamp and tracking values
+  (`COMPLETED`, rating 4, both timestamps) — `GET /api/maintenance/reconcile`
+  then reported `checked: 295, drift: []`.
+- Notes: **the plan said `rewatch_logs.deleted_at`; this ships a snapshot table
+  instead.** A soft-deleted row cannot reproduce the tracking state the unwatch
+  clears (movie/show status + timestamps), so the undo would be lossy, and every
+  read of `rewatch_logs` — counters, history, reconcile — would have had to learn
+  to filter tombstones. The snapshot keeps read paths untouched: removed watches
+  are simply absent. The plan and gap-analysis now describe what shipped.

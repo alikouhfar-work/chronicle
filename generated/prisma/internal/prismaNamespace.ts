@@ -408,6 +408,7 @@ export const ModelName = {
   MediaNote: 'MediaNote',
   User: 'User',
   RewatchLog: 'RewatchLog',
+  RewatchLogRemoval: 'RewatchLogRemoval',
   Comment: 'Comment',
   CommentAttachment: 'CommentAttachment',
   CommentMention: 'CommentMention',
@@ -430,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "mediaNote" | "user" | "rewatchLog" | "comment" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
+    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "mediaNote" | "user" | "rewatchLog" | "rewatchLogRemoval" | "comment" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1248,6 +1249,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RewatchLogRemoval: {
+      payload: Prisma.$RewatchLogRemovalPayload<ExtArgs>
+      fields: Prisma.RewatchLogRemovalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RewatchLogRemovalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RewatchLogRemovalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>
+        }
+        findFirst: {
+          args: Prisma.RewatchLogRemovalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RewatchLogRemovalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>
+        }
+        findMany: {
+          args: Prisma.RewatchLogRemovalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>[]
+        }
+        create: {
+          args: Prisma.RewatchLogRemovalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>
+        }
+        createMany: {
+          args: Prisma.RewatchLogRemovalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RewatchLogRemovalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>[]
+        }
+        delete: {
+          args: Prisma.RewatchLogRemovalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>
+        }
+        update: {
+          args: Prisma.RewatchLogRemovalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>
+        }
+        deleteMany: {
+          args: Prisma.RewatchLogRemovalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RewatchLogRemovalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RewatchLogRemovalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>[]
+        }
+        upsert: {
+          args: Prisma.RewatchLogRemovalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RewatchLogRemovalPayload>
+        }
+        aggregate: {
+          args: Prisma.RewatchLogRemovalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRewatchLogRemoval>
+        }
+        groupBy: {
+          args: Prisma.RewatchLogRemovalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewatchLogRemovalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RewatchLogRemovalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RewatchLogRemovalCountAggregateOutputType> | number
+        }
+      }
+    }
     Comment: {
       payload: Prisma.$CommentPayload<ExtArgs>
       fields: Prisma.CommentFieldRefs
@@ -1977,6 +2052,18 @@ export const RewatchLogScalarFieldEnum = {
 export type RewatchLogScalarFieldEnum = (typeof RewatchLogScalarFieldEnum)[keyof typeof RewatchLogScalarFieldEnum]
 
 
+export const RewatchLogRemovalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  mediaId: 'mediaId',
+  payload: 'payload',
+  createdAt: 'createdAt'
+} as const
+
+export type RewatchLogRemovalScalarFieldEnum = (typeof RewatchLogRemovalScalarFieldEnum)[keyof typeof RewatchLogRemovalScalarFieldEnum]
+
+
 export const CommentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -2076,6 +2163,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -2090,6 +2184,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2200,6 +2303,20 @@ export type EnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'RewatchMediaType[]'
  */
 export type ListEnumRewatchMediaTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RewatchMediaType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -2392,6 +2509,7 @@ export type GlobalOmitConfig = {
   mediaNote?: Prisma.MediaNoteOmit
   user?: Prisma.UserOmit
   rewatchLog?: Prisma.RewatchLogOmit
+  rewatchLogRemoval?: Prisma.RewatchLogRemovalOmit
   comment?: Prisma.CommentOmit
   commentAttachment?: Prisma.CommentAttachmentOmit
   commentMention?: Prisma.CommentMentionOmit

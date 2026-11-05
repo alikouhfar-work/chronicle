@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { loadRewatchHistory } from '@/modules/rewatch/actions/loadRewatchHistory';
 import { removeRewatch } from '@/modules/rewatch/actions/removeRewatch';
+import { undoUnwatch } from '@/modules/rewatch/actions/undoUnwatch';
 import { updateRewatchLog } from '@/modules/rewatch/actions/updateRewatchLog';
 import type {
   RewatchHistoryEntry,
@@ -132,6 +133,28 @@ export const RewatchHistoryModal = ({
     });
   };
 
+  /**
+   * The toast outlives the removal, so the restored rows are re-read rather than
+   * patched back in — a batch removal brings back several entries at once.
+   */
+  const handleUndoRemoval = async (undoToken: string) => {
+    const restored = await undoUnwatch(undoToken);
+
+    if (!restored.success) {
+      toastError(restored.error);
+      return;
+    }
+
+    const reloaded = await loadRewatchHistory(mediaType, mediaId);
+    if (reloaded.success) {
+      setHistory(reloaded.history);
+      updateCount(reloaded.rewatchCount);
+    }
+
+    router.refresh();
+    toastSuccess('The watch history is back as it was.', 'Restored');
+  };
+
   const handleDelete = (logId: string) => {
     setError(null);
     setDeletingId(logId);
@@ -147,6 +170,15 @@ export const RewatchHistoryModal = ({
 
       setHistory((current) => (current ?? []).filter((entry) => entry.id !== logId));
       updateCount(result.rewatchCount);
+
+      const undoToken = result.undoToken;
+      toastSuccess(
+        result.removedLogs === 1
+          ? 'Watch removed.'
+          : `${result.removedLogs} logged watches removed.`,
+        'Unwatched',
+        undoToken ? { label: 'Undo', onClick: () => void handleUndoRemoval(undoToken) } : undefined,
+      );
       router.refresh();
     });
   };

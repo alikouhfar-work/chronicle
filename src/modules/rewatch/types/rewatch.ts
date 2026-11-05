@@ -61,6 +61,17 @@ export type RemoveRewatchActionResult =
       success: true;
       rewatchCount: number;
       removedLogs: number;
+      /** Undo token for `undoUnwatch`; null when nothing was recorded. */
+      undoToken: string | null;
+    }
+  | RewatchActionFailure;
+
+export type UndoUnwatchActionResult =
+  | {
+      success: true;
+      rewatchCount: number;
+      mediaType: RewatchMediaType;
+      mediaId: string;
     }
   | RewatchActionFailure;
 
@@ -88,6 +99,15 @@ export type RemoveRewatchResult = {
   rewatchCount: number;
   /** How many log rows the operation deleted, including cascaded children. */
   removedLogs: number;
+  /** Token that restores this removal while the undo window is open. */
+  undoToken: string;
+};
+
+export type RestoreRemovalResult = {
+  mediaType: RewatchMediaType;
+  mediaId: string;
+  tmdbId: number;
+  rewatchCount: number;
 };
 
 export type RewatchHistoryResult = {

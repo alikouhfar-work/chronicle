@@ -29,7 +29,7 @@ const toneStyles: Record<
   },
 };
 
-export const AppToast = ({ tone, title, message }: AppToastProps) => {
+export const AppToast = ({ tone, title, message, action }: AppToastProps) => {
   const { frame, chip, Icon } = toneStyles[tone];
 
   return (
@@ -51,6 +51,15 @@ export const AppToast = ({ tone, title, message }: AppToastProps) => {
         <p className="text-sm leading-tight font-bold tracking-tight text-white">{title}</p>
         {message && <p className="mt-0.5 text-[11px] break-words text-zinc-400">{message}</p>}
       </div>
+      {action && (
+        <button
+          type="button"
+          onClick={action.onClick}
+          className="apple-pill-btn shrink-0 cursor-pointer border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold text-white transition-colors hover:bg-white/15"
+        >
+          {action.label}
+        </button>
+      )}
     </div>
   );
 };

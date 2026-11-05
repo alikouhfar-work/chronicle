@@ -89,6 +89,17 @@ logged watches"), and either soft-delete the batch (a `deleted_at` on logs with 
 10-minute undo toast) or keep an audit row per removal. Ratings already survive;
 the watch history should be recoverable for a short window too.
 
+**Fixed (WP-13 / WP-13b).** The dialog states what goes away
+(`RemoveRewatchResult.removedLogs`), and every delete path — unwatch and the
+single-log removal in the history dialog — now records a `rewatch_log_removals`
+snapshot of the rows *and* the counters/tracking values it changed. The toast
+offers **Undo**; `restoreWatchRemoval` replays the snapshot inside the 10-minute
+window, refuses once new watches landed on the same title, and
+`GET /api/maintenance/rewatch-removals` (plus an opportunistic sweep on each new
+removal) purges closed windows. A `deleted_at` flag was rejected because every
+read of `rewatch_logs` would have had to learn to filter it, and the tracking
+timestamps the unwatch destroys cannot be re-derived from a soft-deleted row.
+
 ### A4. A rewatch log can never be corrected (P1)
 
 `rewatch/actions/` has add, remove, load, unwatch — no update. A wrong date can

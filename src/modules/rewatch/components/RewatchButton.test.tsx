@@ -2,10 +2,12 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import toast from 'react-hot-toast';
 import { RewatchButton } from './RewatchButton';
 
 const addRewatch = vi.fn();
 const unwatchMedia = vi.fn();
+const undoUnwatch = vi.fn();
 
 vi.mock('@/modules/rewatch/actions/addRewatch', () => ({
   addRewatch: (...args: unknown[]) => addRewatch(...args),
@@ -13,6 +15,10 @@ vi.mock('@/modules/rewatch/actions/addRewatch', () => ({
 
 vi.mock('@/modules/rewatch/actions/unwatchMedia', () => ({
   unwatchMedia: (...args: unknown[]) => unwatchMedia(...args),
+}));
+
+vi.mock('@/modules/rewatch/actions/undoUnwatch', () => ({
+  undoUnwatch: (...args: unknown[]) => undoUnwatch(...args),
 }));
 
 vi.mock('@/modules/rewatch/actions/loadRewatchHistory', () => ({
@@ -38,6 +44,7 @@ vi.mock('react-hot-toast', () => ({
 beforeEach(() => {
   addRewatch.mockReset();
   unwatchMedia.mockReset();
+  undoUnwatch.mockReset();
   // jsdom has no modal dialog implementation.
   HTMLDialogElement.prototype.showModal = function showModal(this: HTMLDialogElement) {
     this.open = true;
@@ -112,7 +119,12 @@ describe('RewatchButton', () => {
   });
 
   it('unwatches through the dialog and resets the count', async () => {
-    unwatchMedia.mockResolvedValue({ success: true, rewatchCount: 0 });
+    unwatchMedia.mockResolvedValue({
+      success: true,
+      rewatchCount: 0,
+      removedLogs: 3,
+      undoToken: 'removal-1',
+    });
 
     renderButton({ initialCount: 3 });
     await act(async () => {
@@ -152,6 +164,50 @@ describe('RewatchButton', () => {
     await waitFor(() =>
       expect(addRewatch).toHaveBeenCalledWith('movie', 'movie-1', undefined, expect.any(String)),
     );
+    await waitFor(() => expect(screen.getByText('Watch (3)')).toBeTruthy());
+  });
+
+  it('offers an undo in the unwatch toast and restores the count through it', async () => {
+    unwatchMedia.mockResolvedValue({
+      success: true,
+      rewatchCount: 0,
+      removedLogs: 3,
+      undoToken: 'removal-1',
+    });
+    undoUnwatch.mockResolvedValue({
+      success: true,
+      rewatchCount: 3,
+      mediaType: 'movie',
+      mediaId: 'movie-1',
+    });
+
+    renderButton({ initialCount: 3 });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Watch options. 3 watches logged.' }));
+    });
+
+    const unwatch = [...document.querySelectorAll('dialog button')].find((button) =>
+      button.textContent?.startsWith('Unwatch'),
+    );
+    await act(async () => {
+      fireEvent.click(unwatch!);
+    });
+
+    await waitFor(() => expect(screen.getByText('Watch (0)')).toBeTruthy());
+
+    // The undo lives in the toast's action, rendered by `toast.custom`.
+    const renderToast = vi.mocked(toast.custom).mock.calls.at(-1)![0] as (toast: {
+      id: string;
+    }) => React.ReactElement<{ action?: { label: string; onClick: () => void } }>;
+    const action = renderToast({ id: 'toast-1' }).props.action;
+
+    expect(action?.label).toBe('Undo');
+
+    await act(async () => {
+      action!.onClick();
+    });
+
+    await waitFor(() => expect(undoUnwatch).toHaveBeenCalledWith('removal-1'));
     await waitFor(() => expect(screen.getByText('Watch (3)')).toBeTruthy());
   });
 });

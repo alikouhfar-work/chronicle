@@ -19,6 +19,7 @@ export const removeRewatch = async (logId: string): Promise<RemoveRewatchActionR
       success: true,
       rewatchCount: result.rewatchCount,
       removedLogs: result.removedLogs,
+      undoToken: result.undoToken,
     };
   } catch (error) {
     return {

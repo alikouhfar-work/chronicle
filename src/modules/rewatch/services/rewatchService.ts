@@ -4,6 +4,10 @@ import { randomUUID } from 'node:crypto';
 import type { Prisma } from '../../../../generated/prisma/client';
 import { RewatchMediaType as DbRewatchMediaType } from '../../../../generated/prisma/enums';
 import type {
+  MovieTrackingStatus,
+  ShowTrackingStatus,
+} from '../../../../generated/prisma/enums';
+import type {
   MediaRef,
   RewatchDbClient,
   CreateRewatchLogData,
@@ -12,12 +16,20 @@ import { prisma } from '@/infra/db/prisma';
 import { buildTrackingTimestamps, deriveShowStatus } from '@/modules/media/tracking';
 import { computeSeasonRewatchCount } from '@/modules/rewatch/lib/seasonRewatch';
 import {
+  isWithinUndoWindow,
+  parseRemovalPayload,
+  REWATCH_UNDO_WINDOW_MS,
+  type RemovedLogRow,
+  type RemovalPayload,
+} from '@/modules/rewatch/lib/removalPayload';
+import {
   parseRewatchMediaType,
   toDbRewatchMediaType,
 } from '@/modules/rewatch/lib/mediaType';
 import type {
   RecordRewatchResult,
   RemoveRewatchResult,
+  RestoreRemovalResult,
   RewatchHistoryResult,
   RewatchMediaType,
 } from '@/modules/rewatch/types/rewatch';
@@ -211,6 +223,197 @@ const getOwnedMediaRef = async (
 
   return { tmdbId: episode.season.show.tmdbId, rewatchCount: episode.rewatchCount };
 };
+
+const LOG_ROW_SELECT = {
+  id: true,
+  userId: true,
+  mediaType: true,
+  mediaId: true,
+  rewatchedAt: true,
+  groupId: true,
+  clientRequestId: true,
+  showId: true,
+  seasonId: true,
+  episodeId: true,
+  movieId: true,
+} as const;
+
+type LogRow = Prisma.RewatchLogGetPayload<{ select: typeof LOG_ROW_SELECT }>;
+
+const toIso = (value: Date | null): string | null => (value ? value.toISOString() : null);
+
+/**
+ * Records everything an unwatch is about to change — the log rows themselves and
+ * every counter/tracking value that moves with them — before it changes it.
+ *
+ * The removal is the undo unit: replaying it restores those rows and values
+ * verbatim, which is why counters cannot drift from a restored history. Kept for
+ * `REWATCH_UNDO_WINDOW_MS`; expired rows are dropped opportunistically here and
+ * by the maintenance route.
+ */
+const captureRemoval = async (
+  tx: Prisma.TransactionClient,
+  scope: { userId: string; mediaType: RewatchMediaType; mediaId: string; showId?: string },
+  logs: LogRow[],
+): Promise<string> => {
+  const showIds = new Set<string>();
+  const seasonIds = new Set<string>();
+  const episodeIds = new Set<string>();
+  const movieIds = new Set<string>();
+
+  const collect = (set: Set<string>, value: string | null): void => {
+    if (value) set.add(value);
+  };
+
+  for (const log of logs) {
+    collect(showIds, log.showId);
+    collect(seasonIds, log.seasonId);
+    collect(episodeIds, log.episodeId);
+    collect(movieIds, log.movieId);
+  }
+
+  if (scope.mediaType === 'show') collect(showIds, scope.showId ?? scope.mediaId);
+  if (scope.mediaType === 'season') collect(seasonIds, scope.mediaId);
+  if (scope.mediaType === 'episode') collect(episodeIds, scope.mediaId);
+  if (scope.mediaType === 'movie') collect(movieIds, scope.mediaId);
+
+  const seasons = await tx.season.findMany({
+    where: {
+      OR: [{ id: { in: [...seasonIds] } }, { showId: { in: [...showIds] } }],
+    },
+    select: { id: true, showId: true, rewatchCount: true },
+  });
+
+  for (const season of seasons) {
+    seasonIds.add(season.id);
+    showIds.add(season.showId);
+  }
+
+  const [episodes, shows, movies] = await Promise.all([
+    tx.episode.findMany({
+      where: {
+        OR: [{ id: { in: [...episodeIds] } }, { seasonId: { in: [...seasonIds] } }],
+      },
+      select: {
+        id: true,
+        rewatchCount: true,
+        tracking: { select: { watched: true, watchedAt: true } },
+      },
+    }),
+    tx.show.findMany({
+      where: { id: { in: [...showIds] } },
+      select: {
+        id: true,
+        rewatchCount: true,
+        tracking: { select: { status: true, startedAt: true, completedAt: true } },
+      },
+    }),
+    tx.movie.findMany({
+      where: { id: { in: [...movieIds] } },
+      select: {
+        id: true,
+        rewatchCount: true,
+        tracking: { select: { status: true, startedAt: true, completedAt: true } },
+      },
+    }),
+  ]);
+
+  const payload: RemovalPayload = {
+    version: 1,
+    // What stays behind on this title; the undo refuses if this changed.
+    remaining: Math.max(0, (await countTitleLogs(tx, scope)) - logs.length),
+    logs: logs.map((log) => ({
+      id: log.id,
+      userId: log.userId,
+      mediaType: log.mediaType.toLowerCase() as RemovedLogRow['mediaType'],
+      mediaId: log.mediaId,
+      rewatchedAt: log.rewatchedAt.toISOString(),
+      groupId: log.groupId,
+      clientRequestId: log.clientRequestId,
+      showId: log.showId,
+      seasonId: log.seasonId,
+      episodeId: log.episodeId,
+      movieId: log.movieId,
+    })),
+    episodes: episodes.map((episode) => ({
+      id: episode.id,
+      rewatchCount: episode.rewatchCount,
+      trackingExists: episode.tracking !== null,
+      watched: episode.tracking?.watched ?? false,
+      watchedAt: toIso(episode.tracking?.watchedAt ?? null),
+    })),
+    seasons: seasons.map((season) => ({ id: season.id, rewatchCount: season.rewatchCount })),
+    shows: shows.map((show) => ({
+      id: show.id,
+      rewatchCount: show.rewatchCount,
+      tracking: show.tracking
+        ? {
+            status: show.tracking.status,
+            startedAt: toIso(show.tracking.startedAt),
+            completedAt: toIso(show.tracking.completedAt),
+          }
+        : null,
+    })),
+    movies: movies.map((movie) => ({
+      id: movie.id,
+      rewatchCount: movie.rewatchCount,
+      tracking: movie.tracking
+        ? {
+            status: movie.tracking.status,
+            startedAt: toIso(movie.tracking.startedAt),
+            completedAt: toIso(movie.tracking.completedAt),
+          }
+        : null,
+    })),
+  };
+
+  await tx.rewatchLogRemoval.deleteMany({
+    where: {
+      userId: scope.userId,
+      createdAt: { lt: new Date(Date.now() - REWATCH_UNDO_WINDOW_MS) },
+    },
+  });
+
+  const removal = await tx.rewatchLogRemoval.create({
+    data: {
+      userId: scope.userId,
+      mediaType: toDbRewatchMediaType(scope.mediaType),
+      mediaId: scope.mediaId,
+      payload,
+    },
+    select: { id: true },
+  });
+
+  return removal.id;
+};
+
+/**
+ * Rows a watch removal or its undo is measured against: the film for a movie,
+ * the show for anything in a season. Counting them before the delete gives the
+ * "left behind" number the undo compares with; counting them at undo time is how
+ * a new watch on the same title is detected.
+ */
+const countTitleLogs = async (
+  client: Prisma.TransactionClient,
+  scope: { userId: string; mediaType: RewatchMediaType; mediaId: string; showId?: string },
+): Promise<number> => {
+  const titleScope: Prisma.RewatchLogWhereInput =
+    scope.mediaType === 'movie' ? { movieId: scope.mediaId } : { showId: scope.showId };
+
+  if (scope.mediaType !== 'movie' && !scope.showId) return 0;
+
+  return client.rewatchLog.count({ where: { userId: scope.userId, ...titleScope } });
+};
+
+/**
+ * Reads the rows a removal is about to delete so they can be snapshotted and
+ * then deleted by id — the same rows, in one place, instead of a second query
+ * after the parent is gone.
+ */
+const readLogsToRemove = async (
+  tx: Prisma.TransactionClient,
+  where: Prisma.RewatchLogWhereInput,
+): Promise<LogRow[]> => tx.rewatchLog.findMany({ where, select: LOG_ROW_SELECT });
 
 /**
  * Recomputes every season of a show from one query instead of one round trip per
@@ -689,6 +892,7 @@ export const removeRewatchLog = async (input: {
         mediaId: true,
         rewatchedAt: true,
         groupId: true,
+        showId: true,
       },
     });
 
@@ -704,11 +908,37 @@ export const removeRewatchLog = async (input: {
       log.mediaId,
     );
 
-    // The parent row itself is one removed watch; children add to it.
-    let removedLogs = 1;
+    // Only a batch parent owns a cascade. A season row inside a show batch is a
+    // child: deleting it removes that row, never the whole show rewatch.
+    const isBatchParent = log.groupId === log.id;
+    const removalScope: Prisma.RewatchLogWhereInput = isBatchParent
+      ? { userId: input.userId, groupId: log.groupId }
+      : { id: log.id };
+
+    let removedLogs = 0;
+    let undoToken = '';
 
     const rewatchCount = await prisma.$transaction(async (tx) => {
-      await tx.rewatchLog.delete({ where: { id: log.id } });
+      const rows = await readLogsToRemove(tx, removalScope);
+      // Snapshot rows and counters before they move: this removal is the undo
+      // unit, so it has to describe the state this transaction destroys.
+      undoToken = await captureRemoval(
+        tx,
+        {
+          userId: input.userId,
+          mediaType,
+          mediaId: log.mediaId,
+          showId: log.showId ?? undefined,
+        },
+        rows,
+      );
+      await tx.rewatchLog.deleteMany({ where: { id: { in: rows.map((row) => row.id) } } });
+      removedLogs = rows.length;
+
+      // Episode counters move for every cascaded child, not the parent alone.
+      const cascadedEpisodeIds = rows
+        .map((row) => row.episodeId)
+        .filter((episodeId): episodeId is string => episodeId !== null && episodeId !== log.mediaId);
 
       if (mediaType === 'episode') {
         const episode = await tx.episode.findUnique({
@@ -750,34 +980,12 @@ export const removeRewatchLog = async (input: {
         return row?.rewatchCount ?? 0;
       }
 
-      // Only a batch parent owns a cascade. A season row inside a show batch is
-      // a child: deleting it removes that row, never the whole show rewatch.
-      const isBatchParent = log.groupId === log.id;
-
       if (mediaType === 'season') {
-        // Drop exactly this batch: the episode logs that share the group id.
-        // Timestamps are history, not identity — two batches can share one.
-        const cascaded = isBatchParent
-          ? await tx.rewatchLog.findMany({
-              where: {
-                userId: input.userId,
-                groupId: log.groupId,
-                mediaType: DbRewatchMediaType.EPISODE,
-                id: { not: log.id },
-              },
-              select: { id: true, episodeId: true },
-            })
-          : [];
-        if (cascaded.length > 0) {
-          const removed = await tx.rewatchLog.deleteMany({
-            where: { id: { in: cascaded.map((entry) => entry.id) } },
-          });
-          removedLogs += removed.count;
-          const episodeIds = cascaded
-            .map((entry) => entry.episodeId)
-            .filter((episodeId): episodeId is string => episodeId !== null);
+        // Drop exactly this batch: every row that shares the group id. Timestamps
+        // are history, not identity — two batches can share one.
+        if (cascadedEpisodeIds.length > 0) {
           await tx.episode.updateMany({
-            where: { id: { in: episodeIds }, rewatchCount: { gt: 0 } },
+            where: { id: { in: cascadedEpisodeIds }, rewatchCount: { gt: 0 } },
             data: { rewatchCount: { decrement: 1 } },
           });
         }
@@ -795,27 +1003,9 @@ export const removeRewatchLog = async (input: {
 
       if (mediaType === 'show') {
         // Same idea one level up: season and episode logs of this batch.
-        const cascaded = isBatchParent
-          ? await tx.rewatchLog.findMany({
-              where: {
-                userId: input.userId,
-                groupId: log.groupId,
-                mediaType: { in: [DbRewatchMediaType.SEASON, DbRewatchMediaType.EPISODE] },
-                id: { not: log.id },
-              },
-              select: { id: true, episodeId: true, seasonId: true },
-            })
-          : [];
-        if (cascaded.length > 0) {
-          const removed = await tx.rewatchLog.deleteMany({
-            where: { id: { in: cascaded.map((entry) => entry.id) } },
-          });
-          removedLogs += removed.count;
-          const episodeIds = cascaded
-            .map((entry) => entry.episodeId)
-            .filter((episodeId): episodeId is string => episodeId !== null);
+        if (cascadedEpisodeIds.length > 0) {
           await tx.episode.updateMany({
-            where: { id: { in: episodeIds }, rewatchCount: { gt: 0 } },
+            where: { id: { in: cascadedEpisodeIds }, rewatchCount: { gt: 0 } },
             data: { rewatchCount: { decrement: 1 } },
           });
         }
@@ -854,6 +1044,7 @@ export const removeRewatchLog = async (input: {
       // derived from episodes and can move by more than one.
       rewatchCount,
       removedLogs,
+      undoToken,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -942,15 +1133,25 @@ export const clearEpisodeWatchHistory = async (input: {
     }
 
     let removedLogs = 0;
+    let undoToken = '';
     await prisma.$transaction(async (tx) => {
-      const removed = await tx.rewatchLog.deleteMany({
-        where: {
-          userId: input.userId,
-          mediaType: DbRewatchMediaType.EPISODE,
-          mediaId: episode.id,
-        },
+      const rows = await readLogsToRemove(tx, {
+        userId: input.userId,
+        mediaType: DbRewatchMediaType.EPISODE,
+        mediaId: episode.id,
       });
-      removedLogs += removed.count;
+      undoToken = await captureRemoval(
+        tx,
+        {
+          userId: input.userId,
+          mediaType: 'episode',
+          mediaId: episode.id,
+          showId: episode.season.showId,
+        },
+        rows,
+      );
+      await tx.rewatchLog.deleteMany({ where: { id: { in: rows.map((row) => row.id) } } });
+      removedLogs = rows.length;
 
       await tx.episode.update({
         where: { id: episode.id },
@@ -972,6 +1173,7 @@ export const clearEpisodeWatchHistory = async (input: {
       tmdbId: episode.season.show.tmdbId,
       rewatchCount: 0,
       removedLogs,
+      undoToken,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -1003,15 +1205,20 @@ export const clearMovieWatchHistory = async (input: {
     }
 
     let removedLogs = 0;
+    let undoToken = '';
     await prisma.$transaction(async (tx) => {
-      const removed = await tx.rewatchLog.deleteMany({
-        where: {
-          userId: input.userId,
-          mediaType: DbRewatchMediaType.MOVIE,
-          mediaId: movie.id,
-        },
+      const rows = await readLogsToRemove(tx, {
+        userId: input.userId,
+        mediaType: DbRewatchMediaType.MOVIE,
+        mediaId: movie.id,
       });
-      removedLogs += removed.count;
+      undoToken = await captureRemoval(
+        tx,
+        { userId: input.userId, mediaType: 'movie', mediaId: movie.id },
+        rows,
+      );
+      await tx.rewatchLog.deleteMany({ where: { id: { in: rows.map((row) => row.id) } } });
+      removedLogs = rows.length;
 
       await tx.movie.update({ where: { id: movie.id }, data: { rewatchCount: 0 } });
 
@@ -1033,6 +1240,7 @@ export const clearMovieWatchHistory = async (input: {
       tmdbId: movie.tmdbId,
       rewatchCount: 0,
       removedLogs,
+      undoToken,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -1072,20 +1280,30 @@ export const clearSeasonWatchHistory = async (input: {
     const episodeIds = season.episodes.map((episode) => episode.id);
 
     let removedLogs = 0;
+    let undoToken = '';
     await prisma.$transaction(async (tx) => {
-      const removed = await tx.rewatchLog.deleteMany({
-        where: {
-          userId: input.userId,
-          OR: [
-            { mediaType: DbRewatchMediaType.SEASON, mediaId: season.id },
-            {
-              mediaType: DbRewatchMediaType.EPISODE,
-              seasonId: season.id,
-            },
-          ],
-        },
+      const rows = await readLogsToRemove(tx, {
+        userId: input.userId,
+        OR: [
+          { mediaType: DbRewatchMediaType.SEASON, mediaId: season.id },
+          {
+            mediaType: DbRewatchMediaType.EPISODE,
+            seasonId: season.id,
+          },
+        ],
       });
-      removedLogs += removed.count;
+      undoToken = await captureRemoval(
+        tx,
+        {
+          userId: input.userId,
+          mediaType: 'season',
+          mediaId: season.id,
+          showId: season.showId,
+        },
+        rows,
+      );
+      await tx.rewatchLog.deleteMany({ where: { id: { in: rows.map((row) => row.id) } } });
+      removedLogs = rows.length;
 
       await tx.season.update({ where: { id: season.id }, data: { rewatchCount: 0 } });
 
@@ -1109,6 +1327,7 @@ export const clearSeasonWatchHistory = async (input: {
       tmdbId: season.show.tmdbId,
       rewatchCount: 0,
       removedLogs,
+      undoToken,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -1139,17 +1358,22 @@ export const clearShowWatchHistory = async (input: {
     }
 
     let removedLogs = 0;
+    let undoToken = '';
     await prisma.$transaction(async (tx) => {
-      const removed = await tx.rewatchLog.deleteMany({
-        where: {
-          userId: input.userId,
-          showId: show.id,
-          mediaType: {
-            in: [DbRewatchMediaType.SHOW, DbRewatchMediaType.SEASON, DbRewatchMediaType.EPISODE],
-          },
+      const rows = await readLogsToRemove(tx, {
+        userId: input.userId,
+        showId: show.id,
+        mediaType: {
+          in: [DbRewatchMediaType.SHOW, DbRewatchMediaType.SEASON, DbRewatchMediaType.EPISODE],
         },
       });
-      removedLogs += removed.count;
+      undoToken = await captureRemoval(
+        tx,
+        { userId: input.userId, mediaType: 'show', mediaId: show.id, showId: show.id },
+        rows,
+      );
+      await tx.rewatchLog.deleteMany({ where: { id: { in: rows.map((row) => row.id) } } });
+      removedLogs = rows.length;
 
       await tx.show.update({ where: { id: show.id }, data: { rewatchCount: 0 } });
       await tx.season.updateMany({
@@ -1177,6 +1401,7 @@ export const clearShowWatchHistory = async (input: {
       tmdbId: show.tmdbId,
       rewatchCount: 0,
       removedLogs,
+      undoToken,
     };
   } catch (error) {
     if (error instanceof AppError) throw error;
@@ -1217,5 +1442,190 @@ export const getRewatchHistory = async (input: {
     throw new DatabaseError(`Failed to load watch history for "${mediaId}"`, {
       cause: error,
     });
+  }
+};
+
+/**
+ * Restores a watch removal recorded by any of the delete paths, replaying the
+ * snapshot it stored: the log rows come back with their original ids and group
+ * ids, and every counter/tracking value returns to the number it held before the
+ * unwatch. That is why the undo is byte-for-byte instead of a best-effort
+ * re-derivation.
+ *
+ * Refuses when new watches were logged for the same target since the removal —
+ * replaying the snapshot would then overwrite work the user did afterwards —
+ * and when the window has passed.
+ */
+export const restoreWatchRemoval = async (input: {
+  userId: string;
+  removalId: unknown;
+}): Promise<RestoreRemovalResult> => {
+  const removalId = parseDbId(input.removalId, 'removalId');
+
+  try {
+    const removal = await prisma.rewatchLogRemoval.findUnique({
+      where: { id: removalId },
+      select: {
+        id: true,
+        userId: true,
+        mediaType: true,
+        mediaId: true,
+        payload: true,
+        createdAt: true,
+      },
+    });
+
+    // Scoped by owner: another account's removal id must look missing.
+    if (!removal || removal.userId !== input.userId) {
+      throw new NotFoundError(`Watch removal not found: ${removalId}`);
+    }
+
+    if (!isWithinUndoWindow(removal.createdAt)) {
+      throw new ValidationError(
+        'The 10-minute undo window for this watch removal has passed.',
+      );
+    }
+
+    const payload = parseRemovalPayload(removal.payload);
+    const mediaType = parseRewatchMediaType(String(removal.mediaType).toLowerCase());
+    const target = await getOwnedMediaRef(prisma, input.userId, mediaType, removal.mediaId);
+
+    const rewatchCount = await prisma.$transaction(async (tx) => {
+      // The undo replays counters and tracking values verbatim, so it is only
+      // safe while nothing else changed on this title: if the user logged a
+      // watch anywhere on the same show (or film) afterwards, the snapshot is
+      // stale and restoring it would overwrite that watch.
+      const current = await countTitleLogs(tx, {
+        userId: input.userId,
+        mediaType,
+        mediaId: removal.mediaId,
+        showId: payload.shows[0]?.id ?? payload.logs[0]?.showId ?? undefined,
+      });
+
+      if (current !== payload.remaining) {
+        throw new ValidationError(
+          'New watches were logged for this title after the unwatch, so it can no longer be undone.',
+        );
+      }
+
+      await tx.rewatchLog.createMany({
+        data: payload.logs.map((log) => ({
+          id: log.id,
+          userId: log.userId,
+          mediaType: toDbRewatchMediaType(log.mediaType as RewatchMediaType),
+          mediaId: log.mediaId,
+          rewatchedAt: new Date(log.rewatchedAt),
+          groupId: log.groupId,
+          clientRequestId: log.clientRequestId,
+          showId: log.showId,
+          seasonId: log.seasonId,
+          episodeId: log.episodeId,
+          movieId: log.movieId,
+        })),
+        skipDuplicates: true,
+      });
+
+      for (const episode of payload.episodes) {
+        await tx.episode.update({
+          where: { id: episode.id },
+          data: { rewatchCount: episode.rewatchCount },
+        });
+
+        if (episode.trackingExists) {
+          await tx.episodeTracking.updateMany({
+            where: { episodeId: episode.id },
+            data: {
+              watched: episode.watched,
+              watchedAt: episode.watchedAt ? new Date(episode.watchedAt) : null,
+            },
+          });
+        }
+      }
+
+      for (const season of payload.seasons) {
+        await tx.season.update({
+          where: { id: season.id },
+          data: { rewatchCount: season.rewatchCount },
+        });
+      }
+
+      for (const show of payload.shows) {
+        await tx.show.update({
+          where: { id: show.id },
+          data: { rewatchCount: show.rewatchCount },
+        });
+
+        if (show.tracking) {
+          const { status, startedAt, completedAt } = show.tracking;
+          await tx.showTracking.upsert({
+            where: { showId: show.id },
+            create: {
+              showId: show.id,
+              status: status as ShowTrackingStatus,
+              startedAt: startedAt ? new Date(startedAt) : null,
+              completedAt: completedAt ? new Date(completedAt) : null,
+            },
+            update: {
+              status: status as ShowTrackingStatus,
+              startedAt: startedAt ? new Date(startedAt) : null,
+              completedAt: completedAt ? new Date(completedAt) : null,
+            },
+          });
+        } else {
+          // The unwatch created this row; before it there was none.
+          await tx.showTracking.deleteMany({ where: { showId: show.id } });
+        }
+      }
+
+      for (const movie of payload.movies) {
+        await tx.movie.update({
+          where: { id: movie.id },
+          data: { rewatchCount: movie.rewatchCount },
+        });
+
+        if (movie.tracking) {
+          const { status, startedAt, completedAt } = movie.tracking;
+          await tx.movieTracking.updateMany({
+            where: { movieId: movie.id },
+            data: {
+              status: status as MovieTrackingStatus,
+              startedAt: startedAt ? new Date(startedAt) : null,
+              completedAt: completedAt ? new Date(completedAt) : null,
+            },
+          });
+        }
+      }
+
+      // Single use: replaying the same snapshot twice would duplicate rows.
+      await tx.rewatchLogRemoval.delete({ where: { id: removal.id } });
+
+      const restored = await getOwnedMediaRef(tx, input.userId, mediaType, removal.mediaId);
+      return restored.rewatchCount;
+    });
+
+    return { mediaType, mediaId: removal.mediaId, tmdbId: target.tmdbId, rewatchCount };
+  } catch (error) {
+    if (error instanceof AppError) throw error;
+    throw new DatabaseError(`Failed to restore watch removal "${removalId}"`, { cause: error });
+  }
+};
+
+/**
+ * Drops removal snapshots whose undo window has passed. Called by the
+ * maintenance route and opportunistically on every new removal, so the table
+ * stays the size of one undo window instead of the app's whole history.
+ */
+export const purgeExpiredRemovals = async (options: { userId?: string } = {}): Promise<number> => {
+  try {
+    const { count } = await prisma.rewatchLogRemoval.deleteMany({
+      where: {
+        createdAt: { lt: new Date(Date.now() - REWATCH_UNDO_WINDOW_MS) },
+        ...(options.userId ? { userId: options.userId } : {}),
+      },
+    });
+
+    return count;
+  } catch (error) {
+    throw new DatabaseError('Failed to purge expired watch removals', { cause: error });
   }
 };

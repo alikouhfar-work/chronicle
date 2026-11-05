@@ -11,6 +11,7 @@ export const daysFromNow = (days: number) => {
 };
 
 export const clearRewatchDatabase = async (prisma: Db) => {
+  await prisma.rewatchLogRemoval.deleteMany();
   await prisma.rewatchLog.deleteMany();
   await prisma.episodeTracking.deleteMany();
   await prisma.showTracking.deleteMany();

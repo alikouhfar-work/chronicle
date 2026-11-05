@@ -215,6 +215,7 @@ model User {
   shows                 Show[]
   movies                Movie[]
   rewatchLogs           RewatchLog[]
+  rewatchLogRemovals    RewatchLogRemoval[]
   notes                 MediaNote[]
   comments              Comment[]
   mentions              CommentMention[] @relation("MentionsReceived")
@@ -259,6 +260,27 @@ model RewatchLog {
   @@index([episodeId])
   @@index([movieId])
   @@map("rewatch_logs")
+}
+
+/// A reversible watch removal: the deleted rows and the counters/tracking values
+/// they changed are kept for a short window so an accidental unwatch can be
+/// undone byte-for-byte. Unlike a `deleted_at` flag on `rewatch_logs`, nothing
+/// that reads watches has to learn to filter these rows out — they are not there.
+model RewatchLogRemoval {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  mediaType RewatchMediaType @map("media_type")
+  mediaId   String           @map("media_id")
+  /// Removed `rewatch_logs` rows plus the episode/season/show/movie counters and
+  /// tracking values, exactly as they were before the removal.
+  payload   Json
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("rewatch_log_removals")
 }
 
 model Comment {

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { IconCircleX, IconDeviceTv, IconLoader2, IconRotateClockwise } from '@tabler/icons-react';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
+import { undoUnwatch } from '@/modules/rewatch/actions/undoUnwatch';
 import { unwatchMedia } from '@/modules/rewatch/actions/unwatchMedia';
 import type {
   WatchActionModalProps,
@@ -87,6 +88,24 @@ export const WatchActionModal = ({
     });
   };
 
+  /**
+   * Undo runs from a toast that outlives the dialog, so it uses the parent's
+   * `onRewatch` callback (which restores the optimistic watched state) rather
+   * than any local state here.
+   */
+  const handleUndo = async (undoToken: string) => {
+    const restored = await undoUnwatch(undoToken);
+
+    if (!restored.success) {
+      toastError(restored.error);
+      return;
+    }
+
+    onRewatch(restored.rewatchCount);
+    router.refresh();
+    toastSuccess('The watch history is back as it was.', 'Restored');
+  };
+
   const handleUnwatch = () => {
     if (isBusy) return;
 
@@ -104,11 +123,13 @@ export const WatchActionModal = ({
       }
 
       const removed = result.removedLogs;
+      const undoToken = result.undoToken;
       toastSuccess(
         removed === 1
           ? 'Watch removed.'
           : `${removed} logged watches removed.`,
         'Unwatched',
+        undoToken ? { label: 'Undo', onClick: () => void handleUndo(undoToken) } : undefined,
       );
       onUnwatch(result.rewatchCount);
       router.refresh();

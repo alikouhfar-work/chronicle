@@ -297,15 +297,25 @@ stale for longer than one request after a write.
 
 **Effort:** 0.5 day.
 
-## WP-13 · Unwatch safety and log editing — **part done** (dates + accounting; undo → WP-13b)
+## WP-13 · Unwatch safety and log editing — **done** (WP-13b: undo window + purge)
 **Covers:** A3, A4.
 
 - `WatchActionModal` shows the destructive count for show/season unwatch.
-- `rewatch_logs.deleted_at` (nullable) + `deletedLogIds` retention; unwatch soft-deletes
-  the group, the toast offers Undo for 10 minutes, a maintenance pass purges later.
+- `rewatch_log_removals` (migration `20261105190000_rewatch_log_removals`): every
+  delete path snapshots the rows it removes **and** the episode/season/show/movie
+  counters and tracking values it changes; the toast offers Undo for the payload's
+  life, and the server honours a 10-minute window.
+- `restoreWatchRemoval({ userId, removalId })` → `undoUnwatch` action replays the
+  snapshot (log ids and group ids included) and deletes it, so a second undo reads
+  as missing. It refuses once the title's live log count no longer matches the
+  count the removal left behind, and
+  `GET /api/maintenance/rewatch-removals` (Bearer `CRON_SECRET`) plus an
+  opportunistic sweep on each new removal purge closed windows.
 - `updateRewatchLog({ logId, rewatchedAt })` action + date field in `RewatchHistoryModal`.
-- Tests: unwatch → undo restores logs and counters byte-for-byte; date edit re-sorts and
-  recomputes the season rule.
+- Tests: unwatch → undo restores logs, counters, watched flags and tracking
+  timestamps byte-for-byte for movie/episode/season/show and for a single
+  history entry; undo twice, past the window, cross-account, and after new
+  activity are all refused; purge removes expired snapshots only.
 
 **Effort:** 2 days.
 
@@ -319,16 +329,19 @@ stale for longer than one request after a write.
 
 **Effort:** 1 day.
 
-## WP-15 · Playwright journeys
+## WP-15 · Playwright journeys — **done** (harness + 9 journeys, add-movie included)
 **Covers:** G1.
 
 - `playwright.config.ts`, `e2e/` specs against a seeded DB, run in the CI workflow:
   sign in (credentials), add a movie, mark watched → rewatch dialog, rate it, post a
   review with an attachment, mention a user and see the notification.
 - Concurrency spec: two tabs log the same rewatch with one idempotency key.
+- The add-a-movie journey is the only live-TMDB one; it skips with a named reason
+  unless `DEMO_TMDB_TOKEN` is set (CI wires it from the `TMDB_ACCESS_TOKEN`
+  repository secret), so a token-less checkout still gets a green suite.
 
-**Acceptance:** five journeys green locally and in CI; the suite documents the intended
-UX, not the current quirks.
+**Acceptance:** nine journeys green locally (and in CI once the TMDB secret is
+set); the suite documents the intended UX, not the current quirks.
 **Effort:** 2.5 days.
 
 ## WP-16 · Season-rule affordance — **done**

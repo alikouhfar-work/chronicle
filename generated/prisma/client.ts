@@ -101,6 +101,14 @@ export type User = Prisma.UserModel
  */
 export type RewatchLog = Prisma.RewatchLogModel
 /**
+ * Model RewatchLogRemoval
+ * A reversible watch removal: the deleted rows and the counters/tracking values
+ * they changed are kept for a short window so an accidental unwatch can be
+ * undone byte-for-byte. Unlike a `deleted_at` flag on `rewatch_logs`, nothing
+ * that reads watches has to learn to filter these rows out — they are not there.
+ */
+export type RewatchLogRemoval = Prisma.RewatchLogRemovalModel
+/**
  * Model Comment
  * 
  */
