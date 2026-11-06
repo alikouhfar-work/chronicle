@@ -117,10 +117,6 @@ export const RatingControl = ({
       </div>
 
       {stars}
-      <p className="text-micro text-ink-muted">
-        Rate {mediaType === 'movie' ? 'this movie' : 'this episode'} on its own — notes stay
-        independent.
-      </p>
     </div>
   );
 };

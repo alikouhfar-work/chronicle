@@ -15,7 +15,7 @@ export const Footer = () => {
 
   return (
     <footer className="fixed right-4 bottom-5 left-4 z-40 md:hidden">
-      <div className="grid h-14 grid-cols-3 rounded-pill border border-line bg-surface-raised/90 p-1 shadow-2xl shadow-black/90 backdrop-blur-2xl">
+      <div className="grid h-14 grid-cols-4 rounded-pill border border-line bg-surface-raised/90 p-1 shadow-2xl shadow-black/90 backdrop-blur-2xl">
         {navigation.map((item) => {
           const Icon = item.icon;
           const activeTab = isActiveRoute(item.href);
