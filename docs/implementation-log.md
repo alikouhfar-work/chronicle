@@ -765,3 +765,23 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   ramp is still zinc (WP-36); both are allow-listed and tracked, not forgotten. Five
   open questions (brand violet, skeletons, light theme, micro size, gradient ramp) are
   at the end of the audit.
+
+## 2026-11-06 — Next.js 16.4.0 → 16.4.5 (security advisory)
+- Change: `next` 16.4.0 → 16.4.5 and `eslint-config-next` 16.2.12 → 16.4.5 (pinned
+  exact, matching the project's policy for that package); `next.config.ts` gained
+  `experimental.agentUpgrade: 'security'`, which is what stops the CLI from aborting
+  builds to advertise the advisory. Installed with the project's manager (npm) from
+  the repo root; the lockfile moved 14 entries, all `next`/`@next/*`/`eslint-config-next`
+  — no other dependency changed (Prisma was already on 7.10.0 in the lock).
+- Why: `next build` was exiting once with `SecurityFatalError` ("Your version of
+  Next.js is affected by a known security vulnerability") and only completing on a
+  retry. That trip is gone.
+- Migration: none.
+- Verified: `next --version` = 16.4.5 · `tsc` clean · eslint clean · 374 unit tests ·
+  `npm run build` exit 0 on the **first** attempt with `✓ Compiled successfully` and
+  no advisory · 9/9 Playwright journeys against the rebuilt production server · dev
+  server restarted and serving `/login` 200 (the build replaces the dev process).
+- Notes: same-major upgrade, so no codemod or migration guide applies. Duplicate-work
+  check: no `next-upgrade` marker, branch or commit exists in this repo; `gh` is not
+  installed, so open pull requests could not be checked — reported rather than
+  skipped silently.
