@@ -637,3 +637,16 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Verified: tsc clean with the new flags (from 397 errors down to 0), eslint clean,
   357 unit tests, build compiled on the advisory retry, 9/9 Playwright journeys — the
   value-import → type-import rewrite did not drop any runtime dependency.
+
+## 2026-11-05 — WP-28 · Caching: decision recorded, no migration
+- Change: D5 added to the plan's decisions table — stay on `unstable_cache` +
+  `revalidateTag`, do not adopt `cacheComponents` yet. No code change.
+- Why: `app/(main)/layout.tsx` awaits `auth()`, so every route under it is dynamic by
+  construction; route-level `revalidate`/`generateStaticParams` cannot take effect, and
+  the public title pages read per-user tracked flags anyway. `use cache` would fix the
+  coarse `media` tag (the reason `docs/architecture-audit.md` F7 exists) but changes
+  prerender semantics for all 26 routes and needs its own proof budget.
+- Migration: none.
+- Verified: reasoning checked against the route table (all `ƒ` except the four static
+  generated files) and the layout source; no behaviour change to verify beyond the
+  gates, which were re-run with WP-27.

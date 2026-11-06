@@ -68,6 +68,7 @@ Phase 0.
 | D2 | Do reviews thread? | **Flat feed for now.** | C1 closed as an accepted limitation: mentions remain the only notification trigger, so WP-09 shrinks to the mention cap and no `COMMENT_REPLY` enum value is added. `NotificationType` stays single-valued. |
 | D3 | Demo model? | **One shared account for visitors.** | WP-20 keeps the shared account; it only fixes the cron expression, adds a reset lock, and moves the URL to a repo variable. No session-scoped libraries. |
 | D4 | Attachment retention after delete? | **No soft delete — deleting a comment removes it and its attachments permanently.** | `Comment.deletedAt` goes away, `deleteComment` becomes a hard delete that removes attachment rows and storage objects in the same request, and the notification rows for that comment cascade with it. WP-07's sweep loses its retention branch and becomes a backstop for abandoned uploads only; new WP-23 owns the delete path. |
+| D5 | Which Next 16 caching model? | **Stay on `unstable_cache` + `revalidateTag`; no `cacheComponents` migration for now.** | Route-level caching cannot help today: `app/(main)/layout.tsx` awaits `auth()`, so every main route is dynamic by construction, and the public title pages read per-user tracked flags. Cache Components (`use cache` + `cacheLife`/`cacheTag`) would fix the coarse `media` tag by keying the cache on arguments, but it changes prerender semantics for all 26 routes and needs its own proof (e2e, demo reset, bell polling). Revisit when a public page can render without the session. |
 
 Two consequences worth confirming, since they are user-visible:
 
@@ -500,7 +501,7 @@ No directory reshuffle is in scope.
 | WP-25 | Cut the `shared`/`infra` → feature edges, absorb `modules/api` into `infra/http`, then enable the layering + cycle guardrails — **done 2026-11-05**: `shared/` and `infra/` import no feature; 31-pair ratchet in `src/architecture.test.ts`. Remaining inversions (library↔discovery, comments↔notes, show↔episode-season) are named in the test, not fixed. | A1, A2, A8 | M |
 | WP-26 | `next/dynamic` for the five interaction-only client surfaces + a chunk budget — **done 2026-11-05**: six call sites lazied (both watch dialogs, the report form); bell stays eager for the badge. No explicit budget asserted yet. | A3 | S |
 | WP-27 | `verbatimModuleSyntax`, `ES2022`, unused/override flags (197 mechanical errors) — **done 2026-11-05**: flags on, 134 files rewritten to `import type` via the typescript-eslint autofix, four residuals fixed by hand. | A4 | S |
-| WP-28 | Caching decision: stay on `unstable_cache` or move to `cacheComponents`/`use cache`; route-level `revalidate` either way | A7 | S/M |
+| WP-28 | Caching decision: stay on `unstable_cache` or move to `cacheComponents`/`use cache`; route-level `revalidate` either way — **decided 2026-11-05 (D5): stay.** No code change; route-level caching is blocked by the session-reading `(main)` layout. | A7 | S/M |
 | WP-29 | `infra/env.ts` with fail-fast parsing; migrate the 27 ad-hoc `process.env` reads | A5 | M |
 | WP-30 | One validation contract at four request boundaries | A6 | M |
 | WP-31 | `noUncheckedIndexedAccess` (135 sites), then `exactOptionalPropertyTypes` (43) | A4 | M |
