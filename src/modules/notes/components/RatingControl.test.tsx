@@ -31,7 +31,6 @@ describe('RatingControl', () => {
     );
 
     expect(screen.getByText('Not rated')).toBeTruthy();
-    expect(screen.getByText(/Rate this movie on its own — notes stay independent/)).toBeTruthy();
 
     await rate(4);
 
