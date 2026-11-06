@@ -2,17 +2,14 @@ import { NextResponse } from 'next/server';
 import { AppError, getErrorMessage, toAppError } from '@/shared/lib/errors';
 import { MissingTmdbTokenError, hasTmdbToken, requireBearerUserId } from '@/infra/tmdb/forUser';
 import type { ApiErrorBody } from '@/modules/api/types';
-
-const AUTH_MESSAGES = new Map([
-  ['Unauthorized', 'Authentication required. Sign in again.'],
-  ['MissingTmdbTokenError', 'TMDB token is not set. Save one first.'],
-]);
+import { identityFailure } from '@/shared/lib/httpErrorMap';
 
 export const apiError = (error: unknown): NextResponse<ApiErrorBody> => {
-  if (error instanceof Error && AUTH_MESSAGES.has(error.message)) {
+  const identity = identityFailure(error);
+  if (identity) {
     return NextResponse.json(
-      { ok: false, error: AUTH_MESSAGES.get(error.message)!, code: 'UNAUTHORIZED' },
-      { status: 401 },
+      { ok: false, error: identity.message, code: identity.code },
+      { status: identity.status },
     );
   }
   if (containsTokenError(error)) {

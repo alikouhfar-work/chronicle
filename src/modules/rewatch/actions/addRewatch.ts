@@ -2,8 +2,11 @@
 
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { recordRewatch } from '@/modules/rewatch/services/rewatchService';
+import {
+  parseRewatchWriteCommand,
+  toRewatchFailure,
+} from '@/modules/rewatch/lib/writeContract';
 import type { AddRewatchActionResult, RewatchMediaType } from '@/modules/rewatch/types/rewatch';
-import { getErrorMessage } from '@/shared/lib/errors';
 import { revalidateMediaDetail } from '@/shared/lib/revalidate';
 
 export const addRewatch = async (
@@ -13,14 +16,10 @@ export const addRewatch = async (
   clientRequestId?: string,
 ): Promise<AddRewatchActionResult> => {
   try {
+    // Same parse + failure mapping as the REST adapter (WP-21).
+    const command = parseRewatchWriteCommand({ mediaType, mediaId, rewatchedAt, clientRequestId });
     const userId = await requireUserId();
-    const result = await recordRewatch({
-      userId,
-      mediaType,
-      mediaId,
-      rewatchedAt,
-      clientRequestId,
-    });
+    const result = await recordRewatch({ userId, ...command });
 
     revalidateMediaDetail(result.mediaType === 'movie' ? 'movie' : 'tv', result.tmdbId);
 
@@ -31,9 +30,6 @@ export const addRewatch = async (
       rewatchedAt: result.rewatchedAt.toISOString(),
     };
   } catch (error) {
-    return {
-      success: false,
-      error: getErrorMessage(error, 'Couldn’t log the watch. Please try again.'),
-    };
+    return { success: false, error: toRewatchFailure(error).message };
   }
 };

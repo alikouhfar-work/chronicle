@@ -1,13 +1,18 @@
+import { NextResponse } from 'next/server';
 import type { RouteContext } from '@/modules/api/types/routeContext';
-import { apiError, apiOk } from '@/modules/api/lib/respond';
+import { apiOk } from '@/modules/api/lib/respond';
 import { removeRewatchLog } from '@/modules/rewatch/services/rewatchService';
+import {
+  parseRewatchLogId,
+  toRewatchRemoveFailure,
+} from '@/modules/rewatch/lib/writeContract';
 import { requireUserId } from '@/infra/tmdb/forUser';
 
 export const DELETE = async (_request: Request, context: RouteContext<{ logId: string }>) => {
   try {
     const { logId } = await context.params;
     const userId = await requireUserId();
-    const result = await removeRewatchLog({ userId, logId });
+    const result = await removeRewatchLog({ userId, logId: parseRewatchLogId(logId) });
 
     return apiOk({
       deleted: true,
@@ -16,6 +21,10 @@ export const DELETE = async (_request: Request, context: RouteContext<{ logId: s
       rewatchCount: result.rewatchCount,
     });
   } catch (error) {
-    return apiError(error);
+    const failure = toRewatchRemoveFailure(error);
+    return NextResponse.json(
+      { ok: false, error: failure.message, code: failure.code },
+      { status: failure.status },
+    );
   }
 };

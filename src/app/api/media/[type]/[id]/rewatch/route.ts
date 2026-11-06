@@ -1,29 +1,28 @@
+import { NextResponse } from 'next/server';
 import type { RouteContext } from '@/modules/api/types/routeContext';
-import { apiError, apiOk } from '@/modules/api/lib/respond';
+import { apiOk } from '@/modules/api/lib/respond';
 import { recordRewatch } from '@/modules/rewatch/services/rewatchService';
+import {
+  parseRewatchWriteCommand,
+  readRewatchWriteFields,
+  toRewatchFailure,
+} from '@/modules/rewatch/lib/writeContract';
 import { requireUserId } from '@/infra/tmdb/forUser';
 
 export const POST = async (request: Request, context: RouteContext) => {
   try {
     const { type, id } = await context.params;
-    const payload = (await request.json().catch(() => null)) as
-      | Record<string, unknown>
-      | null;
-    const rewatchedAt = payload?.rewatched_at ?? payload?.rewatchedAt ?? payload?.date;
-    // Retries reuse the key so a timeout cannot log the watch twice.
-    const clientRequestId =
-      request.headers.get('idempotency-key') ??
-      payload?.client_request_id ??
-      payload?.clientRequestId;
-    const userId = await requireUserId();
-
-    const result = await recordRewatch({
-      userId,
+    const payload = await request.json().catch(() => null);
+    // The same fields, aliases and validation the server action uses; retries
+    // carry `Idempotency-Key` so a timeout cannot log the watch twice.
+    const command = parseRewatchWriteCommand({
       mediaType: type,
       mediaId: id,
-      rewatchedAt,
-      clientRequestId,
+      ...readRewatchWriteFields(payload, request.headers.get('idempotency-key')),
     });
+    const userId = await requireUserId();
+
+    const result = await recordRewatch({ userId, ...command });
 
     return apiOk(
       {
@@ -38,6 +37,10 @@ export const POST = async (request: Request, context: RouteContext) => {
       { status: 201 },
     );
   } catch (error) {
-    return apiError(error);
+    const failure = toRewatchFailure(error);
+    return NextResponse.json(
+      { ok: false, error: failure.message, code: failure.code },
+      { status: failure.status },
+    );
   }
 };
