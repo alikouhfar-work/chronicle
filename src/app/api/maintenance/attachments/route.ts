@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/infra/db/prisma';
 import { COMMENT_ATTACHMENT_PREFIX, getCommentStorage } from '@/infra/storage/storage';
@@ -19,7 +20,7 @@ export const dynamic = 'force-dynamic';
  * is limited to objects this deployment minted.
  */
 export const GET = async (request: Request) => {
-  const secret = process.env.CRON_SECRET;
+  const secret = env.cronSecret;
   const authorization = request.headers.get('authorization');
 
   if (!secret || authorization !== `Bearer ${secret}`) {

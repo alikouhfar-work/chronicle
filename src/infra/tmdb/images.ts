@@ -1,18 +1,10 @@
+import { publicEnv } from '@/shared/lib/publicEnv';
 import { getGradientForTitle } from '@/shared/lib/getGradientForTitle';
 import type { TmdbImageSize, TmdbImageType } from '@/infra/tmdb/types';
 
-// Official TMDB image CDN. Used when no env override is set — in particular
-// on the client, where only NEXT_PUBLIC_* vars are inlined. Without this the
-// poster silently drops out of shared messages in production.
-const TMDB_IMAGE_CDN_FALLBACK = 'https://image.tmdb.org/t/p';
-
-const resolveImageBaseUrl = (): string => {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL ??
-    process.env.TMDB_IMAGE_BASE_URL ??
-    TMDB_IMAGE_CDN_FALLBACK;
-  return baseUrl.replace(/\/$/, '');
-};
+// Base URL comes from `publicEnv`, which owns the NEXT_PUBLIC_* fallback chain
+// (this module is imported by Client Components — see shared/lib/publicEnv).
+const resolveImageBaseUrl = (): string => publicEnv.tmdbImageBaseUrl;
 
 export const getTmdbImageUrl = (
   path: string | null | undefined,

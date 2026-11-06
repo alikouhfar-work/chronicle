@@ -650,3 +650,27 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Verified: reasoning checked against the route table (all `ƒ` except the four static
   generated files) and the layout source; no behaviour change to verify beyond the
   gates, which were re-run with WP-27.
+
+## 2026-11-05 — WP-29 · One door for configuration
+- Change: new `src/infra/env.ts` (server) and `src/shared/lib/publicEnv.ts` (client-safe)
+  own every environment read; the 20 production call sites moved onto them —
+  auth (`AUTH_SECRET`, Google, guest login, demo email), TMDB (`TMDB_BASE_URL`,
+  token/`DEMO_TMDB_TOKEN`), storage (`COMMENT_STORAGE_DIR`, `S3_PUBLIC_BASE_URL`),
+  Prisma (`DATABASE_URL`, `DEMO_DATABASE_URL`, `PRISMA_TARGET`, build phase), the four
+  operator routes (`CRON_SECRET`), robots/sitemap/share (`NEXT_PUBLIC_APP_URL`) and the
+  poster CDN chain. Getters, not frozen constants, so suites that assign `process.env`
+  after import still work; `DATABASE_URL`/`AUTH_SECRET` throw with the variable name,
+  everything optional stays optional.
+- Two deliberate exceptions, both documented in place: `infra/http/securityHeaders.ts`
+  keeps direct reads (next.config imports it by relative path and cannot resolve `@/`),
+  and `infra/env.ts` carries no `import 'server-only'` because `tsx` scripts
+  (`e2e/seed.ts`) execute it — Next only inlines `NEXT_PUBLIC_*`, so nothing leaks.
+- Guardrails: `src/architecture.test.ts` now fails if any file outside the two env
+  modules (tests excluded) reads `process.env`, and if a `'use client'` file imports
+  `@/infra/env`.
+- Migration: none.
+- Verified: tsc, eslint, 358 unit tests (2 new guardrails), build compiled on the
+  advisory retry, 9/9 Playwright journeys — login, TMDB-backed dashboard, live TMDB
+  library add, storage and the token-gated routes all resolved through the new module.
+- Note: the first E2E run after this change caught the `server-only` marker throwing in
+  `tsx` (`e2e/seed.ts`) and in the server build; that is why the module has no marker.

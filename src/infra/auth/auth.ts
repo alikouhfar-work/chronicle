@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
@@ -10,10 +11,10 @@ import { logError } from '@/infra/logging/logger';
 
 export type { AuthProviderId, AvailableProvider } from '@/infra/auth/types';
 
-export const hasGoogle = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
-export const hasGuestLogin = process.env.GUEST_LOGIN_ENABLED === 'true';
+export const hasGoogle = env.hasGoogle;
+export const hasGuestLogin = env.guestLoginEnabled;
 // Shared demo/guest account — provisioned by seed + demo reset on the demo DB.
-export const guestEmail = process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local';
+export const guestEmail = env.demoUserEmail;
 
 export const availableProviders: AvailableProvider[] = [
   ...(hasGoogle ? [{ id: 'google' as const, name: 'Google' }] : []),

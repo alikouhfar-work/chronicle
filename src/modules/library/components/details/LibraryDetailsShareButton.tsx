@@ -1,5 +1,7 @@
 'use client';
 
+import { publicEnv } from '@/shared/lib/publicEnv';
+
 import { useState } from 'react';
 import { IconCheck, IconLoader2, IconShare2 } from '@tabler/icons-react';
 import { clsx } from 'clsx';
@@ -53,7 +55,7 @@ export const LibraryDetailsShareButton = ({
     // Prefer the public app URL when configured: shares sent from a dev
     // server would otherwise carry a localhost link that no device can open.
     const origin =
-      process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || window.location.origin;
+      publicEnv.configuredAppUrl ?? window.location.origin;
     const { title, text, url, posterUrl } = buildShareMessage({
       media,
       mediaType,

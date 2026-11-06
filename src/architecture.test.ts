@@ -180,3 +180,37 @@ describe('layer direction', () => {
     expect(offenders).toEqual([]);
   });
 });
+
+describe('environment access', () => {
+  it('is confined to the env modules', () => {
+    // WP-29: one door for configuration. `securityHeaders` is exempt because
+    // next.config.ts imports it by relative path and cannot resolve `@/`.
+    const ALLOWED = new Set([
+      'src/infra/env.ts',
+      'src/shared/lib/publicEnv.ts',
+      'src/infra/http/securityHeaders.ts',
+    ]);
+
+    const offenders = sourceFiles
+      .map(toRepoPath)
+      .filter((repoPath) => repoPath.startsWith('src/'))
+      .filter((repoPath) => !/\.test\.|__fixtures__/.test(repoPath))
+      .filter((repoPath) => !ALLOWED.has(repoPath))
+      .filter((repoPath) =>
+        /process\.env\.[A-Z]/.test(readFileSync(join(process.cwd(), repoPath), 'utf8')),
+      );
+
+    expect(offenders).toEqual([]);
+  });
+});
+
+describe('server env stays server-side', () => {
+  it('is never imported by a Client Component', () => {
+    const offenders = sourceFiles
+      .filter((file) => readFileSync(file, 'utf8').trimStart().startsWith("'use client'"))
+      .filter((file) => readFileSync(file, 'utf8').includes("from '@/infra/env'"))
+      .map(toRepoPath);
+
+    expect(offenders).toEqual([]);
+  });
+});

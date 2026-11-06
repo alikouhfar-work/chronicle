@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { createHash } from 'node:crypto';
 import { SignJWT, jwtVerify } from 'jose';
 import type { MobileJwtClaims } from '@/infra/auth/types';
@@ -10,8 +11,7 @@ const ISSUER = 'chronicle';
 const EXPIRY = '30d';
 
 const resolveKey = (): Uint8Array => {
-  const secret = process.env.AUTH_SECRET;
-  if (!secret) throw new Error('[mobileJwt] AUTH_SECRET is not defined');
+  const secret = env.authSecret;
   return new Uint8Array(createHash('sha256').update(`chronicle-mobile-jwt:${secret}`).digest());
 };
 

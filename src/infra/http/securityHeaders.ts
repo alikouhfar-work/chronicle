@@ -15,6 +15,8 @@ type SecurityHeaderOptions = {
  * `Content-Security-Policy` and tighten `script-src`.
  */
 export const buildSecurityHeaders = (options: SecurityHeaderOptions = {}): SecurityHeader[] => {
+  // Read directly on purpose: next.config.ts imports this module by relative path
+  // (it cannot resolve `@/`), so pulling in `infra/env` here would break config load.
   const isProduction = options.isProduction ?? process.env.NODE_ENV === 'production';
   const storageOrigin = options.storageOrigin ?? process.env.S3_PUBLIC_BASE_URL ?? '';
 

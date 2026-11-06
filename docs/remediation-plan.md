@@ -502,7 +502,7 @@ No directory reshuffle is in scope.
 | WP-26 | `next/dynamic` for the five interaction-only client surfaces + a chunk budget — **done 2026-11-05**: six call sites lazied (both watch dialogs, the report form); bell stays eager for the badge. No explicit budget asserted yet. | A3 | S |
 | WP-27 | `verbatimModuleSyntax`, `ES2022`, unused/override flags (197 mechanical errors) — **done 2026-11-05**: flags on, 134 files rewritten to `import type` via the typescript-eslint autofix, four residuals fixed by hand. | A4 | S |
 | WP-28 | Caching decision: stay on `unstable_cache` or move to `cacheComponents`/`use cache`; route-level `revalidate` either way — **decided 2026-11-05 (D5): stay.** No code change; route-level caching is blocked by the session-reading `(main)` layout. | A7 | S/M |
-| WP-29 | `infra/env.ts` with fail-fast parsing; migrate the 27 ad-hoc `process.env` reads | A5 | M |
+| WP-29 | `infra/env.ts` with fail-fast parsing; migrate the ad-hoc `process.env` reads — **done 2026-11-05**: `infra/env.ts` + `shared/lib/publicEnv.ts`, 20 call sites migrated, `process.env` outside the two modules fails the architecture test. | A5 | M |
 | WP-30 | One validation contract at four request boundaries | A6 | M |
 | WP-31 | `noUncheckedIndexedAccess` (135 sites), then `exactOptionalPropertyTypes` (43) | A4 | M |
 | WP-32 | Test placement + barrel policy, documented and enforced | A9, A10 | S |

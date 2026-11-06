@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { NextResponse } from 'next/server';
 import { logError, logInfo } from '@/infra/logging/logger';
 import { purgeExpiredRemovals } from '@/modules/rewatch/services/rewatchService';
@@ -18,7 +19,7 @@ export const dynamic = 'force-dynamic';
  * expired rows, so this route exists to bound the table when nobody unwatches.
  */
 export const GET = async (request: Request) => {
-  const secret = process.env.CRON_SECRET;
+  const secret = env.cronSecret;
   const authorization = request.headers.get('authorization');
 
   if (!secret || authorization !== `Bearer ${secret}`) {

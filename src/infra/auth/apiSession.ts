@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import 'server-only';
 
 import { compare } from 'bcryptjs';
@@ -28,7 +29,7 @@ export const verifyCredentials = async (
 };
 
 export const signInGuest = async (): Promise<ApiSession | null> => {
-  if (process.env.GUEST_LOGIN_ENABLED !== 'true') return null;
+  if (!env.guestLoginEnabled) return null;
   let user = await prisma.user.findUnique({ where: { email: guestEmail } });
   if (!user) {
     try {

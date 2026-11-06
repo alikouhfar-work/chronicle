@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { headers } from 'next/headers';
 import { auth } from '@/infra/auth/auth';
 import { verifyMobileJwt } from '@/infra/auth/mobileJwt';
@@ -39,7 +40,7 @@ export const requireBearerUserId = async (): Promise<string> => {
  */
 export const hasTmdbToken = async (_userId?: string): Promise<boolean> => {
   void _userId;
-  return Boolean(process.env.TMDB_ACCESS_TOKEN ?? process.env.DEMO_TMDB_TOKEN);
+  return env.hasTmdbToken;
 };
 
 /**

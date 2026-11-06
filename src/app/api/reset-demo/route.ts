@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/infra/db/prisma';
 import { tmdbFetch } from '@/infra/tmdb/client';
@@ -21,7 +22,7 @@ const RESET_DEMO_LOCK_KEY = 727_214;
 
 const MAX_MOVIES = 5;
 const MAX_SHOWS = 5;
-const DEMO_EMAIL = process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local';
+const DEMO_EMAIL = env.demoUserEmail;
 
 const MOVIE_STATUSES = [
   MovieTrackingStatus.PLAN_TO_WATCH,
@@ -51,14 +52,14 @@ const shuffle = <T,>(arr: readonly T[]): T[] => {
 
 export const GET = async (request: Request) => {
   // 1. Authenticate
-  const expected = `Bearer ${process.env.CRON_SECRET}`;
+  const expected = `Bearer ${env.cronSecret}`;
   const received = request.headers.get('authorization');
 
-  if (!process.env.CRON_SECRET || received !== expected) {
+  if (!env.cronSecret || received !== expected) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (!process.env.TMDB_ACCESS_TOKEN && !process.env.DEMO_TMDB_TOKEN) {
+  if (!env.hasTmdbToken) {
     return NextResponse.json({ ok: false, error: 'TMDB_ACCESS_TOKEN is not set' }, { status: 500 });
   }
 

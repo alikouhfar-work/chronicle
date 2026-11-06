@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { NextResponse } from 'next/server';
 import { logError, logInfo } from '@/infra/logging/logger';
 import {
@@ -23,7 +24,7 @@ export const dynamic = 'force-dynamic';
  * review.
  */
 const authorized = (request: Request): boolean => {
-  const secret = process.env.CRON_SECRET;
+  const secret = env.cronSecret;
   return Boolean(secret) && request.headers.get('authorization') === `Bearer ${secret}`;
 };
 

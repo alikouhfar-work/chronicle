@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 // Comment-attachment storage.
 //
 // One provider interface, two backends: S3-compatible object storage whenever
@@ -24,7 +25,7 @@ export const COMMENT_USER_QUOTA_BYTES = 250 * 1024 * 1024;
 /** Uploads allowed per account per rolling day. */
 export const COMMENT_DAILY_UPLOAD_LIMIT = 40;
 
-const localRoot = (): string => process.env.COMMENT_STORAGE_DIR ?? '.data/comment-uploads';
+const localRoot = (): string => env.commentStorageDir;
 
 /** Local-disk fallback for development; images are streamed by the files route. */
 export const localStorage: StorageProvider = {
