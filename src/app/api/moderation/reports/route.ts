@@ -5,7 +5,9 @@ import {
   applyModerationDecision,
   listModerationQueue,
 } from '@/modules/comments/services/moderateComments';
+import { parseModerationDecision } from '@/modules/comments/lib/parseModerationDecision';
 import { AppError } from '@/shared/lib/errors';
+import { readJsonBody } from '@/shared/lib/parse';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -47,33 +49,25 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  const payload = (await request.json().catch(() => null)) as
-    | { commentId?: unknown; action?: unknown; reason?: unknown }
-    | null;
+  const body = await readJsonBody(request);
+  if (!body.ok) return NextResponse.json({ ok: false, error: body.error }, { status: 400 });
 
-  if (
-    !payload ||
-    typeof payload.commentId !== 'string' ||
-    (payload.action !== 'hide' && payload.action !== 'dismiss') ||
-    (payload.reason !== undefined && typeof payload.reason !== 'string')
-  ) {
-    return NextResponse.json(
-      { ok: false, error: 'Expected { commentId, action: "hide" | "dismiss", reason? }.' },
-      { status: 400 },
-    );
+  const payload = parseModerationDecision(body.value);
+  if (!payload.ok) {
+    return NextResponse.json({ ok: false, error: payload.error }, { status: 400 });
   }
 
   try {
     const result = await applyModerationDecision({
-      commentId: payload.commentId,
-      action: payload.action,
-      reason: payload.reason,
+      commentId: payload.value.commentId,
+      action: payload.value.action,
+      reason: payload.value.reason,
     });
 
     logInfo({
       event: 'moderation.decision',
-      action: payload.action,
-      meta: { commentId: payload.commentId, resolvedReports: result.resolvedReports },
+      action: payload.value.action,
+      meta: { commentId: payload.value.commentId, resolvedReports: result.resolvedReports },
     });
 
     return NextResponse.json({ ok: true, ...result });

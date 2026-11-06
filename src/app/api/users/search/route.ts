@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { logError } from '@/infra/logging/logger';
+import { parseUserSearchQuery } from '@/modules/user/lib/parseUserSearchQuery';
 
-const MIN_QUERY_LENGTH = 2;
-const MAX_USERNAME_LENGTH = 32;
 const MAX_RESULTS = 8;
 const RATE_LIMIT = 30;
 const RATE_WINDOW_MS = 60_000;
@@ -38,14 +37,11 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
   }
 
-  const q = new URL(request.url).searchParams.get('q')?.trim() ?? '';
-  if (
-    q.length < MIN_QUERY_LENGTH ||
-    q.length > MAX_USERNAME_LENGTH ||
-    !/^[a-z0-9_]+$/i.test(q)
-  ) {
-    return NextResponse.json({ error: 'Query must contain 2-32 username characters.' }, { status: 400 });
+  const query = parseUserSearchQuery(new URL(request.url).searchParams.get('q'));
+  if (!query.ok) {
+    return NextResponse.json({ error: query.error }, { status: 400 });
   }
+  const q = query.value;
 
   const retryAfter = consumeSearchLimit(userId);
   if (retryAfter !== null) {

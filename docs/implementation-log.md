@@ -674,3 +674,21 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   library add, storage and the token-gated routes all resolved through the new module.
 - Note: the first E2E run after this change caught the `server-only` marker throwing in
   `tsx` (`e2e/seed.ts`) and in the server build; that is why the module has no marker.
+
+## 2026-11-05 — WP-30 · One validation contract at the request boundaries
+- Change: `src/shared/lib/parse.ts` defines `ParseResult<T>` (`{ ok, value }` /
+  `{ ok, error }`) plus the primitives (`isRecord`, `parseString`, `parseOptionalString`,
+  `parseOneOf`, `readJsonBody`) — no new dependency; `rewatch/lib/writeContract` already
+  followed this shape, so writes and reads now agree. The two hand-rolled handlers moved
+  onto it: `comments/lib/parseModerationDecision` (body of the moderation POST) and
+  `user/lib/parseUserSearchQuery` (`?q=` length + charset). Both routes are now
+  `parse → 400 on !ok` with no `as` cast and no rules inline.
+- Behaviour: the moderation 400 used to say "Expected { commentId, action … }" for every
+  failure; it now names the offending field. Same status codes, same success payloads.
+- Migration: none.
+- Verified: tsc, eslint, 367 unit tests (8 new for the two parsers), build compiled on
+  the advisory retry.
+- Notes: `comments/lib/validation.ts` (comment body/attachments) and
+  `rewatch/lib/writeContract` keep their own parsers — they already reject on the same
+  shape and are covered by their own suites; retyping them would be churn without a
+  behavioural gain.
