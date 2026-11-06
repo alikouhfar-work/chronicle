@@ -3,23 +3,9 @@
 import { useEffect, useState } from 'react';
 import { IconLoader2, IconStar } from '@tabler/icons-react';
 import { setMediaRating } from '@/modules/media/actions/setMediaRating';
-import type { MediaRatingTarget } from '@/modules/media/types/mediaRating';
+import { RATING_STARS } from '@/modules/notes/constants';
+import type { RatingControlProps } from '@/modules/notes/types/ratingControl';
 import { toastError } from '@/shared/lib/toast';
-
-const STARS = [1, 2, 3, 4, 5];
-
-type RatingControlProps = {
-  mediaType: MediaRatingTarget;
-  targetId: string;
-  value: number | null;
-  label: string;
-  /**
-   * `panel` is the notes tab (label row plus the "notes stay independent"
-   * copy); `compact` is the details header, where the same control has to sit
-   * next to the tracking switch without a paragraph of its own.
-   */
-  variant?: 'panel' | 'compact';
-};
 
 /**
  * Rating lives on its own: clicking a star writes the tracking rating and
@@ -71,7 +57,7 @@ export const RatingControl = ({
       aria-label={label}
       aria-busy={saving || undefined}
     >
-      {STARS.map((star) => {
+      {RATING_STARS.map((star) => {
         const filled = rating !== null && star <= rating;
         return (
           <button

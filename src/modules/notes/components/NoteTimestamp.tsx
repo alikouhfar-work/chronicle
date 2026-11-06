@@ -1,10 +1,7 @@
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
-
-type NoteTimestampProps = {
-  value: Date;
-};
+import type { NoteTimestampProps } from '@/modules/notes/types/noteTimestamp';
 
 /**
  * Relative time is computed in the browser so the server's timezone never leaks

@@ -398,11 +398,24 @@ set); the suite documents the intended UX, not the current quirks.
 
 **Effort:** 1 day.
 
-## WP-19 · Moderation surface (gate D2)
+## WP-19 · Moderation surface (gate D2) — **done**
 **Covers:** C2.
 
-- `CommentReport` model + `reportComment` action + token-gated review route;
-  `Comment.hiddenAt` filter in `listComments`; author sees the reason on their own post.
+- Schema (migration `20261105210000_comment_moderation`): `comments.hidden_at` +
+  `hidden_reason`, `CommentReportReason` enum, and `comment_reports`
+  (`comment_id`, `reporter_id`, `reason`, `note`, `resolved_at`, unique per
+  reporter+comment, cascade from comment and user).
+- `reportComment` action: signed-in, one report per reader per review (a repeat is
+  a success with `alreadyReported`), never on your own review, never on media you
+  cannot see, reason from a fixed list plus an optional 500-char note.
+- `listComments` filters `hiddenAt: null` for everyone **except the author**, who
+  keeps seeing the review with `hiddenReason`; the feed renders that as a notice.
+  `CommentView` carries `hidden`/`hiddenReason`.
+- `GET/POST /api/moderation/reports` (Bearer `CRON_SECRET`): the queue grouped per
+  review, and `hide`/`dismiss`. Hiding stores the author-facing reason and resolves
+  every open report; dismissing clears the queue and leaves the review up.
+- UI: a flag on other people's reviews opens an inline form (reason + note); the
+  author sees "Hidden from public view — <reason>" on their own hidden review.
 
 **Effort:** 2 days.
 
@@ -423,14 +436,56 @@ set); the suite documents the intended UX, not the current quirks.
 
 **Effort:** 0.5 day.
 
-## WP-21 · One write path per operation
+## WP-21 · One write path per operation — **done**
 **Covers:** E3.
 
-- Shared input parsing + error mapping for the rewatch actions and their REST adapters.
-- Contract test: the same fixture through both paths produces identical rows and
-  comparable error shapes.
+- `rewatch/lib/writeContract`: `readRewatchWriteFields` (the documented body aliases
+  plus `Idempotency-Key`), `parseRewatchWriteCommand` / `parseRewatchLogId`, and
+  `toRewatchFailure` / `toRewatchRemoveFailure` (message + status + code from
+  `AppError`). The service stays the only implementation; both adapters are thin.
+- Used by `addRewatch`, `removeRewatch`, `POST /api/media/[type]/[id]/rewatch` and
+  `DELETE /api/media/rewatch/[logId]` — the routes now answer with the same
+  `{ ok, error, code }` + status the action's message describes.
+- Contract test (`writeContract.parity.test.ts`): the same fixture through the
+  action and the route reaches the service with a deep-equal command, every alias
+  parses the same, one failure maps to the same message/code/status on both paths,
+  and invalid input is rejected before the service is touched.
 
 **Effort:** 1 day.
+
+---
+
+# Phase 4 — moderation follow-ups (planned; decisions in `docs/moderation-audit.md`)
+
+WP-19 shipped the queue and the hide flag, but left the operational gaps open:
+nothing records **who** decided, a hide cannot be undone, a dismissed review can
+never be reported again, and the author is never told. The full analysis and the
+questions to answer are in `docs/moderation-audit.md`; these packages stay
+unstarted until those answers exist.
+
+## WP-24a · Record the decision
+- `comment_reports.resolved_by` / `decision` / `decision_reason`; the queue exposes
+  the last decision per review. No product decision needed — safe to build first.
+
+## WP-24b · Unhide
+- `action: "unhide"` clears `hidden_at`/`hidden_reason`, revalidates, records the
+  decision. Reverses the only irreversible button in the feature.
+
+## WP-24c · Re-report after dismissal
+- `reportComment` upserts on `(comment_id, reporter_id)`: reopen a resolved row when
+  the review was edited since. No schema change (a partial unique index would drift
+  from Prisma and fail the CI `migrate diff` gate).
+
+## WP-24d · A moderator who is not curl
+- `User.role` + `/moderation` page, or keep the token route only. Decision Q1.
+
+## WP-24e · Tell the author
+- Needs `Notification` to accept a system actor or a nullable `actorId`, plus a
+  `COMMENT_HIDDEN` type. Decision Q4.
+
+## WP-24f · Queue hygiene
+- Distinct-reporter counts, paging past 50, per-reporter rate limit. Decision Q2.
+
 
 ---
 

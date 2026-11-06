@@ -1,11 +1,8 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import type { MediaType } from '@/shared/types/media';
-import type { PublicMediaPreviewProps } from '@/modules/library/types/publicMediaPreview';
 import { LibraryDetails } from '@/modules/library';
+import { PublicMediaPreview } from '@/modules/library/components/details/PublicMediaPreview';
 import { getTrackedMovie } from '@/modules/movie/services/getTrackedMovie';
 import { getMovieCredits } from '@/modules/movie/queries/getMovieCredits';
 import { getSimilarMovies } from '@/modules/movie/queries/getSimilarMovies';
@@ -18,8 +15,6 @@ import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { getAppBaseUrl } from '@/shared/lib/appUrl';
 import { auth } from '@/infra/auth/auth';
 import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
-import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
-import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
 import { listComments } from '@/modules/comments/services/listComments';
 import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
 import { listNotes } from '@/modules/notes/services/listNotes';
@@ -89,56 +84,6 @@ export const generateMetadata = async ({ params }: LibraryDetailsPageProps): Pro
   } catch {
     return {};
   }
-};
-
-const PublicMediaPreview = async ({ mediaType, id }: PublicMediaPreviewProps) => {
-  // Reachable by signed-out readers and link-preview crawlers. The body is
-  // session-free: TMDB supplies the public details, while the review feed is
-  // keyed by TMDB id and is readable by everyone.
-  const tmdbId = Number(id);
-  if (!Number.isInteger(tmdbId) || tmdbId <= 0) notFound();
-
-  const details = await getTitleDetails(mediaType, id);
-  if (!details) notFound();
-
-  const posterUrl = getTmdbImageUrl(details.posterPath, 'poster', 'w500');
-
-  return (
-    <article className="mx-auto space-y-6 px-4 py-8 font-sans">
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-white">
-          {details.name}
-          {details.year && details.year !== 'N/A' ? ` (${details.year})` : ''}
-        </h1>
-        {posterUrl && (
-          <Image
-            src={posterUrl}
-            alt={details.name}
-            width={300}
-            height={450}
-            className="rounded-2xl border border-white/10"
-          />
-        )}
-        {details.overview && (
-          <p className="text-sm leading-relaxed text-zinc-300">{details.overview}</p>
-        )}
-        <Link
-          href={`/search?query=${encodeURIComponent(details.name)}`}
-          className="inline-flex rounded-full bg-violet-600 px-4 py-2 text-xs font-semibold text-white"
-        >
-          Open in Chronicle
-        </Link>
-      </div>
-
-      <Suspense fallback={<MediaCommentTabsSkeleton />}>
-        <MediaCommentTabs
-          mediaType={mediaType === 'tv' ? 'show' : 'movie'}
-          tmdbId={tmdbId}
-          viewer={null}
-        />
-      </Suspense>
-    </article>
-  );
 };
 
 const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {

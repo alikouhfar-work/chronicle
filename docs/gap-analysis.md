@@ -200,6 +200,14 @@ checks ownership). For a public feed this is the first thing that gets abused.
 reason)`) and a soft "hidden by moderator" flag that the feed filters, plus a
 reason field on deletion so the author sees why.
 
+**Fixed (WP-19).** `comment_reports` plus `comments.hidden_at`/`hidden_reason`; readers
+flag a review from the feed (`reportComment`, one per reader per review),
+`GET/POST /api/moderation/reports` (Bearer `CRON_SECRET`) lists the queue and applies
+`hide`/`dismiss`, `listComments` drops hidden rows for everyone but their author, and
+the author sees the moderator's reason on their own review. Operational follow-ups
+(recording who decided, unhide, re-reporting a dismissed review, notifying the
+author) are specified in `docs/moderation-audit.md`.
+
 ### C3. Mentions resolve per comment, without a cap (P2)
 
 `createComment` extracts every handle, resolves them in one lookup, and writes one
@@ -327,6 +335,12 @@ the actions return result objects).
 **Recommendation.** Keep the service as the only implementation and make both
 adapters thin, with one shared input parser. Add a contract test that runs the
 same fixture through both paths and compares the resulting rows.
+
+**Fixed (WP-21).** `rewatch/lib/writeContract` owns the body aliases, the id/media
+validation and the failure mapping (`{ message, status, code }`); the action and the
+REST adapter both build their command there. `writeContract.parity.test.ts` proves the
+same fixture reaches the service identically through both, and that one failure reads
+the same on both paths.
 
 ### E4. The notification bell polls per tab, through a server action (P1)
 

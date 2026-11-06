@@ -457,3 +457,99 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   rebuild and returned 409.
 - Notes: 409 is deliberate, not 429 — it is a state conflict, and the caller (the
   workflow) should treat it as a no-op.
+
+## 2026-11-05 — WP-19 moderation: report, hide, and tell the author why
+- Change: schema migration `20261105210000_comment_moderation` adds
+  `comments.hidden_at` / `comments.hidden_reason`, the `CommentReportReason` enum
+  and `comment_reports` (comment, reporter, reason, note, resolved_at; unique per
+  reporter+comment; cascade from comment and user). New
+  `comments/actions/reportComment` (signed in, fixed reason list, optional 500-char
+  note, one report per reader per review, never your own) and
+  `comments/services/moderateComments` (`listModerationQueue` groups open reports
+  per review; `applyModerationDecision` hides with the author-facing reason or
+  dismisses, resolving every open report either way).
+  `GET/POST /api/moderation/reports` is the token-gated operator surface (Bearer
+  `CRON_SECRET`, 401/400/404 as appropriate). `listComments` now resolves the
+  session viewer and filters `hiddenAt: null` for everyone except the author, who
+  sees their review with `hiddenReason`; `CommentView` carries `hidden`/
+  `hiddenReason`, and the feed renders the author's notice plus a flag button on
+  other people's reviews that opens an inline report form.
+- Migration: additive only (two nullable columns, one enum, one table). Proved on a
+  dump-restored scratch database (`chronicle_mod_ck`: 12 comments and 5 users
+  intact, no rows hidden, `migrate diff` empty), then applied to dev,
+  `chronicle_rewatch_test` and `chronicle_e2e_test`.
+- Verified: 13 new unit tests in `moderation.test.ts` (report validation and
+  idempotency, queue grouping, hide/dismiss, viewer-aware visibility); 353 unit
+  tests, `tsc`, `eslint`, build exit 0 on the advisory retry, 9/9 Playwright
+  journeys. Live with two sessions: the reader reported another user's review
+  through the new form (queue showed the reason, note and reporter), `POST hide`
+  answered `{ ok: true, resolvedReports: 1 }`, the reader's feed no longer showed
+  the review, the author's did with "Hidden from public view — Advertising a course
+  in a review.", and the queue was empty afterwards. Probe rows were removed and the
+  review unhidden, so dev data is back as it was.
+- Notes: the operator surface is a token, not a role — the product has no moderator
+  accounts yet, and inventing a role system was out of scope for a P2 package. A
+  hidden review keeps its notifications and mentions; only the feed filters it.
+
+## 2026-11-05 — WP-21 one write path for rewatch
+- Change: `rewatch/lib/writeContract` is now the single parser/mapper for both
+  adapters — `readRewatchWriteFields` (aliases `rewatched_at`/`rewatchedAt`/`date`
+  and `client_request_id`/`clientRequestId`, plus the `Idempotency-Key` header),
+  `parseRewatchWriteCommand` and `parseRewatchLogId` (media type, ids, log id), and
+  `toRewatchFailure`/`toRewatchRemoveFailure` returning `{ message, status, code }`
+  from one `AppError` mapping. `addRewatch`, `removeRewatch`,
+  `POST /api/media/[type]/[id]/rewatch` and `DELETE /api/media/rewatch/[logId]` all
+  go through it; the routes answer `{ ok: false, error, code }` with the mapped
+  status instead of their own `apiError` copy.
+- Migration: none.
+- Verified: `writeContract.parity.test.ts` (6 tests) — the same fixture through the
+  action and the route sends a deep-equal command to `recordRewatch`, every alias
+  parses identically, one `NotFoundError` becomes the same message/code/status on
+  both paths, invalid media type and empty log id are rejected with the same
+  message before the service is called. Full suite 353 unit tests, `tsc`, `eslint`,
+  build and 9/9 journeys green.
+- Notes: `rewatch-history` (a read) was left alone — this package is about writes.
+
+## 2026-11-05 — housekeeping: one component per file, no components in pages
+- Change: the layout rule is now explicit in `SKILL.md` and
+  `references/ui-conventions.md` — one component per file, component files hold
+  nothing but the component (prop types in `types/`, constants in `constants.ts` or
+  `lib/`), `page.tsx` defines no component of its own, and a component past ~200
+  lines is split along its seams into sibling one-component files (the parent keeps
+  state and callbacks). Violations found while
+  applying it were fixed in the same pass: `PublicMediaPreview` moved out of
+  `app/(main)/library/[...slug]/page.tsx` into
+  `modules/library/components/details/PublicMediaPreview.tsx`; `CommentReportButton`
+  split out of `CommentReportForm.tsx` (prop types in
+  `comments/types/commentReport.ts`); `CommentSkeleton` extracted, and the review
+  feed's page size, image limits and date/attachment helpers moved to
+  `comments/constants.ts` and `comments/lib/commentFeedFormat.ts`;
+  `RatingControlProps`/`NoteTimestampProps` moved to `notes/types/`, with
+  `RATING_STARS` in `notes/constants.ts`.
+- Migration: none.
+- Verified: `tsc`, `eslint`, 354 unit tests, build on the advisory retry, 9/9
+  Playwright journeys. No behaviour change intended or observed.
+- Notes: seven component files still carry module-level constants (`MediaCommentTabs`
+  tab maps, `PersonalNotesPanel` status labels, `CommentContent` default class,
+  `NotificationBell` poll interval, `RewatchButton` long-press, `WatchActionModal`
+  headings/nouns, `LibraryMediaDeleteButton` close delay). They are the next
+  mechanical pass; the rule now applies to anything touched meanwhile.
+- Also: the episode header's rating control (`b3e2c52`) reverted itself twice in the
+  working tree during this session and was restored each time — worth checking for an
+  editor buffer holding an older copy of that file.
+
+## 2026-11-05 — docs: moderation follow-ups and open decisions
+- Change: new `docs/moderation-audit.md` — the report flow as shipped (WP-19), seven
+  findings with severity and file references (no actor on a decision, hide is
+  one-way, dismissal blocks re-reporting, the author is never told, one report looks
+  like five, the queue truncates at 50, dismissals leave no reason), six numbered
+  product questions to answer inline, and six candidate packages (WP-24a…f) with
+  their dependencies. `docs/remediation-plan.md` gained a Phase 4 section pointing at
+  it (statuses stay "planned"), and `docs/gap-analysis.md` C2 links to it.
+- Migration: none.
+- Verified: documentation only; `tsc`, `eslint`, unit suite unchanged from the last
+  green run.
+- Notes: WP-24a (recording the decision) needs no product answer and is the obvious
+  first slice; WP-24b (unhide) is the one that removes the only unrecoverable click.
+  The `Notification` actor/unique constraints are written down in the audit because
+  "tell the author" is a schema decision, not a copy change.
