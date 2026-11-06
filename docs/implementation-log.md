@@ -726,3 +726,42 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Migration: none.
 - Verified: tsc, eslint, 369 unit tests (14 architecture guardrails in total), build on
   the advisory retry, 9/9 Playwright journeys.
+
+## 2026-11-06 — WP-33 · One design system, and guardrails that hold it
+- Audit: `docs/design-audit.md` (measured over 156 components). Headline findings:
+  the `@theme` layer was dead (4 uses of `bg-canvas`, **zero** of `surface-elevated`,
+  `primary`, `secondary`) while 410 `zinc-*` / 394 `violet-*` / 579 `white` utilities
+  carried the UI; 97 arbitrary type sizes (9/10/11/13px) across 40 files; six radius
+  steps; `rose` and `red` both meaning danger; and text at 2.5–4.2:1 — placeholders,
+  timestamps, the primary button (`white` on `#8b5cf6` = 4.23) and every input border
+  (1.1:1) below AA.
+- Tokens: `globals.css` `@theme` rebuilt as primitives + semantics — substrates
+  (`surface`, `surface-raised`, `surface-sunken`, `surface-strong`, `surface-soft`),
+  ink ramp (`ink` 17.7 → `ink-subtle` 6.1), lines (`line`, `line-strong`,
+  `line-control` 3.68), accent (`accent` `#7c3aed` = white 5.7, `accent-bright` hover,
+  `accent-ink`, `accent-tint`, `accent-soft`), status (`success|warning|danger|info`,
+  each with a `-soft`), `rating`, `focus`, `text-micro` 11px, radii
+  `xs|control|card|pill`, three shadows, motion tokens. Glass utilities now read the
+  tokens instead of literal rgba.
+- Migration: scripted over 156 files, then hand-fixed where semantics mattered —
+  one micro size replaces 9/10/11/13px (96 sites), the ink ramp replaces
+  `text-white`/`text-zinc-*` (≈630), `line`/`surface-soft` replace nine alpha steps
+  (≈380), `accent*`/`danger|success|warning|info` replace the raw families, radii
+  collapse to four steps (≈340), `focus:ring-2` becomes `focus-visible:ring-2`.
+- A11y fixes that came out of the measurement, not a checklist: `zinc-500`/`zinc-600`
+  text → `ink-subtle` (4.02/2.51 → 6.06), the primary button deepened to `#7c3aed`
+  (4.23 → 5.7), form controls now use `line-control` (1.1 → 3.68), and the five
+  `focus:outline-none` sites with no replacement got `focus-visible` rings.
+- Guardrails: `src/design.test.ts` (5 rules) — no arbitrary type sizes, no raw palette
+  families (poster gradients allow-listed), no raw hex in components (PWA manifest
+  excepted), radii only from the scale, and no removed focus ring without a
+  replacement.
+- Migration: none (no schema or data change).
+- Verified: tsc, eslint, 374 unit tests (5 new), production build, 9/9 Playwright
+  journeys, and a live browser pass on `/login` reading computed styles — input
+  border `rgb(107,107,116)`, submit `rgb(124,58,237)` with `rgb(244,244,245)` label,
+  `text-micro` rendering at 11px, zero horizontal overflow.
+- Notes: six loading routes still hand-roll skeletons (WP-34) and the poster fallback
+  ramp is still zinc (WP-36); both are allow-listed and tracked, not forgotten. Five
+  open questions (brand violet, skeletons, light theme, micro size, gradient ramp) are
+  at the end of the audit.

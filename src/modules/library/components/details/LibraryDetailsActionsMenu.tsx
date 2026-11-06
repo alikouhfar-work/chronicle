@@ -39,15 +39,15 @@ export const LibraryDetailsActionsMenu = ({
         aria-label="More actions"
         aria-expanded={open}
         aria-haspopup="menu"
-        className="apple-pill-btn cursor-pointer border border-white/10 bg-white/[0.04] p-2 text-zinc-200 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+        className="apple-pill-btn cursor-pointer border border-line bg-white/[0.04] p-2 text-ink-secondary transition-colors hover:border-line-strong hover:bg-white/[0.08] hover:text-ink"
       >
-        <IconDotsVertical size={15} className="text-violet-400" />
+        <IconDotsVertical size={15} className="text-accent-ink" />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-30 mt-1 flex min-w-52 flex-col gap-1.5 rounded-2xl border border-white/10 bg-zinc-900 p-2 shadow-2xl shadow-black/60"
+          className="absolute right-0 z-30 mt-1 flex min-w-52 flex-col gap-1.5 rounded-card border border-line bg-surface-raised p-2 shadow-2xl shadow-black/60"
         >
           {extraActions}
           {shareButton}

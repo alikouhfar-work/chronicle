@@ -126,7 +126,7 @@ export const MentionComposerTextarea = ({
         aria-controls="mention-suggestions"
         aria-expanded={activeMention !== null}
         aria-activedescendant={users.length ? `mention-option-${activeIndex}` : undefined}
-        className="w-full resize-y rounded-2xl border border-white/10 bg-white/4 p-3 text-base leading-relaxed text-white placeholder-zinc-500 focus:ring-2 focus:ring-violet-400/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-xs"
+        className="w-full resize-y rounded-card border border-line-control bg-surface-soft p-3 text-base leading-relaxed text-ink placeholder:text-ink-subtle focus-visible:ring-2 focus:ring-accent/40 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 sm:text-xs"
       />
       <input type="hidden" name="mentionIds" value={JSON.stringify([...mentionIds])} readOnly />
 
@@ -135,14 +135,14 @@ export const MentionComposerTextarea = ({
           id="mention-suggestions"
           role="listbox"
           aria-label="Mention suggestions"
-          className="absolute top-full left-0 z-30 mt-2 max-h-56 w-full max-w-sm overflow-y-auto rounded-2xl border border-white/10 bg-zinc-950/95 p-1.5 shadow-2xl backdrop-blur-xl"
+          className="absolute top-full left-0 z-30 mt-2 max-h-56 w-full max-w-sm overflow-y-auto rounded-card border border-line bg-surface-sunken/95 p-1.5 shadow-2xl backdrop-blur-xl"
         >
           {activeMention.query.length < 2 ? (
-            <p className="px-3 py-2 text-xs text-zinc-400">Type at least 2 characters to search.</p>
+            <p className="px-3 py-2 text-xs text-ink-muted">Type at least 2 characters to search.</p>
           ) : loading ? (
-            <p className="px-3 py-2 text-xs text-zinc-400" role="status">Searching users…</p>
+            <p className="px-3 py-2 text-xs text-ink-muted" role="status">Searching users…</p>
           ) : users.length === 0 ? (
-            <p className="px-3 py-2 text-xs text-zinc-400">No users found.</p>
+            <p className="px-3 py-2 text-xs text-ink-muted">No users found.</p>
           ) : (
             users.map((user, index) => (
               <button
@@ -153,19 +153,19 @@ export const MentionComposerTextarea = ({
                 aria-selected={index === activeIndex}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectUser(user)}
-                className="flex w-full cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-left hover:bg-white/10 focus:bg-white/10 focus:outline-none"
+                className="flex w-full cursor-pointer items-center gap-2 rounded-control px-3 py-2 text-left hover:bg-surface-soft-hover focus:bg-surface-soft-hover focus-visible:ring-2 focus:ring-accent/40 focus:outline-none"
               >
                 {user.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={user.image} alt="" className="size-7 rounded-full object-cover" />
+                  <img src={user.image} alt="" className="size-7 rounded-pill object-cover" />
                 ) : (
-                  <span className="size-7 rounded-full bg-violet-500/20" aria-hidden="true" />
+                  <span className="size-7 rounded-pill bg-accent-bright/20" aria-hidden="true" />
                 )}
                 <span className="min-w-0">
-                  <span className="block truncate text-xs font-semibold text-white">
+                  <span className="block truncate text-xs font-semibold text-ink">
                     {user.name || user.username}
                   </span>
-                  <span className="block truncate text-[11px] text-zinc-400">@{user.username}</span>
+                  <span className="block truncate text-micro text-ink-muted">@{user.username}</span>
                 </span>
               </button>
             ))

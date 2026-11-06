@@ -100,16 +100,16 @@ export const LibraryDetailsShareButton = ({
       className={clsx(
         'apple-pill-btn shrink-0 cursor-pointer border px-3.5 py-1.5 text-xs disabled:cursor-wait',
         state === 'copied'
-          ? 'border-emerald-500/40 bg-emerald-500/15 font-semibold text-emerald-300'
-          : 'border-white/10 bg-white/[0.04] font-semibold text-zinc-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white',
+          ? 'border-success/40 bg-success-soft font-semibold text-success'
+          : 'border-line bg-white/[0.04] font-semibold text-ink-secondary hover:border-line-strong hover:bg-white/[0.08] hover:text-ink',
       )}
     >
       {state === 'sharing' ? (
-        <IconLoader2 size={13} className="animate-spin text-violet-400" />
+        <IconLoader2 size={13} className="animate-spin text-accent-ink" />
       ) : state === 'copied' ? (
-        <IconCheck size={13} className="text-emerald-400" />
+        <IconCheck size={13} className="text-success" />
       ) : (
-        <IconShare2 size={13} className="text-violet-400" />
+        <IconShare2 size={13} className="text-accent-ink" />
       )}
       <span>{state === 'sharing' ? 'Sharing…' : state === 'copied' ? 'Copied!' : 'Share'}</span>
     </button>

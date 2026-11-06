@@ -50,8 +50,8 @@ export const RatingControl = ({
     <div
       className={
         variant === 'compact'
-          ? 'flex w-fit items-center gap-1 rounded-full border border-white/10 bg-zinc-900 px-2 py-1'
-          : 'flex w-fit items-center gap-1.5 rounded-full border border-white/10 bg-zinc-900 p-1.5'
+          ? 'flex w-fit items-center gap-1 rounded-pill border border-line bg-surface-raised px-2 py-1'
+          : 'flex w-fit items-center gap-1.5 rounded-pill border border-line bg-surface-raised p-1.5'
       }
       role="group"
       aria-label={label}
@@ -69,13 +69,13 @@ export const RatingControl = ({
             }
             aria-pressed={filled}
             onClick={() => void apply(rating === star ? null : star)}
-            className="cursor-pointer rounded-full p-0.5 transition-transform hover:scale-110 disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:scale-100"
+            className="cursor-pointer rounded-pill p-0.5 transition-transform hover:scale-110 disabled:cursor-wait disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:scale-100"
           >
             <IconStar
               aria-hidden
               size={variant === 'compact' ? 16 : 18}
               className={
-                filled ? 'fill-amber-400 text-amber-400' : 'text-zinc-700 hover:text-zinc-500'
+                filled ? 'fill-rating text-rating' : 'text-ink-disabled hover:text-ink-subtle'
               }
             />
           </button>
@@ -85,7 +85,7 @@ export const RatingControl = ({
         <IconLoader2
           size={13}
           aria-hidden
-          className="ml-1 animate-spin text-violet-300 motion-reduce:animate-none"
+          className="ml-1 animate-spin text-accent-ink motion-reduce:animate-none"
         />
       )}
     </div>
@@ -94,11 +94,11 @@ export const RatingControl = ({
   if (variant === 'compact') {
     return (
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
+        <span className="text-micro font-semibold tracking-wider text-ink-muted uppercase">
           {label}
         </span>
         {stars}
-        <span className="text-[11px] font-bold text-amber-300">
+        <span className="text-micro font-bold text-rating">
           {rating ? `${rating} / 5` : 'Not rated'}
         </span>
       </div>
@@ -108,16 +108,16 @@ export const RatingControl = ({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
+        <span className="text-micro font-semibold tracking-wider text-ink-muted uppercase">
           {label}
         </span>
-        <span className="text-[11px] font-bold text-amber-300">
+        <span className="text-micro font-bold text-rating">
           {rating ? `${rating} / 5` : 'Not rated'}
         </span>
       </div>
 
       {stars}
-      <p className="text-[11px] text-zinc-400">
+      <p className="text-micro text-ink-muted">
         Rate {mediaType === 'movie' ? 'this movie' : 'this episode'} on its own — notes stay
         independent.
       </p>

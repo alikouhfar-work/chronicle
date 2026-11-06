@@ -23,17 +23,17 @@ export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpc
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col justify-between gap-2.5 border-b border-white/8 pb-3 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-2.5 border-b border-line pb-3 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2.5">
-          <div className="rounded-xl border border-violet-500/25 bg-violet-500/15 p-2 text-violet-400">
+          <div className="rounded-control border border-accent-line bg-accent-bright/15 p-2 text-accent-ink">
             <Icon className="size-4" />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white">{sectionTitle}</h4>
-            <p className="text-xs text-zinc-400">{sectionSubtitle}</p>
+            <h4 className="text-sm font-bold text-ink">{sectionTitle}</h4>
+            <p className="text-xs text-ink-muted">{sectionSubtitle}</p>
           </div>
         </div>
-        <span className="apple-badge self-end border border-white/10 bg-white/6 text-xs text-zinc-300">
+        <span className="apple-badge self-end border border-line bg-surface-soft text-xs text-ink-secondary">
           {upcomingMedia.length} Upcoming
         </span>
       </div>

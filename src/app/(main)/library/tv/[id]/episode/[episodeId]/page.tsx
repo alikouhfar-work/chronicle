@@ -57,12 +57,12 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
     <article className="animate-fade-in mx-auto w-full max-w-7xl space-y-6 pb-12 font-sans">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <BackButton href={`/library/tv/${show.tmdbId}`} label={`Back to ${show.name}`} />
-        <span className="apple-badge border border-violet-500/25 bg-violet-500/10 text-[11px] text-violet-300">
+        <span className="apple-badge border border-accent-line bg-accent-bright/10 text-micro text-accent-ink">
           Season {season.seasonNumber} • Episode {episode.episodeNumber}
         </span>
       </div>
 
-      <section className="glass-panel relative overflow-hidden rounded-3xl border border-white/10 p-5 sm:p-7">
+      <section className="glass-panel relative overflow-hidden rounded-card border border-line p-5 sm:p-7">
         {backdropUrl && (
           <Image
             src={backdropUrl}
@@ -73,7 +73,7 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
             className="pointer-events-none object-cover opacity-15"
           />
         )}
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-zinc-950/90 via-zinc-950/60 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-surface-sunken/90 via-surface-sunken/60 to-transparent" />
 
         <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-end">
           {posterUrl && (
@@ -82,44 +82,44 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
               alt={show.name}
               width={120}
               height={180}
-              className="hidden shrink-0 rounded-2xl border border-white/10 object-cover shadow-2xl sm:block"
+              className="hidden shrink-0 rounded-card border border-line object-cover shadow-2xl sm:block"
             />
           )}
 
           <div className="min-w-0 flex-1 space-y-3">
             <Link
               href={`/library/tv/${show.tmdbId}`}
-              className="text-xs font-bold tracking-wide text-violet-300 uppercase hover:text-violet-200"
+              className="text-xs font-bold tracking-wide text-accent-ink uppercase hover:text-accent-tint"
             >
               {show.name}
             </Link>
 
-            <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-4xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-ink sm:text-4xl">
               {episode.name}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-300">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-secondary">
               {episode.airDate && (
                 <span className="inline-flex items-center gap-1.5">
-                  <IconCalendar size={14} className="text-zinc-500" />
+                  <IconCalendar size={14} className="text-ink-subtle" />
                   {format(episode.airDate, 'PPP')}
                 </span>
               )}
               {episode.runtime ? (
                 <span className="inline-flex items-center gap-1.5">
-                  <IconClock size={14} className="text-zinc-500" />
+                  <IconClock size={14} className="text-ink-subtle" />
                   {formatMinutes(episode.runtime)}
                 </span>
               ) : null}
 
-              <span className="inline-flex items-center gap-1.5 text-zinc-400">
-                <IconMessage size={14} className="text-zinc-500" />
+              <span className="inline-flex items-center gap-1.5 text-ink-muted">
+                <IconMessage size={14} className="text-ink-subtle" />
                 Episode discussion
               </span>
             </div>
 
             {episode.overview && (
-              <p className="max-w-3xl text-sm leading-relaxed text-zinc-300">{episode.overview}</p>
+              <p className="max-w-3xl text-sm leading-relaxed text-ink-secondary">{episode.overview}</p>
             )}
           </div>
         </div>

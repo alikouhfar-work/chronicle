@@ -3,18 +3,18 @@ import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 export const showStatusConfig = {
   [ShowTrackingStatus.WATCHING]: {
     title: 'Watching',
-    colors: 'bg-violet-500/15 text-violet-300 border-violet-500/30',
+    colors: 'bg-accent-soft text-accent-ink border-accent-line',
   },
   [ShowTrackingStatus.COMPLETED]: {
     title: 'Completed',
-    colors: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30',
+    colors: 'bg-info-soft text-info border-info/30',
   },
   [ShowTrackingStatus.PLAN_TO_WATCH]: {
     title: 'Plan To Watch',
-    colors: 'bg-zinc-800/80 text-zinc-300 border-zinc-700/60',
+    colors: 'bg-surface-strong/80 text-ink-secondary border-line',
   },
   [ShowTrackingStatus.DROPPED]: {
     title: 'Dropped',
-    colors: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+    colors: 'bg-danger-soft text-danger border-danger/30',
   },
 };

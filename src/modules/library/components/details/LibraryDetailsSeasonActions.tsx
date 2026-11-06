@@ -88,9 +88,9 @@ export const LibraryDetailsSeasonActions = ({
         aria-haspopup={watched ? 'dialog' : undefined}
         icon={
           watched ? (
-            <IconCircleX size={13} className="text-zinc-400" />
+            <IconCircleX size={13} className="text-ink-muted" />
           ) : (
-            <IconCircleCheck size={13} className="text-violet-400" />
+            <IconCircleCheck size={13} className="text-accent-ink" />
           )
         }
         aria-label={watched ? `Season options for ${seasonName}` : 'Mark season as watched'}
@@ -98,8 +98,8 @@ export const LibraryDetailsSeasonActions = ({
         className={clsx(
           'apple-pill-btn flex cursor-pointer items-center gap-1.5 px-3 py-1 text-xs font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50 aria-busy:cursor-wait aria-busy:opacity-80',
           watched
-            ? 'bg-white/6 text-zinc-400 hover:bg-white/12 hover:text-white'
-            : 'border border-violet-500/30 bg-violet-500/15 text-violet-300 hover:bg-violet-500/25',
+            ? 'bg-surface-soft text-ink-muted hover:bg-surface-soft-hover hover:text-ink'
+            : 'border border-accent-line bg-accent-bright/15 text-accent-ink hover:bg-accent-bright/25',
         )}
       >
         <span>{watched ? 'Season Watched' : 'Mark Season Watched'}</span>
@@ -107,7 +107,7 @@ export const LibraryDetailsSeasonActions = ({
       </div>
 
       {shortfall ? (
-        <p className="text-[11px] text-zinc-400">
+        <p className="text-micro text-ink-muted">
           Season rewatch unlocks at {SEASON_REWATCH_THRESHOLDS.baselineWatches} watches per episode
           — {shortfall}.
         </p>

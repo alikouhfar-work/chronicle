@@ -171,19 +171,19 @@ export const WatchActionModal = ({
         <div
           role="document"
           aria-labelledby="watch-options-title"
-          className="glass-card animate-fade-in w-full max-w-sm space-y-5 rounded-3xl border-white/15 bg-zinc-950/90 p-6 shadow-2xl"
+          className="glass-card animate-fade-in w-full max-w-sm space-y-5 rounded-card border-line bg-surface-sunken/90 p-6 shadow-2xl"
         >
           <div className="space-y-1">
             <h3
               id="watch-options-title"
-              className="flex items-center gap-2 text-base font-bold text-white"
+              className="flex items-center gap-2 text-base font-bold text-ink"
             >
-              <IconDeviceTv size={18} className="text-violet-400" />
+              <IconDeviceTv size={18} className="text-accent-ink" />
               <span>{HEADINGS[mediaType]}</span>
             </h3>
-            <p className="text-xs font-medium text-zinc-400">{title}</p>
-            {subtitle && <p className="text-[11px] text-zinc-400">{subtitle}</p>}
-            <p className="text-[11px] text-zinc-400">
+            <p className="text-xs font-medium text-ink-muted">{title}</p>
+            {subtitle && <p className="text-micro text-ink-muted">{subtitle}</p>}
+            <p className="text-micro text-ink-muted">
               {watchCount} {watchCount === 1 ? 'watch' : 'watches'} logged
             </p>
           </div>
@@ -194,9 +194,9 @@ export const WatchActionModal = ({
               onClick={handleRewatch}
               disabled={isBusy}
               aria-busy={pendingAction === 'rewatch'}
-              className="group flex w-full cursor-pointer items-center gap-3 rounded-2xl border border-violet-500/30 bg-violet-500/15 px-4 py-3 text-left transition-colors hover:bg-violet-500/25 disabled:cursor-wait disabled:opacity-60"
+              className="group flex w-full cursor-pointer items-center gap-3 rounded-card border border-accent-line bg-accent-bright/15 px-4 py-3 text-left transition-colors hover:bg-accent-bright/25 disabled:cursor-wait disabled:opacity-60"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-violet-500/20 text-violet-300">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-accent-bright/20 text-accent-ink">
                 {pendingAction === 'rewatch' ? (
                   <IconLoader2 size={16} className="animate-spin" />
                 ) : (
@@ -207,10 +207,10 @@ export const WatchActionModal = ({
                 )}
               </span>
               <span className="min-w-0">
-                <span className="block text-xs font-bold text-violet-200">
+                <span className="block text-xs font-bold text-accent-tint">
                   {pendingAction === 'rewatch' ? 'Logging rewatch…' : 'Rewatch'}
                 </span>
-                <span className="block text-[11px] text-zinc-400">
+                <span className="block text-micro text-ink-muted">
                   Log another watch of this {noun} with the current timestamp.
                 </span>
               </span>
@@ -221,9 +221,9 @@ export const WatchActionModal = ({
               onClick={handleUnwatch}
               disabled={isBusy}
               aria-busy={pendingAction === 'unwatch'}
-              className="group flex w-full cursor-pointer items-center gap-3 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-left transition-colors hover:bg-rose-500/20 disabled:cursor-wait disabled:opacity-60"
+              className="group flex w-full cursor-pointer items-center gap-3 rounded-card border border-danger/30 bg-danger-soft px-4 py-3 text-left transition-colors hover:bg-danger-soft disabled:cursor-wait disabled:opacity-60"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-rose-500/15 text-rose-300">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-danger-soft text-danger">
                 {pendingAction === 'unwatch' ? (
                   <IconLoader2 size={16} className="animate-spin" />
                 ) : (
@@ -231,10 +231,10 @@ export const WatchActionModal = ({
                 )}
               </span>
               <span className="min-w-0">
-                <span className="block text-xs font-bold text-rose-300">
+                <span className="block text-xs font-bold text-danger">
                   {pendingAction === 'unwatch' ? 'Clearing watches…' : 'Unwatch'}
                 </span>
-                <span className="block text-[11px] text-zinc-400">
+                <span className="block text-micro text-ink-muted">
                   Clear the watched status and watch history of this {noun}. Ratings are kept.
                 </span>
               </span>
@@ -244,7 +244,7 @@ export const WatchActionModal = ({
           {error && (
             <p
               role="alert"
-              className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300"
+              className="rounded-xs border border-danger/30 bg-danger-soft px-3 py-2 text-xs text-danger"
             >
               {error}
             </p>
@@ -255,7 +255,7 @@ export const WatchActionModal = ({
               type="button"
               onClick={() => dialogRef.current?.close()}
               disabled={isBusy}
-              className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-300 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-60"
+              className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-4 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover disabled:cursor-not-allowed disabled:opacity-60"
             >
               Cancel
             </button>

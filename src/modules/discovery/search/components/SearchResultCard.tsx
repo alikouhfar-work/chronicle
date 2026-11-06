@@ -23,11 +23,11 @@ export const SearchResultCard = ({
   const detailsHref = `/search/${mediaType}/${id}`;
 
   return (
-    <li className="group glass-card glass-card-interactive flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/8 shadow-xl transition-all duration-300">
+    <li className="group glass-card glass-card-interactive flex h-full w-full flex-col overflow-hidden rounded-card border border-line shadow-xl transition-all duration-300">
       <Link
         href={detailsHref}
         aria-label={`View details for ${name}`}
-        className="relative block aspect-3/4 w-full shrink-0 cursor-pointer overflow-hidden border-b border-white/8 bg-zinc-950 select-none"
+        className="relative block aspect-3/4 w-full shrink-0 cursor-pointer overflow-hidden border-b border-line bg-surface-sunken select-none"
       >
         {posterPath ? (
           <Image
@@ -48,24 +48,24 @@ export const SearchResultCard = ({
         {/* Badges Overlay */}
         <div className="absolute top-2.5 left-2.5 z-10 flex max-w-[80%] flex-wrap items-center gap-1.5">
           {isMovie ? (
-            <span className="apple-badge border border-white/10 bg-black/60 text-[10px] text-zinc-300 backdrop-blur-md">
-              <IconMovie size={10} className="text-violet-400" />
+            <span className="apple-badge border border-line bg-black/60 text-micro text-ink-secondary backdrop-blur-md">
+              <IconMovie size={10} className="text-accent-ink" />
               <span>Movie</span>
             </span>
           ) : (
-            <span className="apple-badge border border-white/10 bg-black/60 text-[10px] text-zinc-300 backdrop-blur-md">
-              <IconDeviceTv size={10} className="text-violet-400" />
+            <span className="apple-badge border border-line bg-black/60 text-micro text-ink-secondary backdrop-blur-md">
+              <IconDeviceTv size={10} className="text-accent-ink" />
               <span>Series</span>
             </span>
           )}
-          <span className="rounded-full border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-zinc-300 backdrop-blur-md">
+          <span className="rounded-pill border border-line bg-black/60 px-2 py-0.5 text-micro font-semibold text-ink-secondary backdrop-blur-md">
             {year}
           </span>
         </div>
 
         {/* Rating Badge */}
-        <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-full border border-white/10 bg-black/60 px-2 py-0.5 text-[10px] font-bold text-amber-400 backdrop-blur-md">
-          <IconStar size={10} className="fill-amber-400 text-amber-400" />
+        <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 rounded-pill border border-line bg-black/60 px-2 py-0.5 text-micro font-bold text-rating backdrop-blur-md">
+          <IconStar size={10} className="fill-rating text-rating" />
           <span>{rating ? rating.toFixed(1) : 'N/A'}</span>
         </div>
       </Link>
@@ -73,50 +73,50 @@ export const SearchResultCard = ({
       <div className="flex flex-1 flex-col justify-between space-y-3 p-4">
         <div className="space-y-1.5">
           <Link href={detailsHref} aria-label={`View details for ${name}`}>
-            <h3 className="line-clamp-1 cursor-pointer text-sm leading-snug font-bold text-white transition-colors group-hover:text-violet-300 hover:text-violet-300">
+            <h3 className="line-clamp-1 cursor-pointer text-sm leading-snug font-bold text-ink transition-colors group-hover:text-accent-ink hover:text-accent-ink">
               {name}
             </h3>
           </Link>
 
           <div className="flex flex-wrap items-center gap-1">
             {originalLanguage && (
-              <span className="flex items-center gap-1 rounded-full border border-white/8 bg-white/6 px-2 py-0.5 text-[10px] font-semibold text-zinc-300">
-                <IconLanguage size={9} className="text-zinc-400" />
+              <span className="flex items-center gap-1 rounded-pill border border-line bg-surface-soft px-2 py-0.5 text-micro font-semibold text-ink-secondary">
+                <IconLanguage size={9} className="text-ink-muted" />
                 {originalLanguage}
               </span>
             )}
             {countries && (
-              <span className="flex items-center gap-1 rounded-full border border-white/8 bg-white/6 px-2 py-0.5 text-[10px] font-semibold text-zinc-300">
-                <IconGlobe size={9} className="text-zinc-400" />
+              <span className="flex items-center gap-1 rounded-pill border border-line bg-surface-soft px-2 py-0.5 text-micro font-semibold text-ink-secondary">
+                <IconGlobe size={9} className="text-ink-muted" />
                 {countries}
               </span>
             )}
             {genres.map((genre) => (
               <span
                 key={genre.id}
-                className="rounded-full border border-white/6 bg-white/4 px-2 py-0.5 text-[10px] text-zinc-400"
+                className="rounded-pill border border-line bg-surface-soft px-2 py-0.5 text-micro text-ink-muted"
               >
                 {genre.name}
               </span>
             ))}
           </div>
 
-          <p className="line-clamp-2 pt-0.5 text-xs leading-relaxed font-normal text-zinc-400">
+          <p className="line-clamp-2 pt-0.5 text-xs leading-relaxed font-normal text-ink-muted">
             {overview || 'No synopsis available.'}
           </p>
         </div>
 
         {/* Bottom Actions */}
-        <div className="border-t border-white/8 pt-2">
+        <div className="border-t border-line pt-2">
           {isTracked ? (
-            <div className="justify-betweenbg-white/4 flex w-fit items-center">
-              {/*<span className="apple-badge border border-violet-500/25 bg-violet-500/15 text-[10px] text-violet-300">*/}
-              {/*  <Check size={11} className="text-violet-400" />*/}
+            <div className="justify-betweenbg-surface-soft flex w-fit items-center">
+              {/*<span className="apple-badge border border-accent-line bg-accent-bright/15 text-micro text-accent-ink">*/}
+              {/*  <Check size={11} className="text-accent-ink" />*/}
               {/*  <span>{trackedMatch.trackedStatus}</span>*/}
               {/*</span>*/}
               <Link
                 href={`/library/${mediaType}/${id}`}
-                className="apple-pill-btn cursor-pointer border border-white/8 bg-white/4 px-3 py-2 text-[10px] text-white hover:bg-white/15"
+                className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-3 py-2 text-micro text-ink hover:bg-surface-soft-hover"
               >
                 View in Library
               </Link>

@@ -80,11 +80,11 @@ export const ShowDetailsEpisodeCardToggleButton = ({
         isPending={isPending}
         aria-haspopup={watched || count >= 1 ? 'dialog' : undefined}
         pendingIcon={
-          <span className="block size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <span className="block size-4 animate-spin rounded-pill border-2 border-current border-t-transparent" />
         }
         icon={
           watched ? (
-            <span className="text-[10px] leading-none font-bold">{displayCount}</span>
+            <span className="text-micro leading-none font-bold">{displayCount}</span>
           ) : (
             <IconCircle size={20} />
           )
@@ -98,10 +98,10 @@ export const ShowDetailsEpisodeCardToggleButton = ({
             : `Mark ${episodeName} as watched`
         }
         title={watched ? 'Episode options' : 'Mark as watched'}
-        className={`mt-0.5 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-transform duration-150 active:scale-90 ${
+        className={`mt-0.5 flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-pill transition-transform duration-150 active:scale-90 ${
           watched
-            ? 'bg-violet-500/15 text-violet-400'
-            : 'bg-zinc-800 text-zinc-500 hover:text-zinc-300'
+            ? 'bg-accent-bright/15 text-accent-ink'
+            : 'bg-surface-strong text-ink-subtle hover:text-ink-secondary'
         }`}
       />
     </>

@@ -12,7 +12,7 @@ const MainLayout = async ({
   const session = await auth();
 
   return (
-    <div className="flex min-h-screen flex-col font-sans text-zinc-100 antialiased selection:bg-violet-500/30 selection:text-violet-200">
+    <div className="flex min-h-screen flex-col font-sans text-ink antialiased selection:bg-accent-bright/30 selection:text-accent-tint">
       <div className="ambient-glow pointer-events-none fixed top-0 left-1/2 z-0 h-96 w-full max-w-7xl -translate-x-1/2 opacity-60" />
       <Toaster
         position="bottom-center"

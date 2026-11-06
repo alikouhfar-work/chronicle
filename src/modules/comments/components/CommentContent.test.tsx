@@ -8,8 +8,8 @@ describe('CommentContent', () => {
 
     const chip = screen.getByText('@AliKouhfar');
     expect(chip.getAttribute('data-mention')).toBe('alikouhfar');
-    expect(chip.className).toContain('rounded-full');
-    expect(chip.className).toContain('bg-violet-500/15');
+    expect(chip.className).toContain('rounded-pill');
+    expect(chip.className).toContain('bg-accent-bright/15');
     expect(screen.getByText(/Loved it/)).toBeTruthy();
   });
 

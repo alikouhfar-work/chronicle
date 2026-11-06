@@ -507,6 +507,15 @@ No directory reshuffle is in scope.
 | WP-31 | `noUncheckedIndexedAccess` (153 sites at introduction) — **done 2026-11-05**, real guards in production, fixture shape asserted once. `exactOptionalPropertyTypes` (43) remains as WP-31b. | A4 | M |
 | WP-32 | Test placement + barrel policy, documented and enforced — **done 2026-11-05**: barrels re-export only their own module (and are never imported by file path); tests sit beside what they cover. | A9, A10 | S |
 
+## Phase 6 — design system (audit in `docs/design-audit.md`)
+
+| WP | Goal | Evidence | Effort |
+|---|---|---|---|
+| WP-33 | Token layer with primitives + semantics, migrated components, design guardrails — **done 2026-11-06**: 5 tokens → 45, 97 arbitrary type sizes → 0, ~1,400 raw palette utilities → ~10 (poster scrims), 6 radius steps → 4, five removed focus rings restored, control borders to 3.68:1, `src/design.test.ts` with 5 rules. | D1–D7, D9 | L |
+| WP-34 | Move the six hand-rolled loading routes onto `shared/ui/Skeleton` and give `ActionButton` real disabled/focus states | D8, D9 | S |
+| WP-35 | Decide light theme vs dark-only (Q3), and adopt the motion tokens in the 110 `transition-*` utilities | §5 | S |
+| WP-36 | Poster fallback gradients: neutral ramp or accent ramp (Q5); fold `accent-bright` hover values into a documented hover scale | §5 | S |
+
 Sequencing note: WP-25 must land its moves *before* the cycle test is switched on, or the
 guardrail starts red and gets ignored.
 

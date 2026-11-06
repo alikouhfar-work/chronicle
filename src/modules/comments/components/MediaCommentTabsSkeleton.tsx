@@ -7,16 +7,16 @@ import { IconMessage } from '@tabler/icons-react';
  */
 export const MediaCommentTabsSkeleton = () => (
   <section className="w-full" aria-label="Loading comments" aria-busy="true">
-    <div className="flex items-center gap-2 border-b border-white/8 pb-3">
-      <div className="h-8 w-32 animate-pulse rounded-full bg-violet-500/25 motion-reduce:animate-none" />
-      <div className="h-8 w-32 animate-pulse rounded-full bg-white/6 motion-reduce:animate-none" />
+    <div className="flex items-center gap-2 border-b border-line pb-3">
+      <div className="h-8 w-32 animate-pulse rounded-pill bg-accent-bright/25 motion-reduce:animate-none" />
+      <div className="h-8 w-32 animate-pulse rounded-pill bg-surface-soft motion-reduce:animate-none" />
     </div>
     <div className="mt-4 min-h-[26rem] space-y-4 sm:min-h-[28rem]">
-      <div className="glass-card flex items-center gap-2 rounded-3xl border border-white/10 p-5 text-xs text-zinc-500">
+      <div className="glass-card flex items-center gap-2 rounded-card border border-line p-5 text-xs text-ink-subtle">
         <IconMessage size={15} />
         Loading the discussion…
       </div>
-      <div className="glass-card h-36 animate-pulse rounded-3xl border border-white/10 motion-reduce:animate-none" />
+      <div className="glass-card h-36 animate-pulse rounded-card border border-line motion-reduce:animate-none" />
     </div>
   </section>
 );

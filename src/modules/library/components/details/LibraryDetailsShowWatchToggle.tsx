@@ -66,9 +66,9 @@ export const LibraryDetailsShowWatchToggle = ({
         aria-haspopup={watched ? 'dialog' : undefined}
         icon={
           watched ? (
-            <IconEyeCheck size={14} className="text-emerald-400" />
+            <IconEyeCheck size={14} className="text-success" />
           ) : (
-            <IconEye size={14} className="text-violet-400" />
+            <IconEye size={14} className="text-accent-ink" />
           )
         }
         aria-pressed={watched}
@@ -76,8 +76,8 @@ export const LibraryDetailsShowWatchToggle = ({
         className={clsx(
           'apple-pill-btn flex w-full cursor-pointer items-center gap-1.5 px-3 py-1.5 pl-2.5 text-xs font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50 aria-busy:cursor-wait aria-busy:opacity-80',
           watched
-            ? 'border border-emerald-500/30 bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25'
-            : 'border border-violet-500/35 bg-violet-500/20 text-violet-300 hover:bg-violet-500/30',
+            ? 'border border-success/30 bg-success-soft text-success hover:bg-success-soft'
+            : 'border border-accent-line bg-accent-bright/20 text-accent-ink hover:bg-accent-bright/30',
         )}
       >
         <span>{watched ? 'Show Watched' : 'Mark Show Watched'}</span>

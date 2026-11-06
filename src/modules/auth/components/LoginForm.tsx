@@ -71,7 +71,7 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
       {error && (
         <div
           role="alert"
-          className="flex items-start gap-2.5 rounded-xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+          className="flex items-start gap-2.5 rounded-control border border-danger/30 bg-danger-soft px-4 py-3 text-sm text-danger"
         >
           <IconAlertCircle size={17} className="mt-0.5 shrink-0" />
           <span>{error}</span>
@@ -87,7 +87,7 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
             type="button"
             disabled={busy}
             onClick={() => handleOAuth(provider.id)}
-            className="apple-pill-btn w-full border border-white/10 bg-white/[0.04] px-5 py-2.5 text-sm text-zinc-100 hover:border-white/20 hover:bg-white/[0.07] disabled:cursor-wait disabled:opacity-60"
+            className="apple-pill-btn w-full border border-line bg-white/[0.04] px-5 py-2.5 text-sm text-ink hover:border-line-strong hover:bg-white/[0.07] disabled:cursor-wait disabled:opacity-60"
           >
             {pending ? <IconLoader2 size={16} className="animate-spin" /> : <Icon size={16} />}
             Continue with {provider.name}
@@ -98,17 +98,17 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
       {showCredentials && (
         <>
           {oauthProviders.length > 0 && (
-            <div className="flex items-center gap-3 text-[11px] font-medium tracking-wide text-zinc-600 uppercase">
-              <span className="h-px flex-1 bg-white/8" />
+            <div className="flex items-center gap-3 text-micro font-medium tracking-wide text-ink-subtle uppercase">
+              <span className="h-px flex-1 bg-surface-soft" />
               or with email
-              <span className="h-px flex-1 bg-white/8" />
+              <span className="h-px flex-1 bg-surface-soft" />
             </div>
           )}
           <form onSubmit={handleEmail} className="space-y-3">
             <div>
               <label
                 htmlFor="login-email"
-                className="mb-1.5 block text-xs font-semibold text-zinc-300"
+                className="mb-1.5 block text-xs font-semibold text-ink-secondary"
               >
                 Email
               </label>
@@ -120,13 +120,13 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
+                className="w-full rounded-control border border-line-control bg-surface-raised/80 px-4 py-2.5 text-base text-ink placeholder:text-ink-subtle focus:border-accent-ink focus-visible:ring-2 focus:ring-accent/40 focus:outline-none"
               />
             </div>
             <div>
               <label
                 htmlFor="login-password"
-                className="mb-1.5 block text-xs font-semibold text-zinc-300"
+                className="mb-1.5 block text-xs font-semibold text-ink-secondary"
               >
                 Password
               </label>
@@ -140,13 +140,13 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full rounded-xl border border-white/10 bg-zinc-900/80 px-4 py-2.5 pr-11 text-base text-zinc-100 placeholder:text-zinc-600 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/20 focus:outline-none"
+                  className="w-full rounded-control border border-line-control bg-surface-raised/80 px-4 py-2.5 pr-11 text-base text-ink placeholder:text-ink-subtle focus:border-accent-ink focus-visible:ring-2 focus:ring-accent/40 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 rounded-full p-1 text-zinc-500 transition-colors hover:text-zinc-200"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 rounded-pill p-1 text-ink-subtle transition-colors hover:text-ink-secondary"
                 >
                   {showPassword ? <IconEyeOff size={16} /> : <IconEye size={16} />}
                 </button>
@@ -155,7 +155,7 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
             <button
               type="submit"
               disabled={busy || email.trim().length === 0 || password.length === 0}
-              className="apple-pill-btn w-full bg-violet-500 px-5 py-2.5 text-sm text-white shadow-lg shadow-violet-500/25 hover:bg-violet-400 disabled:cursor-wait disabled:opacity-60"
+              className="apple-pill-btn w-full bg-accent px-5 py-2.5 text-sm text-ink shadow-lg shadow-accent/25 hover:bg-accent-strong disabled:cursor-wait disabled:opacity-60"
             >
               {pendingProvider === 'credentials' ? (
                 <IconLoader2 size={16} className="animate-spin" />
@@ -165,11 +165,11 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
               Sign in
             </button>
           </form>
-          <p className="text-center text-xs text-zinc-400">
+          <p className="text-center text-xs text-ink-muted">
             New to Chronicle?{' '}
             <Link
               href="/signup"
-              className="font-semibold text-violet-400 underline-offset-4 hover:underline"
+              className="font-semibold text-accent-ink underline-offset-4 hover:underline"
             >
               Create an account
             </Link>
@@ -179,17 +179,17 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
 
       {guestProvider && (
         <>
-          <div className="flex items-center gap-3 text-[11px] font-medium tracking-wide text-zinc-600 uppercase">
-            <span className="h-px flex-1 bg-white/8" />
+          <div className="flex items-center gap-3 text-micro font-medium tracking-wide text-ink-subtle uppercase">
+            <span className="h-px flex-1 bg-surface-soft" />
             or try the demo
-            <span className="h-px flex-1 bg-white/8" />
+            <span className="h-px flex-1 bg-surface-soft" />
           </div>
           <div>
             <button
               type="button"
               disabled={busy}
               onClick={() => handleOAuth('guest')}
-              className="apple-pill-btn w-full border border-emerald-500/25 bg-emerald-500/10 px-5 py-2.5 text-sm text-emerald-200 hover:border-emerald-500/40 hover:bg-emerald-500/15 disabled:cursor-wait disabled:opacity-60"
+              className="apple-pill-btn w-full border border-success/30 bg-success-soft px-5 py-2.5 text-sm text-success hover:border-success/40 hover:bg-success-soft disabled:cursor-wait disabled:opacity-60"
             >
               {pendingProvider === 'guest' ? (
                 <IconLoader2 size={16} className="animate-spin" />
@@ -198,7 +198,7 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
               )}
               Continue as guest
             </button>
-            <p className="mt-1.5 text-center text-[11px] leading-relaxed text-zinc-600">
+            <p className="mt-1.5 text-center text-micro leading-relaxed text-ink-subtle">
               Shared demo library on its own database. Resets periodically.
             </p>
           </div>
@@ -206,7 +206,7 @@ export const LoginForm = ({ providers, callbackUrl, authError }: LoginFormProps)
       )}
 
       {providers.length === 0 && (
-        <div className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
+        <div className="rounded-control border border-warning/30 bg-warning-soft px-4 py-3 text-sm text-rating">
           No sign-in providers are configured. Add OAuth credentials or enable development mode.
         </div>
       )}

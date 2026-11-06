@@ -259,14 +259,14 @@ export const RewatchHistoryModal = ({
           if (event.target === event.currentTarget && !isPending) dialogRef.current?.close();
         }}
       >
-        <div className="glass-card flex max-h-[90vh] w-full max-w-lg flex-col gap-5 overflow-hidden rounded-3xl border-white/15 bg-zinc-950/90 p-6 shadow-2xl">
+        <div className="glass-card flex max-h-[90vh] w-full max-w-lg flex-col gap-5 overflow-hidden rounded-card border-line bg-surface-sunken/90 p-6 shadow-2xl">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h3 className="flex items-center gap-2 text-base font-bold text-white">
-                <IconHistory size={18} className="text-violet-400" />
+              <h3 className="flex items-center gap-2 text-base font-bold text-ink">
+                <IconHistory size={18} className="text-accent-ink" />
                 <span>Watch History</span>
               </h3>
-              <p className="mt-0.5 text-xs font-medium text-zinc-400">
+              <p className="mt-0.5 text-xs font-medium text-ink-muted">
                 {title} • {count} {count === 1 ? 'watch' : 'watches'}
               </p>
             </div>
@@ -274,32 +274,32 @@ export const RewatchHistoryModal = ({
               type="button"
               onClick={() => dialogRef.current?.close()}
               disabled={isPending}
-              className="apple-pill-btn cursor-pointer bg-white/6 px-3 py-1.5 text-xs text-zinc-300 hover:bg-white/12 disabled:opacity-60"
+              className="apple-pill-btn cursor-pointer bg-surface-soft px-3 py-1.5 text-xs text-ink-secondary hover:bg-surface-soft-hover disabled:opacity-60"
             >
               Close
             </button>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-white/8 bg-white/[0.02]">
+          <div className="min-h-0 flex-1 overflow-y-auto rounded-card border border-line bg-white/[0.02]">
             {isLoading ? (
-              <div className="flex items-center justify-center gap-2 py-10 text-xs text-zinc-400">
-                <IconLoader2 size={16} className="animate-spin text-violet-400" />
+              <div className="flex items-center justify-center gap-2 py-10 text-xs text-ink-muted">
+                <IconLoader2 size={16} className="animate-spin text-accent-ink" />
                 <span>Loading watches…</span>
               </div>
             ) : reversedHistory.length === 0 ? (
               <div className="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                <IconRotateClockwise size={22} className="text-violet-400/70" />
-                <p className="text-xs text-zinc-400">No watches logged yet.</p>
+                <IconRotateClockwise size={22} className="text-accent-ink/70" />
+                <p className="text-xs text-ink-muted">No watches logged yet.</p>
               </div>
             ) : (
-              <ul className="divide-y divide-white/6">
+              <ul className="divide-y divide-line">
                 {reversedHistory.map((entry) => (
                   <li
                     key={entry.id}
                     className="flex items-center justify-between gap-3 px-4 py-3"
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className="flex size-8 items-center justify-center rounded-full bg-violet-500/12 text-violet-400">
+                      <span className="flex size-8 items-center justify-center rounded-pill bg-accent-bright/12 text-accent-ink">
                         <IconRotateClockwise size={14} />
                       </span>
                       <div>
@@ -309,14 +309,14 @@ export const RewatchHistoryModal = ({
                             value={editValue}
                             onChange={(event) => setEditValue(event.target.value)}
                             aria-label="Watch date and time"
-                            className="rounded-lg border border-white/10 bg-black/30 px-2 py-1 text-xs text-zinc-100"
+                            className="rounded-xs border border-line bg-black/30 px-2 py-1 text-xs text-ink"
                           />
                         ) : (
-                          <p className="text-xs font-semibold text-zinc-200">
+                          <p className="text-xs font-semibold text-ink-secondary">
                             {formatRewatchedAt(entry.rewatchedAt)}
                           </p>
                         )}
-                        <p className="text-[10px] text-zinc-400">
+                        <p className="text-micro text-ink-muted">
                           {editingId === entry.id ? 'Edit the date' : 'Watch logged'}
                         </p>
                       </div>
@@ -330,7 +330,7 @@ export const RewatchHistoryModal = ({
                             disabled={isPending}
                             aria-label="Save watch date"
                             title="Save watch date"
-                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-violet-500/20 hover:text-violet-200 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-pill bg-surface-soft text-ink-muted transition-colors hover:bg-accent-bright/20 hover:text-accent-tint disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {isSavingEdit ? (
                               <IconLoader2 size={14} className="animate-spin" />
@@ -344,7 +344,7 @@ export const RewatchHistoryModal = ({
                             disabled={isPending}
                             aria-label="Cancel date edit"
                             title="Cancel date edit"
-                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-pill bg-surface-soft text-ink-muted transition-colors hover:bg-surface-soft-hover hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <IconX size={14} />
                           </button>
@@ -357,7 +357,7 @@ export const RewatchHistoryModal = ({
                             disabled={isPending}
                             aria-label="Edit watch date"
                             title="Edit watch date"
-                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-pill bg-surface-soft text-ink-muted transition-colors hover:bg-surface-soft-hover hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <IconPencil size={14} />
                           </button>
@@ -367,7 +367,7 @@ export const RewatchHistoryModal = ({
                             disabled={isPending}
                             aria-label="Delete watch entry"
                             title="Delete watch entry"
-                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/5 text-zinc-400 transition-colors hover:bg-red-500/15 hover:text-red-300 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-pill bg-surface-soft text-ink-muted transition-colors hover:bg-danger-soft hover:text-danger disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {isDeleting && deletingId === entry.id ? (
                               <IconLoader2 size={14} className="animate-spin" />
@@ -384,12 +384,12 @@ export const RewatchHistoryModal = ({
             )}
           </div>
 
-          <div className="space-y-2.5 border-t border-white/8 pt-4">
+          <div className="space-y-2.5 border-t border-line pt-4">
             <label
               htmlFor="watch-date"
-              className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300"
+              className="flex items-center gap-1.5 text-xs font-semibold text-ink-secondary"
             >
-              <IconCalendarPlus size={14} className="text-violet-400" />
+              <IconCalendarPlus size={14} className="text-accent-ink" />
               <span>Add a watch with a custom date</span>
             </label>
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -399,19 +399,19 @@ export const RewatchHistoryModal = ({
                 value={customDate}
                 onChange={(event) => setCustomDate(event.target.value)}
                 disabled={isPending}
-                className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/4 px-3 py-2 text-xs text-white focus:ring-2 focus:ring-violet-400/20 focus:outline-none"
+                className="min-w-0 flex-1 rounded-control border border-line bg-surface-soft px-3 py-2 text-xs text-ink focus-visible:ring-2 focus:ring-accent/40 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={handleAdd}
                 disabled={isPending || isLoading}
-                className="apple-pill-btn cursor-pointer bg-violet-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="apple-pill-btn cursor-pointer bg-accent px-4 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isAdding ? 'Adding…' : 'Add Watch'}
               </button>
             </div>
             {error && (
-              <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+              <p className="rounded-xs border border-danger/30 bg-danger-soft px-3 py-2 text-xs text-danger">
                 {error}
               </p>
             )}

@@ -98,7 +98,7 @@ export const MediaCommentTabs = ({
         role="tablist"
         aria-label="Media comment sections"
         onKeyDown={handleKeyDown}
-        className="flex items-center gap-2 border-b border-white/8 pb-3"
+        className="flex items-center gap-2 border-b border-line pb-3"
       >
         {VALID_TABS.map((tab) => {
           const isActive = activeTab === tab;
@@ -115,10 +115,10 @@ export const MediaCommentTabs = ({
               aria-controls={PANEL_IDS[tab]}
               tabIndex={isActive ? 0 : -1}
               onClick={() => selectTab(tab)}
-              className={`rounded-full px-4 py-2 text-xs font-bold transition-colors motion-reduce:transition-none ${
+              className={`rounded-pill px-4 py-2 text-xs font-bold transition-colors motion-reduce:transition-none ${
                 isActive
-                  ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/25'
-                  : 'text-zinc-400 hover:bg-white/6 hover:text-white'
+                  ? 'bg-accent text-ink shadow-lg shadow-accent/25'
+                  : 'text-ink-muted hover:bg-surface-soft hover:text-ink'
               }`}
             >
               {TAB_LABELS[tab]}

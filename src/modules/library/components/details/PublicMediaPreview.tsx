@@ -25,7 +25,7 @@ export const PublicMediaPreview = async ({ mediaType, id }: PublicMediaPreviewPr
   return (
     <article className="mx-auto space-y-6 px-4 py-8 font-sans">
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-white">
+        <h1 className="text-2xl font-bold text-ink">
           {details.name}
           {details.year && details.year !== 'N/A' ? ` (${details.year})` : ''}
         </h1>
@@ -35,15 +35,15 @@ export const PublicMediaPreview = async ({ mediaType, id }: PublicMediaPreviewPr
             alt={details.name}
             width={300}
             height={450}
-            className="rounded-2xl border border-white/10"
+            className="rounded-card border border-line"
           />
         )}
         {details.overview && (
-          <p className="text-sm leading-relaxed text-zinc-300">{details.overview}</p>
+          <p className="text-sm leading-relaxed text-ink-secondary">{details.overview}</p>
         )}
         <Link
           href={`/search?query=${encodeURIComponent(details.name)}`}
-          className="inline-flex rounded-full bg-violet-600 px-4 py-2 text-xs font-semibold text-white"
+          className="inline-flex rounded-pill bg-accent px-4 py-2 text-xs font-semibold text-ink"
         >
           Open in Chronicle
         </Link>

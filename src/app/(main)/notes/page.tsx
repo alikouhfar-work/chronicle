@@ -40,18 +40,18 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
     <article className="animate-fade-in mx-auto w-full max-w-3xl space-y-8 font-sans">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <BackButton href="/" label="Back to dashboard" />
-        <span className="apple-badge border border-violet-500/25 bg-violet-500/10 text-[11px] text-violet-300">
+        <span className="apple-badge border border-accent-line bg-accent-bright/10 text-micro text-accent-ink">
           {notes.length}
           {notes.length === NOTE_PAGE_SIZE ? '+' : ''} {notes.length === 1 ? 'note' : 'notes'}
         </span>
       </div>
 
       <header className="space-y-2">
-        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-white">
-          <IconNotes size={22} className="text-violet-400" aria-hidden />
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-ink">
+          <IconNotes size={22} className="text-accent-ink" aria-hidden />
           Your notes
         </h1>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-ink-muted">
           Private to you — ratings live on each title, and notes are never shared or shown to
           anyone else.
         </p>
@@ -64,12 +64,12 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
           defaultValue={search}
           aria-label="Search your notes"
           placeholder="Search your notes"
-          className="w-full rounded-full border border-white/10 bg-white/6 px-5 py-3 pl-11 text-sm font-medium text-white placeholder-zinc-500 shadow-lg transition-all hover:border-white/20 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 focus:outline-none"
+          className="w-full rounded-pill border border-line-control bg-surface-soft px-5 py-3 pl-11 text-sm font-medium text-ink placeholder:text-ink-subtle shadow-lg transition-all hover:border-line-strong focus:border-accent-ink focus-visible:ring-2 focus:ring-accent/40 focus:outline-none"
         />
-        <IconSearch aria-hidden className="absolute left-4 text-zinc-400" size={16} />
+        <IconSearch aria-hidden className="absolute left-4 text-ink-muted" size={16} />
         <button
           type="submit"
-          className="apple-pill-btn absolute right-1.5 cursor-pointer bg-violet-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 transition-all hover:bg-violet-400"
+          className="apple-pill-btn absolute right-1.5 cursor-pointer bg-accent px-4 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 transition-all hover:bg-accent-strong"
         >
           Search
         </button>
@@ -84,7 +84,7 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
             action={
               <Link
                 href="/notes"
-                className="apple-pill-btn mt-1 cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12"
+                className="apple-pill-btn mt-1 cursor-pointer border border-line bg-surface-soft px-4 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover"
               >
                 Clear search
               </Link>
@@ -99,7 +99,7 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
             action={
               <Link
                 href="/library"
-                className="apple-pill-btn mt-1 cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12"
+                className="apple-pill-btn mt-1 cursor-pointer border border-line bg-surface-soft px-4 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover"
               >
                 Browse your library
               </Link>
@@ -112,24 +112,24 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
           {notes.map((note) => (
             <li
               key={note.id}
-              className="glass-card space-y-2 rounded-2xl border border-white/8 p-4 shadow-lg"
+              className="glass-card space-y-2 rounded-card border border-line p-4 shadow-lg"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0 space-y-0.5">
                   {note.mediaHref ? (
                     <Link
                       href={note.mediaHref}
-                      className="cursor-pointer text-sm font-bold text-white transition-colors hover:text-violet-300"
+                      className="cursor-pointer text-sm font-bold text-ink transition-colors hover:text-accent-ink"
                     >
                       {note.mediaTitle}
                     </Link>
                   ) : (
-                    <span className="text-sm font-bold text-zinc-300">
+                    <span className="text-sm font-bold text-ink-secondary">
                       {note.mediaTitle ?? 'Note'}
                     </span>
                   )}
                   {note.mediaSubtitle && (
-                    <p className="text-[11px] font-semibold text-violet-300">
+                    <p className="text-micro font-semibold text-accent-ink">
                       {note.mediaSubtitle}
                     </p>
                   )}
@@ -137,7 +137,7 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
                 <NoteTimestamp value={note.createdAt} />
               </div>
 
-              <p className="text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200">
+              <p className="text-sm leading-relaxed break-words whitespace-pre-wrap text-ink-secondary">
                 {note.content}
               </p>
             </li>
@@ -146,7 +146,7 @@ const NotesIndexPage = async ({ searchParams }: NotesIndexPageProps) => {
       )}
 
       {notes.length === NOTE_PAGE_SIZE && (
-        <p className="text-center text-[11px] text-zinc-500">
+        <p className="text-center text-micro text-ink-subtle">
           Showing the {NOTE_PAGE_SIZE} most recent notes.
         </p>
       )}

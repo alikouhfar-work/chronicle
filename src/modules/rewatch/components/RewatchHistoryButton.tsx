@@ -38,7 +38,7 @@ export const RewatchHistoryButton = ({
         aria-label={`Open watch history for ${title}`}
         title="Watch history"
         className={clsx(
-          'flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-white/6 text-zinc-300 hover:bg-white/12',
+          'flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-xs bg-surface-soft text-ink-secondary hover:bg-surface-soft-hover',
           className,
         )}
       >

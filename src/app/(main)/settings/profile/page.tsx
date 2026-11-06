@@ -31,13 +31,13 @@ const ProfileSettingsPage = async () => {
       <BackButton href="/" label="Back to dashboard" />
 
       <header className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-white">Profile</h1>
-        <p className="text-sm text-zinc-400">
+        <h1 className="text-2xl font-bold tracking-tight text-ink">Profile</h1>
+        <p className="text-sm text-ink-muted">
           Your handle is how other people mention you in public reviews.
         </p>
       </header>
 
-      <section className="glass-card space-y-6 rounded-3xl border-white/10 p-6">
+      <section className="glass-card space-y-6 rounded-card border-line p-6">
         <div className="flex items-center gap-4">
           {user.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -45,42 +45,42 @@ const ProfileSettingsPage = async () => {
               src={user.image}
               alt=""
               referrerPolicy="no-referrer"
-              className="size-14 shrink-0 rounded-2xl border border-white/10 object-cover"
+              className="size-14 shrink-0 rounded-card border border-line object-cover"
             />
           ) : (
             <div
               aria-hidden
-              className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-violet-500/25 bg-violet-500/15 text-lg font-bold text-violet-300"
+              className="flex size-14 shrink-0 items-center justify-center rounded-card border border-accent-line bg-accent-bright/15 text-lg font-bold text-accent-ink"
             >
               {monogram || <IconUser size={20} />}
             </div>
           )}
           <div className="min-w-0">
-            <p className="truncate text-base font-bold text-white">{displayName}</p>
-            <p className="truncate text-xs text-zinc-400">{user.email}</p>
+            <p className="truncate text-base font-bold text-ink">{displayName}</p>
+            <p className="truncate text-xs text-ink-muted">{user.email}</p>
           </div>
         </div>
 
-        <div className="border-t border-white/8 pt-6">
-          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-white">
-            <IconAt size={16} className="text-violet-400" />
+        <div className="border-t border-line pt-6">
+          <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-ink">
+            <IconAt size={16} className="text-accent-ink" />
             Public handle
           </div>
           <UsernameForm initialUsername={user.username} />
         </div>
       </section>
 
-      <p className="text-xs text-zinc-400">
+      <p className="text-xs text-ink-muted">
         Your email is never shown on public reviews, mentions, or notifications — only your display
         name, handle, and avatar.
       </p>
 
-      <section className="glass-card space-y-4 rounded-3xl border-white/10 p-6">
-        <div className="flex items-center gap-2 text-sm font-semibold text-white">
-          <IconLogout size={16} className="text-red-400" />
+      <section className="glass-card space-y-4 rounded-card border-line p-6">
+        <div className="flex items-center gap-2 text-sm font-semibold text-ink">
+          <IconLogout size={16} className="text-danger" />
           Session
         </div>
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-ink-muted">
           Signing out ends the session on this device. Your library and reviews stay untouched.
         </p>
         <SignOutButton />

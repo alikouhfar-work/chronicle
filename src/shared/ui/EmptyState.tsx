@@ -16,7 +16,7 @@ export const EmptyState = ({
 }: EmptyStateProps) => (
   <div
     className={clsx(
-      'glass-card flex flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 text-center',
+      'glass-card flex flex-col items-center justify-center rounded-card border border-dashed border-line text-center',
       compact ? 'gap-2 px-4 py-8' : 'gap-3 px-6 py-12',
       className,
     )}
@@ -24,16 +24,16 @@ export const EmptyState = ({
     <div
       aria-hidden
       className={clsx(
-        'rounded-2xl border border-violet-500/25 bg-violet-500/15 text-violet-400',
+        'rounded-xs border border-accent-line bg-accent-soft text-accent-ink',
         compact ? 'p-2.5' : 'p-3.5',
       )}
     >
       <Icon size={compact ? 20 : 28} />
     </div>
     <div className="max-w-sm space-y-1">
-      <p className={clsx('font-bold text-white', compact ? 'text-xs' : 'text-sm')}>{title}</p>
+      <p className={clsx('font-bold text-ink', compact ? 'text-xs' : 'text-sm')}>{title}</p>
       {description ? (
-        <p className="text-xs leading-relaxed text-zinc-400">{description}</p>
+        <p className="text-xs leading-relaxed text-ink-muted">{description}</p>
       ) : null}
     </div>
     {action}

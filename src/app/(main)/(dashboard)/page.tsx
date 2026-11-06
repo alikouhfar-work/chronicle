@@ -20,7 +20,7 @@ const DashboardPage = async () => {
         <TrendingMovieList />
       </section>
 
-      <section className="border-t border-white/8 pt-6">
+      <section className="border-t border-line pt-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <UpcomingEpisodeList />
           <UpcomingMovieList />

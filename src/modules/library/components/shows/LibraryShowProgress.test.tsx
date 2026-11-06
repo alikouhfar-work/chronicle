@@ -21,10 +21,10 @@ describe('LibraryShowProgress', () => {
     );
 
     expect(screen.getByText('Next up · S2 E2')).toBeInTheDocument();
-    expect(screen.getByText('75%')).toHaveClass('text-indigo-400');
+    expect(screen.getByText('75%')).toHaveClass('text-info');
     const segments = container.querySelectorAll('[role="progressbar"] > div');
     expect(segments).toHaveLength(2);
-    expect(segments[0]!.firstChild).toHaveClass('bg-indigo-400');
+    expect(segments[0]!.firstChild).toHaveClass('bg-secondary');
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-label',
       'Next up · S2 E2, 75 percent, show is continuing',
@@ -40,9 +40,9 @@ describe('LibraryShowProgress', () => {
     );
 
     expect(screen.getByText('Sweet finale 🏁')).toBeInTheDocument();
-    expect(screen.getByText('100%')).toHaveClass('text-indigo-400');
+    expect(screen.getByText('100%')).toHaveClass('text-info');
     expect(container.querySelector('[role="progressbar"] > div')?.firstChild).toHaveClass(
-      'bg-indigo-400',
+      'bg-secondary',
     );
   });
 
@@ -69,7 +69,7 @@ describe('LibraryShowProgress', () => {
     // 50% watched → deterministic pick from the quotes array.
     const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
-    expect(screen.getByText('50%')).toHaveClass('text-rose-500');
+    expect(screen.getByText('50%')).toHaveClass('text-danger');
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-label',
       `${expected}, 50 percent, show is dropped`,

@@ -181,13 +181,13 @@ export const NotificationBell = () => {
         aria-expanded={open}
         aria-haspopup="dialog"
         title="Notifications"
-        className="relative flex size-9 cursor-pointer items-center justify-center rounded-full border border-white/8 text-zinc-400 transition-colors hover:border-violet-400/40 hover:text-white"
+        className="relative flex size-9 cursor-pointer items-center justify-center rounded-pill border border-line text-ink-muted transition-colors hover:border-accent-ink hover:text-ink"
       >
         <IconBell size={16} />
         {unreadCount > 0 && (
           <span
             aria-live="polite"
-            className="absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-full border border-violet-950 bg-violet-500 px-1 text-[10px] font-bold text-white shadow-md shadow-violet-500/40"
+            className="absolute -top-1 -right-1 flex min-h-5 min-w-5 items-center justify-center rounded-pill border border-accent-line bg-accent px-1 text-micro font-bold text-ink shadow-card shadow-accent/20"
           >
             {formatBadge(unreadCount)}
           </span>
@@ -198,17 +198,17 @@ export const NotificationBell = () => {
         <div
           role="dialog"
           aria-label="Notifications"
-          className="absolute top-full right-0 z-50 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 shadow-2xl backdrop-blur-xl sm:w-96"
+          className="absolute top-full right-0 z-50 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-card border border-line bg-surface-sunken/95 shadow-2xl backdrop-blur-xl sm:w-96"
         >
-          <div className="flex items-center justify-between border-b border-white/8 px-4 py-3">
-            <span className="text-xs font-bold tracking-tight text-white uppercase">
+          <div className="flex items-center justify-between border-b border-line px-4 py-3">
+            <span className="text-xs font-bold tracking-tight text-ink uppercase">
               Notifications
             </span>
             <button
               type="button"
               onClick={() => void handleMarkAll()}
               disabled={markingAll || unreadCount === 0}
-              className="flex cursor-pointer items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-violet-300 transition-colors hover:bg-violet-500/10 hover:text-violet-200 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex cursor-pointer items-center gap-1 rounded-pill px-2 py-1 text-micro font-semibold text-accent-ink transition-colors hover:bg-accent-bright/10 hover:text-accent-tint disabled:cursor-not-allowed disabled:opacity-40"
             >
               {markingAll ? (
                 <IconLoader2 size={12} className="animate-spin motion-reduce:animate-none" />
@@ -221,14 +221,14 @@ export const NotificationBell = () => {
 
           <div aria-live="polite">
             {loadingItems && (
-              <div className="flex items-center justify-center gap-2 px-4 py-8 text-xs text-zinc-500">
+              <div className="flex items-center justify-center gap-2 px-4 py-8 text-xs text-ink-subtle">
                 <IconLoader2 size={14} className="animate-spin motion-reduce:animate-none" />
                 Loading notifications…
               </div>
             )}
 
             {!loadingItems && error && (
-              <p role="alert" className="px-4 py-8 text-center text-xs text-rose-300">
+              <p role="alert" className="px-4 py-8 text-center text-xs text-danger">
                 {error}
               </p>
             )}
@@ -244,7 +244,7 @@ export const NotificationBell = () => {
             )}
 
             {!loadingItems && !error && items && items.length > 0 && (
-              <ul className="max-h-96 divide-y divide-white/6 overflow-y-auto">
+              <ul className="max-h-96 divide-y divide-line overflow-y-auto">
                 {items.map((item) => {
                   const actorName = actorDisplayName(item);
                   return (
@@ -252,7 +252,7 @@ export const NotificationBell = () => {
                       <Link
                         href={item.href}
                         onClick={() => handleItemClick(item)}
-                        className={`flex items-start gap-3 px-4 py-3 transition-colors hover:bg-white/4 ${
+                        className={`flex items-start gap-3 px-4 py-3 transition-colors hover:bg-surface-soft ${
                           item.isRead ? 'opacity-60' : ''
                         }`}
                       >
@@ -261,20 +261,20 @@ export const NotificationBell = () => {
                           <img
                             src={item.actor.image}
                             alt=""
-                            className="size-9 shrink-0 rounded-full border border-white/10 object-cover"
+                            className="size-9 shrink-0 rounded-pill border border-line object-cover"
                           />
                         ) : (
-                          <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-violet-500/25 bg-violet-500/15 text-[11px] font-bold text-violet-300">
+                          <div className="flex size-9 shrink-0 items-center justify-center rounded-pill border border-accent-line bg-accent-bright/15 text-micro font-bold text-accent-ink">
                             {createMonogram(actorName).slice(0, 2) || 'CU'}
                           </div>
                         )}
                         <span className="min-w-0 flex-1">
-                          <span className="block text-xs leading-relaxed text-zinc-200">
+                          <span className="block text-xs leading-relaxed text-ink-secondary">
                             {notificationText(item)}
                           </span>
                           <time
                             dateTime={notificationIsoTime(item)}
-                            className="mt-0.5 block text-[11px] text-zinc-500"
+                            className="mt-0.5 block text-micro text-ink-subtle"
                           >
                             {notificationTime(item)}
                           </time>
@@ -282,7 +282,7 @@ export const NotificationBell = () => {
                         {!item.isRead && (
                           <span
                             aria-label="Unread"
-                            className="mt-1.5 size-2 shrink-0 rounded-full bg-violet-400"
+                            className="mt-1.5 size-2 shrink-0 rounded-pill bg-accent-strong"
                           />
                         )}
                       </Link>

@@ -354,10 +354,10 @@ export const PublicReviewsPanel = ({
       {showUnavailableNotice && (
         <div
           role="status"
-          className="glass-card flex items-start gap-3 rounded-2xl border border-violet-400/25 bg-violet-500/8 p-4"
+          className="glass-card flex items-start gap-3 rounded-card border border-accent-ink bg-accent-bright/8 p-4"
         >
-          <IconAlertCircle size={16} className="mt-px shrink-0 text-violet-300" />
-          <p className="flex-1 text-xs leading-relaxed text-zinc-300">
+          <IconAlertCircle size={16} className="mt-px shrink-0 text-accent-ink" />
+          <p className="flex-1 text-xs leading-relaxed text-ink-secondary">
             That comment is unavailable — it may have been deleted. Showing the latest reviews
             instead.
           </p>
@@ -365,7 +365,7 @@ export const PublicReviewsPanel = ({
             type="button"
             onClick={() => setShowUnavailableNotice(false)}
             aria-label="Dismiss notice"
-            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-white/8 hover:text-white"
+            className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-pill text-ink-subtle transition-colors hover:bg-surface-soft hover:text-ink"
           >
             <IconX size={13} />
           </button>
@@ -373,9 +373,9 @@ export const PublicReviewsPanel = ({
       )}
       <form
         onSubmit={handleSubmit}
-        className="glass-card space-y-3 rounded-3xl border border-white/10 p-5 sm:p-6"
+        className="glass-card space-y-3 rounded-card border border-line p-5 sm:p-6"
       >
-        <div className="flex items-center gap-2 text-xs font-bold tracking-tight text-violet-300 uppercase">
+        <div className="flex items-center gap-2 text-xs font-bold tracking-tight text-accent-ink uppercase">
           <IconMessage size={15} />
           <span>Write a public review</span>
         </div>
@@ -403,7 +403,7 @@ export const PublicReviewsPanel = ({
                 <img
                   src={attachment.url}
                   alt="Attachment preview"
-                  className="size-20 rounded-xl border border-white/10 object-cover"
+                  className="size-20 rounded-control border border-line object-cover"
                 />
                 <button
                   type="button"
@@ -414,7 +414,7 @@ export const PublicReviewsPanel = ({
                   }
                   disabled={submitting}
                   aria-label="Remove attachment"
-                  className="absolute -top-1.5 -right-1.5 flex size-5 cursor-pointer items-center justify-center rounded-full bg-rose-600 text-white shadow-md hover:bg-rose-500 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="absolute -top-1.5 -right-1.5 flex size-5 cursor-pointer items-center justify-center rounded-pill bg-danger text-canvas shadow-card hover:bg-danger/90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <IconX size={12} />
                 </button>
@@ -438,7 +438,7 @@ export const PublicReviewsPanel = ({
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={!viewer || uploading || submitting || attachments.length >= MAX_ATTACHMENTS}
-              className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-3.5 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-50"
+              className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-3.5 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {uploading ? (
                 <IconLoader2 size={14} className="animate-spin motion-reduce:animate-none" />
@@ -447,7 +447,7 @@ export const PublicReviewsPanel = ({
               )}
               {uploading ? 'Uploading…' : 'Attach image'}
             </button>
-            <span className="text-[11px] text-zinc-400">
+            <span className="text-micro text-ink-muted">
               {attachments.length}/{MAX_ATTACHMENTS}
             </span>
           </div>
@@ -456,7 +456,7 @@ export const PublicReviewsPanel = ({
             <button
               type="submit"
               disabled={!canSubmit}
-              className="apple-pill-btn cursor-pointer bg-violet-500 px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-violet-500/25 hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
+              className="apple-pill-btn cursor-pointer bg-accent px-5 py-2.5 text-xs font-bold text-ink shadow-lg shadow-accent/25 hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
             >
               {submitting ? (
                 <IconLoader2 size={15} className="animate-spin motion-reduce:animate-none" />
@@ -468,7 +468,7 @@ export const PublicReviewsPanel = ({
           ) : (
             <Link
               href={signInHref}
-              className="apple-pill-btn bg-violet-500 px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-violet-500/25 hover:bg-violet-400 sm:text-sm"
+              className="apple-pill-btn bg-accent px-5 py-2.5 text-xs font-bold text-ink shadow-lg shadow-accent/25 hover:bg-accent-strong sm:text-sm"
             >
               <IconLock size={14} />
               Sign in to post
@@ -479,7 +479,7 @@ export const PublicReviewsPanel = ({
         {composerError && (
           <p
             role="alert"
-            className="flex items-start gap-2 rounded-xl border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs text-rose-300"
+            className="flex items-start gap-2 rounded-control border border-danger/30 bg-danger-soft px-3 py-2 text-xs text-danger"
           >
             <IconAlertCircle size={15} className="mt-px shrink-0" />
             <span>{composerError}</span>
@@ -496,15 +496,15 @@ export const PublicReviewsPanel = ({
       )}
 
       {status === 'error' && (
-        <div className="glass-card flex flex-col items-center justify-center gap-3 rounded-3xl border border-white/10 p-8 py-10 text-center">
-          <IconAlertCircle size={20} className="text-rose-400" />
-          <p role="alert" className="max-w-sm text-sm text-zinc-400">
+        <div className="glass-card flex flex-col items-center justify-center gap-3 rounded-card border border-line p-8 py-10 text-center">
+          <IconAlertCircle size={20} className="text-danger" />
+          <p role="alert" className="max-w-sm text-sm text-ink-muted">
             {feedError ?? 'Could not load reviews.'}
           </p>
           <button
             type="button"
             onClick={() => void loadInitial()}
-            className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12"
+            className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-4 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover"
           >
             Retry
           </button>
@@ -512,15 +512,15 @@ export const PublicReviewsPanel = ({
       )}
 
       {status === 'ready' && comments.length === 0 && (
-        <div className="glass-card flex flex-col items-center justify-center gap-3 rounded-3xl border border-white/10 p-8 py-10 text-center">
-          <IconMessage size={20} className="text-zinc-500" />
-          <p className="text-sm text-zinc-400">
+        <div className="glass-card flex flex-col items-center justify-center gap-3 rounded-card border border-line p-8 py-10 text-center">
+          <IconMessage size={20} className="text-ink-subtle" />
+          <p className="text-sm text-ink-muted">
             No public reviews yet. Be the first to share yours.
           </p>
           {!viewer && (
             <Link
               href={signInHref}
-              className="apple-pill-btn bg-violet-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 hover:bg-violet-400"
+              className="apple-pill-btn bg-accent px-4 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 hover:bg-accent-strong"
             >
               Sign in to review
             </Link>
@@ -531,7 +531,7 @@ export const PublicReviewsPanel = ({
       {feedActionError && (
         <p
           role="alert"
-          className="flex items-start gap-2 rounded-xl border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs text-rose-300"
+          className="flex items-start gap-2 rounded-control border border-danger/30 bg-danger-soft px-3 py-2 text-xs text-danger"
         >
           <IconAlertCircle size={15} className="mt-px shrink-0" />
           <span>{feedActionError}</span>
@@ -557,8 +557,8 @@ export const PublicReviewsPanel = ({
                 key={comment.id}
                 id={`comment-${comment.id}`}
                 aria-busy={comment.pending || undefined}
-                className={`glass-card scroll-mt-24 space-y-3 rounded-3xl border p-5 transition-shadow target:border-violet-400/70 target:ring-2 target:ring-violet-400/50 motion-reduce:transition-none sm:p-6 ${
-                  isHidden ? 'border-amber-400/30' : 'border-white/10'
+                className={`glass-card scroll-mt-24 space-y-3 rounded-card border p-5 transition-shadow target:border-accent-ink target:ring-2 target:ring-accent/40 motion-reduce:transition-none sm:p-6 ${
+                  isHidden ? 'border-warning/30' : 'border-line'
                 } ${comment.pending ? 'opacity-70' : ''}`}
               >
                 <div className="flex items-start gap-3">
@@ -567,29 +567,29 @@ export const PublicReviewsPanel = ({
                     <img
                       src={comment.author.image}
                       alt=""
-                      className="size-9 shrink-0 rounded-full border border-white/10 object-cover"
+                      className="size-9 shrink-0 rounded-pill border border-line object-cover"
                     />
                   ) : (
-                    <div className="flex size-9 shrink-0 items-center justify-center rounded-full border border-violet-500/25 bg-violet-500/15 text-[11px] font-bold text-violet-300">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-pill border border-accent-line bg-accent-bright/15 text-micro font-bold text-accent-ink">
                       {createMonogram(authorName).slice(0, 2) || 'CU'}
                     </div>
                   )}
 
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                      <span className="text-sm font-bold text-white">{authorName}</span>
+                      <span className="text-sm font-bold text-ink">{authorName}</span>
                       {handle && (
-                        <span className="text-xs font-medium text-zinc-400">@{handle}</span>
+                        <span className="text-xs font-medium text-ink-muted">@{handle}</span>
                       )}
                       <time
                         dateTime={new Date(comment.createdAt).toISOString()}
                         title={absoluteTime(comment.createdAt)}
-                        className="text-[11px] text-zinc-500"
+                        className="text-micro text-ink-subtle"
                       >
                         {relativeTime(comment.createdAt)}
                       </time>
                       {comment.pending && (
-                        <span className="text-[11px] font-semibold text-violet-300">Posting…</span>
+                        <span className="text-micro font-semibold text-accent-ink">Posting…</span>
                       )}
 
                       {canReport && !isEditing && (
@@ -605,7 +605,7 @@ export const PublicReviewsPanel = ({
                             onClick={() => startEdit(comment)}
                             aria-label="Edit your comment"
                             title="Edit comment"
-                            className="flex size-7 cursor-pointer items-center justify-center rounded-lg bg-white/6 text-zinc-300 transition-colors hover:bg-white/12 hover:text-white"
+                            className="flex size-7 cursor-pointer items-center justify-center rounded-xs bg-surface-soft text-ink-secondary transition-colors hover:bg-surface-soft-hover hover:text-ink"
                           >
                             <IconPencil size={12} />
                           </button>
@@ -621,10 +621,10 @@ export const PublicReviewsPanel = ({
                               isConfirmingDelete ? 'Confirm delete comment' : 'Delete your comment'
                             }
                             title={isConfirmingDelete ? 'Click again to delete' : 'Delete comment'}
-                            className={`flex size-7 cursor-pointer items-center justify-center rounded-lg transition-colors disabled:cursor-wait disabled:opacity-60 ${
+                            className={`flex size-7 cursor-pointer items-center justify-center rounded-xs transition-colors disabled:cursor-wait disabled:opacity-60 ${
                               isConfirmingDelete
-                                ? 'bg-rose-600/80 text-white hover:bg-rose-500'
-                                : 'bg-white/6 text-zinc-300 hover:bg-rose-500/20 hover:text-rose-300'
+                                ? 'bg-danger/80 text-canvas hover:bg-danger'
+                                : 'bg-surface-soft text-ink-secondary hover:bg-danger-soft hover:text-danger'
                             }`}
                           >
                             {isDeleting ? (
@@ -657,7 +657,7 @@ export const PublicReviewsPanel = ({
                             type="button"
                             onClick={() => setEditingId(null)}
                             disabled={savingEdit}
-                            className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-3.5 py-2 text-xs font-semibold text-zinc-300 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-3.5 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             Cancel
                           </button>
@@ -665,7 +665,7 @@ export const PublicReviewsPanel = ({
                             type="button"
                             onClick={() => void submitEdit(comment.id)}
                             disabled={savingEdit || editContent.trim().length === 0}
-                            className="apple-pill-btn cursor-pointer bg-violet-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="apple-pill-btn cursor-pointer bg-accent px-4 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             {savingEdit ? (
                               <IconLoader2
@@ -682,7 +682,7 @@ export const PublicReviewsPanel = ({
                         {isHidden && (
                           <p
                             role="status"
-                            className="mt-2 flex items-start gap-2 rounded-xl border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-[11px] text-amber-200"
+                            className="mt-2 flex items-start gap-2 rounded-control border border-warning/30 bg-warning-soft px-3 py-2 text-micro text-ink-secondary"
                           >
                             <IconAlertCircle size={13} className="mt-px shrink-0" />
                             <span>
@@ -692,7 +692,7 @@ export const PublicReviewsPanel = ({
                           </p>
                         )}
 
-                        <CommentContent content={comment.content} className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200" />
+                        <CommentContent content={comment.content} className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-ink-secondary" />
 
                         <div className="mt-3">
                           <CommentImageGrid attachments={toGridAttachments(comment)} />
@@ -720,7 +720,7 @@ export const PublicReviewsPanel = ({
               type="button"
               onClick={() => void loadMore()}
               disabled={loadingMore}
-              className="apple-pill-btn w-full cursor-pointer border border-white/10 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 hover:bg-white/12 disabled:cursor-wait disabled:opacity-50"
+              className="apple-pill-btn w-full cursor-pointer border border-line bg-surface-soft px-4 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover disabled:cursor-wait disabled:opacity-50"
             >
               {loadingMore ? (
                 <IconLoader2 size={14} className="animate-spin motion-reduce:animate-none" />

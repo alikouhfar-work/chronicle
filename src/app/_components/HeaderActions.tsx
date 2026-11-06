@@ -26,10 +26,10 @@ export const HeaderActions = ({ isAuthenticated }: HeaderActionsProps) => {
             aria-label="Profile settings"
             title="Profile settings"
             aria-current={isActiveRoute('/settings/profile') ? 'page' : undefined}
-            className={`flex size-9 items-center justify-center rounded-full border transition-colors ${
+            className={`flex size-9 items-center justify-center rounded-pill border transition-colors ${
               isActiveRoute('/settings/profile')
-                ? 'border-violet-400/50 bg-violet-500/15 text-violet-300'
-                : 'border-white/8 text-zinc-400 hover:border-violet-400/40 hover:text-white'
+                ? 'border-accent-ink bg-accent-bright/15 text-accent-ink'
+                : 'border-line text-ink-muted hover:border-accent-ink hover:text-ink'
             }`}
           >
             <IconUser size={16} />
@@ -38,7 +38,7 @@ export const HeaderActions = ({ isAuthenticated }: HeaderActionsProps) => {
       ) : (
         <Link
           href="/login"
-          className="apple-pill-btn border border-violet-400/40 bg-violet-500/15 px-4 py-2 text-xs font-bold text-violet-200 hover:bg-violet-500/25"
+          className="apple-pill-btn border border-accent-ink bg-accent-bright/15 px-4 py-2 text-xs font-bold text-accent-tint hover:bg-accent-bright/25"
         >
           Sign in
         </Link>

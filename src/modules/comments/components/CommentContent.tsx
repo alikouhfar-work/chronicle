@@ -3,7 +3,7 @@ import { tokenizeMentions } from '@/modules/comments/lib/tokenizeMentions';
 import type { CommentContentProps } from '@/modules/comments/types/commentContent';
 
 const DEFAULT_CLASS_NAME =
-  'text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200';
+  'text-sm leading-relaxed break-words whitespace-pre-wrap text-ink-secondary';
 
 /**
  * Renders comment text with `@handles` as chips. Text is always rendered as
@@ -19,7 +19,7 @@ export const CommentContent = ({ content, className }: CommentContentProps) => {
           <span
             key={index}
             data-mention={segment.handle}
-            className="mx-px inline-flex items-center rounded-full border border-violet-400/30 bg-violet-500/15 px-1.5 py-px align-baseline text-[13px] font-semibold whitespace-nowrap text-violet-200"
+            className="mx-px inline-flex items-center rounded-pill border border-accent-ink bg-accent-bright/15 px-1.5 py-px align-baseline text-xs font-semibold whitespace-nowrap text-accent-tint"
           >
             {segment.raw}
           </span>

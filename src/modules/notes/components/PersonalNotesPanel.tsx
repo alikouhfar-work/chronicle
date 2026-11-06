@@ -61,12 +61,12 @@ export const PersonalNotesPanel = ({
 
   if (!viewer) {
     return (
-      <div className="glass-card flex flex-col items-center justify-center gap-3 rounded-3xl border border-white/10 p-8 py-10 text-center">
-        <IconLock size={20} className="text-zinc-500" />
-        <p className="text-sm text-zinc-400">Sign in to see your personal notes.</p>
+      <div className="glass-card flex flex-col items-center justify-center gap-3 rounded-card border border-line p-8 py-10 text-center">
+        <IconLock size={20} className="text-ink-subtle" />
+        <p className="text-sm text-ink-muted">Sign in to see your personal notes.</p>
         <Link
           href={signInHref}
-          className="apple-pill-btn bg-violet-500 px-4 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 hover:bg-violet-400"
+          className="apple-pill-btn bg-accent px-4 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 hover:bg-accent-strong"
         >
           Sign In
         </Link>
@@ -130,10 +130,10 @@ export const PersonalNotesPanel = ({
   const statusLabel = trackingStatus ? (STATUS_LABELS[trackingStatus] ?? trackingStatus) : null;
 
   return (
-    <div className="glass-card space-y-5 rounded-3xl border border-white/10 p-6">
-      <div className="space-y-4 border-b border-white/8 pb-4">
-        <h4 className="flex items-center gap-2 text-xs font-bold tracking-tight text-violet-400 uppercase">
-          <IconDeviceTv size={14} className="text-violet-400" />
+    <div className="glass-card space-y-5 rounded-card border border-line p-6">
+      <div className="space-y-4 border-b border-line pb-4">
+        <h4 className="flex items-center gap-2 text-xs font-bold tracking-tight text-accent-ink uppercase">
+          <IconDeviceTv size={14} className="text-accent-ink" />
           <span>Your Rating &amp; Notes</span>
         </h4>
 
@@ -148,19 +148,19 @@ export const PersonalNotesPanel = ({
 
         {mediaType === 'show' && (
           <dl className="grid grid-cols-2 gap-2.5">
-            <div className="rounded-2xl border border-white/6 bg-white/3 p-3">
-              <dt className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
+            <div className="rounded-card border border-line bg-surface-soft p-3">
+              <dt className="text-micro font-semibold tracking-wider text-ink-muted uppercase">
                 Tracking
               </dt>
-              <dd className="mt-1 text-xs font-bold text-zinc-200">
+              <dd className="mt-1 text-xs font-bold text-ink-secondary">
                 {statusLabel ?? 'Not tracked'}
               </dd>
             </div>
-            <div className="rounded-2xl border border-white/6 bg-white/3 p-3">
-              <dt className="text-[10px] font-semibold tracking-wider text-zinc-400 uppercase">
+            <div className="rounded-card border border-line bg-surface-soft p-3">
+              <dt className="text-micro font-semibold tracking-wider text-ink-muted uppercase">
                 Rewatches
               </dt>
-              <dd className="mt-1 text-xs font-bold text-zinc-200">{rewatchCount ?? 0}</dd>
+              <dd className="mt-1 text-xs font-bold text-ink-secondary">{rewatchCount ?? 0}</dd>
             </div>
           </dl>
         )}
@@ -168,10 +168,10 @@ export const PersonalNotesPanel = ({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <h5 className="flex items-center gap-2 text-[11px] font-bold tracking-wider text-zinc-400 uppercase">
-            <IconMessage size={13} className="text-violet-400" />
+          <h5 className="flex items-center gap-2 text-micro font-bold tracking-wider text-ink-muted uppercase">
+            <IconMessage size={13} className="text-accent-ink" />
             <span>Private notes</span>
-            <span className="text-zinc-600">({notes.length})</span>
+            <span className="text-ink-subtle">({notes.length})</span>
           </h5>
           {!composerOpen && (
             <button
@@ -180,7 +180,7 @@ export const PersonalNotesPanel = ({
                 setComposerOpen(true);
                 setEditingId(null);
               }}
-              className="apple-pill-btn cursor-pointer bg-violet-500 px-3.5 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 hover:bg-violet-400"
+              className="apple-pill-btn cursor-pointer bg-accent px-3.5 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 hover:bg-accent-strong"
             >
               <IconPlus size={13} />
               Add note
@@ -200,14 +200,14 @@ export const PersonalNotesPanel = ({
         {error && (
           <p
             role="alert"
-            className="rounded-xl border border-rose-500/25 bg-rose-500/10 px-3 py-2 text-xs text-rose-300"
+            className="rounded-control border border-danger/30 bg-danger-soft px-3 py-2 text-xs text-danger"
           >
             {error}
           </p>
         )}
 
         {notes.length === 0 ? (
-          <p className="py-3 text-center text-xs text-zinc-400">
+          <p className="py-3 text-center text-xs text-ink-muted">
             No personal notes yet. Notes are private and you can keep as many as you like.
           </p>
         ) : (
@@ -220,7 +220,7 @@ export const PersonalNotesPanel = ({
               return (
                 <li
                   key={note.id}
-                  className={`rounded-2xl border border-white/8 bg-white/[0.02] p-3.5 ${
+                  className={`rounded-card border border-line bg-white/[0.02] p-3.5 ${
                     note.pending ? 'opacity-70' : ''
                   }`}
                 >
@@ -235,7 +235,7 @@ export const PersonalNotesPanel = ({
                   ) : (
                     <>
                       <div className="flex items-start justify-between gap-3">
-                        <p className="flex-1 text-sm leading-relaxed whitespace-pre-wrap text-zinc-200">
+                        <p className="flex-1 text-sm leading-relaxed whitespace-pre-wrap text-ink-secondary">
                           {note.content}
                         </p>
                         <div className="flex shrink-0 items-center gap-1">
@@ -247,7 +247,7 @@ export const PersonalNotesPanel = ({
                             }}
                             aria-label="Edit note"
                             title="Edit note"
-                            className="flex size-7 cursor-pointer items-center justify-center rounded-lg bg-white/6 text-zinc-300 hover:bg-white/12"
+                            className="flex size-7 cursor-pointer items-center justify-center rounded-xs bg-surface-soft text-ink-secondary hover:bg-surface-soft-hover"
                           >
                             <IconPencil size={12} />
                           </button>
@@ -259,10 +259,10 @@ export const PersonalNotesPanel = ({
                             disabled={isDeleting}
                             aria-label={isConfirming ? 'Confirm delete note' : 'Delete note'}
                             title={isConfirming ? 'Confirm delete' : 'Delete note'}
-                            className={`flex size-7 cursor-pointer items-center justify-center rounded-lg text-zinc-300 disabled:cursor-wait disabled:opacity-60 ${
+                            className={`flex size-7 cursor-pointer items-center justify-center rounded-xs text-ink-secondary disabled:cursor-wait disabled:opacity-60 ${
                               isConfirming
-                                ? 'bg-rose-600/80 text-white hover:bg-rose-500'
-                                : 'bg-white/6 hover:bg-rose-500/20 hover:text-rose-300'
+                                ? 'bg-danger/80 text-canvas hover:bg-danger'
+                                : 'bg-surface-soft hover:bg-danger-soft hover:text-danger'
                             }`}
                           >
                             {isDeleting ? (
@@ -278,7 +278,7 @@ export const PersonalNotesPanel = ({
                           </button>
                         </div>
                       </div>
-                      <p className="mt-1.5 text-[11px] text-zinc-400">
+                      <p className="mt-1.5 text-micro text-ink-muted">
                         {relativeTime(note.createdAt)}
                         {note.updatedAt && note.updatedAt > note.createdAt ? ' · edited' : ''}
                       </p>

@@ -30,9 +30,9 @@ export const LibraryMediaTrackButton = ({
       aria-label="Add to your library"
       className={clsx(
         'hover:scale-[1.03] aria-busy:cursor-wait aria-busy:opacity-80',
-        'flex cursor-pointer items-center justify-center gap-1 rounded-full',
+        'flex cursor-pointer items-center justify-center gap-1 rounded-pill',
         !unstyled &&
-          'cursor-pointer rounded-full border border-violet-500 bg-violet-500 px-3.5 py-1.5 text-xs font-bold text-white shadow-md shadow-violet-500/20 hover:bg-violet-400',
+          'cursor-pointer rounded-pill border border-accent-line bg-accent px-3.5 py-1.5 text-xs font-bold text-ink shadow-card shadow-accent/20 hover:bg-accent-strong',
         className,
       )}
     >

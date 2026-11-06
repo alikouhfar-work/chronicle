@@ -49,9 +49,9 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
   };
 
   return (
-    <div className="mt-3 space-y-2 rounded-xl border border-amber-400/25 bg-amber-400/5 p-3">
+    <div className="mt-3 space-y-2 rounded-control border border-warning/30 bg-warning-soft p-3">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-[11px] font-bold tracking-wider text-amber-200 uppercase">
+        <p className="text-micro font-bold tracking-wider text-ink-secondary uppercase">
           Report this review
         </p>
         <button
@@ -59,7 +59,7 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
           onClick={onClose}
           disabled={submitting}
           aria-label="Cancel report"
-          className="flex size-6 cursor-pointer items-center justify-center rounded-md text-zinc-400 hover:bg-white/10 hover:text-white disabled:cursor-not-allowed"
+          className="flex size-6 cursor-pointer items-center justify-center rounded-xs text-ink-muted hover:bg-surface-soft-hover hover:text-ink disabled:cursor-not-allowed"
         >
           <IconX size={12} />
         </button>
@@ -70,7 +70,7 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
         {COMMENT_REPORT_REASONS.map((value) => (
           <label
             key={value}
-            className="flex cursor-pointer items-center gap-1.5 text-[11px] text-zinc-300"
+            className="flex cursor-pointer items-center gap-1.5 text-micro text-ink-secondary"
           >
             <input
               type="radio"
@@ -78,7 +78,7 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
               value={value}
               checked={reason === value}
               onChange={() => setReason(value)}
-              className="accent-amber-400"
+              className="accent-rating"
             />
             {COMMENT_REPORT_REASON_LABELS[value]}
           </label>
@@ -92,11 +92,11 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
         aria-label="Report note (optional)"
         placeholder="Anything a moderator should know (optional)"
         rows={2}
-        className="w-full resize-y rounded-lg border border-white/10 bg-zinc-950/60 px-3 py-2 text-xs text-zinc-200 placeholder-zinc-500 focus:border-amber-400/60 focus:outline-none"
+        className="w-full resize-y rounded-xs border border-line-control bg-surface-sunken/60 px-3 py-2 text-xs text-ink-secondary placeholder:text-ink-subtle focus:border-warning/30 focus-visible:ring-2 focus:ring-warning/30 focus:outline-none"
       />
 
       {error && (
-        <p role="alert" className="text-[11px] text-rose-300">
+        <p role="alert" className="text-micro text-danger">
           {error}
         </p>
       )}
@@ -106,7 +106,7 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
           type="button"
           onClick={onClose}
           disabled={submitting}
-          className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-3 py-1.5 text-[11px] font-semibold text-zinc-300 hover:bg-white/12 disabled:cursor-not-allowed disabled:opacity-60"
+          className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-3 py-1.5 text-micro font-semibold text-ink-secondary hover:bg-surface-soft-hover disabled:cursor-not-allowed disabled:opacity-60"
         >
           Cancel
         </button>
@@ -115,7 +115,7 @@ export const CommentReportForm = ({ commentId, onClose, onReported }: CommentRep
           onClick={() => void submit()}
           disabled={submitting}
           aria-busy={submitting}
-          className="apple-pill-btn flex cursor-pointer items-center gap-1.5 bg-amber-500/90 px-3 py-1.5 text-[11px] font-bold text-zinc-950 hover:bg-amber-400 disabled:cursor-wait disabled:opacity-60"
+          className="apple-pill-btn flex cursor-pointer items-center gap-1.5 bg-warning-soft px-3 py-1.5 text-micro font-bold text-canvas hover:bg-warning disabled:cursor-wait disabled:opacity-60"
         >
           {submitting ? (
             <IconLoader2 size={12} className="animate-spin motion-reduce:animate-none" />

@@ -23,15 +23,15 @@ export const SearchResultCardActions = ({ id, mediaType }: SearchResultCardActio
   );
 
   return (
-    <div className="grid w-full grid-cols-2 gap-1 rounded-full border border-white/8 bg-white/4 p-1">
+    <div className="grid w-full grid-cols-2 gap-1 rounded-pill border border-line bg-surface-soft p-1">
       <ActionButton
         disabled={isDonePending}
         isPending={isAddPending}
         onClick={addTitle}
-        icon={<IconPlus size={14} className="shrink-0 text-violet-400" />}
+        icon={<IconPlus size={14} className="shrink-0 text-accent-ink" />}
         title="Track as Watching"
         aria-label="Add title to library"
-        className="apple-pill-btn flex cursor-pointer items-center justify-center gap-1 rounded-full px-1 py-1 text-[10px] text-zinc-200 hover:bg-white/10 aria-busy:cursor-wait aria-busy:opacity-80"
+        className="apple-pill-btn flex cursor-pointer items-center justify-center gap-1 rounded-pill px-1 py-1 text-micro text-ink-secondary hover:bg-surface-soft-hover aria-busy:cursor-wait aria-busy:opacity-80"
       >
         <span>Add</span>
       </ActionButton>
@@ -40,10 +40,10 @@ export const SearchResultCardActions = ({ id, mediaType }: SearchResultCardActio
         disabled={isAddPending}
         isPending={isDonePending}
         onClick={completeTitle}
-        icon={<IconCircleCheck size={14} className="shrink-0 text-violet-400" />}
+        icon={<IconCircleCheck size={14} className="shrink-0 text-accent-ink" />}
         title="Mark Completed"
         aria-label="Add title to library as completed"
-        className="apple-pill-btn flex cursor-pointer items-center justify-center gap-1 rounded-full px-1 py-1 text-[10px] text-zinc-200 hover:bg-white/10 aria-busy:cursor-wait aria-busy:opacity-80"
+        className="apple-pill-btn flex cursor-pointer items-center justify-center gap-1 rounded-pill px-1 py-1 text-micro text-ink-secondary hover:bg-surface-soft-hover aria-busy:cursor-wait aria-busy:opacity-80"
       >
         <span>Done</span>
       </ActionButton>

@@ -7,21 +7,21 @@ export const PersonDetailsBiography = ({ biography }: PersonDetailsBiographyProp
   const [isBioExpanded, setIsBioExpanded] = useState<boolean>(false);
 
   return (
-    <div className="space-y-2 text-xs leading-relaxed font-normal text-zinc-300">
+    <div className="space-y-2 text-xs leading-relaxed font-normal text-ink-secondary">
       {biography ? (
         <>
           <p className={isBioExpanded ? '' : 'line-clamp-4'}>{biography}</p>
           {biography.length > 280 && (
             <button
               onClick={() => setIsBioExpanded(!isBioExpanded)}
-              className="block cursor-pointer pt-1 text-xs font-semibold text-violet-400 transition-colors hover:text-violet-300"
+              className="block cursor-pointer pt-1 text-xs font-semibold text-accent-ink transition-colors hover:text-accent-ink"
             >
               {isBioExpanded ? 'Show less' : 'Read full biography...'}
             </button>
           )}
         </>
       ) : (
-        <p className="text-zinc-500 italic">No extended biography recorded for this actor.</p>
+        <p className="text-ink-subtle italic">No extended biography recorded for this actor.</p>
       )}
     </div>
   );

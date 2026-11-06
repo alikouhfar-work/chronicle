@@ -15,7 +15,7 @@ export const NoteTimestamp = ({ value }: NoteTimestampProps) => {
     : formatDistanceToNow(date, { addSuffix: true });
 
   return (
-    <time dateTime={date.toISOString()} className="shrink-0 text-[11px] text-zinc-500">
+    <time dateTime={date.toISOString()} className="shrink-0 text-micro text-ink-subtle">
       {text}
     </time>
   );

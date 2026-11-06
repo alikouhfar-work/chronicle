@@ -13,18 +13,18 @@ const toneStyles: Record<
   { frame: string; chip: string; Icon: typeof IconCheck }
 > = {
   success: {
-    frame: 'border-emerald-500/30',
-    chip: 'border-emerald-500/40 bg-emerald-500/20 text-emerald-400',
+    frame: 'border-success/30',
+    chip: 'border-success/40 bg-success-soft text-success',
     Icon: IconCheck,
   },
   error: {
-    frame: 'border-rose-500/30',
-    chip: 'border-rose-500/40 bg-rose-500/20 text-rose-400',
+    frame: 'border-danger/30',
+    chip: 'border-danger/30 bg-danger-soft text-danger',
     Icon: IconAlertCircle,
   },
   info: {
-    frame: 'border-violet-500/30',
-    chip: 'border-violet-500/40 bg-violet-500/20 text-violet-400',
+    frame: 'border-accent-line',
+    chip: 'border-accent-line bg-accent-bright/20 text-accent-ink',
     Icon: IconInfoCircle,
   },
 };
@@ -35,27 +35,27 @@ export const AppToast = ({ tone, title, message, action }: AppToastProps) => {
   return (
     <div
       className={clsx(
-        'animate-fade-in flex w-[calc(100vw-2rem)] max-w-sm items-center gap-3 rounded-2xl border bg-zinc-950/95 p-4 font-sans shadow-2xl shadow-black/90 backdrop-blur-2xl',
+        'animate-fade-in flex w-[calc(100vw-2rem)] max-w-sm items-center gap-3 rounded-card border bg-surface-sunken/95 p-4 font-sans shadow-2xl shadow-black/90 backdrop-blur-2xl',
         frame,
       )}
     >
       <span
         className={clsx(
-          'flex h-10 w-10 shrink-0 items-center justify-center rounded-full border',
+          'flex h-10 w-10 shrink-0 items-center justify-center rounded-pill border',
           chip,
         )}
       >
         <Icon size={20} />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm leading-tight font-bold tracking-tight text-white">{title}</p>
-        {message && <p className="mt-0.5 text-[11px] break-words text-zinc-400">{message}</p>}
+        <p className="text-sm leading-tight font-bold tracking-tight text-ink">{title}</p>
+        {message && <p className="mt-0.5 text-micro break-words text-ink-muted">{message}</p>}
       </div>
       {action && (
         <button
           type="button"
           onClick={action.onClick}
-          className="apple-pill-btn shrink-0 cursor-pointer border border-white/15 bg-white/8 px-3 py-1.5 text-[11px] font-semibold text-white transition-colors hover:bg-white/15"
+          className="apple-pill-btn shrink-0 cursor-pointer border border-line bg-surface-soft px-3 py-1.5 text-micro font-semibold text-ink transition-colors hover:bg-surface-soft-hover"
         >
           {action.label}
         </button>

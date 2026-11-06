@@ -17,23 +17,23 @@ export const AuthShell = ({
         className={`animate-fade-in relative z-10 w-full ${width === 'md' ? 'max-w-md' : 'max-w-sm'}`}
       >
         <div className="mb-6 flex flex-col items-center text-center">
-          <div className="group mb-4 flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-zinc-900 p-1 shadow-lg shadow-black/40">
+          <div className="group mb-4 flex h-12 w-12 items-center justify-center overflow-hidden rounded-control border border-line bg-surface-raised p-1 shadow-lg shadow-black/40">
             <Image width={44} height={44} alt="Chronicle Logo" src="/icons/logo.png" />
           </div>
-          <div className="apple-badge mb-3 border border-violet-500/25 bg-violet-500/15 text-[11px] text-violet-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+          <div className="apple-badge mb-3 border border-accent-line bg-accent-bright/15 text-micro text-accent-ink">
+            <span className="h-1.5 w-1.5 rounded-pill bg-accent-strong" />
             {eyebrow}
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-white">{title}</h1>
-          <p className="mt-1.5 max-w-xs text-xs leading-relaxed font-normal text-zinc-400 sm:text-sm">
+          <h1 className="text-2xl font-extrabold tracking-tight text-ink">{title}</h1>
+          <p className="mt-1.5 max-w-xs text-xs leading-relaxed font-normal text-ink-muted sm:text-sm">
             {description}
           </p>
         </div>
 
-        <div className="glass-panel rounded-2xl p-6 sm:p-7">{children}</div>
+        <div className="glass-panel rounded-card p-6 sm:p-7">{children}</div>
 
         {footer && (
-          <p className="mt-5 text-center text-xs leading-relaxed text-zinc-600">{footer}</p>
+          <p className="mt-5 text-center text-xs leading-relaxed text-ink-subtle">{footer}</p>
         )}
       </div>
     </main>

@@ -14,7 +14,7 @@ export const ShowLifecycleBadge = ({
     return (
       <span
         className={clsx(
-          'apple-badge border border-white/10 bg-white/6 text-xs text-zinc-200',
+          'apple-badge border border-line bg-surface-soft text-xs text-ink-secondary',
           className,
         )}
       >

@@ -6,11 +6,11 @@ export const showLifecycleConfig: Record<
 > = {
   continuing: {
     title: 'Continuing',
-    colors: 'border-violet-500/25 bg-violet-500/15 text-violet-300',
+    colors: 'border-accent-line bg-accent-soft text-accent-ink',
   },
   ended: {
     title: 'Ended',
-    colors: 'border-white/10 bg-white/6 text-zinc-400',
+    colors: 'border-line bg-surface-soft text-ink-muted',
   },
 };
 

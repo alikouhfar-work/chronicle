@@ -27,7 +27,7 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
         <button
           type="button"
           onClick={() => openLightbox(first.url)}
-          className="group relative block w-full overflow-hidden rounded-xl border border-white/10 bg-white/4"
+          className="group relative block w-full overflow-hidden rounded-control border border-line bg-surface-soft"
           aria-label="View attached image"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -44,7 +44,7 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
               key={image.id}
               type="button"
               onClick={() => openLightbox(image.url)}
-              className="group relative block overflow-hidden rounded-xl border border-white/10 bg-white/4"
+              className="group relative block overflow-hidden rounded-control border border-line bg-surface-soft"
               aria-label="View attached image"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -83,7 +83,7 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
               type="button"
               onClick={closeLightbox}
               aria-label="Close lightbox"
-              className="absolute top-4 right-4 rounded-full bg-black/50 p-2 text-white transition hover:bg-black/70"
+              className="absolute top-4 right-4 rounded-pill bg-black/50 p-2 text-ink transition hover:bg-black/70"
             >
               <IconX size={20} />
             </button>
@@ -91,7 +91,7 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
             <img
               src={lightboxUrl}
               alt="Comment attachment full size"
-              className="max-h-[90vh] max-w-full rounded-xl object-contain"
+              className="max-h-[90vh] max-w-full rounded-control object-contain"
             />
           </div>
         </dialog>

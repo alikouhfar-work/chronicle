@@ -19,7 +19,7 @@ export const SignOutButton = () => {
       type="button"
       onClick={handleSignOut}
       disabled={signingOut}
-      className="apple-pill-btn flex w-full cursor-pointer items-center justify-center gap-2 border border-red-500/25 bg-red-500/10 px-4 py-2.5 text-xs font-semibold text-red-300 transition-colors hover:bg-red-500/20 hover:text-red-200 disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+      className="apple-pill-btn flex w-full cursor-pointer items-center justify-center gap-2 border border-danger/30 bg-danger-soft px-4 py-2.5 text-xs font-semibold text-danger transition-colors hover:bg-danger-soft hover:text-ink-secondary disabled:cursor-wait disabled:opacity-60 sm:w-auto"
     >
       {signingOut ? (
         <IconLoader2 size={14} className="animate-spin motion-reduce:animate-none" />

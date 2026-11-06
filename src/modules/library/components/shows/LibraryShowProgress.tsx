@@ -47,13 +47,13 @@ export const LibraryShowProgress = ({
     ? COMPLETED_ENDED_HEADLINE
     : (statusHeadline ??
       (nextLabel ? `Next up · ${nextLabel}` : isEnded ? 'Sweet finale 🏁' : 'All caught up & cozy'));
-  const fill = isDropped ? 'bg-rose-500' : 'bg-indigo-400';
+  const fill = isDropped ? 'bg-danger' : 'bg-secondary';
 
   return (
-    <div className="space-y-1 border-t border-white/10 pt-1.5">
-      <div className="flex justify-between text-xs font-medium text-zinc-400">
-        <span className="font-bold text-zinc-200">{headline}</span>
-        <span className={clsx('font-bold', isDropped ? 'text-rose-500' : 'text-indigo-400')}>
+    <div className="space-y-1 border-t border-line pt-1.5">
+      <div className="flex justify-between text-xs font-medium text-ink-muted">
+        <span className="font-bold text-ink-secondary">{headline}</span>
+        <span className={clsx('font-bold', isDropped ? 'text-danger' : 'text-info')}>
           {progress}%
         </span>
       </div>
@@ -70,18 +70,18 @@ export const LibraryShowProgress = ({
             <div
               key={segment.seasonNumber}
               title={`Season ${segment.seasonNumber}`}
-              className="h-full flex-1 overflow-hidden rounded-full bg-white/8"
+              className="h-full flex-1 overflow-hidden rounded-pill bg-surface-soft"
             >
               <div
-                className={clsx('h-full rounded-full transition-all duration-500', fill)}
+                className={clsx('h-full rounded-pill transition-all duration-500', fill)}
                 style={{ width: `${segment.watchedFraction * 100}%` }}
               />
             </div>
           ))
         ) : (
-          <div className="h-full w-full overflow-hidden rounded-full bg-zinc-800/80">
+          <div className="h-full w-full overflow-hidden rounded-pill bg-surface-strong/80">
             <div
-              className={clsx('h-full rounded-full transition-all duration-500', fill)}
+              className={clsx('h-full rounded-pill transition-all duration-500', fill)}
               style={{ width: `${progress}%` }}
             />
           </div>

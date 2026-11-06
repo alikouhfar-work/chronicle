@@ -142,11 +142,11 @@ export const RewatchButton = ({
 
       <div
         className={clsx(
-          'items-stretch overflow-hidden rounded-full border transition-colors',
+          'items-stretch overflow-hidden rounded-pill border transition-colors',
           fullWidth ? 'flex w-full' : 'inline-flex w-fit',
           count > 0
-            ? 'border-violet-400/40 bg-violet-500/20 text-violet-200'
-            : 'border-white/10 bg-white/5 text-zinc-300',
+            ? 'border-accent-ink bg-accent-bright/20 text-accent-tint'
+            : 'border-line bg-surface-soft text-ink-secondary',
           className,
         )}
       >
@@ -177,20 +177,20 @@ export const RewatchButton = ({
               : 'Click to log a watch. Long-press or right-click for history.'
           }
           className={clsx(
-            'group flex cursor-pointer items-center gap-1.5 font-semibold transition-colors hover:bg-white/8 disabled:cursor-wait disabled:opacity-70',
+            'group flex cursor-pointer items-center gap-1.5 font-semibold transition-colors hover:bg-surface-soft disabled:cursor-wait disabled:opacity-70',
             fullWidth && 'flex-1 justify-center',
-            variant === 'compact' ? 'px-2.5 py-1 text-[10px]' : 'px-3 py-1.5 text-xs',
+            variant === 'compact' ? 'px-2.5 py-1 text-micro' : 'px-3 py-1.5 text-xs',
           )}
         >
           {isPending ? (
             <IconLoader2
               size={variant === 'compact' ? 12 : 14}
-              className="animate-spin text-violet-300"
+              className="animate-spin text-accent-ink"
             />
           ) : (
             <IconRotateClockwise
               size={variant === 'compact' ? 12 : 14}
-              className="text-violet-300 transition-transform duration-300 group-hover:-rotate-45"
+              className="text-accent-ink transition-transform duration-300 group-hover:-rotate-45"
             />
           )}
           <span aria-live="polite">Watch ({count})</span>
@@ -202,7 +202,7 @@ export const RewatchButton = ({
           aria-label="Open watch history and add a custom date"
           title="Watch history / add a custom date"
           className={clsx(
-            'flex cursor-pointer items-center justify-center border-l border-white/10 text-zinc-400 transition-colors hover:bg-white/8 hover:text-violet-200',
+            'flex cursor-pointer items-center justify-center border-l border-line text-ink-muted transition-colors hover:bg-surface-soft hover:text-accent-tint',
             variant === 'compact' ? 'px-1.5' : 'px-2',
           )}
         >

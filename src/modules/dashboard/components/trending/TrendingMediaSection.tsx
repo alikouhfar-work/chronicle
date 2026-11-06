@@ -11,13 +11,13 @@ export const TrendingMediaSection = <T extends TrendingShow | TrendingMovie>({
 }: TrendingMediaListProps<T>) => {
   return (
     <div className="space-y-4">
-      <div className="flex flex-col justify-between gap-3 border-b border-white/8 pb-3 md:flex-row md:items-center">
+      <div className="flex flex-col justify-between gap-3 border-b border-line pb-3 md:flex-row md:items-center">
         <div className="space-y-0.5">
-          <h3 className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white sm:text-2xl">
-            <Icon className="size-5 text-violet-400" />
+          <h3 className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-ink sm:text-2xl">
+            <Icon className="size-5 text-accent-ink" />
             <span>{title}</span>
           </h3>
-          <p className="text-xs font-normal text-zinc-400">{subtitle}</p>
+          <p className="text-xs font-normal text-ink-muted">{subtitle}</p>
         </div>
       </div>
 
