@@ -2,7 +2,7 @@ import 'server-only';
 
 import { auth } from '@/infra/auth/auth';
 import { prisma } from '@/infra/db/prisma';
-import { ensureUsername } from '@/modules/user/actions/ensureUsername';
+import { ensureUsername } from '@/infra/auth/ensureUsername';
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import type { CommentAuthor } from '@/modules/comments/types';
 

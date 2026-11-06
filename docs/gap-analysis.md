@@ -514,6 +514,13 @@ Worth stating, so the fixes above are proportional:
 
 ---
 
+## Architecture-level findings
+
+Findings that are about structure rather than behaviour (module cycles, `shared` →
+feature edges, client bundle weight, strictness gaps, env handling, caching model) are
+measured and specified in `docs/architecture-audit.md`, tracked as WP-25…WP-32 in
+`docs/remediation-plan.md` Phase 5. They are not repeated here.
+
 ## Open questions for the product owner
 
 1. Should shows and seasons be ratable, or are ratings strictly per-episode and

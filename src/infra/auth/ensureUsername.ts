@@ -1,5 +1,5 @@
 import { prisma } from '@/infra/db/prisma';
-import { deriveUsernameBase, withNumericSuffix } from '@/modules/user/lib/username';
+import { deriveUsernameBase, withNumericSuffix } from '@/shared/lib/username';
 
 const MAX_ATTEMPTS = 25;
 

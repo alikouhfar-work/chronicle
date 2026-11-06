@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
-import { ensureUsername } from '@/modules/user/actions/ensureUsername';
+import { ensureUsername } from '@/infra/auth/ensureUsername';
 import type { AvailableProvider } from '@/infra/auth/types';
 import { logError } from '@/infra/logging/logger';
 

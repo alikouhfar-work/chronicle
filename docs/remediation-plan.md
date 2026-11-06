@@ -489,6 +489,28 @@ unstarted until those answers exist.
 
 ---
 
+# Phase 5 — architecture hardening (planned; evidence in `docs/architecture-audit.md`)
+
+Measured audit of the whole tree (import graph, strict-flag probe, build artifacts).
+Verdict: the layout holds; the gaps are boundaries, client weight, and configuration.
+No directory reshuffle is in scope.
+
+| WP | Package | Closes | Effort |
+|----|---------|--------|--------|
+| WP-25 | Cut the `shared`/`infra` → feature edges, absorb `modules/api` into `infra/http`, then enable the layering + cycle guardrails — **done 2026-11-05**: `shared/` and `infra/` import no feature; 31-pair ratchet in `src/architecture.test.ts`. Remaining inversions (library↔discovery, comments↔notes, show↔episode-season) are named in the test, not fixed. | A1, A2, A8 | M |
+| WP-26 | `next/dynamic` for the five interaction-only client surfaces + a chunk budget | A3 | S |
+| WP-27 | `verbatimModuleSyntax`, `ES2022`, unused/override flags (197 mechanical errors) | A4 | S |
+| WP-28 | Caching decision: stay on `unstable_cache` or move to `cacheComponents`/`use cache`; route-level `revalidate` either way | A7 | S/M |
+| WP-29 | `infra/env.ts` with fail-fast parsing; migrate the 27 ad-hoc `process.env` reads | A5 | M |
+| WP-30 | One validation contract at four request boundaries | A6 | M |
+| WP-31 | `noUncheckedIndexedAccess` (135 sites), then `exactOptionalPropertyTypes` (43) | A4 | M |
+| WP-32 | Test placement + barrel policy, documented and enforced | A9, A10 | S |
+
+Sequencing note: WP-25 must land its moves *before* the cycle test is switched on, or the
+guardrail starts red and gets ignored.
+
+---
+
 ## Timeline (single developer, sequential inside a phase)
 
 | Phase | Packages | Estimate |

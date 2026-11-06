@@ -1,4 +1,3 @@
-export { TrendingShowList } from './components/TrendingShowList';
 
 export { mapTrendingShows } from './mappers/mapTrendingShows';
 

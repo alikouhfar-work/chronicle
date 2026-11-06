@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { AppError, getErrorMessage, toAppError } from '@/shared/lib/errors';
 import { MissingTmdbTokenError, hasTmdbToken, requireBearerUserId } from '@/infra/tmdb/forUser';
-import type { ApiErrorBody } from '@/modules/api/types';
-import { identityFailure } from '@/shared/lib/httpErrorMap';
+import type { ApiErrorBody } from '@/infra/http/types';
+import { identityFailure } from '@/infra/http/httpErrorMap';
 
 export const apiError = (error: unknown): NextResponse<ApiErrorBody> => {
   const identity = identityFailure(error);

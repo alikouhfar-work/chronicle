@@ -1,7 +1,7 @@
 import { TrendingMediaListProps } from '@/shared/types/trending';
 import { TrendingShow } from '@/modules/show';
 import { TrendingMovie } from '@/modules/movie';
-import { TrendingMediaCard } from '@/shared/ui/trending/TrendingMediaCard';
+import { TrendingMediaCard } from '@/modules/dashboard/components/trending/TrendingMediaCard';
 
 export const TrendingMediaSection = <T extends TrendingShow | TrendingMovie>({
   icon: Icon,

@@ -1,4 +1,4 @@
-import { UpcomingMediaCardSkeleton } from '@/shared/ui/upcoming/UpcomingMediaCardSkeleton';
+import { UpcomingMediaCardSkeleton } from '@/modules/dashboard/components/upcoming/UpcomingMediaCardSkeleton';
 
 export const UpcomingMediaSectionSkeleton = () => {
   const upcomingMedia = Array.from({ length: 4 }).map((_, i) => i);

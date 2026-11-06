@@ -1,4 +1,4 @@
-import { TrendingMediaCardSkeleton } from '@/shared/ui/trending/TrendingMediaCardSkeleton';
+import { TrendingMediaCardSkeleton } from '@/modules/dashboard/components/trending/TrendingMediaCardSkeleton';
 
 export const TrendingMediaSectionSkeleton = () => {
   const trendingMedia = Array.from({ length: 5 }).map((_, i) => i);

@@ -1,7 +1,10 @@
 import { DashboardHeader } from '@/modules/dashboard/components/DashboardHeader';
-import { TrendingShowList } from '@/modules/show';
-import { TrendingMovieList, UpcomingMovieList } from '@/modules/movie';
-import { UpcomingEpisodeList } from '@/modules/episode-season/components/UpcomingEpisodeList';
+import {
+  TrendingMovieList,
+  TrendingShowList,
+  UpcomingEpisodeList,
+  UpcomingMovieList,
+} from '@/modules/dashboard';
 import { UpNextEpisodesSection } from '@/modules/episode-season/components/upNext/UpNextEpisodesSection';
 
 export const dynamic = 'force-dynamic';

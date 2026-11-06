@@ -10,4 +10,4 @@ export {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
   withNumericSuffix,
-} from './lib/username';
+} from '@/shared/lib/username';

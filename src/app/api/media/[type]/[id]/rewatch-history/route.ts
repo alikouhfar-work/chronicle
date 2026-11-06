@@ -1,5 +1,5 @@
-import type { RouteContext } from '@/modules/api/types/routeContext';
-import { apiError, apiOk } from '@/modules/api/lib/respond';
+import type { RouteContext } from '@/infra/http/routeContext';
+import { apiError, apiOk } from '@/infra/http/respond';
 import { getRewatchHistory } from '@/modules/rewatch/services/getRewatchHistory';
 import { requireUserId } from '@/infra/tmdb/forUser';
 

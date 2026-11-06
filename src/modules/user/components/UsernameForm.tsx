@@ -8,7 +8,7 @@ import {
   isValidUsername,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
-} from '@/modules/user/lib/username';
+} from '@/shared/lib/username';
 
 import type { UsernameFormProps } from '@/modules/user/types/usernameForm';
 

@@ -565,3 +565,46 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Verified: `tsc`, `eslint`, 354 unit tests, build, 9/9 Playwright journeys.
 - Notes: `e2e/engagement.spec.ts` is unaffected — its rating journey targets the
   movie page's header group.
+
+## 2026-11-05 — docs: architecture audit (WP-25…WP-32 proposed)
+- Change: new `docs/architecture-audit.md` — a measured audit rather than a proposal to
+  restructure. Method: import graph over 573 source files, `tsc` with seven extra strict
+  flags, `.next` chunk sizes, route table. Ten findings (F1–F10) with file evidence, a
+  target tree, and the guardrail code (layering + module cycles) to enforce it.
+  Headlines: the module graph is a single 18-node cycle with 14 `shared`→feature and 2
+  `infra`→feature imports; 1.1 MB client JS with zero `dynamic()`; `any` is already absent
+  but `verbatimModuleSyntax`/`noUncheckedIndexedAccess`/`exactOptionalPropertyTypes` would
+  report 397 errors (197/135/43); 27 files read `process.env` with no schema; every route
+  is dynamic and caching is the previous Next 16 model.
+- Migration: none.
+- Verified: read-only (no source changes). Numbers are reproducible with the commands in
+  the audit's method section.
+- Notes: the four `system:*` skills the brief asked for do not exist in this environment —
+  the audit says so and uses `chronicle`, `src/architecture.test.ts` and measurements
+  instead. The audit explicitly rules out a directory reshuffle, TanStack Query and a
+  global state library, with reasons. `docs/remediation-plan.md` gained Phase 5
+  (WP-25…WP-32, all "planned") and `docs/gap-analysis.md` a pointer, so the severity list
+  stays behavioural.
+
+## 2026-11-05 — WP-25 · Layering: cut shared→feature edges, guard the direction
+- Change: the bottom of the stack no longer imports features.
+  `shared/ui/{trending,upcoming}/*` (9 files) and the four list components that
+  used them (`TrendingMovieList`, `TrendingShowList`, `UpcomingMovieList`,
+  `UpcomingEpisodeList`) moved to `modules/dashboard/components/{trending,upcoming}/`
+  and are exported from `modules/dashboard`; `shared/lib/computeWatchStats` →
+  `modules/dashboard/lib/watchStats`. App chrome (`Header`, `HeaderActions`,
+  `HeaderNav`, `Footer`, `types/header`) moved from `shared/ui` to `app/_components/`
+  because it composes the notification bell. `modules/api` dissolved:
+  `lib/respond` + `types` + `shared/lib/httpErrorMap` → `infra/http/`,
+  `services/auth` → `infra/auth/apiSession`. `modules/user/actions/ensureUsername`
+  → `infra/auth/ensureUsername`, and the username helpers it needs
+  (`modules/user/lib/username` + test) → `shared/lib/username`.
+  `library/types/getUpcomingMedia` → `shared/types/getUpcomingMedia` so movie and
+  episode-season stop importing library for a one-field type.
+- Guardrails: `src/architecture.test.ts` gained three rules — `shared/` imports no
+  feature, `infra/` imports no feature and no `shared/ui`, and feature→feature
+  imports are a 31-pair snapshot that fails on any addition (three two-way pairs are
+  named for unwinding: library↔discovery, comments↔notes, show↔episode-season).
+- Migration: none.
+- Verified: tsc, eslint, 357 unit tests (3 new guardrail tests), build compiled on the
+  advisory retry with no compile/type errors.

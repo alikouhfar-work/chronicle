@@ -1,5 +1,5 @@
 import { IconDeviceTv } from '@tabler/icons-react';
-import { TrendingMediaSection } from '@/shared/ui/trending/TrendingMediaSection';
+import { TrendingMediaSection } from '@/modules/dashboard/components/trending/TrendingMediaSection';
 import { TrendingShow } from '@/modules/show';
 import { getTrendingShows } from '@/modules/show/queries/getTrendingShows';
 

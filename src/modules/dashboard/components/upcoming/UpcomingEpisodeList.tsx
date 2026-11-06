@@ -1,5 +1,5 @@
 import { IconDeviceTv } from '@tabler/icons-react';
-import { UpcomingMediaSection } from '@/shared/ui/upcoming/UpcomingMediaSection';
+import { UpcomingMediaSection } from '@/modules/dashboard/components/upcoming/UpcomingMediaSection';
 import { MappedUpcomingEpisode } from '@/modules/episode-season/types/upcomingEpisode';
 import { getUpcomingEpisodes } from '@/modules/episode-season/services/getUpcomingEpisodes';
 

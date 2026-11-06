@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { isValidUsername, normalizeUsername } from '@/modules/user/lib/username';
+import { isValidUsername, normalizeUsername } from '@/shared/lib/username';
 import type { UsernameState } from '@/modules/user/types';
 
 const isUniqueViolation = (error: unknown): boolean =>

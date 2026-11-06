@@ -4,7 +4,7 @@ import { compare } from 'bcryptjs';
 import { prisma } from '@/infra/db/prisma';
 import { guestEmail } from '@/infra/auth/auth';
 import { signMobileJwt } from '@/infra/auth/mobileJwt';
-import type { ApiSession } from '@/modules/api/types';
+import type { ApiSession } from '@/infra/http/types';
 
 const toSession = async (user: {
   id: string;

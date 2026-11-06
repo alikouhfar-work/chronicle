@@ -1,5 +1,5 @@
 import { AppError, getErrorMessage, toAppError } from '@/shared/lib/errors';
-import { identityFailure } from '@/shared/lib/httpErrorMap';
+import { identityFailure } from '@/infra/http/httpErrorMap';
 import { parseDbId } from '@/shared/lib/validate';
 import { parseRewatchMediaType } from '@/modules/rewatch/lib/mediaType';
 import type { RewatchMediaType } from '@/modules/rewatch/types/rewatch';

@@ -1,5 +1,3 @@
-export { TrendingMovieList } from './components/TrendingMovieList';
-export { UpcomingMovieList } from './components/UpcomingMovieList';
 
 export { mapTrendingMovies } from './mappers/mapTrendingMovies';
 

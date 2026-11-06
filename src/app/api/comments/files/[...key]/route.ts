@@ -1,4 +1,4 @@
-import type { FilesRouteContext } from '@/modules/api/types/routeContext';
+import type { FilesRouteContext } from '@/infra/http/routeContext';
 import { NextResponse } from 'next/server';
 import { getCommentStorage, isCommentAttachmentKey } from '@/infra/storage/storage';
 

@@ -1,5 +1,5 @@
 import { IconMovie } from '@tabler/icons-react';
-import { UpcomingMediaSection } from '@/shared/ui/upcoming/UpcomingMediaSection';
+import { UpcomingMediaSection } from '@/modules/dashboard/components/upcoming/UpcomingMediaSection';
 import { MappedUpcomingMovie } from '@/modules/movie/types/upcomingMovie';
 import { getUpcomingMovies } from '@/modules/movie/services/getUpcomingMovies';
 

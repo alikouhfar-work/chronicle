@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import type { HeaderProps } from '@/shared/types/header';
-import { HeaderActions } from '@/shared/ui/HeaderActions';
-import { HeaderNav } from '@/shared/ui/HeaderNav';
+import type { HeaderProps } from '@/app/_components/types/header';
+import { HeaderActions } from '@/app/_components/HeaderActions';
+import { HeaderNav } from '@/app/_components/HeaderNav';
 
 /**
  * Server Component: static masthead chrome. The two interactive islands

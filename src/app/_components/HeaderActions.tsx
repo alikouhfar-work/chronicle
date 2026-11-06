@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconUser } from '@tabler/icons-react';
 import { NotificationBell } from '@/modules/notifications/components/NotificationBell';
-import type { HeaderActionsProps } from '@/shared/types/header';
+import type { HeaderActionsProps } from '@/app/_components/types/header';
 
 /**
  * Interactive account actions: notification bell and profile link.

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { Header } from '@/shared/ui/Header';
-import { Footer } from '@/shared/ui/Footer';
+import { Header } from '@/app/_components/Header';
+import { Footer } from '@/app/_components/Footer';
 import { Toaster } from 'react-hot-toast';
 import { auth } from '@/infra/auth/auth';
 

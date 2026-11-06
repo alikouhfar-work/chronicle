@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import type { RouteContext } from '@/modules/api/types/routeContext';
-import { apiOk } from '@/modules/api/lib/respond';
+import type { RouteContext } from '@/infra/http/routeContext';
+import { apiOk } from '@/infra/http/respond';
 import { recordRewatch } from '@/modules/rewatch/services/rewatchService';
 import {
   parseRewatchWriteCommand,
