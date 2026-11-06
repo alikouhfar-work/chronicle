@@ -806,3 +806,22 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   `tsc --noEmit` reports 0 errors. Locally tsc, eslint, 374 tests and build all pass.
 - Notes: `prisma generate` needs `DATABASE_URL` at build time, so the Vercel project
   must define it for Production and Preview.
+
+## 2026-11-06 — CI: the e2e job was authenticating with a redacted password
+- Symptom: the `e2e` job failed at "Apply migrations to the e2e database" with
+  `P1000: Authentication failed … credentials for 'admin' are not valid`.
+- Cause: `ci.yml`'s e2e `DATABASE_URL` and `E2E_DATABASE_URL` literally contained
+  `admin:***@localhost` — a redaction that had been written into the committed
+  workflow. The `verify` job and both Postgres service definitions carried the real
+  password, so only the e2e job could never connect. Proven by hashing the password
+  segment of every URL in the file: two of three were 3 characters, the service
+  password was 8.
+- Change: both e2e URLs now use the same credentials as the service container.
+  Also dropped the "retry the build after the Next.js advisory gate" wrapper, since
+  16.4.5 no longer trips the advisory and the build now runs `prisma generate` first.
+- Migration: none.
+- Verified: the workflow still parses (`jobs: verify, e2e`, 8 steps in e2e); every
+  Postgres URL in `ci.yml` now hashes to the same password as `POSTGRES_PASSWORD`;
+  no other workflow carries a star-masked value.
+- Notes: a redacted secret in a committed workflow is worse than a wrong one — it
+  looks intentional and fails far from the change that introduced it.
