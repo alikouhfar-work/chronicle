@@ -112,6 +112,24 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
                   {formatMinutes(episode.runtime)}
                 </span>
               ) : null}
+
+              {viewer ? (
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1">
+                  <RatingControl
+                    mediaType="episode"
+                    targetId={episode.id}
+                    value={rating}
+                    label="Rate this episode"
+                    variant="compact"
+                  />
+                </div>
+              ) : rating ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 font-bold text-amber-300">
+                  <IconStar size={12} className="fill-amber-400 text-amber-400" />
+                  {rating} / 5
+                </span>
+              ) : null}
+
               <span className="inline-flex items-center gap-1.5 text-zinc-400">
                 <IconMessage size={14} className="text-zinc-500" />
                 Episode discussion

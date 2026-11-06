@@ -128,6 +128,19 @@ export const LibraryDetailsHeader = ({
           {controls ?? <TrackingStatusSwitch media={media} />}
 
           <div className="flex w-full min-w-0 flex-wrap items-center gap-3 sm:w-auto">
+            {movie && (
+              <div className="glass-card rounded-2xl border border-white/10 p-3 shadow-md">
+                {/* Rating is episode/film only (D1) and belongs in the header,
+                    not behind the notes tab — same action, no new endpoint. */}
+                <RatingControl
+                  mediaType="movie"
+                  targetId={movie.id}
+                  value={movie.tracking?.rating ?? null}
+                  label="Rate this movie"
+                  variant="compact"
+                />
+              </div>
+            )}
             {/* Desktop: actions stay in the header controls. On mobile the
                 menu lives at the top-right end of the back row (see
                 LibraryDetails), where its dropdown fits the viewport. */}
