@@ -53,23 +53,23 @@ describe('comment service TMDB scoping', () => {
 
     expect(result.success).toBe(true);
     expect(mocks.findMany).toHaveBeenCalledTimes(1);
-    expect(mocks.findMany.mock.calls[0][0].where).toMatchObject({
+    expect(mocks.findMany.mock.calls[0]![0]!.where).toMatchObject({
       mediaType: 'MOVIE',
       tmdbId: 550,
     });
     // Comments are hard-deleted, so the feed has no tombstone filter.
-    expect(mocks.findMany.mock.calls[0][0].where).not.toHaveProperty('deletedAt');
+    expect(mocks.findMany.mock.calls[0]![0]!.where).not.toHaveProperty('deletedAt');
   });
 
   it('scopes show and episode feeds by their TMDB ids', async () => {
     await listComments('show', 95396);
     await listComments('episode', 1982925);
 
-    expect(mocks.findMany.mock.calls[0][0].where).toMatchObject({
+    expect(mocks.findMany.mock.calls[0]![0]!.where).toMatchObject({
       mediaType: 'SHOW',
       tmdbId: 95396,
     });
-    expect(mocks.findMany.mock.calls[1][0].where).toMatchObject({
+    expect(mocks.findMany.mock.calls[1]![0]!.where).toMatchObject({
       mediaType: 'EPISODE',
       tmdbId: 1982925,
     });
@@ -97,12 +97,12 @@ describe('comment service TMDB scoping', () => {
       where: { tmdbId: 550, userId: 'user-1' },
       select: { name: true },
     });
-    expect(mocks.create.mock.calls[0][0].data).toMatchObject({
+    expect(mocks.create.mock.calls[0]![0]!.data).toMatchObject({
       userId: 'user-1',
       mediaType: 'MOVIE',
       tmdbId: 550,
     });
-    expect(mocks.create.mock.calls[0][0].data).not.toHaveProperty('mediaId');
+    expect(mocks.create.mock.calls[0]![0]!.data).not.toHaveProperty('mediaId');
   });
 
   it('validates the episode TMDB id for episode comments', async () => {
@@ -122,7 +122,7 @@ describe('comment service TMDB scoping', () => {
       where: { tmdbId: 1982925, season: { show: { userId: 'user-1' } } },
       select: { name: true },
     });
-    expect(mocks.create.mock.calls[0][0].data).toMatchObject({
+    expect(mocks.create.mock.calls[0]![0]!.data).toMatchObject({
       mediaType: 'EPISODE',
       tmdbId: 1982925,
     });
@@ -157,10 +157,10 @@ describe('comment service TMDB scoping', () => {
       mentionIds: ['attacker-controlled-id'],
     });
 
-    const createData = mocks.create.mock.calls[0][0].data;
+    const createData = mocks.create.mock.calls[0]![0]!.data;
     expect(result.success).toBe(true);
     expect(mocks.findUsers).toHaveBeenCalledTimes(1);
-    expect(mocks.findUsers.mock.calls[0][0].where.username.in).toHaveLength(10);
+    expect(mocks.findUsers.mock.calls[0]![0]!.where.username.in).toHaveLength(10);
     expect(createData.mentions.createMany.data).toHaveLength(10);
     expect(createData.mentions.createMany.data).toEqual(
       users.map(({ id }) => ({ mentionedUserId: id })),
@@ -207,7 +207,7 @@ describe('comment service TMDB scoping', () => {
     const result = await createComment(undefined, { mediaType: 'movie', tmdbId: 550, content });
 
     expect(result.success).toBe(true);
-    expect(mocks.findUsers.mock.calls[0][0].where.username.in).toEqual(['person0']);
+    expect(mocks.findUsers.mock.calls[0]![0]!.where.username.in).toEqual(['person0']);
   });
 
   it('ignores unknown handles and does not create mention or notification rows', async () => {
@@ -222,8 +222,8 @@ describe('comment service TMDB scoping', () => {
     });
 
     expect(mocks.findUsers).toHaveBeenCalledTimes(1);
-    expect(mocks.create.mock.calls[0][0].data.mentions).toBeUndefined();
-    expect(mocks.create.mock.calls[0][0].data.notifications).toBeUndefined();
+    expect(mocks.create.mock.calls[0]![0]!.data.mentions).toBeUndefined();
+    expect(mocks.create.mock.calls[0]![0]!.data.notifications).toBeUndefined();
   });
 
   it('records self-mentions without creating a notification for the author', async () => {
@@ -237,7 +237,7 @@ describe('comment service TMDB scoping', () => {
       content: 'I mention myself @viewer',
     });
 
-    const createData = mocks.create.mock.calls[0][0].data;
+    const createData = mocks.create.mock.calls[0]![0]!.data;
     expect(createData.mentions.createMany.data).toEqual([{ mentionedUserId: 'user-1' }]);
     expect(createData.notifications).toBeUndefined();
   });

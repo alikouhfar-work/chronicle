@@ -17,14 +17,14 @@ export const UpcomingEpisodeList = async () => {
       emptySectionSubtitle="Add more series to your library to track upcoming season release dates."
       getTitle={(media) => media.showName}
       getSubtitle={(media) => {
-        if (media.episodes.length === 1) {
-          const episode = media.episodes[0];
-
-          return `Season ${episode.seasonNumber}, Episode ${episode.episodeNumber} - ${episode.name}`;
-        }
-
         const firstEpisode = media.episodes[0];
         const lastEpisode = media.episodes.at(-1);
+
+        if (!firstEpisode) return media.showName;
+
+        if (media.episodes.length === 1) {
+          return `Season ${firstEpisode.seasonNumber}, Episode ${firstEpisode.episodeNumber} - ${firstEpisode.name}`;
+        }
 
         if (firstEpisode.seasonNumber === lastEpisode?.seasonNumber) {
           return `Season ${firstEpisode.seasonNumber}, Episode ${firstEpisode.episodeNumber} to Episode ${lastEpisode.episodeNumber}`;

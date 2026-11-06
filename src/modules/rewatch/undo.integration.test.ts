@@ -187,7 +187,7 @@ describe.runIf(integrationEnabled)('watch removal undo', () => {
     const removal = await clearEpisodeWatchHistory({ userId: userId(), mediaId: episodes.s1e1.id });
 
     expect(removal.removedLogs).toBe(2);
-    expect((await readEpisodeState(seasonOne.id))[0].tracking?.watched).toBe(false);
+    expect((await readEpisodeState(seasonOne.id))[0]!.tracking?.watched).toBe(false);
 
     await restoreWatchRemoval({ userId: userId(), removalId: removal.undoToken });
 
@@ -348,7 +348,7 @@ describe.runIf(integrationEnabled)('watch removal undo', () => {
 
     const remaining = await readLogs(userId());
     expect(remaining).toHaveLength(1);
-    expect(remaining[0].episodeId).toBe(episodes.s1e2.id);
+    expect(remaining[0]!.episodeId).toBe(episodes.s1e2.id);
   });
 
   it('purges snapshots whose window has closed and keeps live ones', async () => {
@@ -359,11 +359,11 @@ describe.runIf(integrationEnabled)('watch removal undo', () => {
 
     const live = await removeRewatchLog({
       userId: userId(),
-      logId: (await readLogs(userId()))[0].id,
+      logId: (await readLogs(userId()))[0]!.id,
     });
     const expired = await removeRewatchLog({
       userId: userId(),
-      logId: (await readLogs(userId()))[0].id,
+      logId: (await readLogs(userId()))[0]!.id,
     });
 
     await prisma.rewatchLogRemoval.update({
@@ -382,7 +382,7 @@ describe.runIf(integrationEnabled)('watch removal undo', () => {
 
     const expired = await removeRewatchLog({
       userId: userId(),
-      logId: (await readLogs(userId()))[0].id,
+      logId: (await readLogs(userId()))[0]!.id,
     });
     await prisma.rewatchLogRemoval.update({
       where: { id: expired.undoToken },

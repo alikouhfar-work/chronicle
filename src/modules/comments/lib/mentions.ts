@@ -7,19 +7,15 @@ const stripFencedCode = (content: string): string => {
   let fence: { character: '`' | '~'; length: number } | null = null;
 
   for (const line of lines) {
-    const marker = line.match(/^ {0,3}(`{3,}|~{3,})/);
-    if (!fence && marker) {
-      fence = { character: marker[1][0] as '`' | '~', length: marker[1].length };
+    const markerRun = line.match(/^ {0,3}(`{3,}|~{3,})/)?.[1];
+    if (!fence && markerRun) {
+      fence = { character: markerRun[0] as '`' | '~', length: markerRun.length };
       continue;
     }
 
     if (fence) {
-      const closing = line.match(/^ {0,3}(`+|~+)[ \t]*$/);
-      if (
-        closing &&
-        closing[1][0] === fence.character &&
-        closing[1].length >= fence.length
-      ) {
+      const closingRun = line.match(/^ {0,3}(`+|~+)[ \t]*$/)?.[1];
+      if (closingRun && closingRun[0] === fence.character && closingRun.length >= fence.length) {
         fence = null;
       }
       continue;
@@ -37,7 +33,8 @@ export const extractMentionHandles = (content: string): string[] => {
   const handles = new Set<string>();
 
   for (const match of prose.matchAll(MENTION_PATTERN)) {
-    handles.add(match[1].toLowerCase());
+    const handle = match[1];
+    if (handle) handles.add(handle.toLowerCase());
   }
 
   return [...handles];

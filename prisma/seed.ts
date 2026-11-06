@@ -28,14 +28,21 @@ const SHOW_STATUSES = [
 ] as const;
 
 function randomFrom<T>(arr: readonly T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
+  const value = arr[Math.floor(Math.random() * arr.length)];
+  if (value === undefined) throw new Error('[seed] randomFrom called with an empty list');
+  return value;
 }
 
 function shuffle<T>(arr: readonly T[]): T[] {
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
+    const left = copy[i];
+    const right = copy[j];
+    if (left !== undefined && right !== undefined) {
+      copy[i] = right;
+      copy[j] = left;
+    }
   }
   return copy;
 }

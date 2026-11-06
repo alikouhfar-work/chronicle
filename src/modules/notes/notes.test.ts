@@ -60,7 +60,7 @@ describe('private notes', () => {
     const result = await listNotes('movie', 550);
 
     expect(result.success).toBe(true);
-    expect(mocks.findMany.mock.calls[0][0]).toMatchObject({
+    expect(mocks.findMany.mock.calls[0]![0]).toMatchObject({
       where: { userId: 'user-1', mediaType: 'MOVIE', tmdbId: 550, deletedAt: null },
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
     });
@@ -86,7 +86,7 @@ describe('private notes', () => {
     const result = await createNote({ mediaType: 'movie', tmdbId: 550, content: '  Still lands  ' });
 
     expect(result.success).toBe(true);
-    expect(mocks.create.mock.calls[0][0].data).toMatchObject({
+    expect(mocks.create.mock.calls[0]![0]!.data).toMatchObject({
       userId: 'user-1',
       mediaType: 'MOVIE',
       tmdbId: 550,
@@ -123,7 +123,7 @@ describe('private notes', () => {
 
     const owned = await updateNote('note-1', { content: 'Edited' });
     expect(owned.success).toBe(true);
-    expect(mocks.update.mock.calls[0][0].data).toEqual({ content: 'Edited' });
+    expect(mocks.update.mock.calls[0]![0]!.data).toEqual({ content: 'Edited' });
 
     mocks.findUnique.mockResolvedValue({ userId: 'user-2', deletedAt: null });
     const foreign = await updateNote('note-1', { content: 'Hijacked' });
@@ -137,7 +137,7 @@ describe('private notes', () => {
     const result = await deleteNote('note-1');
 
     expect(result.success).toBe(true);
-    expect(mocks.update.mock.calls[0][0].data.deletedAt).toBeInstanceOf(Date);
+    expect(mocks.update.mock.calls[0]![0]!.data.deletedAt).toBeInstanceOf(Date);
 
     mocks.findUnique.mockResolvedValue({ userId: 'user-2', deletedAt: null });
     expect((await deleteNote('note-1')).success).toBe(false);

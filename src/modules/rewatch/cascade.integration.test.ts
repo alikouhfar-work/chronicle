@@ -143,6 +143,7 @@ describe.runIf(integrationEnabled)('rewatch cascade isolation', () => {
       orderBy: { id: 'asc' },
     });
 
+    if (!firstBatch) throw new Error('expected a batch to remove');
     await removeRewatchLog({ userId: fixtures.user.id, logId: firstBatch.id });
 
     // One whole batch (1 season + 3 episodes) must remain.

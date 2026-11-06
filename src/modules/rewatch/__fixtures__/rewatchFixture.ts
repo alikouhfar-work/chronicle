@@ -124,8 +124,11 @@ export const createRewatchFixtures = async (prisma: Db) => {
   });
 
   const [seasonOne, seasonTwo] = show.seasons;
-  const [s1e1, s1e2, s1e3] = seasonOne.episodes;
-  const [s2e1] = seasonTwo.episodes;
+  const [s1e1, s1e2, s1e3] = seasonOne?.episodes ?? [];
+  const [s2e1] = seasonTwo?.episodes ?? [];
+  if (!seasonOne || !seasonTwo || !s1e1 || !s1e2 || !s1e3 || !s2e1) {
+    throw new Error('[rewatchFixture] expected two seasons with three and one episodes');
+  }
 
   const otherShow = await prisma.show.create({
     data: {
@@ -166,6 +169,8 @@ export const createRewatchFixtures = async (prisma: Db) => {
     seasonOne,
     seasonTwo,
     episodes: { s1e1, s1e2, s1e3, s2e1 },
-    otherEpisode: otherShow.seasons[0].episodes[0],
+    otherEpisode: otherShow.seasons[0]?.episodes[0] as NonNullable<
+      typeof otherShow.seasons[0]
+    >['episodes'][0],
   };
 };

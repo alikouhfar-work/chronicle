@@ -13,17 +13,13 @@ const collectFencedRanges = (content: string): Range[] => {
   let open: { character: string; length: number; start: number } | null = null;
 
   for (const line of lines) {
-    const marker = line.match(/^ {0,3}(`{3,}|~{3,})/);
+    const markerRun = line.match(/^ {0,3}(`{3,}|~{3,})/)?.[1];
 
-    if (!open && marker) {
-      open = { character: marker[1][0], length: marker[1].length, start: offset };
+    if (!open && markerRun) {
+      open = { character: markerRun[0] ?? '', length: markerRun.length, start: offset };
     } else if (open) {
-      const closing = line.match(/^ {0,3}(`+|~+)[ \t]*$/);
-      if (
-        closing &&
-        closing[1][0] === open.character &&
-        closing[1].length >= open.length
-      ) {
+      const closingRun = line.match(/^ {0,3}(`+|~+)[ \t]*$/)?.[1];
+      if (closingRun && closingRun[0] === open.character && closingRun.length >= open.length) {
         ranges.push([open.start, offset + line.length]);
         open = null;
       }
@@ -65,7 +61,9 @@ export const tokenizeMentions = (content: string): MentionSegment[] => {
       segments.push({ type: 'text', value: content.slice(cursor, start) });
     }
 
-    segments.push({ type: 'mention', handle: match[1].toLowerCase(), raw: match[0] });
+    const handle = match[1];
+    if (!handle) continue;
+    segments.push({ type: 'mention', handle: handle.toLowerCase(), raw: match[0] });
     cursor = start + match[0].length;
   }
 

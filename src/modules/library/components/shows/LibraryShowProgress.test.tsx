@@ -24,7 +24,7 @@ describe('LibraryShowProgress', () => {
     expect(screen.getByText('75%')).toHaveClass('text-indigo-400');
     const segments = container.querySelectorAll('[role="progressbar"] > div');
     expect(segments).toHaveLength(2);
-    expect(segments[0].firstChild).toHaveClass('bg-indigo-400');
+    expect(segments[0]!.firstChild).toHaveClass('bg-indigo-400');
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-label',
       'Next up · S2 E2, 75 percent, show is continuing',
@@ -67,7 +67,7 @@ describe('LibraryShowProgress', () => {
     );
 
     // 50% watched → deterministic pick from the quotes array.
-    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length];
+    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
     expect(screen.getByText('50%')).toHaveClass('text-rose-500');
     expect(screen.getByRole('progressbar')).toHaveAttribute(
@@ -85,7 +85,7 @@ describe('LibraryShowProgress', () => {
       />,
     );
 
-    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length];
+    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 
@@ -98,7 +98,7 @@ describe('LibraryShowProgress', () => {
       />,
     );
 
-    const expected = STATUS_HEADLINES.WATCHING[50 % STATUS_HEADLINES.WATCHING.length];
+    const expected = STATUS_HEADLINES.WATCHING[50 % STATUS_HEADLINES.WATCHING.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 
@@ -128,7 +128,7 @@ describe('LibraryShowProgress', () => {
       />,
     );
 
-    expect(screen.getByText(STATUS_HEADLINES.COMPLETED[0])).toBeInTheDocument();
+    expect(screen.getByText(STATUS_HEADLINES.COMPLETED[0]!)).toBeInTheDocument();
   });
 
   it('shows a dramatic headline for PLAN_TO_WATCH', () => {
@@ -140,7 +140,7 @@ describe('LibraryShowProgress', () => {
       />,
     );
 
-    const expected = STATUS_HEADLINES.PLAN_TO_WATCH[0];
+    const expected = STATUS_HEADLINES.PLAN_TO_WATCH[0]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 });

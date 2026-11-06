@@ -13,8 +13,8 @@ const mentionAtCaret = (value: string, caret: number): ActiveMention | null => {
   const match = beforeCaret.match(/(^|[^\w@])@([a-z0-9_]{0,32})$/i);
   if (!match) return null;
 
-  const start = caret - match[0].length + match[1].length;
-  return { start, end: caret, query: match[2] };
+  const start = caret - match[0].length + (match[1]?.length ?? 0);
+  return { start, end: caret, query: match[2] ?? '' };
 };
 
 export const MentionComposerTextarea = ({
@@ -103,7 +103,8 @@ export const MentionComposerTextarea = ({
       setActiveIndex((index) => (index - 1 + users.length) % users.length);
     } else if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
-      selectUser(users[activeIndex]);
+      const active = users[activeIndex];
+      if (active) selectUser(active);
     }
   };
 

@@ -23,5 +23,5 @@ export const getTmdbImageUrl = (
 
 export const getPosterPlaceholderColor = (title: string): string => {
   const safeTitle = typeof title === 'string' && title ? title : 'untitled';
-  return getGradientForTitle(safeTitle);
+  return getGradientForTitle(safeTitle) ?? 'from-zinc-800 to-zinc-900';
 };

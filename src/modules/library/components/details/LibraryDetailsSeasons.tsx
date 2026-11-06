@@ -20,6 +20,8 @@ export const LibraryDetailsSeasons = ({ show }: LibraryDetailsSeasonsProps) => {
   // Mirror markSeasonWatched: only aired episodes count. Unaired episodes can
   // never be marked by the toggle, so including them would wedge the label
   // on "Mark Season Watched" forever for in-progress seasons.
+  if (!activeSeason) return null;
+
   const airedEpisodes = activeSeason.episodes.filter(
     (episode) => episode.airDate && episode.airDate <= new Date(),
   );

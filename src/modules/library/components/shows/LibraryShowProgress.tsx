@@ -23,7 +23,7 @@ export const getStatusHeadline = (
   if (key === 'COMPLETED' && isEnded) return null;
 
   const lines = STATUS_HEADLINES[key];
-  return lines[seed % lines.length];
+  return lines[seed % lines.length] ?? null;
 };
 
 export const LibraryShowProgress = ({

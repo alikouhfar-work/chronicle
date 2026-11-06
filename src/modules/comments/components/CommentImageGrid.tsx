@@ -15,7 +15,8 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
 
   const images = attachments.filter((a) => a.mimeType?.startsWith('image/') && a.url);
 
-  if (images.length === 0) return null;
+  const [first] = images;
+  if (!first) return null;
 
   const openLightbox = (url: string) => setLightboxUrl(url);
   const closeLightbox = () => setLightboxUrl(null);
@@ -25,13 +26,13 @@ export const CommentImageGrid = ({ attachments }: CommentImageGridProps) => {
       {images.length === 1 ? (
         <button
           type="button"
-          onClick={() => openLightbox(images[0].url)}
+          onClick={() => openLightbox(first.url)}
           className="group relative block w-full overflow-hidden rounded-xl border border-white/10 bg-white/4"
           aria-label="View attached image"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={images[0].url}
+            src={first.url}
             alt="Comment attachment"
             className="aspect-video w-full object-cover"
           />

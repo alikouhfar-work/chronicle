@@ -24,7 +24,7 @@ export const UpcomingMediaCard = <T extends MappedUpcomingEpisode | MappedUpcomi
   const posterPath = media.posterPath;
   const mediaTmdbId = isEpisode ? media.showTmdbId : media.tmdbId;
   const mediaName = isEpisode ? media.showName : media.name;
-  const overview = isEpisode ? media.episodes[0].overview : '';
+  const overview = isEpisode ? (media.episodes[0]?.overview ?? '') : '';
 
   const expandedContentId = `upcoming-${mediaType}-${mediaTmdbId}-${media.airDate?.getTime()}`;
 

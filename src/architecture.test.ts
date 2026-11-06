@@ -123,7 +123,7 @@ describe('server-first rendering', () => {
 const MODULE_IMPORT = /from\s+['"]@\/modules\/([a-z-]+)/g;
 
 const featureImportsOf = (file: string): string[] =>
-  [...readFileSync(file, 'utf8').matchAll(MODULE_IMPORT)].map((m) => m[1]);
+  [...readFileSync(file, 'utf8').matchAll(MODULE_IMPORT)].flatMap((m) => (m[1] ? [m[1]] : []));
 
 describe('layer direction', () => {
   it('keeps features out of shared/', () => {
@@ -173,7 +173,8 @@ describe('layer direction', () => {
       const from = repoPath.split('/')[2];
       for (const to of new Set(featureImportsOf(file))) {
         if (to === from) continue;
-        if (!(ALLOWED[from] ?? []).includes(to)) offenders.push(`${from} -> ${to} (${repoPath})`);
+        const allowed = from ? (ALLOWED[from] ?? []) : [];
+        if (!allowed.includes(to)) offenders.push(`${from} -> ${to} (${repoPath})`);
       }
     }
 

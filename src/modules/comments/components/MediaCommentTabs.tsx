@@ -85,6 +85,7 @@ export const MediaCommentTabs = ({
     if (event.key === 'End') nextIndex = VALID_TABS.length - 1;
 
     const next = VALID_TABS[nextIndex];
+    if (!next) return;
     selectTab(next);
     tabRefs.current[next]?.focus();
   };

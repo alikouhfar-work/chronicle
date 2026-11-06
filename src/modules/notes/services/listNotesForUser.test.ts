@@ -79,7 +79,7 @@ describe('listNotesForUser', () => {
       '/library/tv/1396',
       '/library/tv/1396/episode/episode-1',
     ]);
-    expect(entries[1].mediaSubtitle).toBe('Breaking Bad · S1E1');
+    expect(entries[1]!.mediaSubtitle).toBe('Breaking Bad · S1E1');
   });
 
   it('keeps a note whose title left the library, without a link', async () => {

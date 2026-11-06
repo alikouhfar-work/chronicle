@@ -64,6 +64,6 @@ describe('GET /api/users/search', () => {
 
     expect(response.status).toBe(429);
     expect(mocks.findMany).toHaveBeenCalledTimes(30);
-    expect(mocks.findMany.mock.calls[0][0].take).toBe(8);
+    expect(mocks.findMany.mock.calls[0]![0]!.take).toBe(8);
   });
 });

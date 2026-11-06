@@ -39,7 +39,7 @@ describe('buildSecurityHeaders', () => {
     ];
 
     expect(csp).not.toContain('undefined');
-    expect(csp.split(';').find((part) => part.trim().startsWith('img-src'))).toBeTruthy();
+    expect((csp ?? '').split(';').find((part) => part.trim().startsWith('img-src'))).toBeTruthy();
   });
 
   it('only sends HSTS in production', () => {

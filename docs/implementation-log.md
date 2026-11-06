@@ -692,3 +692,24 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   `rewatch/lib/writeContract` keep their own parsers — they already reject on the same
   shape and are covered by their own suites; retyping them would be churn without a
   behavioural gain.
+
+## 2026-11-05 — WP-31 · `noUncheckedIndexedAccess` on
+- Change: `noUncheckedIndexedAccess` enabled. 153 errors at the flag's introduction
+  (27 files): ~50 in production code and the rest in suites/fixtures.
+  Production fixes are real guards, not assertions — `mentions`/`tokenizeMentions`
+  read the fence/closing/handle regex groups with `?.[1]` and skip when absent,
+  `CommentImageGrid` derives its first image and returns null without one,
+  `LibraryDetailsSeasons` returns null when a show has no seasons,
+  `LibraryShowProgress` falls back to null for an unknown headline, the upcoming lists
+  skip an episode-less entry, `reset-demo`/`seed` `randomFrom`/`shuffle` refuse an empty
+  list instead of returning `undefined`, and the poster gradient falls back to the
+  neutral token. `!` is used only in tests and in the fixture guard.
+  `src/modules/rewatch/__fixtures__/rewatchFixture` now asserts its shape once (two
+  seasons, three + one episodes), which removed 70 downstream errors at the source.
+- Migration: none.
+- Verified: tsc clean under the flag, eslint clean, 367 unit tests, 82 rewatch
+  integration tests against `chronicle_rewatch_test`, build compiled on the advisory
+  retry, 9/9 Playwright journeys.
+- Notes: `exactOptionalPropertyTypes` stays off — it is the remaining strictness item
+  (43 errors when measured, mostly component props passed as `undefined`); enabling it
+  is a separate pass with its own review, recorded in the plan as WP-31b.

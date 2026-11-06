@@ -82,6 +82,7 @@ describe('rewatch write contract', () => {
     expect(routeResponse.status).toBe(201);
 
     const [actionCall, routeCall] = mocks.recordRewatch.mock.calls;
+    if (!actionCall || !routeCall) throw new Error('expected two recordRewatch calls');
     expect(routeCall[0]).toEqual(actionCall[0]);
     expect(actionCall[0]).toEqual({
       userId: 'user-1',
@@ -163,10 +164,10 @@ describe('rewatch write contract', () => {
 
     expect(actionResult).toMatchObject({ success: true, rewatchCount: 2, undoToken: 'removal-1' });
     expect(deleteResponse.status).toBe(200);
-    expect(mocks.removeRewatchLog.mock.calls[0][0]).toEqual(
-      mocks.removeRewatchLog.mock.calls[1][0],
+    expect(mocks.removeRewatchLog.mock.calls[0]![0]).toEqual(
+      mocks.removeRewatchLog.mock.calls[1]![0],
     );
-    expect(mocks.removeRewatchLog.mock.calls[0][0]).toEqual({ userId: 'user-1', logId: 'log-1' });
+    expect(mocks.removeRewatchLog.mock.calls[0]![0]).toEqual({ userId: 'user-1', logId: 'log-1' });
   });
 
   it('treats an empty log id as invalid on both paths', async () => {
