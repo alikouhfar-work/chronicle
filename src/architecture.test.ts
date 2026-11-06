@@ -215,3 +215,29 @@ describe('server env stays server-side', () => {
     expect(offenders).toEqual([]);
   });
 });
+
+describe('module public surface', () => {
+  it('keeps barrels re-exporting only their own module', () => {
+    const offenders = sourceFiles
+      .filter((file) => /^src\/modules\/[a-z-]+\/index\.ts$/.test(toRepoPath(file)))
+      .flatMap((file) => {
+        const own = toRepoPath(file).split('/')[2];
+        const specifiers = [
+          ...readFileSync(file, 'utf8').matchAll(/from\s+['"]([^'"]+)['"]/g),
+        ].flatMap((m) => (m[1] ? [m[1]] : []));
+        return specifiers
+          .filter((spec) => spec.includes('@/') && !spec.includes(`@/modules/${own}`))
+          .map((spec) => `${own}: ${spec}`);
+      });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('does not import a barrel by file path', () => {
+    const offenders = sourceFiles
+      .filter((file) => /from\s+['"]@\/modules\/[a-z-]+\/index['"]/.test(readFileSync(file, 'utf8')))
+      .map(toRepoPath);
+
+    expect(offenders).toEqual([]);
+  });
+});

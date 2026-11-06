@@ -490,7 +490,7 @@ unstarted until those answers exist.
 
 ---
 
-# Phase 5 — architecture hardening (planned; evidence in `docs/architecture-audit.md`)
+# Phase 5 — architecture hardening (WP-25…WP-32 landed 2026-11-05; evidence in `docs/architecture-audit.md`)
 
 Measured audit of the whole tree (import graph, strict-flag probe, build artifacts).
 Verdict: the layout holds; the gaps are boundaries, client weight, and configuration.
@@ -505,7 +505,7 @@ No directory reshuffle is in scope.
 | WP-29 | `infra/env.ts` with fail-fast parsing; migrate the ad-hoc `process.env` reads — **done 2026-11-05**: `infra/env.ts` + `shared/lib/publicEnv.ts`, 20 call sites migrated, `process.env` outside the two modules fails the architecture test. | A5 | M |
 | WP-30 | One validation contract at four request boundaries — **done 2026-11-05**: `shared/lib/parse.ts` (`ParseResult` + primitives), moderation POST and user search moved onto it, 8 tests. Comment-body and rewatch parsers already used the shape and were left alone. | A6 | M |
 | WP-31 | `noUncheckedIndexedAccess` (153 sites at introduction) — **done 2026-11-05**, real guards in production, fixture shape asserted once. `exactOptionalPropertyTypes` (43) remains as WP-31b. | A4 | M |
-| WP-32 | Test placement + barrel policy, documented and enforced | A9, A10 | S |
+| WP-32 | Test placement + barrel policy, documented and enforced — **done 2026-11-05**: barrels re-export only their own module (and are never imported by file path); tests sit beside what they cover. | A9, A10 | S |
 
 Sequencing note: WP-25 must land its moves *before* the cycle test is switched on, or the
 guardrail starts red and gets ignored.

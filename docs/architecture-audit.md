@@ -415,3 +415,22 @@ where the data is TMDB-only, and confirm `sitemap`/`robots` are static.
 - **No zod-everywhere rewrite.** Four boundaries, one error shape.
 - **No automatic moderation, no i18n, no design-system rewrite** — out of scope for a
   single-owner tracker and not implicated by any finding.
+
+## 7. Resolution status (2026-11-05, Phase 5)
+
+| Finding | Status | What landed |
+|---|---|---|
+| F1 shared/infra → feature edges | **fixed** | 14 edges cut; `shared/` and `infra/` import no feature (WP-25) |
+| F2 no boundary enforcement | **fixed** | `architecture.test.ts`: layering rules, 31-pair feature ratchet, barrel rules, env rules (WP-25/29/32) |
+| F3 client weight | **mitigated** | six interaction-only surfaces are `dynamic()`; bell stays eager (WP-26). No byte budget asserted yet |
+| F4 strictness gaps | **partly** | `verbatimModuleSyntax`, `noUnused*`, `noImplicitOverride`, `noFallthroughCasesInSwitch`, `ES2022`, `noUncheckedIndexedAccess` on (WP-27/31). `exactOptionalPropertyTypes` still off — 45 measured errors, two classes (≈25 prop types that receive `undefined`, 6 Prisma/`RequestInit` object literals that need conditional spreads); it is WP-31b, not a late-night flip |
+| F5 env access | **fixed** | `infra/env.ts` + `shared/lib/publicEnv.ts`; `process.env` outside them fails the test (WP-29) |
+| F6 validation | **fixed** | `shared/lib/parse.ts` + the two boundary parsers (WP-30) |
+| F7 caching | **decided** | D5: stay on `unstable_cache`; route-level caching is blocked by the session-reading `(main)` layout (WP-28) |
+| F8 `modules/api` | **fixed** | absorbed into `infra/http` + `infra/auth` (WP-25) |
+| F9 test placement | **decided** | tests live beside the code they cover; route handlers are covered by a test beside the route. Documented, nothing moved (WP-32) |
+| F10 barrel policy | **fixed** | barrels are a module's own public surface only, imported by path (`@/modules/x`), never `@/modules/x/index`; feature→feature imports stay deep paths. Enforced (WP-32) |
+
+Still open on purpose: `exactOptionalPropertyTypes` (WP-31b), a client-byte budget for
+F3, and the three two-way feature pairs named in `src/architecture.test.ts`
+(library↔discovery, comments↔notes, show↔episode-season).

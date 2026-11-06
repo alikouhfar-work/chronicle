@@ -713,3 +713,16 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Notes: `exactOptionalPropertyTypes` stays off — it is the remaining strictness item
   (43 errors when measured, mostly component props passed as `undefined`); enabling it
   is a separate pass with its own review, recorded in the plan as WP-31b.
+
+## 2026-11-05 — WP-32 · Barrel and test-placement policy, and Phase 5 close-out
+- Change: barrels (`modules/*/index.ts`) are now only a module's own public surface —
+  `modules/user/index.ts` stopped re-exporting `shared/lib/username` (a leftover from
+  WP-25), and two guardrails were added: a barrel may only re-export from its own
+  module, and nothing may import `@/modules/<x>/index` by file path. Test placement is
+  documented rather than moved: suites live beside the code they cover, and a route
+  handler's suite sits beside the route (`app/api/users/search/route.test.ts`), which is
+  the only such case and is now the stated rule.
+- `docs/architecture-audit.md` closes with a resolution table for F1–F10.
+- Migration: none.
+- Verified: tsc, eslint, 369 unit tests (14 architecture guardrails in total), build on
+  the advisory retry, 9/9 Playwright journeys.
