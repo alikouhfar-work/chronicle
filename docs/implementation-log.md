@@ -785,3 +785,24 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   check: no `next-upgrade` marker, branch or commit exists in this repo; `gh` is not
   installed, so open pull requests could not be checked — reported rather than
   skipped silently.
+
+## 2026-11-06 — Vercel build: regenerate the Prisma client, stop shipping a snapshot
+- Symptom: Vercel type-check failed with 16 errors — `Prisma.RewatchLogGetPayload`
+  and `Prisma.RewatchLogWhereInput` missing from `generated/prisma/internal/prismaNamespace`,
+  plus implicit-any callbacks in `resolveMentionUsers`, `listNotesForUser`,
+  `reconcileCounters`, `rewatchService` and three integration suites.
+- Cause: `generated/` is in `.gitignore`, but 16 of its files had been committed
+  before that rule, and no install/build step regenerated the client. Vercel therefore
+  compiled against a client that predates the `RewatchLog` model — locally the
+  on-disk client was current, so `tsc` passed. Confirmed by reproducing in a clean
+  `git worktree` at HEAD: 25 errors.
+- Change: `git rm -r --cached generated` (the artifact is untracked, ignored, and now
+  absent from the committed tree) and `build` became `prisma generate && next build`.
+  Docker already passed `--ignore-scripts` and generated explicitly; CI does too — the
+  extra generate is idempotent.
+- Migration: none.
+- Verified: a copy of the tree with no `generated/` directory (a fresh clone) runs
+  `npm run build` → `Generated Prisma Client (7.10.0)` → `Compiled successfully`, and
+  `tsc --noEmit` reports 0 errors. Locally tsc, eslint, 374 tests and build all pass.
+- Notes: `prisma generate` needs `DATABASE_URL` at build time, so the Vercel project
+  must define it for Production and Preview.
