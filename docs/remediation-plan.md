@@ -371,9 +371,9 @@ set); the suite documents the intended UX, not the current quirks.
 
 - `RatingControl` gained `variant: 'panel' | 'compact'`. The compact form sits in the
   movie details header (replacing the read-only "Your Score" card, which only appeared
-  for completed films) and in the episode header, both labelled per scope ("Rate this
-  movie" / "Rate this episode") with the same `setMediaRating` action — no new endpoint,
-  no new schema.
+  for completed films), labelled "Rate this movie" with the same `setMediaRating`
+  action — no new endpoint, no new schema. The episode page has no header control: its
+  rating stays in the Personal Notes tab.
 - The panel copy in the notes tab stays, and the control now adopts a value written by
   the other copy once the server revalidates the page.
 - Tests: 5 unit tests on the control (write, clear, compact label, prop adoption, failed

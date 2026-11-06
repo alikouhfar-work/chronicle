@@ -189,14 +189,12 @@ export const PersonalNotesPanel = ({
         </div>
 
         {composerOpen && (
-          <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3.5">
-            <NoteComposer
-              label="Save note"
-              submitting={creating}
-              onSubmit={(content) => void handleCreate(content)}
-              onCancel={notes.length > 0 ? () => setComposerOpen(false) : undefined}
-            />
-          </div>
+          <NoteComposer
+            label="Save note"
+            submitting={creating}
+            onSubmit={(content) => void handleCreate(content)}
+            onCancel={notes.length > 0 ? () => setComposerOpen(false) : undefined}
+          />
         )}
 
         {error && (

@@ -144,10 +144,11 @@ the "Personal notes" tab, and a user who has no notes may never find it.
 the watch state; it writes the same action and needs no new endpoint.
 
 **Fixed (WP-17).** `RatingControl` has a `compact` variant, rendered in
-`LibraryDetailsHeader` (movie) and in the episode page header, labelled "Rate
-this movie" / "Rate this episode". The previous header card only appeared once a
-film was completed; the control is there for any tracked title, so a rating no
-longer requires finishing the film or opening the notes tab.
+`LibraryDetailsHeader` (movie) and labelled "Rate this movie". The previous header
+card only appeared once a film was completed; the control is there for any tracked
+title, so a rating no longer requires finishing the film or opening the notes tab.
+The episode page keeps its rating in the Personal Notes tab — no header control
+(decided after shipping: an episode's rating lives with its notes).
 
 ### B3. Notes have no home outside their media page (P2)
 

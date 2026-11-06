@@ -4,13 +4,12 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { format } from 'date-fns';
-import { IconCalendar, IconClock, IconMessage, IconStar } from '@tabler/icons-react';
+import { IconCalendar, IconClock, IconMessage } from '@tabler/icons-react';
 import { getTrackedEpisode } from '@/modules/episode-season/services/getTrackedEpisode';
 import { getEpisodeDetails } from '@/modules/episode-season/services/getEpisodeDetails';
 import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
 import { MediaCommentTabs } from '@/modules/comments/components/MediaCommentTabs';
 import { MediaCommentTabsSkeleton } from '@/modules/comments/components/MediaCommentTabsSkeleton';
-import { RatingControl } from '@/modules/notes/components/RatingControl';
 import { listComments } from '@/modules/comments/services/listComments';
 import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
 import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
@@ -110,23 +109,6 @@ const EpisodePage = async ({ params }: EpisodePageProps) => {
                 <span className="inline-flex items-center gap-1.5">
                   <IconClock size={14} className="text-zinc-500" />
                   {formatMinutes(episode.runtime)}
-                </span>
-              ) : null}
-
-              {viewer ? (
-                <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1">
-                  <RatingControl
-                    mediaType="episode"
-                    targetId={episode.id}
-                    value={rating}
-                    label="Rate this episode"
-                    variant="compact"
-                  />
-                </div>
-              ) : rating ? (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 font-bold text-amber-300">
-                  <IconStar size={12} className="fill-amber-400 text-amber-400" />
-                  {rating} / 5
                 </span>
               ) : null}
 

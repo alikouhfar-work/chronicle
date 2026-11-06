@@ -553,3 +553,15 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
   first slice; WP-24b (unhide) is the one that removes the only unrecoverable click.
   The `Notification` actor/unique constraints are written down in the audit because
   "tell the author" is a schema decision, not a copy change.
+
+## 2026-11-05 — episode page: drop the header rating control
+- Change: the episode page's meta row no longer renders `RatingControl` (or the
+  read-only `x / 5` badge). Its rating stays in the Personal Notes tab, where it
+  already lived and where the same `setMediaRating` action is wired. The movie
+  details header keeps its compact control. Unused `RatingControl`/`IconStar`
+  imports removed. Plan, gap-analysis and SKILL.md now describe the movie header as
+  the only header placement.
+- Migration: none.
+- Verified: `tsc`, `eslint`, 354 unit tests, build, 9/9 Playwright journeys.
+- Notes: `e2e/engagement.spec.ts` is unaffected — its rating journey targets the
+  movie page's header group.
