@@ -1,4 +1,6 @@
+import { publicEnv } from '@/shared/lib/publicEnv';
 import { headers } from 'next/headers';
+import { env } from '@/infra/env';
 
 const LOCAL_FALLBACK = 'http://localhost:3000';
 
@@ -14,8 +16,8 @@ const normalize = (value: string): string => value.replace(/\/$/, '');
  * across environments.
  */
 export const getAppBaseUrl = async (): Promise<string> => {
-  const configured = process.env.NEXT_PUBLIC_APP_URL;
-  if (configured) return normalize(configured);
+  const configured = publicEnv.configuredAppUrl;
+  if (configured) return configured;
 
   try {
     const requestHeaders = await headers();
@@ -30,7 +32,7 @@ export const getAppBaseUrl = async (): Promise<string> => {
     // `headers()` is unavailable outside a request scope (e.g. unit tests).
   }
 
-  if (process.env.VERCEL_URL) return normalize(`https://${process.env.VERCEL_URL}`);
+  if (env.vercelUrl) return normalize(`https://${env.vercelUrl}`);
 
   return LOCAL_FALLBACK;
 };

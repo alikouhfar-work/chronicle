@@ -1,15 +1,5 @@
 import type { Season } from '@/modules/episode-season';
-
-export type SeasonSegment = {
-  seasonNumber: number;
-  watchedFraction: number;
-};
-
-export type ShowPosition = {
-  /** e.g. "S2 E4" — null when nothing remains to watch. */
-  nextLabel: string | null;
-  segments: SeasonSegment[];
-};
+import type { ShowPosition } from '@/modules/show/types/showPosition';
 
 /**
  * Derives the card position readout from episode tracking. Specials

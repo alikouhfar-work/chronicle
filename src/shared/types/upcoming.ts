@@ -1,5 +1,5 @@
 import type { IconComponent } from '@/shared/types/icon';
-import { MediaType } from '@/shared/types/media';
+import type { MediaType } from '@/shared/types/media';
 
 export type UpcomingMediaSectionProps<T> = {
   mediaType: MediaType;

@@ -18,7 +18,7 @@ const LibraryPage = async ({ searchParams }: LibraryPageProps) => {
     <article className="animate-fade-in space-y-8 font-sans">
       <LibraryHeader />
       <LibraryFilters />
-      <LibraryMediaTypeSwitch />
+      <LibraryMediaTypeSwitch activeType={showTv ? 'tv' : 'movie'} status={status} sort={sort} search={search} />
       {showTv && (
         <Suspense fallback={<LibraryMediaSectionLoading />}>
           <LibraryShows sort={sort} status={status} search={search} />

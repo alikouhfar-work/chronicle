@@ -1,12 +1,12 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { addMedia } from '@/modules/library/services/addMedia';
-import { AddMediaActionResult, AddMediaParams } from '@/modules/library/types/addMedia';
+import { addMediaToLibrary } from '@/modules/library/actions/addMediaToLibrary';
+import type { AddMediaActionResult, AddMediaParams } from '@/modules/library/types/addMedia';
 
 export const addMediaAction = async (params: AddMediaParams): Promise<AddMediaActionResult> => {
   try {
-    await addMedia(params);
+    await addMediaToLibrary(params);
 
     revalidatePath('/');
     revalidatePath('/library');

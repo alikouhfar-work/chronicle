@@ -1,5 +1,5 @@
-import { SearchResultRaw } from '@/modules/discovery/search';
-import { SearchResult } from '@/modules/discovery/search/types/searchResult';
+import type { SearchResultRaw } from '@/modules/discovery/search';
+import type { SearchResult } from '@/modules/discovery/search/types/searchResult';
 import { mapShowSearchResult } from '@/modules/show/mappers/mapShowSearchResult';
 import { mapMovieSearchResult } from '@/modules/movie/mappers/mapMovieSearchResult';
 

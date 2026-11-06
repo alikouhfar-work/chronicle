@@ -1,4 +1,4 @@
-import { ShowStatusFilter } from '@/modules/show/types/showStatusFilter';
+import type { ShowStatusFilter } from '@/modules/show/types/showStatusFilter';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 
 export const showStatusFilters: ShowStatusFilter[] = [

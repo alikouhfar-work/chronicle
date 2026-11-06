@@ -8,8 +8,9 @@ const isLogin = (pathname: string): boolean =>
   pathname.startsWith('/signup/');
 
 // Link-preview crawlers (Telegram, WhatsApp, Discord, …) never carry a
-// session. Let them read the public search page so shared links can expose
-// their Open Graph poster metadata.
+// session. Public detail pages are readable by anyone so the shared review
+// feeds can be viewed (and linked to) without an account; only search stays
+// crawler-only because it is not a share target.
 const PREVIEW_CRAWLER_PATTERN =
   /(telegrambot|whatsapp|facebookexternalhit|twitterbot|discordbot|slackbot|linkedinbot|pinterest|embedly|redditbot|skypeuripreview|vkshare|mastodon|applebot)/i;
 
@@ -19,11 +20,11 @@ const isPreviewCrawler = (req: Parameters<Parameters<typeof auth>[0]>[0]): boole
   return PREVIEW_CRAWLER_PATTERN.test(userAgent);
 };
 
+const isPublicMediaPath = (pathname: string): boolean =>
+  pathname.startsWith('/library/movie/') || pathname.startsWith('/library/tv/');
+
 const isPublicPreviewPath = (pathname: string): boolean =>
-  pathname === '/search' ||
-  pathname.startsWith('/search/') ||
-  pathname.startsWith('/library/movie/') ||
-  pathname.startsWith('/library/tv/');
+  pathname === '/search' || pathname.startsWith('/search/');
 
 const loginRedirect = (req: Parameters<Parameters<typeof auth>[0]>[0], pathname: string) => {
   const loginUrl = new URL('/login', req.url);
@@ -42,10 +43,15 @@ export default auth(async (req) => {
     return NextResponse.redirect(new URL(callbackUrl, req.url));
   }
 
-  // --- No session: everything else needs login.
+  // --- No session: public media detail pages are read-only (review browsing);
+  // everything else needs login.
   // (Catalogue reads use the single server token — no per-user token gate.)
   if (!userId) {
-    if (isPublicPreviewPath(pathname) && isPreviewCrawler(req)) {
+    const isRead = req.method === 'GET' || req.method === 'HEAD';
+    if (
+      isRead &&
+      (isPublicMediaPath(pathname) || (isPublicPreviewPath(pathname) && isPreviewCrawler(req)))
+    ) {
       return NextResponse.next();
     }
     return loginRedirect(req, `${pathname}${search}`);
@@ -55,7 +61,5 @@ export default auth(async (req) => {
 });
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|icons|manifest.webmanifest|.*\\..*).*)',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|icons|manifest.webmanifest|.*\\..*).*)'],
 };

@@ -30,12 +30,14 @@ export type ShowAvgAggregateOutputType = {
   tmdbId: number | null
   numberOfSeasons: number | null
   numberOfEpisodes: number | null
+  rewatchCount: number | null
 }
 
 export type ShowSumAggregateOutputType = {
   tmdbId: number | null
   numberOfSeasons: number | null
   numberOfEpisodes: number | null
+  rewatchCount: number | null
 }
 
 export type ShowMinAggregateOutputType = {
@@ -56,6 +58,7 @@ export type ShowMinAggregateOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  rewatchCount: number | null
 }
 
 export type ShowMaxAggregateOutputType = {
@@ -76,6 +79,7 @@ export type ShowMaxAggregateOutputType = {
   lastSyncedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  rewatchCount: number | null
 }
 
 export type ShowCountAggregateOutputType = {
@@ -96,6 +100,7 @@ export type ShowCountAggregateOutputType = {
   lastSyncedAt: number
   createdAt: number
   updatedAt: number
+  rewatchCount: number
   _all: number
 }
 
@@ -104,12 +109,14 @@ export type ShowAvgAggregateInputType = {
   tmdbId?: true
   numberOfSeasons?: true
   numberOfEpisodes?: true
+  rewatchCount?: true
 }
 
 export type ShowSumAggregateInputType = {
   tmdbId?: true
   numberOfSeasons?: true
   numberOfEpisodes?: true
+  rewatchCount?: true
 }
 
 export type ShowMinAggregateInputType = {
@@ -130,6 +137,7 @@ export type ShowMinAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
 }
 
 export type ShowMaxAggregateInputType = {
@@ -150,6 +158,7 @@ export type ShowMaxAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
 }
 
 export type ShowCountAggregateInputType = {
@@ -170,6 +179,7 @@ export type ShowCountAggregateInputType = {
   lastSyncedAt?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
   _all?: true
 }
 
@@ -277,6 +287,7 @@ export type ShowGroupByOutputType = {
   lastSyncedAt: Date
   createdAt: Date
   updatedAt: Date
+  rewatchCount: number
   _count: ShowCountAggregateOutputType | null
   _avg: ShowAvgAggregateOutputType | null
   _sum: ShowSumAggregateOutputType | null
@@ -320,10 +331,12 @@ export type ShowWhereInput = {
   lastSyncedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Show"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   seasons?: Prisma.SeasonListRelationFilter
   genres?: Prisma.GenreListRelationFilter
   tracking?: Prisma.XOR<Prisma.ShowTrackingNullableScalarRelationFilter, Prisma.ShowTrackingWhereInput> | null
+  rewatchLogs?: Prisma.RewatchLogListRelationFilter
 }
 
 export type ShowOrderByWithRelationInput = {
@@ -344,10 +357,12 @@ export type ShowOrderByWithRelationInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   seasons?: Prisma.SeasonOrderByRelationAggregateInput
   genres?: Prisma.GenreOrderByRelationAggregateInput
   tracking?: Prisma.ShowTrackingOrderByWithRelationInput
+  rewatchLogs?: Prisma.RewatchLogOrderByRelationAggregateInput
 }
 
 export type ShowWhereUniqueInput = Prisma.AtLeast<{
@@ -372,10 +387,12 @@ export type ShowWhereUniqueInput = Prisma.AtLeast<{
   lastSyncedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Show"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   seasons?: Prisma.SeasonListRelationFilter
   genres?: Prisma.GenreListRelationFilter
   tracking?: Prisma.XOR<Prisma.ShowTrackingNullableScalarRelationFilter, Prisma.ShowTrackingWhereInput> | null
+  rewatchLogs?: Prisma.RewatchLogListRelationFilter
 }, "id" | "userId_tmdbId">
 
 export type ShowOrderByWithAggregationInput = {
@@ -396,6 +413,7 @@ export type ShowOrderByWithAggregationInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
   _count?: Prisma.ShowCountOrderByAggregateInput
   _avg?: Prisma.ShowAvgOrderByAggregateInput
   _max?: Prisma.ShowMaxOrderByAggregateInput
@@ -424,6 +442,7 @@ export type ShowScalarWhereWithAggregatesInput = {
   lastSyncedAt?: Prisma.DateTimeWithAggregatesFilter<"Show"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Show"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Show"> | Date | string
+  rewatchCount?: Prisma.IntWithAggregatesFilter<"Show"> | number
 }
 
 export type ShowCreateInput = {
@@ -443,10 +462,12 @@ export type ShowCreateInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutShowsInput
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutShowInput
 }
 
 export type ShowUncheckedCreateInput = {
@@ -467,9 +488,11 @@ export type ShowUncheckedCreateInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   seasons?: Prisma.SeasonUncheckedCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingUncheckedCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutShowInput
 }
 
 export type ShowUpdateInput = {
@@ -489,10 +512,12 @@ export type ShowUpdateInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateInput = {
@@ -513,9 +538,11 @@ export type ShowUncheckedUpdateInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUncheckedUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutShowNestedInput
 }
 
 export type ShowCreateManyInput = {
@@ -536,6 +563,7 @@ export type ShowCreateManyInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
 }
 
 export type ShowUpdateManyMutationInput = {
@@ -555,6 +583,7 @@ export type ShowUpdateManyMutationInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ShowUncheckedUpdateManyInput = {
@@ -575,6 +604,7 @@ export type ShowUncheckedUpdateManyInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ShowUserIdTmdbIdCompoundUniqueInput = {
@@ -600,12 +630,14 @@ export type ShowCountOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type ShowAvgOrderByAggregateInput = {
   tmdbId?: Prisma.SortOrder
   numberOfSeasons?: Prisma.SortOrder
   numberOfEpisodes?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type ShowMaxOrderByAggregateInput = {
@@ -626,6 +658,7 @@ export type ShowMaxOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type ShowMinOrderByAggregateInput = {
@@ -646,12 +679,14 @@ export type ShowMinOrderByAggregateInput = {
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type ShowSumOrderByAggregateInput = {
   tmdbId?: Prisma.SortOrder
   numberOfSeasons?: Prisma.SortOrder
   numberOfEpisodes?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type ShowScalarRelationFilter = {
@@ -667,6 +702,11 @@ export type ShowListRelationFilter = {
 
 export type ShowOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ShowNullableScalarRelationFilter = {
+  is?: Prisma.ShowWhereInput | null
+  isNot?: Prisma.ShowWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -805,6 +845,22 @@ export type ShowUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.ShowScalarWhereInput | Prisma.ShowScalarWhereInput[]
 }
 
+export type ShowCreateNestedOneWithoutRewatchLogsInput = {
+  create?: Prisma.XOR<Prisma.ShowCreateWithoutRewatchLogsInput, Prisma.ShowUncheckedCreateWithoutRewatchLogsInput>
+  connectOrCreate?: Prisma.ShowCreateOrConnectWithoutRewatchLogsInput
+  connect?: Prisma.ShowWhereUniqueInput
+}
+
+export type ShowUpdateOneWithoutRewatchLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.ShowCreateWithoutRewatchLogsInput, Prisma.ShowUncheckedCreateWithoutRewatchLogsInput>
+  connectOrCreate?: Prisma.ShowCreateOrConnectWithoutRewatchLogsInput
+  upsert?: Prisma.ShowUpsertWithoutRewatchLogsInput
+  disconnect?: Prisma.ShowWhereInput | boolean
+  delete?: Prisma.ShowWhereInput | boolean
+  connect?: Prisma.ShowWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ShowUpdateToOneWithWhereWithoutRewatchLogsInput, Prisma.ShowUpdateWithoutRewatchLogsInput>, Prisma.ShowUncheckedUpdateWithoutRewatchLogsInput>
+}
+
 export type ShowCreateWithoutSeasonsInput = {
   id?: string
   tmdbId: number
@@ -822,9 +878,11 @@ export type ShowCreateWithoutSeasonsInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutShowsInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutShowInput
 }
 
 export type ShowUncheckedCreateWithoutSeasonsInput = {
@@ -845,8 +903,10 @@ export type ShowUncheckedCreateWithoutSeasonsInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingUncheckedCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutShowInput
 }
 
 export type ShowCreateOrConnectWithoutSeasonsInput = {
@@ -882,9 +942,11 @@ export type ShowUpdateWithoutSeasonsInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateWithoutSeasonsInput = {
@@ -905,8 +967,10 @@ export type ShowUncheckedUpdateWithoutSeasonsInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUncheckedUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutShowNestedInput
 }
 
 export type ShowCreateWithoutGenresInput = {
@@ -926,9 +990,11 @@ export type ShowCreateWithoutGenresInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutShowsInput
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutShowInput
 }
 
 export type ShowUncheckedCreateWithoutGenresInput = {
@@ -949,8 +1015,10 @@ export type ShowUncheckedCreateWithoutGenresInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   seasons?: Prisma.SeasonUncheckedCreateNestedManyWithoutShowInput
   tracking?: Prisma.ShowTrackingUncheckedCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutShowInput
 }
 
 export type ShowCreateOrConnectWithoutGenresInput = {
@@ -995,6 +1063,7 @@ export type ShowScalarWhereInput = {
   lastSyncedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Show"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Show"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Show"> | number
 }
 
 export type ShowCreateWithoutTrackingInput = {
@@ -1014,9 +1083,11 @@ export type ShowCreateWithoutTrackingInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   user: Prisma.UserCreateNestedOneWithoutShowsInput
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutShowInput
 }
 
 export type ShowUncheckedCreateWithoutTrackingInput = {
@@ -1037,8 +1108,10 @@ export type ShowUncheckedCreateWithoutTrackingInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   seasons?: Prisma.SeasonUncheckedCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutShowsInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutShowInput
 }
 
 export type ShowCreateOrConnectWithoutTrackingInput = {
@@ -1074,9 +1147,11 @@ export type ShowUpdateWithoutTrackingInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateWithoutTrackingInput = {
@@ -1097,8 +1172,10 @@ export type ShowUncheckedUpdateWithoutTrackingInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutShowNestedInput
 }
 
 export type ShowCreateWithoutUserInput = {
@@ -1118,9 +1195,11 @@ export type ShowCreateWithoutUserInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutShowInput
 }
 
 export type ShowUncheckedCreateWithoutUserInput = {
@@ -1140,9 +1219,11 @@ export type ShowUncheckedCreateWithoutUserInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   seasons?: Prisma.SeasonUncheckedCreateNestedManyWithoutShowInput
   genres?: Prisma.GenreUncheckedCreateNestedManyWithoutShowsInput
   tracking?: Prisma.ShowTrackingUncheckedCreateNestedOneWithoutShowInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutShowInput
 }
 
 export type ShowCreateOrConnectWithoutUserInput = {
@@ -1171,6 +1252,118 @@ export type ShowUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.ShowUpdateManyMutationInput, Prisma.ShowUncheckedUpdateManyWithoutUserInput>
 }
 
+export type ShowCreateWithoutRewatchLogsInput = {
+  id?: string
+  tmdbId: number
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  firstAirDate?: Date | string | null
+  lastAirDate?: Date | string | null
+  status: string
+  tagline?: string | null
+  numberOfSeasons: number
+  numberOfEpisodes: number
+  inProduction: boolean
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rewatchCount?: number
+  user: Prisma.UserCreateNestedOneWithoutShowsInput
+  seasons?: Prisma.SeasonCreateNestedManyWithoutShowInput
+  genres?: Prisma.GenreCreateNestedManyWithoutShowsInput
+  tracking?: Prisma.ShowTrackingCreateNestedOneWithoutShowInput
+}
+
+export type ShowUncheckedCreateWithoutRewatchLogsInput = {
+  id?: string
+  tmdbId: number
+  userId: string
+  name: string
+  overview: string
+  posterPath?: string | null
+  backdropPath?: string | null
+  firstAirDate?: Date | string | null
+  lastAirDate?: Date | string | null
+  status: string
+  tagline?: string | null
+  numberOfSeasons: number
+  numberOfEpisodes: number
+  inProduction: boolean
+  lastSyncedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rewatchCount?: number
+  seasons?: Prisma.SeasonUncheckedCreateNestedManyWithoutShowInput
+  genres?: Prisma.GenreUncheckedCreateNestedManyWithoutShowsInput
+  tracking?: Prisma.ShowTrackingUncheckedCreateNestedOneWithoutShowInput
+}
+
+export type ShowCreateOrConnectWithoutRewatchLogsInput = {
+  where: Prisma.ShowWhereUniqueInput
+  create: Prisma.XOR<Prisma.ShowCreateWithoutRewatchLogsInput, Prisma.ShowUncheckedCreateWithoutRewatchLogsInput>
+}
+
+export type ShowUpsertWithoutRewatchLogsInput = {
+  update: Prisma.XOR<Prisma.ShowUpdateWithoutRewatchLogsInput, Prisma.ShowUncheckedUpdateWithoutRewatchLogsInput>
+  create: Prisma.XOR<Prisma.ShowCreateWithoutRewatchLogsInput, Prisma.ShowUncheckedCreateWithoutRewatchLogsInput>
+  where?: Prisma.ShowWhereInput
+}
+
+export type ShowUpdateToOneWithWhereWithoutRewatchLogsInput = {
+  where?: Prisma.ShowWhereInput
+  data: Prisma.XOR<Prisma.ShowUpdateWithoutRewatchLogsInput, Prisma.ShowUncheckedUpdateWithoutRewatchLogsInput>
+}
+
+export type ShowUpdateWithoutRewatchLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberOfSeasons?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfEpisodes?: Prisma.IntFieldUpdateOperationsInput | number
+  inProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
+  seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
+  genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
+  tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
+}
+
+export type ShowUncheckedUpdateWithoutRewatchLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  posterPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  backdropPath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastAirDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberOfSeasons?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfEpisodes?: Prisma.IntFieldUpdateOperationsInput | number
+  inProduction?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
+  genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
+  tracking?: Prisma.ShowTrackingUncheckedUpdateOneWithoutShowNestedInput
+}
+
 export type ShowUpdateWithoutGenresInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1188,9 +1381,11 @@ export type ShowUpdateWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutShowsNestedInput
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateWithoutGenresInput = {
@@ -1211,8 +1406,10 @@ export type ShowUncheckedUpdateWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
   tracking?: Prisma.ShowTrackingUncheckedUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateManyWithoutGenresInput = {
@@ -1233,6 +1430,7 @@ export type ShowUncheckedUpdateManyWithoutGenresInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ShowCreateManyUserInput = {
@@ -1252,6 +1450,7 @@ export type ShowCreateManyUserInput = {
   lastSyncedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
 }
 
 export type ShowUpdateWithoutUserInput = {
@@ -1271,9 +1470,11 @@ export type ShowUpdateWithoutUserInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   seasons?: Prisma.SeasonUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateWithoutUserInput = {
@@ -1293,9 +1494,11 @@ export type ShowUncheckedUpdateWithoutUserInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   seasons?: Prisma.SeasonUncheckedUpdateManyWithoutShowNestedInput
   genres?: Prisma.GenreUncheckedUpdateManyWithoutShowsNestedInput
   tracking?: Prisma.ShowTrackingUncheckedUpdateOneWithoutShowNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutShowNestedInput
 }
 
 export type ShowUncheckedUpdateManyWithoutUserInput = {
@@ -1315,6 +1518,7 @@ export type ShowUncheckedUpdateManyWithoutUserInput = {
   lastSyncedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -1325,11 +1529,13 @@ export type ShowUncheckedUpdateManyWithoutUserInput = {
 export type ShowCountOutputType = {
   seasons: number
   genres: number
+  rewatchLogs: number
 }
 
 export type ShowCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   seasons?: boolean | ShowCountOutputTypeCountSeasonsArgs
   genres?: boolean | ShowCountOutputTypeCountGenresArgs
+  rewatchLogs?: boolean | ShowCountOutputTypeCountRewatchLogsArgs
 }
 
 /**
@@ -1356,6 +1562,13 @@ export type ShowCountOutputTypeCountGenresArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.GenreWhereInput
 }
 
+/**
+ * ShowCountOutputType without action
+ */
+export type ShowCountOutputTypeCountRewatchLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RewatchLogWhereInput
+}
+
 
 export type ShowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1375,10 +1588,12 @@ export type ShowSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   seasons?: boolean | Prisma.Show$seasonsArgs<ExtArgs>
   genres?: boolean | Prisma.Show$genresArgs<ExtArgs>
   tracking?: boolean | Prisma.Show$trackingArgs<ExtArgs>
+  rewatchLogs?: boolean | Prisma.Show$rewatchLogsArgs<ExtArgs>
   _count?: boolean | Prisma.ShowCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["show"]>
 
@@ -1400,6 +1615,7 @@ export type ShowSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["show"]>
 
@@ -1421,6 +1637,7 @@ export type ShowSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["show"]>
 
@@ -1442,14 +1659,16 @@ export type ShowSelectScalar = {
   lastSyncedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
 }
 
-export type ShowOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "userId" | "name" | "overview" | "posterPath" | "backdropPath" | "firstAirDate" | "lastAirDate" | "status" | "tagline" | "numberOfSeasons" | "numberOfEpisodes" | "inProduction" | "lastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["show"]>
+export type ShowOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "userId" | "name" | "overview" | "posterPath" | "backdropPath" | "firstAirDate" | "lastAirDate" | "status" | "tagline" | "numberOfSeasons" | "numberOfEpisodes" | "inProduction" | "lastSyncedAt" | "createdAt" | "updatedAt" | "rewatchCount", ExtArgs["result"]["show"]>
 export type ShowInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   seasons?: boolean | Prisma.Show$seasonsArgs<ExtArgs>
   genres?: boolean | Prisma.Show$genresArgs<ExtArgs>
   tracking?: boolean | Prisma.Show$trackingArgs<ExtArgs>
+  rewatchLogs?: boolean | Prisma.Show$rewatchLogsArgs<ExtArgs>
   _count?: boolean | Prisma.ShowCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ShowIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1466,6 +1685,7 @@ export type $ShowPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     seasons: Prisma.$SeasonPayload<ExtArgs>[]
     genres: Prisma.$GenrePayload<ExtArgs>[]
     tracking: Prisma.$ShowTrackingPayload<ExtArgs> | null
+    rewatchLogs: Prisma.$RewatchLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1485,6 +1705,7 @@ export type $ShowPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     lastSyncedAt: Date
     createdAt: Date
     updatedAt: Date
+    rewatchCount: number
   }, ExtArgs["result"]["show"]>
   composites: {}
 }
@@ -1883,6 +2104,7 @@ export interface Prisma__ShowClient<T, Null = never, ExtArgs extends runtime.Typ
   seasons<T extends Prisma.Show$seasonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$seasonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SeasonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   genres<T extends Prisma.Show$genresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$genresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GenrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tracking<T extends Prisma.Show$trackingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$trackingArgs<ExtArgs>>): Prisma.Prisma__ShowTrackingClient<runtime.Types.Result.GetResult<Prisma.$ShowTrackingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  rewatchLogs<T extends Prisma.Show$rewatchLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Show$rewatchLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RewatchLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1929,6 +2151,7 @@ export interface ShowFieldRefs {
   readonly lastSyncedAt: Prisma.FieldRef<"Show", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Show", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Show", 'DateTime'>
+  readonly rewatchCount: Prisma.FieldRef<"Show", 'Int'>
 }
     
 
@@ -2394,6 +2617,30 @@ export type Show$trackingArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.ShowTrackingInclude<ExtArgs> | null
   where?: Prisma.ShowTrackingWhereInput
+}
+
+/**
+ * Show.rewatchLogs
+ */
+export type Show$rewatchLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RewatchLog
+   */
+  select?: Prisma.RewatchLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RewatchLog
+   */
+  omit?: Prisma.RewatchLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RewatchLogInclude<ExtArgs> | null
+  where?: Prisma.RewatchLogWhereInput
+  orderBy?: Prisma.RewatchLogOrderByWithRelationInput | Prisma.RewatchLogOrderByWithRelationInput[]
+  cursor?: Prisma.RewatchLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RewatchLogScalarFieldEnum | Prisma.RewatchLogScalarFieldEnum[]
 }
 
 /**

@@ -1,7 +1,7 @@
 import { UpNextEpisodesSectionSkeleton } from '@/modules/episode-season';
 import { DashboardHeaderSkeleton } from '@/modules/dashboard/components/DashboardHeaderSkeleton';
-import { UpcomingMediaSectionSkeleton } from '@/shared/ui/upcoming/UpcomingMediaSectionSkeleton';
-import { TrendingMediaSectionSkeleton } from '@/shared/ui/trending/TrendingMediaSectionSkeleton';
+import { UpcomingMediaSectionSkeleton } from '@/modules/dashboard/components/upcoming/UpcomingMediaSectionSkeleton';
+import { TrendingMediaSectionSkeleton } from '@/modules/dashboard/components/trending/TrendingMediaSectionSkeleton';
 
 const DashboardPageLoading = () => {
   return (

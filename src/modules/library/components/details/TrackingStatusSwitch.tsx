@@ -10,9 +10,9 @@ const isShow = (media: TrackedMedia): media is TrackedShow => 'seasons' in media
 
 export const TrackingStatusSwitch = ({ media }: TrackingStatusSwitchProps) => (
   <div className="w-full min-w-0 space-y-2 sm:w-auto">
-    <p className="text-xs font-semibold text-zinc-400">Tracking Status</p>
+    <p className="text-xs font-semibold text-ink-muted">Tracking Status</p>
     {isShow(media) ? (
-      <div className="flex max-w-full min-w-0 flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
+      <div className="flex max-w-full min-w-0 flex-wrap gap-1 rounded-[20px] border border-line bg-surface-raised/90 p-1 sm:rounded-pill">
         {showStatusFilters.map((statusFilter) => (
           <LibraryShowStatusChangeButton
             showId={media.id}
@@ -23,7 +23,7 @@ export const TrackingStatusSwitch = ({ media }: TrackingStatusSwitchProps) => (
         ))}
       </div>
     ) : (
-      <div className="flex max-w-full min-w-0 flex-wrap gap-1 rounded-[20px] border border-white/10 bg-zinc-900/90 p-1 sm:rounded-full">
+      <div className="flex max-w-full min-w-0 flex-wrap gap-1 rounded-[20px] border border-line bg-surface-raised/90 p-1 sm:rounded-pill">
         {movieStatusFilters.map((statusFilter) => (
           <LibraryMovieStatusChangeButton
             movieId={media.id}

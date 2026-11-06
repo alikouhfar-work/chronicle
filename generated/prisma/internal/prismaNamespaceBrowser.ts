@@ -59,7 +59,15 @@ export const ModelName = {
   ShowTracking: 'ShowTracking',
   MovieTracking: 'MovieTracking',
   EpisodeTracking: 'EpisodeTracking',
+  MediaNote: 'MediaNote',
   User: 'User',
+  RewatchLog: 'RewatchLog',
+  RewatchLogRemoval: 'RewatchLogRemoval',
+  Comment: 'Comment',
+  CommentReport: 'CommentReport',
+  CommentAttachment: 'CommentAttachment',
+  CommentMention: 'CommentMention',
+  Notification: 'Notification',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -98,7 +106,8 @@ export const ShowScalarFieldEnum = {
   inProduction: 'inProduction',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type ShowScalarFieldEnum = (typeof ShowScalarFieldEnum)[keyof typeof ShowScalarFieldEnum]
@@ -118,7 +127,8 @@ export const MovieScalarFieldEnum = {
   tagline: 'tagline',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
@@ -133,7 +143,8 @@ export const SeasonScalarFieldEnum = {
   episodeCount: 'episodeCount',
   airDate: 'airDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type SeasonScalarFieldEnum = (typeof SeasonScalarFieldEnum)[keyof typeof SeasonScalarFieldEnum]
@@ -149,7 +160,8 @@ export const EpisodeScalarFieldEnum = {
   runtime: 'runtime',
   airDate: 'airDate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rewatchCount: 'rewatchCount'
 } as const
 
 export type EpisodeScalarFieldEnum = (typeof EpisodeScalarFieldEnum)[keyof typeof EpisodeScalarFieldEnum]
@@ -182,7 +194,6 @@ export const MovieTrackingScalarFieldEnum = {
   movieId: 'movieId',
   status: 'status',
   rating: 'rating',
-  notes: 'notes',
   addedAt: 'addedAt',
   startedAt: 'startedAt',
   completedAt: 'completedAt',
@@ -198,11 +209,24 @@ export const EpisodeTrackingScalarFieldEnum = {
   watched: 'watched',
   watchedAt: 'watchedAt',
   rating: 'rating',
-  notes: 'notes',
   updatedAt: 'updatedAt'
 } as const
 
 export type EpisodeTrackingScalarFieldEnum = (typeof EpisodeTrackingScalarFieldEnum)[keyof typeof EpisodeTrackingScalarFieldEnum]
+
+
+export const MediaNoteScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  tmdbId: 'tmdbId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type MediaNoteScalarFieldEnum = (typeof MediaNoteScalarFieldEnum)[keyof typeof MediaNoteScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -213,10 +237,109 @@ export const UserScalarFieldEnum = {
   image: 'image',
   passwordHash: 'passwordHash',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  username: 'username'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const RewatchLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  mediaId: 'mediaId',
+  rewatchedAt: 'rewatchedAt',
+  groupId: 'groupId',
+  clientRequestId: 'clientRequestId',
+  showId: 'showId',
+  seasonId: 'seasonId',
+  episodeId: 'episodeId',
+  movieId: 'movieId'
+} as const
+
+export type RewatchLogScalarFieldEnum = (typeof RewatchLogScalarFieldEnum)[keyof typeof RewatchLogScalarFieldEnum]
+
+
+export const RewatchLogRemovalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  mediaId: 'mediaId',
+  payload: 'payload',
+  createdAt: 'createdAt'
+} as const
+
+export type RewatchLogRemovalScalarFieldEnum = (typeof RewatchLogRemovalScalarFieldEnum)[keyof typeof RewatchLogRemovalScalarFieldEnum]
+
+
+export const CommentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mediaType: 'mediaType',
+  tmdbId: 'tmdbId',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  hiddenAt: 'hiddenAt',
+  hiddenReason: 'hiddenReason'
+} as const
+
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const CommentReportScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  reporterId: 'reporterId',
+  reason: 'reason',
+  note: 'note',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type CommentReportScalarFieldEnum = (typeof CommentReportScalarFieldEnum)[keyof typeof CommentReportScalarFieldEnum]
+
+
+export const CommentAttachmentScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  storageKey: 'storageKey',
+  url: 'url',
+  width: 'width',
+  height: 'height',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentAttachmentScalarFieldEnum = (typeof CommentAttachmentScalarFieldEnum)[keyof typeof CommentAttachmentScalarFieldEnum]
+
+
+export const CommentMentionScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  mentionedUserId: 'mentionedUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentMentionScalarFieldEnum = (typeof CommentMentionScalarFieldEnum)[keyof typeof CommentMentionScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  recipientId: 'recipientId',
+  actorId: 'actorId',
+  type: 'type',
+  commentId: 'commentId',
+  mediaType: 'mediaType',
+  tmdbId: 'tmdbId',
+  mediaTitle: 'mediaTitle',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {
@@ -264,6 +387,13 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -278,4 +408,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

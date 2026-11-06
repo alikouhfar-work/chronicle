@@ -1,6 +1,6 @@
-import { GenreRaw } from '@/modules/discovery/genre';
-import { SeasonRaw } from '@/modules/episode-season';
-import { EpisodeRaw } from '@/modules/episode-season';
+import type { GenreRaw } from '@/modules/discovery/genre';
+import type { SeasonRaw } from '@/modules/episode-season';
+import type { EpisodeRaw } from '@/modules/episode-season';
 
 type ProductionCompanyRaw = {
   id: number;

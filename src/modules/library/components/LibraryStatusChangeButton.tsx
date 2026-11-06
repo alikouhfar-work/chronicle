@@ -33,10 +33,10 @@ export const LibraryStatusChangeButton = ({
         disabled && 'cursor-not-allowed',
         'aria-busy:cursor-wait aria-busy:opacity-80',
         'apple-pill-btn px-3.5 py-1.5 text-xs transition-all duration-150',
-        !disabled && !isActive && 'cursor-pointer hover:text-zinc-200',
+        !disabled && !isActive && 'cursor-pointer hover:text-ink-secondary',
         isActive
-          ? 'bg-white font-bold text-zinc-950 shadow-md'
-          : 'text-zinc-400 hover:bg-white/6 hover:text-white',
+          ? 'bg-white font-bold text-canvas shadow-card'
+          : 'text-ink-muted hover:bg-surface-soft hover:text-ink',
       )}
     >
       {statusFilter.title}

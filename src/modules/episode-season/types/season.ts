@@ -1,4 +1,4 @@
-import { Episode, EpisodeRaw } from '@/modules/episode-season';
+import type { Episode, EpisodeRaw } from '@/modules/episode-season';
 
 export type SeasonRaw = {
   id: number;
@@ -15,6 +15,7 @@ export type Season = {
   showId: string;
   seasonNumber: number;
   episodeCount: number;
+  rewatchCount: number;
   episodes: Episode[];
   airDate: Date | null;
 };

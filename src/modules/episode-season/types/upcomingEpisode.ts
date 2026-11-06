@@ -1,6 +1,6 @@
-import { Season } from '@/modules/episode-season';
-import { Episode } from '@/modules/episode-season';
-import { TrackedShow } from '@/modules/show';
+import type { Season } from '@/modules/episode-season';
+import type { Episode } from '@/modules/episode-season';
+import type { TrackedShow } from '@/modules/show';
 
 export type UpcomingEpisode = Episode & {
   season: Omit<Season, 'episodes'> & {
@@ -8,7 +8,7 @@ export type UpcomingEpisode = Episode & {
   };
 };
 
-export type MappedUpcomingEpisodeItem = {
+export type UpcomingEpisodeItem = {
   id: string;
   seasonNumber: number;
   episodeNumber: number;
@@ -23,5 +23,5 @@ export type MappedUpcomingEpisode = {
   showTmdbId: number;
   posterPath: string | null;
   airDate: Date | null;
-  episodes: MappedUpcomingEpisodeItem[];
+  episodes: UpcomingEpisodeItem[];
 };

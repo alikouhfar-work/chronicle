@@ -1,4 +1,4 @@
-import { Crew, CrewRaw } from '@/modules/discovery/credit/types/crew';
+import type { Crew, CrewRaw } from '@/modules/discovery/credit/types/crew';
 
 export const mapCrew = (crew: CrewRaw[]): Crew[] =>
   crew.map((person) => ({

@@ -1,4 +1,4 @@
-import { mapTrending as mapTrendingBase } from '@/modules/media/mappers';
+import { mapTrending as mapTrendingBase } from '@/modules/media/mappers/mediaMappers';
 import type { TrendingShow } from '@/modules/show/types/trendingShow';
 import type { TrendingShowRaw } from '@/modules/show';
 

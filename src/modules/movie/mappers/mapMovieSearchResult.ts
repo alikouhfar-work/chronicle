@@ -1,4 +1,4 @@
-import { MovieSearchResult, MovieSearchResultRaw } from '@/modules/movie';
+import type { MovieSearchResult, MovieSearchResultRaw } from '@/modules/movie';
 
 export const mapMovieSearchResult = (
   movie: MovieSearchResultRaw,

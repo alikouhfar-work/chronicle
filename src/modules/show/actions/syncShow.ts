@@ -1,8 +1,8 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
-import { ShowDetailsRaw } from '@/modules/show/types/showDetails';
-import { SeasonRaw } from '@/modules/episode-season';
+import type { ShowDetailsRaw } from '@/modules/show/types/showDetails';
+import type { SeasonRaw } from '@/modules/episode-season';
 import { DatabaseError, ExternalServiceError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseTmdbId } from '@/shared/lib/validate';
 import { mapWithConcurrency } from '@/shared/lib/async';

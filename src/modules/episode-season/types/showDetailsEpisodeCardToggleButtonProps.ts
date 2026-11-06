@@ -1,5 +1,7 @@
 export type ShowDetailsEpisodeCardToggleButtonProps = {
-  showId: string;
   episodeId: string;
+  episodeName: string;
+  episodeNumber: number;
   isWatched: boolean;
+  rewatchCount: number;
 };

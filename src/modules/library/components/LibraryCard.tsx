@@ -9,7 +9,7 @@ import { getShowLifecycle } from '@/modules/show/lib/showLifecycle';
 
 export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
   return (
-    <li className="group glass-card glass-card-interactive relative aspect-2/3 w-full cursor-pointer overflow-hidden rounded-2xl border border-white/8 shadow-xl transition-all duration-300 select-none hover:scale-[1.02] hover:border-white/20 hover:shadow-2xl">
+    <li className="group glass-card glass-card-interactive relative aspect-2/3 w-full cursor-pointer overflow-hidden rounded-card border border-line shadow-xl transition-all duration-300 select-none hover:scale-[1.02] hover:border-line-strong hover:shadow-2xl">
       <Link href={`/library/${mediaType}/${media.tmdbId}`}>
         <MediaPosterImage
           title={media.name}
@@ -32,16 +32,16 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
 
           <div className="space-y-2">
             <div className="space-y-0.5">
-              <p className="flex items-center gap-1.5 text-xs font-semibold text-violet-400">
+              <p className="flex items-center gap-1.5 text-xs font-semibold text-accent-ink">
                 {'releaseDate' in media
                   ? media.releaseDate?.getFullYear()
                   : media.firstAirDate?.getFullYear()}
               </p>
-              <h4 className="line-clamp-2 text-base leading-snug font-bold text-white drop-shadow-md transition-colors group-hover:text-violet-300">
+              <h4 className="line-clamp-2 text-base leading-snug font-bold text-ink drop-shadow-card transition-colors group-hover:text-accent-ink">
                 {media.name}
               </h4>
               {media.tagline && (
-                <p className="line-clamp-1 text-xs font-normal text-zinc-400 italic">
+                <p className="line-clamp-1 text-xs font-normal text-ink-muted italic">
                   &#34;{media.tagline}&#34;
                 </p>
               )}
@@ -52,7 +52,7 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
                 {media.genres.slice(0, 2).map((genre) => (
                   <span
                     key={genre.id}
-                    className="rounded-full border border-white/8 bg-white/6 px-2 py-0.5 text-[10px] font-medium text-zinc-300"
+                    className="rounded-pill border border-line bg-surface-soft px-2 py-0.5 text-micro font-medium text-ink-secondary"
                   >
                     {genre.name}
                   </span>
@@ -63,7 +63,6 @@ export const LibraryCard = ({ media, mediaType }: LibraryCardProps) => {
             {'seasons' in media && (
               <LibraryShowProgress
                 seasons={media.seasons}
-                numberOfEpisodes={media.numberOfEpisodes}
                 lifecycle={getShowLifecycle(media.status, media.inProduction)}
                 trackingStatus={media.tracking?.status}
               />

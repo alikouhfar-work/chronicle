@@ -1,20 +1,10 @@
-import { IconChevronLeft } from '@tabler/icons-react';
-import Link from 'next/link';
-import type { ReactNode } from 'react';
+import { BackButton } from '@/shared/ui/BackButton';
+import type { LibraryDetailsNavigationProps } from '@/modules/library/types/libraryDetailsNavigation';
 
-export const LibraryDetailsNavigation = ({ actions }: { actions?: ReactNode }) => {
+export const LibraryDetailsNavigation = ({ actions }: LibraryDetailsNavigationProps) => {
   return (
-    <div className="flex items-center justify-between gap-3 border-b border-white/8 pb-3">
-      <Link
-        href="/library"
-        className="apple-pill-btn group flex cursor-pointer items-center gap-2 bg-white/6 px-4 py-2 text-xs font-semibold text-zinc-200 transition-all hover:bg-white/12"
-      >
-        <IconChevronLeft
-          size={16}
-          className="text-violet-400 transition-transform group-hover:-translate-x-0.5"
-        />
-        <span>Back to Library</span>
-      </Link>
+    <div className="flex items-center justify-between gap-3 border-b border-line pb-3">
+      <BackButton href="/library" label="Back to Library" />
       {actions && <div className="shrink-0">{actions}</div>}
     </div>
   );

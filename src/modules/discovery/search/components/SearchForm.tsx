@@ -1,6 +1,5 @@
 import { IconSearch } from '@tabler/icons-react';
-import React from 'react';
-import { SearchFormProps } from '@/modules/discovery/search/types/searchForm';
+import type { SearchFormProps } from '@/modules/discovery/search/types/searchForm';
 
 export const SearchForm = ({ query }: SearchFormProps) => {
   return (
@@ -12,12 +11,12 @@ export const SearchForm = ({ query }: SearchFormProps) => {
           defaultValue={query}
           aria-label="Search movies and shows"
           placeholder="Search by title (e.g. Proud, Fellow Travelers...)"
-          className="w-full rounded-full border border-white/10 bg-white/6 px-5 py-3.5 pl-12 text-base font-medium text-white placeholder-zinc-500 shadow-2xl transition-all hover:border-white/20 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 focus:outline-none sm:text-sm"
+          className="w-full rounded-pill border border-line-control bg-surface-soft px-5 py-3.5 pl-12 text-base font-medium text-ink placeholder:text-ink-subtle shadow-2xl transition-all hover:border-line-strong focus:border-accent-ink focus-visible:ring-2 focus:ring-accent/40 focus:outline-none sm:text-sm"
         />
-        <IconSearch aria-hidden className="absolute left-4.5 text-zinc-400" size={18} />
+        <IconSearch aria-hidden className="absolute left-4.5 text-ink-muted" size={18} />
         <button
           type="submit"
-          className="apple-pill-btn absolute right-2 flex cursor-pointer items-center gap-1.5 bg-violet-500 px-5 py-2 text-xs font-bold text-white shadow-md shadow-violet-500/25 transition-all hover:bg-violet-400"
+          className="apple-pill-btn absolute right-2 flex cursor-pointer items-center gap-1.5 bg-accent px-5 py-2 text-xs font-bold text-ink shadow-card shadow-accent/25 transition-all hover:bg-accent-strong"
         >
           Search
         </button>

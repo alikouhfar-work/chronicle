@@ -1,4 +1,4 @@
-import { PersonDetailsFilmographyProps } from '@/modules/discovery/person/types/personDetailsFilmography';
+import type { PersonDetailsFilmographyProps } from '@/modules/discovery/person/types/personDetailsFilmography';
 import { PersonDetailsFilmographyList } from '@/modules/discovery/person/components/filmography/PersonDetailsFilmographyList';
 import { PersonDetailsFilmographyEmpty } from '@/modules/discovery/person/components/filmography/PersonDetailsFilmographyEmpty';
 
@@ -7,15 +7,15 @@ export const PersonDetailsFilmography = ({
   combinedCredits,
 }: PersonDetailsFilmographyProps) => {
   return (
-    <div className="space-y-5 border-t border-white/8 pt-4">
+    <div className="space-y-5 border-t border-line pt-4">
       {/* Section Header with Filters */}
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h3 className="flex items-center gap-2 text-lg font-bold text-white">
-            <span className="h-2 w-2 rounded-full bg-violet-400" />
+          <h3 className="flex items-center gap-2 text-lg font-bold text-ink">
+            <span className="h-2 w-2 rounded-pill bg-accent-strong" />
             <span>Filmography & Series</span>
           </h3>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-ink-muted">
             Combined titles starring {personName} ({combinedCredits.length} works total)
           </p>
         </div>

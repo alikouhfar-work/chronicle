@@ -30,12 +30,14 @@ export type EpisodeAvgAggregateOutputType = {
   tmdbId: number | null
   episodeNumber: number | null
   runtime: number | null
+  rewatchCount: number | null
 }
 
 export type EpisodeSumAggregateOutputType = {
   tmdbId: number | null
   episodeNumber: number | null
   runtime: number | null
+  rewatchCount: number | null
 }
 
 export type EpisodeMinAggregateOutputType = {
@@ -49,6 +51,7 @@ export type EpisodeMinAggregateOutputType = {
   airDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  rewatchCount: number | null
 }
 
 export type EpisodeMaxAggregateOutputType = {
@@ -62,6 +65,7 @@ export type EpisodeMaxAggregateOutputType = {
   airDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  rewatchCount: number | null
 }
 
 export type EpisodeCountAggregateOutputType = {
@@ -75,6 +79,7 @@ export type EpisodeCountAggregateOutputType = {
   airDate: number
   createdAt: number
   updatedAt: number
+  rewatchCount: number
   _all: number
 }
 
@@ -83,12 +88,14 @@ export type EpisodeAvgAggregateInputType = {
   tmdbId?: true
   episodeNumber?: true
   runtime?: true
+  rewatchCount?: true
 }
 
 export type EpisodeSumAggregateInputType = {
   tmdbId?: true
   episodeNumber?: true
   runtime?: true
+  rewatchCount?: true
 }
 
 export type EpisodeMinAggregateInputType = {
@@ -102,6 +109,7 @@ export type EpisodeMinAggregateInputType = {
   airDate?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
 }
 
 export type EpisodeMaxAggregateInputType = {
@@ -115,6 +123,7 @@ export type EpisodeMaxAggregateInputType = {
   airDate?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
 }
 
 export type EpisodeCountAggregateInputType = {
@@ -128,6 +137,7 @@ export type EpisodeCountAggregateInputType = {
   airDate?: true
   createdAt?: true
   updatedAt?: true
+  rewatchCount?: true
   _all?: true
 }
 
@@ -228,6 +238,7 @@ export type EpisodeGroupByOutputType = {
   airDate: Date | null
   createdAt: Date
   updatedAt: Date
+  rewatchCount: number
   _count: EpisodeCountAggregateOutputType | null
   _avg: EpisodeAvgAggregateOutputType | null
   _sum: EpisodeSumAggregateOutputType | null
@@ -264,7 +275,9 @@ export type EpisodeWhereInput = {
   airDate?: Prisma.DateTimeNullableFilter<"Episode"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Episode"> | number
   tracking?: Prisma.XOR<Prisma.EpisodeTrackingNullableScalarRelationFilter, Prisma.EpisodeTrackingWhereInput> | null
+  rewatchLogs?: Prisma.RewatchLogListRelationFilter
   season?: Prisma.XOR<Prisma.SeasonScalarRelationFilter, Prisma.SeasonWhereInput>
 }
 
@@ -279,7 +292,9 @@ export type EpisodeOrderByWithRelationInput = {
   airDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
   tracking?: Prisma.EpisodeTrackingOrderByWithRelationInput
+  rewatchLogs?: Prisma.RewatchLogOrderByRelationAggregateInput
   season?: Prisma.SeasonOrderByWithRelationInput
 }
 
@@ -298,7 +313,9 @@ export type EpisodeWhereUniqueInput = Prisma.AtLeast<{
   airDate?: Prisma.DateTimeNullableFilter<"Episode"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Episode"> | number
   tracking?: Prisma.XOR<Prisma.EpisodeTrackingNullableScalarRelationFilter, Prisma.EpisodeTrackingWhereInput> | null
+  rewatchLogs?: Prisma.RewatchLogListRelationFilter
   season?: Prisma.XOR<Prisma.SeasonScalarRelationFilter, Prisma.SeasonWhereInput>
 }, "id" | "seasonId_episodeNumber">
 
@@ -313,6 +330,7 @@ export type EpisodeOrderByWithAggregationInput = {
   airDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
   _count?: Prisma.EpisodeCountOrderByAggregateInput
   _avg?: Prisma.EpisodeAvgOrderByAggregateInput
   _max?: Prisma.EpisodeMaxOrderByAggregateInput
@@ -334,6 +352,7 @@ export type EpisodeScalarWhereWithAggregatesInput = {
   airDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Episode"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Episode"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Episode"> | Date | string
+  rewatchCount?: Prisma.IntWithAggregatesFilter<"Episode"> | number
 }
 
 export type EpisodeCreateInput = {
@@ -346,7 +365,9 @@ export type EpisodeCreateInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   tracking?: Prisma.EpisodeTrackingCreateNestedOneWithoutEpisodeInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutEpisodeInput
   season: Prisma.SeasonCreateNestedOneWithoutEpisodesInput
 }
 
@@ -361,7 +382,9 @@ export type EpisodeUncheckedCreateInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   tracking?: Prisma.EpisodeTrackingUncheckedCreateNestedOneWithoutEpisodeInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeUpdateInput = {
@@ -374,7 +397,9 @@ export type EpisodeUpdateInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   tracking?: Prisma.EpisodeTrackingUpdateOneWithoutEpisodeNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutEpisodeNestedInput
   season?: Prisma.SeasonUpdateOneRequiredWithoutEpisodesNestedInput
 }
 
@@ -389,7 +414,9 @@ export type EpisodeUncheckedUpdateInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   tracking?: Prisma.EpisodeTrackingUncheckedUpdateOneWithoutEpisodeNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeCreateManyInput = {
@@ -403,6 +430,7 @@ export type EpisodeCreateManyInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
 }
 
 export type EpisodeUpdateManyMutationInput = {
@@ -415,6 +443,7 @@ export type EpisodeUpdateManyMutationInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type EpisodeUncheckedUpdateManyInput = {
@@ -428,6 +457,7 @@ export type EpisodeUncheckedUpdateManyInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type EpisodeListRelationFilter = {
@@ -456,12 +486,14 @@ export type EpisodeCountOrderByAggregateInput = {
   airDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type EpisodeAvgOrderByAggregateInput = {
   tmdbId?: Prisma.SortOrder
   episodeNumber?: Prisma.SortOrder
   runtime?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type EpisodeMaxOrderByAggregateInput = {
@@ -475,6 +507,7 @@ export type EpisodeMaxOrderByAggregateInput = {
   airDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type EpisodeMinOrderByAggregateInput = {
@@ -488,17 +521,24 @@ export type EpisodeMinOrderByAggregateInput = {
   airDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type EpisodeSumOrderByAggregateInput = {
   tmdbId?: Prisma.SortOrder
   episodeNumber?: Prisma.SortOrder
   runtime?: Prisma.SortOrder
+  rewatchCount?: Prisma.SortOrder
 }
 
 export type EpisodeScalarRelationFilter = {
   is?: Prisma.EpisodeWhereInput
   isNot?: Prisma.EpisodeWhereInput
+}
+
+export type EpisodeNullableScalarRelationFilter = {
+  is?: Prisma.EpisodeWhereInput | null
+  isNot?: Prisma.EpisodeWhereInput | null
 }
 
 export type EpisodeCreateNestedManyWithoutSeasonInput = {
@@ -565,6 +605,22 @@ export type EpisodeUpdateOneRequiredWithoutTrackingNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EpisodeUpdateToOneWithWhereWithoutTrackingInput, Prisma.EpisodeUpdateWithoutTrackingInput>, Prisma.EpisodeUncheckedUpdateWithoutTrackingInput>
 }
 
+export type EpisodeCreateNestedOneWithoutRewatchLogsInput = {
+  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutRewatchLogsInput, Prisma.EpisodeUncheckedCreateWithoutRewatchLogsInput>
+  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutRewatchLogsInput
+  connect?: Prisma.EpisodeWhereUniqueInput
+}
+
+export type EpisodeUpdateOneWithoutRewatchLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutRewatchLogsInput, Prisma.EpisodeUncheckedCreateWithoutRewatchLogsInput>
+  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutRewatchLogsInput
+  upsert?: Prisma.EpisodeUpsertWithoutRewatchLogsInput
+  disconnect?: Prisma.EpisodeWhereInput | boolean
+  delete?: Prisma.EpisodeWhereInput | boolean
+  connect?: Prisma.EpisodeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EpisodeUpdateToOneWithWhereWithoutRewatchLogsInput, Prisma.EpisodeUpdateWithoutRewatchLogsInput>, Prisma.EpisodeUncheckedUpdateWithoutRewatchLogsInput>
+}
+
 export type EpisodeCreateWithoutSeasonInput = {
   id?: string
   tmdbId: number
@@ -575,7 +631,9 @@ export type EpisodeCreateWithoutSeasonInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   tracking?: Prisma.EpisodeTrackingCreateNestedOneWithoutEpisodeInput
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeUncheckedCreateWithoutSeasonInput = {
@@ -588,7 +646,9 @@ export type EpisodeUncheckedCreateWithoutSeasonInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
   tracking?: Prisma.EpisodeTrackingUncheckedCreateNestedOneWithoutEpisodeInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeCreateOrConnectWithoutSeasonInput = {
@@ -631,6 +691,7 @@ export type EpisodeScalarWhereInput = {
   airDate?: Prisma.DateTimeNullableFilter<"Episode"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
+  rewatchCount?: Prisma.IntFilter<"Episode"> | number
 }
 
 export type EpisodeCreateWithoutTrackingInput = {
@@ -643,6 +704,8 @@ export type EpisodeCreateWithoutTrackingInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
+  rewatchLogs?: Prisma.RewatchLogCreateNestedManyWithoutEpisodeInput
   season: Prisma.SeasonCreateNestedOneWithoutEpisodesInput
 }
 
@@ -657,6 +720,8 @@ export type EpisodeUncheckedCreateWithoutTrackingInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
+  rewatchLogs?: Prisma.RewatchLogUncheckedCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeCreateOrConnectWithoutTrackingInput = {
@@ -685,6 +750,8 @@ export type EpisodeUpdateWithoutTrackingInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutEpisodeNestedInput
   season?: Prisma.SeasonUpdateOneRequiredWithoutEpisodesNestedInput
 }
 
@@ -699,6 +766,84 @@ export type EpisodeUncheckedUpdateWithoutTrackingInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutEpisodeNestedInput
+}
+
+export type EpisodeCreateWithoutRewatchLogsInput = {
+  id?: string
+  tmdbId: number
+  episodeNumber: number
+  name: string
+  overview: string
+  runtime?: number | null
+  airDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rewatchCount?: number
+  tracking?: Prisma.EpisodeTrackingCreateNestedOneWithoutEpisodeInput
+  season: Prisma.SeasonCreateNestedOneWithoutEpisodesInput
+}
+
+export type EpisodeUncheckedCreateWithoutRewatchLogsInput = {
+  id?: string
+  tmdbId: number
+  seasonId: string
+  episodeNumber: number
+  name: string
+  overview: string
+  runtime?: number | null
+  airDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  rewatchCount?: number
+  tracking?: Prisma.EpisodeTrackingUncheckedCreateNestedOneWithoutEpisodeInput
+}
+
+export type EpisodeCreateOrConnectWithoutRewatchLogsInput = {
+  where: Prisma.EpisodeWhereUniqueInput
+  create: Prisma.XOR<Prisma.EpisodeCreateWithoutRewatchLogsInput, Prisma.EpisodeUncheckedCreateWithoutRewatchLogsInput>
+}
+
+export type EpisodeUpsertWithoutRewatchLogsInput = {
+  update: Prisma.XOR<Prisma.EpisodeUpdateWithoutRewatchLogsInput, Prisma.EpisodeUncheckedUpdateWithoutRewatchLogsInput>
+  create: Prisma.XOR<Prisma.EpisodeCreateWithoutRewatchLogsInput, Prisma.EpisodeUncheckedCreateWithoutRewatchLogsInput>
+  where?: Prisma.EpisodeWhereInput
+}
+
+export type EpisodeUpdateToOneWithWhereWithoutRewatchLogsInput = {
+  where?: Prisma.EpisodeWhereInput
+  data: Prisma.XOR<Prisma.EpisodeUpdateWithoutRewatchLogsInput, Prisma.EpisodeUncheckedUpdateWithoutRewatchLogsInput>
+}
+
+export type EpisodeUpdateWithoutRewatchLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  episodeNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  runtime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  tracking?: Prisma.EpisodeTrackingUpdateOneWithoutEpisodeNestedInput
+  season?: Prisma.SeasonUpdateOneRequiredWithoutEpisodesNestedInput
+}
+
+export type EpisodeUncheckedUpdateWithoutRewatchLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tmdbId?: Prisma.IntFieldUpdateOperationsInput | number
+  seasonId?: Prisma.StringFieldUpdateOperationsInput | string
+  episodeNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  overview?: Prisma.StringFieldUpdateOperationsInput | string
+  runtime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
+  tracking?: Prisma.EpisodeTrackingUncheckedUpdateOneWithoutEpisodeNestedInput
 }
 
 export type EpisodeCreateManySeasonInput = {
@@ -711,6 +856,7 @@ export type EpisodeCreateManySeasonInput = {
   airDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  rewatchCount?: number
 }
 
 export type EpisodeUpdateWithoutSeasonInput = {
@@ -723,7 +869,9 @@ export type EpisodeUpdateWithoutSeasonInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   tracking?: Prisma.EpisodeTrackingUpdateOneWithoutEpisodeNestedInput
+  rewatchLogs?: Prisma.RewatchLogUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeUncheckedUpdateWithoutSeasonInput = {
@@ -736,7 +884,9 @@ export type EpisodeUncheckedUpdateWithoutSeasonInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
   tracking?: Prisma.EpisodeTrackingUncheckedUpdateOneWithoutEpisodeNestedInput
+  rewatchLogs?: Prisma.RewatchLogUncheckedUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeUncheckedUpdateManyWithoutSeasonInput = {
@@ -749,8 +899,38 @@ export type EpisodeUncheckedUpdateManyWithoutSeasonInput = {
   airDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  rewatchCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
+
+/**
+ * Count Type EpisodeCountOutputType
+ */
+
+export type EpisodeCountOutputType = {
+  rewatchLogs: number
+}
+
+export type EpisodeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  rewatchLogs?: boolean | EpisodeCountOutputTypeCountRewatchLogsArgs
+}
+
+/**
+ * EpisodeCountOutputType without action
+ */
+export type EpisodeCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EpisodeCountOutputType
+   */
+  select?: Prisma.EpisodeCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * EpisodeCountOutputType without action
+ */
+export type EpisodeCountOutputTypeCountRewatchLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RewatchLogWhereInput
+}
 
 
 export type EpisodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -764,8 +944,11 @@ export type EpisodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   airDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   tracking?: boolean | Prisma.Episode$trackingArgs<ExtArgs>
+  rewatchLogs?: boolean | Prisma.Episode$rewatchLogsArgs<ExtArgs>
   season?: boolean | Prisma.SeasonDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.EpisodeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episode"]>
 
 export type EpisodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -779,6 +962,7 @@ export type EpisodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   airDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   season?: boolean | Prisma.SeasonDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episode"]>
 
@@ -793,6 +977,7 @@ export type EpisodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   airDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
   season?: boolean | Prisma.SeasonDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episode"]>
 
@@ -807,12 +992,15 @@ export type EpisodeSelectScalar = {
   airDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  rewatchCount?: boolean
 }
 
-export type EpisodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "seasonId" | "episodeNumber" | "name" | "overview" | "runtime" | "airDate" | "createdAt" | "updatedAt", ExtArgs["result"]["episode"]>
+export type EpisodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tmdbId" | "seasonId" | "episodeNumber" | "name" | "overview" | "runtime" | "airDate" | "createdAt" | "updatedAt" | "rewatchCount", ExtArgs["result"]["episode"]>
 export type EpisodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tracking?: boolean | Prisma.Episode$trackingArgs<ExtArgs>
+  rewatchLogs?: boolean | Prisma.Episode$rewatchLogsArgs<ExtArgs>
   season?: boolean | Prisma.SeasonDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.EpisodeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EpisodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   season?: boolean | Prisma.SeasonDefaultArgs<ExtArgs>
@@ -825,6 +1013,7 @@ export type $EpisodePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Episode"
   objects: {
     tracking: Prisma.$EpisodeTrackingPayload<ExtArgs> | null
+    rewatchLogs: Prisma.$RewatchLogPayload<ExtArgs>[]
     season: Prisma.$SeasonPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -838,6 +1027,7 @@ export type $EpisodePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     airDate: Date | null
     createdAt: Date
     updatedAt: Date
+    rewatchCount: number
   }, ExtArgs["result"]["episode"]>
   composites: {}
 }
@@ -1233,6 +1423,7 @@ readonly fields: EpisodeFieldRefs;
 export interface Prisma__EpisodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tracking<T extends Prisma.Episode$trackingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Episode$trackingArgs<ExtArgs>>): Prisma.Prisma__EpisodeTrackingClient<runtime.Types.Result.GetResult<Prisma.$EpisodeTrackingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  rewatchLogs<T extends Prisma.Episode$rewatchLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Episode$rewatchLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RewatchLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   season<T extends Prisma.SeasonDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeasonDefaultArgs<ExtArgs>>): Prisma.Prisma__SeasonClient<runtime.Types.Result.GetResult<Prisma.$SeasonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1273,6 +1464,7 @@ export interface EpisodeFieldRefs {
   readonly airDate: Prisma.FieldRef<"Episode", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Episode", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Episode", 'DateTime'>
+  readonly rewatchCount: Prisma.FieldRef<"Episode", 'Int'>
 }
     
 
@@ -1690,6 +1882,30 @@ export type Episode$trackingArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.EpisodeTrackingInclude<ExtArgs> | null
   where?: Prisma.EpisodeTrackingWhereInput
+}
+
+/**
+ * Episode.rewatchLogs
+ */
+export type Episode$rewatchLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RewatchLog
+   */
+  select?: Prisma.RewatchLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RewatchLog
+   */
+  omit?: Prisma.RewatchLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RewatchLogInclude<ExtArgs> | null
+  where?: Prisma.RewatchLogWhereInput
+  orderBy?: Prisma.RewatchLogOrderByWithRelationInput | Prisma.RewatchLogOrderByWithRelationInput[]
+  cursor?: Prisma.RewatchLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RewatchLogScalarFieldEnum | Prisma.RewatchLogScalarFieldEnum[]
 }
 
 /**

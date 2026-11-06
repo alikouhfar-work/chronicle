@@ -1,11 +1,8 @@
 import { AuthShell } from '@/shared/ui/AuthShell';
 import { SignupForm } from '@/modules/auth/components/SignupForm';
+import type { SignupPageProps } from '@/modules/auth/types/signupPage';
 
-const SignupPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ callbackUrl?: string }>;
-}) => {
+const SignupPage = async ({ searchParams }: SignupPageProps) => {
   const { callbackUrl } = await searchParams;
 
   return (

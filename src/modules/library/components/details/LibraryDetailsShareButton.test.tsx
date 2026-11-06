@@ -84,7 +84,7 @@ describe('LibraryDetailsShareButton', () => {
     const calls = share.mock.calls as unknown as Array<
       [{ title: string; text: string; url: string }]
     >;
-    const payload = calls[0][0];
+    const payload = calls[0]![0];
     expect(payload.title).toBe('Severance (2022)');
     expect(payload.url).toBe(`${window.location.origin}/search?query=Severance`);
     expect(payload.text.startsWith('Severance (2022)\nGenres: Drama')).toBe(true);
@@ -165,8 +165,8 @@ describe('LibraryDetailsShareButton', () => {
     const calls = share.mock.calls as unknown as Array<
       [{ title: string; text: string; url: string }]
     >;
-    expect(calls[0][0].title).toBe('Severance (2022)');
-    expect(calls[0][0].text.startsWith('Severance (2022)')).toBe(true);
+    expect(calls[0]![0]!.title).toBe('Severance (2022)');
+    expect(calls[0]![0]!.text.startsWith('Severance (2022)')).toBe(true);
     expect(toast.custom).not.toHaveBeenCalled();
   });
 

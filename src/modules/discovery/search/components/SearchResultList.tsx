@@ -1,11 +1,12 @@
 import { searchMedia } from '@/modules/discovery/search/queries/searchMedia';
-import { SearchResultListProps } from '@/modules/discovery/search/types/searchResultList';
-import { IconSparkles } from '@tabler/icons-react';
+import type { SearchResultListProps } from '@/modules/discovery/search/types/searchResultList';
+import { IconSearchOff, IconSparkles } from '@tabler/icons-react';
 import { SearchResultShowCard } from '@/modules/discovery/search/components/SearchResultShowCard';
 import Link from 'next/link';
 import { SearchResultMovieCard } from '@/modules/discovery/search/components/SearchResultMovieCard';
 import { SearchResultError } from '@/modules/discovery/search/components/SearchResultError';
 import { getErrorMessage } from '@/shared/lib/errors';
+import { EmptyState } from '@/shared/ui/EmptyState';
 
 export const SearchResultList = async ({ query }: SearchResultListProps) => {
   if (!query) return;
@@ -17,16 +18,35 @@ export const SearchResultList = async ({ query }: SearchResultListProps) => {
     return <SearchResultError message={getErrorMessage(error, 'Could not load search results.')} />;
   }
 
+  if (searchResults.length === 0) {
+    return (
+      <EmptyState
+        icon={IconSearchOff}
+        title={`No results for "${query}"`}
+        description="Check the spelling, try a shorter query, or search by a person's name."
+        action={
+          <Link
+            href="/search"
+            className="apple-pill-btn mt-1 cursor-pointer border border-line bg-surface-soft px-4 py-2 text-xs font-semibold text-ink-secondary hover:bg-surface-soft-hover"
+          >
+            Clear search
+          </Link>
+        }
+        className="mx-auto max-w-xl"
+      />
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between border-b border-white/8 pb-3">
-        <h3 className="flex items-center gap-2 text-xs font-semibold text-zinc-200">
-          <IconSparkles size={14} className="text-violet-400" />
+      <div className="flex items-center justify-between border-b border-line pb-3">
+        <h3 className="flex items-center gap-2 text-xs font-semibold text-ink-secondary">
+          <IconSparkles size={14} className="text-accent-ink" />
           <span>Search Results ({searchResults.length})</span>
         </h3>
         <Link
           href="/search"
-          className="apple-pill-btn cursor-pointer bg-white/6 px-3.5 py-1 text-xs text-zinc-300 hover:bg-white/12"
+          className="apple-pill-btn cursor-pointer bg-surface-soft px-3.5 py-1 text-xs text-ink-secondary hover:bg-surface-soft-hover"
         >
           Clear Results
         </Link>

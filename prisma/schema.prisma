@@ -20,6 +20,23 @@ enum MovieTrackingStatus {
   COMPLETED
 }
 
+enum RewatchMediaType {
+  EPISODE @map("episode")
+  SEASON  @map("season")
+  SHOW    @map("show")
+  MOVIE   @map("movie")
+}
+
+enum CommentMediaType {
+  EPISODE @map("episode")
+  SHOW    @map("show")
+  MOVIE   @map("movie")
+}
+
+enum NotificationType {
+  COMMENT_MENTION @map("comment_mention")
+}
+
 model Show {
   id               String        @id @default(uuid())
   tmdbId           Int
@@ -29,22 +46,24 @@ model Show {
   overview         String        @db.Text
   posterPath       String?
   backdropPath     String?
-  firstAirDate     DateTime?
-  lastAirDate      DateTime?
+  firstAirDate     DateTime?     @db.Timestamptz(3)
+  lastAirDate      DateTime?     @db.Timestamptz(3)
   status           String
   tagline          String?
   numberOfSeasons  Int
   numberOfEpisodes Int
   inProduction     Boolean
-  lastSyncedAt     DateTime      @default(now())
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  lastSyncedAt     DateTime      @default(now()) @db.Timestamptz(3)
+  createdAt        DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime      @updatedAt @db.Timestamptz(3)
+  rewatchCount     Int           @default(0) @map("rewatch_count")
   seasons          Season[]
   genres           Genre[]
   tracking         ShowTracking?
+  rewatchLogs      RewatchLog[]
 
+  // userId alone is the leftmost prefix of the unique key below — no separate index.
   @@unique([userId, tmdbId])
-  @@index([userId])
 }
 
 model Movie {
@@ -56,31 +75,34 @@ model Movie {
   overview     String         @db.Text
   posterPath   String?
   backdropPath String?
-  releaseDate  DateTime?
+  releaseDate  DateTime?      @db.Timestamptz(3)
   status       String
   runtime      Int
   tagline      String?
-  lastSyncedAt DateTime       @default(now())
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  lastSyncedAt DateTime       @default(now()) @db.Timestamptz(3)
+  createdAt    DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime       @updatedAt @db.Timestamptz(3)
+  rewatchCount Int            @default(0) @map("rewatch_count")
   genres       Genre[]
   tracking     MovieTracking?
+  rewatchLogs  RewatchLog[]
 
   @@unique([userId, tmdbId])
-  @@index([userId])
 }
 
 model Season {
-  id           String    @id @default(uuid())
+  id           String       @id @default(uuid())
   tmdbId       Int
   showId       String
   seasonNumber Int
   name         String
   episodeCount Int
-  airDate      DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  airDate      DateTime?    @db.Timestamptz(3)
+  createdAt    DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime     @updatedAt @db.Timestamptz(3)
+  rewatchCount Int          @default(0) @map("rewatch_count")
   episodes     Episode[]
+  rewatchLogs  RewatchLog[]
 
   show Show @relation(fields: [showId], references: [id], onDelete: Cascade)
 
@@ -96,15 +118,19 @@ model Episode {
   name          String
   overview      String           @db.Text
   runtime       Int?
-  airDate       DateTime?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  airDate       DateTime?        @db.Timestamptz(3)
+  createdAt     DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime         @updatedAt @db.Timestamptz(3)
+  rewatchCount  Int              @default(0) @map("rewatch_count")
   tracking      EpisodeTracking?
+  rewatchLogs   RewatchLog[]
 
   season Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
 
   @@unique([seasonId, episodeNumber])
   @@index([tmdbId])
+  /// Drives the upcoming / up-next scans, which filter an air-date window.
+  @@index([airDate, episodeNumber])
 }
 
 model Genre {
@@ -119,10 +145,10 @@ model ShowTracking {
   id          String             @id @default(uuid())
   showId      String             @unique
   status      ShowTrackingStatus @default(PLAN_TO_WATCH)
-  addedAt     DateTime           @default(now())
-  startedAt   DateTime?
-  completedAt DateTime?
-  updatedAt   DateTime           @updatedAt
+  addedAt     DateTime           @default(now()) @db.Timestamptz(3)
+  startedAt   DateTime?          @db.Timestamptz(3)
+  completedAt DateTime?          @db.Timestamptz(3)
+  updatedAt   DateTime           @updatedAt @db.Timestamptz(3)
 
   show Show @relation(fields: [showId], references: [id], onDelete: Cascade)
 }
@@ -131,12 +157,12 @@ model MovieTracking {
   id          String              @id @default(uuid())
   movieId     String              @unique
   status      MovieTrackingStatus @default(PLAN_TO_WATCH)
+  /// Independent of notes: a rating never creates, edits, or deletes a note.
   rating      Int?
-  notes       String?             @db.Text
-  addedAt     DateTime            @default(now())
-  startedAt   DateTime?
-  completedAt DateTime?
-  updatedAt   DateTime            @updatedAt
+  addedAt     DateTime            @default(now()) @db.Timestamptz(3)
+  startedAt   DateTime?           @db.Timestamptz(3)
+  completedAt DateTime?           @db.Timestamptz(3)
+  updatedAt   DateTime            @updatedAt @db.Timestamptz(3)
 
   movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 }
@@ -145,27 +171,235 @@ model EpisodeTracking {
   id        String    @id @default(uuid())
   episodeId String    @unique
   watched   Boolean   @default(false)
-  watchedAt DateTime?
+  watchedAt DateTime? @db.Timestamptz(3)
+  /// Independent of notes: rating an episode never touches its note list.
   rating    Int?
-  notes     String?   @db.Text
-  updatedAt DateTime  @updatedAt
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
 
   episode Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
 }
 
+/// Private notes about a title or episode. Deliberately many-per-media: notes
+/// are free-form and independent from the single rating on the tracking row,
+/// and independent from public comments (different audience, no mentions).
+model MediaNote {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  mediaType CommentMediaType @map("media_type")
+  /// TMDB id of the noted title/episode, matching Comment's scoping.
+  tmdbId    Int              @map("tmdb_id")
+  content   String           @db.Text
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  deletedAt DateTime?        @map("deleted_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, mediaType, tmdbId, createdAt])
+  @@map("media_notes")
+}
+
 model User {
-  id           String    @id @default(cuid())
-  name         String?
-  email        String    @unique
-  emailVerified DateTime?
-  image        String?
-  passwordHash String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id                    String           @id @default(cuid())
+  name                  String?
+  email                 String           @unique
+  emailVerified         DateTime?        @db.Timestamptz(3)
+  image                 String?
+  passwordHash          String?
+  createdAt             DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime         @updatedAt @db.Timestamptz(3)
+  /// Lowercase handle used for @mentions: 3-32 chars, [a-z0-9_].
+  username              String?          @unique
   accounts              Account[]
   sessions              Session[]
   shows                 Show[]
   movies                Movie[]
+  rewatchLogs           RewatchLog[]
+  rewatchLogRemovals    RewatchLogRemoval[]
+  notes                 MediaNote[]
+  comments              Comment[]
+  mentions              CommentMention[] @relation("MentionsReceived")
+  commentReports        CommentReport[]   @relation("CommentReports")
+  notificationsReceived Notification[]   @relation("NotificationsReceived")
+  notificationsSent     Notification[]   @relation("NotificationsSent")
+}
+
+/// Invariants enforced by DB CHECK constraints (migration 20261104160000):
+/// media_id equals the deepest typed id, exactly one media-type branch is
+/// populated, and ratings stay within 1-5.
+model RewatchLog {
+  id              String           @id @default(uuid())
+  userId          String           @map("user_id")
+  mediaType       RewatchMediaType @map("media_type")
+  mediaId         String           @map("media_id")
+  rewatchedAt     DateTime         @default(now()) @map("rewatched_at") @db.Timestamptz(3)
+  /// Batch identity: a season/show rewatch writes one group; children share the
+  /// parent's id. Standalone logs are their own group.
+  groupId         String           @map("group_id")
+  /// Client-minted idempotency key: a retried request with the same key must not
+  /// log a second watch. Null for requests that did not send one.
+  clientRequestId String?          @map("client_request_id")
+  showId          String?          @map("show_id")
+  seasonId        String?          @map("season_id")
+  episodeId       String?          @map("episode_id")
+  movieId         String?          @map("movie_id")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  show    Show?    @relation(fields: [showId], references: [id], onDelete: Cascade)
+  season  Season?  @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  episode Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  movie   Movie?   @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  /// NULLs are distinct in Postgres, so rows without a request id are unconstrained.
+  @@unique([userId, clientRequestId])
+  @@index([userId, mediaType, mediaId, rewatchedAt])
+  @@index([mediaType, mediaId])
+  @@index([groupId])
+  @@index([userId, rewatchedAt])
+  @@index([showId])
+  @@index([seasonId])
+  @@index([episodeId])
+  @@index([movieId])
+  @@map("rewatch_logs")
+}
+
+/// A reversible watch removal: the deleted rows and the counters/tracking values
+/// they changed are kept for a short window so an accidental unwatch can be
+/// undone byte-for-byte. Unlike a `deleted_at` flag on `rewatch_logs`, nothing
+/// that reads watches has to learn to filter these rows out — they are not there.
+model RewatchLogRemoval {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  mediaType RewatchMediaType @map("media_type")
+  mediaId   String           @map("media_id")
+  /// Removed `rewatch_logs` rows plus the episode/season/show/movie counters and
+  /// tracking values, exactly as they were before the removal.
+  payload   Json
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("rewatch_log_removals")
+}
+
+model Comment {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  mediaType CommentMediaType @map("media_type")
+  /// TMDB id of the reviewed title/episode. Public reviews are intentionally
+  /// scoped by TMDB id (never the per-user internal row id) so every user's
+  /// library shares the same conversation for the same media item.
+  tmdbId    Int              @map("tmdb_id")
+  content   String           @db.Text
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  /// Set by moderation. A hidden comment leaves the public feed but stays
+  /// visible to its author with `hiddenReason` so the removal is explainable.
+  hiddenAt     DateTime? @map("hidden_at") @db.Timestamptz(3)
+  hiddenReason String?   @map("hidden_reason")
+
+  user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attachments   CommentAttachment[]
+  mentions      CommentMention[]    @relation("CommentMentions")
+  notifications Notification[]
+  reports       CommentReport[]
+
+  @@index([mediaType, tmdbId, createdAt, id])
+  @@index([userId, createdAt])
+  @@index([hiddenAt])
+  @@map("comments")
+}
+
+/// Why a reader flagged a review. Labels are lower-case in Postgres, like every
+/// other enum here.
+enum CommentReportReason {
+  SPAM      @map("spam")
+  ABUSE     @map("abuse")
+  OFF_TOPIC @map("off_topic")
+  OTHER     @map("other")
+}
+
+/// One reader's report. Unresolved rows are the moderation queue; resolving one
+/// records when it was handled (hiding the comment resolves all of them).
+model CommentReport {
+  id         String              @id @default(uuid())
+  commentId  String              @map("comment_id")
+  reporterId String              @map("reporter_id")
+  reason     CommentReportReason
+  note       String?             @db.Text
+  createdAt  DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  resolvedAt DateTime?           @map("resolved_at") @db.Timestamptz(3)
+
+  comment  Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reporter User    @relation("CommentReports", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  /// One report per reader per comment: a second POST is a no-op, not a queue
+  /// full of duplicates.
+  @@unique([commentId, reporterId])
+  @@index([resolvedAt, createdAt])
+  @@map("comment_reports")
+}
+
+model CommentAttachment {
+  id         String   @id @default(uuid())
+  commentId  String   @map("comment_id")
+  /// Object key inside the bucket (or local root). Derived server-side, never
+  /// from the client, so the sweep can match rows to stored objects.
+  storageKey String   @unique @map("storage_key")
+  url        String
+  width      Int?
+  height     Int?
+  mimeType   String   @map("mime_type")
+  sizeBytes  Int      @map("size_bytes")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@index([commentId])
+  @@map("comment_attachments")
+}
+
+model CommentMention {
+  id              String   @id @default(uuid())
+  commentId       String   @map("comment_id")
+  mentionedUserId String   @map("mentioned_user_id")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  comment       Comment @relation("CommentMentions", fields: [commentId], references: [id], onDelete: Cascade)
+  mentionedUser User    @relation("MentionsReceived", fields: [mentionedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, mentionedUserId])
+  @@index([mentionedUserId, createdAt])
+  @@map("comment_mentions")
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String           @map("recipient_id")
+  actorId     String           @map("actor_id")
+  type        NotificationType
+  commentId   String           @map("comment_id")
+  /// Denormalized snapshot of the commented-on media so notifications keep
+  /// rendering after the media leaves every library. Set at creation time.
+  mediaType   CommentMediaType @map("media_type")
+  /// TMDB id of the reviewed title/episode.
+  tmdbId      Int              @map("tmdb_id")
+  /// Title snapshot (movie/show/episode name) taken when the comment was
+  /// created. Never resolved live: the source media may be deleted.
+  mediaTitle  String           @map("media_title")
+  isRead      Boolean          @default(false) @map("is_read")
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  recipient User    @relation("NotificationsReceived", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor     User    @relation("NotificationsSent", fields: [actorId], references: [id], onDelete: Cascade)
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([recipientId, commentId])
+  @@index([recipientId, isRead, createdAt, id])
+  @@index([commentId])
+  @@map("notifications")
 }
 
 model Account {
@@ -191,7 +425,7 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  expires      DateTime
+  expires      DateTime @db.Timestamptz(3)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -199,7 +433,7 @@ model Session {
 model VerificationToken {
   identifier String
   token      String
-  expires    DateTime
+  expires    DateTime @db.Timestamptz(3)
 
   @@unique([identifier, token])
 }

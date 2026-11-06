@@ -1,0 +1,49 @@
+'use client';
+
+import { useState } from 'react';
+import { IconHistory } from '@tabler/icons-react';
+import { clsx } from 'clsx';
+import dynamic from 'next/dynamic';
+import type { RewatchHistoryButtonProps } from '@/modules/rewatch/types/rewatch';
+
+const RewatchHistoryModal = dynamic(
+  () => import('@/modules/rewatch/components/RewatchHistoryModal').then((m) => m.RewatchHistoryModal),
+  { ssr: false },
+);
+
+export const RewatchHistoryButton = ({
+  mediaType,
+  mediaId,
+  title,
+  count = 0,
+  className,
+}: RewatchHistoryButtonProps) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      {open && (
+        <RewatchHistoryModal
+          mediaType={mediaType}
+          mediaId={mediaId}
+          title={title}
+          initialCount={count}
+          onClose={() => setOpen(false)}
+        />
+      )}
+
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label={`Open watch history for ${title}`}
+        title="Watch history"
+        className={clsx(
+          'flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-xs bg-surface-soft text-ink-secondary hover:bg-surface-soft-hover',
+          className,
+        )}
+      >
+        <IconHistory size={12} />
+      </button>
+    </>
+  );
+};

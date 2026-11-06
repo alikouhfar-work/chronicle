@@ -1,6 +1,7 @@
 import { AuthShell } from '@/shared/ui/AuthShell';
 import { availableProviders } from '@/infra/auth/auth';
 import { LoginForm } from '@/modules/auth/components/LoginForm';
+import type { LoginPageProps } from '@/modules/auth/types/loginPage';
 
 const ERROR_MESSAGES: Record<string, string> = {
   CredentialsSignin: 'Incorrect email or password. Please try again.',
@@ -12,11 +13,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   Configuration: 'The server is missing sign-in configuration. Please contact the administrator.',
 };
 
-const LoginPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ callbackUrl?: string; error?: string }>;
-}) => {
+const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const { callbackUrl, error } = await searchParams;
   const target = callbackUrl ?? '/';
 

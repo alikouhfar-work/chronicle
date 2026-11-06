@@ -1,4 +1,4 @@
-import { TrendingShowRaw } from '@/modules/show';
+import type { TrendingShowRaw } from '@/modules/show';
 
 export type GetTrendingShowsResponse = {
   results: TrendingShowRaw[];

@@ -1,3 +1,4 @@
+import { env } from '@/infra/env';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/infra/db/prisma';
 import { tmdbFetch } from '@/infra/tmdb/client';
@@ -9,15 +10,19 @@ import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/p
 import { addMovie } from '@/modules/movie/actions/addMovie';
 import { addShow } from '@/modules/show/actions/addShow';
 import { revalidatePath } from 'next/cache';
+import { acquireAdvisoryLock } from '@/infra/db/advisoryLock';
 import { getErrorMessage } from '@/shared/lib/errors';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
+/** Stable int32 shared by every reset attempt; nothing else in the app uses it. */
+const RESET_DEMO_LOCK_KEY = 727_214;
+
 const MAX_MOVIES = 5;
 const MAX_SHOWS = 5;
-const DEMO_EMAIL = process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local';
+const DEMO_EMAIL = env.demoUserEmail;
 
 const MOVIE_STATUSES = [
   MovieTrackingStatus.PLAN_TO_WATCH,
@@ -33,29 +38,48 @@ const SHOW_STATUSES = [
 ] as const;
 
 const randomFrom = <T,>(arr: readonly T[]): T => {
-  return arr[Math.floor(Math.random() * arr.length)];
+  const value = arr[Math.floor(Math.random() * arr.length)];
+  if (value === undefined) throw new Error('[reset-demo] randomFrom called with an empty list');
+  return value;
 };
 
 const shuffle = <T,>(arr: readonly T[]): T[] => {
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
+    const left = copy[i];
+    const right = copy[j];
+    if (left !== undefined && right !== undefined) {
+      copy[i] = right;
+      copy[j] = left;
+    }
   }
   return copy;
 };
 
 export const GET = async (request: Request) => {
   // 1. Authenticate
-  const expected = `Bearer ${process.env.CRON_SECRET}`;
+  const expected = `Bearer ${env.cronSecret}`;
   const received = request.headers.get('authorization');
 
-  if (!process.env.CRON_SECRET || received !== expected) {
+  if (!env.cronSecret || received !== expected) {
     return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (!process.env.TMDB_ACCESS_TOKEN && !process.env.DEMO_TMDB_TOKEN) {
+  if (!env.hasTmdbToken) {
     return NextResponse.json({ ok: false, error: 'TMDB_ACCESS_TOKEN is not set' }, { status: 500 });
+  }
+
+  // Two resets must never interleave: the second wipe would run against a
+  // half-seeded library, and the counters would describe neither run. The lock
+  // is engine-wide, so a second Vercel instance sees it too.
+  const lock = await acquireAdvisoryLock(RESET_DEMO_LOCK_KEY).catch(() => null);
+
+  if (!lock) {
+    return NextResponse.json(
+      { ok: false, error: 'A demo reset is already running.' },
+      { status: 409 },
+    );
   }
 
   try {
@@ -120,5 +144,9 @@ export const GET = async (request: Request) => {
       { ok: false, error: 'Reset failed', message: getErrorMessage(error) },
       { status: 500 },
     );
+  } finally {
+    // Released even when a seed failed, so the next scheduled run is not locked
+    // out until the connection times out.
+    await lock.release().catch(() => undefined);
   }
 };

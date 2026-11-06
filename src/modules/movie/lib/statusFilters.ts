@@ -1,5 +1,5 @@
 import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
-import { MovieStatusFilter } from '@/modules/movie/types/movieStatusFilter';
+import type { MovieStatusFilter } from '@/modules/movie/types/movieStatusFilter';
 
 export const movieStatusFilters: MovieStatusFilter[] = [
   { key: MovieTrackingStatus.PLAN_TO_WATCH, title: 'Plan to Watch' },

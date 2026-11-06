@@ -1,18 +1,22 @@
+import { env } from '@/infra/env';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/infra/db/prisma';
+import { ensureUsername } from '@/infra/auth/ensureUsername';
+import type { AvailableProvider } from '@/infra/auth/types';
+import { logError } from '@/infra/logging/logger';
 
-export const hasGoogle = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET);
-export const hasGuestLogin = process.env.GUEST_LOGIN_ENABLED === 'true';
+export type { AuthProviderId, AvailableProvider } from '@/infra/auth/types';
+
+export const hasGoogle = env.hasGoogle;
+export const hasGuestLogin = env.guestLoginEnabled;
 // Shared demo/guest account — provisioned by seed + demo reset on the demo DB.
-export const guestEmail = process.env.DEMO_USER_EMAIL ?? 'demo@chronicle.local';
+export const guestEmail = env.demoUserEmail;
 
-export type AuthProviderId = 'google' | 'credentials' | 'guest';
-
-export const availableProviders: { id: AuthProviderId; name: string }[] = [
+export const availableProviders: AvailableProvider[] = [
   ...(hasGoogle ? [{ id: 'google' as const, name: 'Google' }] : []),
   { id: 'credentials' as const, name: 'Email' },
   ...(hasGuestLogin ? [{ id: 'guest' as const, name: 'Guest' }] : []),
@@ -55,9 +59,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                   }
                 }
                 if (!user) return null;
+                await ensureUsername(user.id).catch((error: unknown) =>
+                  logError({ event: 'auth.guest.username', action: 'authorize', error }),
+                );
                 return { id: user.id, email: user.email, name: user.name };
               } catch (error) {
-                console.error('[auth][guest] authorize failed:', error);
+                logError({ event: 'auth.guest.authorize', action: 'authorize', error });
                 return null;
               }
             },
@@ -84,12 +91,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           return { id: user.id, email: user.email, name: user.name };
         } catch (error) {
-          console.error('[auth][credentials] authorize failed:', error);
+          logError({ event: 'auth.credentials.authorize', action: 'authorize', error });
           return null;
         }
       },
     }),
   ],
+  events: {
+    // OAuth users are created by the adapter, bypassing the register action.
+    createUser: async ({ user }) => {
+      if (!user.id) return;
+      await ensureUsername(user.id).catch((error: unknown) =>
+        logError({ event: 'auth.createUser.username', action: 'createUser', userId: user.id, error }),
+      );
+    },
+  },
   callbacks: {
     jwt: ({ token, user }) => {
       if (user?.id) token.sub = user.id;

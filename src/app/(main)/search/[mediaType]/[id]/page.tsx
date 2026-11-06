@@ -9,8 +9,8 @@ import { getMovieCredits } from '@/modules/movie/queries/getMovieCredits';
 import { getShowCredits } from '@/modules/show/queries/getShowCredits';
 import { getSimilarMovies } from '@/modules/movie/queries/getSimilarMovies';
 import { getSimilarShows } from '@/modules/show/queries/getSimilarShows';
-import { getTrackedMoviesLookup } from '@/modules/movie/queries/getTrackedMoviesLookup';
-import { getTrackedShowsLookup } from '@/modules/show/queries/getTrackedShowsLookup';
+import { getTrackedMoviesLookup } from '@/modules/movie/services/getTrackedMoviesLookup';
+import { getTrackedShowsLookup } from '@/modules/show/services/getTrackedShowsLookup';
 
 const isMediaType = (value: string): value is MediaType =>
   value === 'movie' || value === 'tv';

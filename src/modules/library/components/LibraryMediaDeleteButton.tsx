@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IconTrash } from '@tabler/icons-react';
 import { deleteShowFromLibrary } from '@/modules/show/actions/deleteShowFromLibrary';
-import { LibraryMediaDeleteButtonProps } from '@/modules/library/types/libraryMediaDeleteButton';
+import type { LibraryMediaDeleteButtonProps } from '@/modules/library/types/libraryMediaDeleteButton';
 import { deleteMovieFromLibrary } from '@/modules/movie/actions/deleteMovieFromLibrary';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
@@ -85,7 +85,7 @@ export const LibraryMediaDeleteButton = ({
         aria-label="Remove from library"
         aria-haspopup="dialog"
         title="Remove from library"
-        className="cursor-pointer rounded-full border border-white/10 bg-black/60 p-2 text-zinc-400 backdrop-blur-md transition-all duration-200 hover:bg-rose-500/30 hover:text-rose-500 aria-busy:cursor-wait aria-busy:opacity-80"
+        className="cursor-pointer rounded-pill border border-line bg-black/60 p-2 text-ink-muted backdrop-blur-md transition-all duration-200 hover:bg-danger/90/30 hover:text-danger aria-busy:cursor-wait aria-busy:opacity-80"
       />
 
       {confirmOpen &&
@@ -108,12 +108,12 @@ export const LibraryMediaDeleteButton = ({
           >
             <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
             <div
-              className="glass-card relative w-full max-w-xs space-y-4 rounded-2xl border border-white/10 p-5 shadow-2xl"
+              className="glass-card relative w-full max-w-xs space-y-4 rounded-card border border-line p-5 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="space-y-1">
-                <h3 className="text-sm font-bold text-white">Remove from library?</h3>
-                <p className="text-xs leading-relaxed text-zinc-400">
+                <h3 className="text-sm font-bold text-ink">Remove from library?</h3>
+                <p className="text-xs leading-relaxed text-ink-muted">
                   This will permanently remove this {isSeries ? 'series' : 'movie'} and all of
                   its tracking history.
                 </p>
@@ -123,14 +123,14 @@ export const LibraryMediaDeleteButton = ({
                   ref={cancelRef}
                   type="button"
                   onClick={close}
-                  className="apple-pill-btn cursor-pointer border border-white/10 bg-white/6 px-3.5 py-1.5 text-xs font-semibold text-zinc-300 transition-colors hover:bg-white/12 hover:text-white"
+                  className="apple-pill-btn cursor-pointer border border-line bg-surface-soft px-3.5 py-1.5 text-xs font-semibold text-ink-secondary transition-colors hover:bg-surface-soft-hover hover:text-ink"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleConfirm}
-                  className="apple-pill-btn cursor-pointer border border-rose-500/40 bg-rose-500/20 px-3.5 py-1.5 text-xs font-bold text-rose-300 transition-colors hover:bg-rose-500/30"
+                  className="apple-pill-btn cursor-pointer border border-danger/30 bg-danger-soft px-3.5 py-1.5 text-xs font-bold text-danger transition-colors hover:bg-danger/90/30"
                 >
                   Delete
                 </button>

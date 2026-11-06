@@ -10,7 +10,7 @@ vi.mock('react-hot-toast', () => ({
 }));
 
 const lastToastProps = () => {
-  const render = vi.mocked(toast.custom).mock.calls[0][0] as (t: { id: string }) => React.ReactElement;
+  const render = vi.mocked(toast.custom).mock.calls[0]![0] as (t: { id: string }) => React.ReactElement;
   return render({ id: 'toast-1' }).props as {
     id: string;
     tone: string;

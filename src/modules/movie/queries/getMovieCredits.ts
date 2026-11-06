@@ -1,5 +1,5 @@
-import { fetchCredits } from '@/modules/media/queries';
-import { Credits } from '@/modules/discovery/credit';
+import { fetchCredits } from '@/modules/media/queries/fetchCredits';
+import type { Credits } from '@/modules/discovery/credit';
 
 export const getMovieCredits = async (id: string): Promise<Credits | null> => {
   try {

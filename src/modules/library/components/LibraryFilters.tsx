@@ -60,7 +60,7 @@ export const LibraryFilters = () => {
   }, [searchQuery, urlSearch, createQueryString]);
 
   return (
-    <div className="glass-card flex flex-col gap-4 rounded-2xl border border-white/8 p-5 shadow-xl md:p-6">
+    <div className="glass-card flex flex-col gap-4 rounded-card border border-line p-5 shadow-xl md:p-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div className="group relative flex-1">
           <input
@@ -73,10 +73,10 @@ export const LibraryFilters = () => {
                 ? 'Filter series by title or genre...'
                 : 'Filter movies by title or genre...'
             }
-            className="w-full rounded-full border border-white/8 bg-white/4 px-4 py-2.5 pr-10 pl-10 text-base font-medium text-white placeholder-zinc-500 transition-all hover:border-white/20 focus:ring-2 focus:ring-violet-400/20 focus:outline-none sm:text-xs"
+            className="w-full rounded-pill border border-line-control bg-surface-soft px-4 py-2.5 pr-10 pl-10 text-base font-medium text-ink placeholder:text-ink-subtle transition-all hover:border-line-strong focus-visible:ring-2 focus:ring-accent/40 focus:outline-none sm:text-xs"
           />
           <IconSearch
-            className="absolute top-3 left-3.5 text-zinc-400 transition-colors group-focus-within:text-violet-400"
+            className="absolute top-3 left-3.5 text-ink-muted transition-colors group-focus-within:text-accent-ink"
             size={15}
           />
           {searchQuery && (
@@ -84,7 +84,7 @@ export const LibraryFilters = () => {
               type="button"
               onClick={() => setSearchQuery('')}
               aria-label="Clear search"
-              className="absolute top-2.5 right-3 rounded-full p-1 text-zinc-400 transition-colors hover:text-white"
+              className="absolute top-2.5 right-3 rounded-pill p-1 text-ink-muted transition-colors hover:text-ink"
             >
               <IconX size={13} />
             </button>
@@ -92,8 +92,8 @@ export const LibraryFilters = () => {
         </div>
 
         <div className="flex shrink-0 items-center gap-2 self-end text-xs md:self-auto">
-          <span className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
-            <IconArrowsUpDown size={13} className="text-violet-400" />
+          <span className="flex items-center gap-1.5 text-xs font-medium text-ink-muted">
+            <IconArrowsUpDown size={13} className="text-accent-ink" />
             Sort by:
           </span>
           <div className="relative">
@@ -101,19 +101,19 @@ export const LibraryFilters = () => {
               value={sortFilter}
               onChange={(e) => createQueryString('sort', e.target.value)}
               aria-label="Sort library"
-              className="cursor-pointer appearance-none rounded-full border border-white/10 bg-white/6 px-3.5 py-2 pr-7 text-base font-medium text-zinc-200 transition-colors hover:border-white/20 focus:outline-none sm:text-xs"
+              className="cursor-pointer appearance-none rounded-pill border border-line bg-surface-soft px-3.5 py-2 pr-7 text-base font-medium text-ink-secondary transition-colors hover:border-line-strong focus-visible:ring-2 focus:ring-accent/40 focus:outline-none sm:text-xs"
             >
-              <option value="recent" className="bg-zinc-900 text-white">
+              <option value="recent" className="bg-surface-raised text-ink">
                 Recently Added
               </option>
-              <option value="title" className="bg-zinc-900 text-white">
+              <option value="title" className="bg-surface-raised text-ink">
                 Title A-Z
               </option>
-              <option value="year" className="bg-zinc-900 text-white">
+              <option value="year" className="bg-surface-raised text-ink">
                 Release Year
               </option>
             </select>
-            <div className="pointer-events-none absolute top-3 right-2.5 text-[9px] text-zinc-400">
+            <div className="pointer-events-none absolute top-3 right-2.5 text-micro text-ink-muted">
               ▼
             </div>
           </div>
@@ -121,11 +121,11 @@ export const LibraryFilters = () => {
       </div>
 
       {/* Status Filters */}
-      <div className="flex flex-col justify-between gap-3 border-t border-white/6 pt-3 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-3 border-t border-line pt-3 sm:flex-row sm:items-center">
         {searchQuery || statusFilter !== 'all' ? (
           <button
             onClick={clearFilters}
-            className="flex cursor-pointer items-center gap-1.5 self-start text-xs font-medium text-violet-400 hover:text-violet-300 hover:underline sm:self-auto"
+            className="flex cursor-pointer items-center gap-1.5 self-start text-xs font-medium text-accent-ink hover:text-accent-ink hover:underline sm:self-auto"
           >
             <IconX size={13} />
             <span>Reset Filters</span>
@@ -135,8 +135,8 @@ export const LibraryFilters = () => {
         )}
 
         <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-auto">
-          <span className="mr-1 text-xs font-medium text-zinc-400">Status:</span>
-          <div className="flex flex-wrap gap-1 rounded-[20px] border border-white/8 bg-zinc-900/90 p-1 sm:rounded-full">
+          <span className="mr-1 text-xs font-medium text-ink-muted">Status:</span>
+          <div className="flex flex-wrap gap-1 rounded-[20px] border border-line bg-surface-raised/90 p-1 sm:rounded-pill">
             {statusFilters.map((status) => {
               const isSelected = optimisticStatus === status.id;
 
@@ -147,11 +147,11 @@ export const LibraryFilters = () => {
                   aria-pressed={isSelected}
                   className={`apple-pill-btn flex cursor-pointer items-center gap-1.5 px-3 py-1.5 text-xs transition-all duration-150 ${
                     isSelected
-                      ? 'bg-white font-bold text-zinc-950 shadow-md'
-                      : 'text-zinc-400 hover:bg-white/6 hover:text-white'
+                      ? 'bg-white font-bold text-canvas shadow-card'
+                      : 'text-ink-muted hover:bg-surface-soft hover:text-ink'
                   }`}
                 >
-                  <span className={`h-1.5 w-1.5 rounded-full ${status.indicatorColor}`} />
+                  <span className={`h-1.5 w-1.5 rounded-pill ${status.indicatorColor}`} />
                   <span>{status.title}</span>
                 </button>
               );

@@ -1,8 +1,8 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { tmdbFetch } from '@/infra/tmdb/client';
-import { ShowDetailsRaw } from '@/modules/show/types/showDetails';
-import { SeasonRaw } from '@/modules/episode-season';
+import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
+import type { ShowDetailsRaw } from '@/modules/show/types/showDetails';
+import type { SeasonRaw } from '@/modules/episode-season';
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, ExternalServiceError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { buildTrackingTimestamps } from '@/modules/media/tracking';

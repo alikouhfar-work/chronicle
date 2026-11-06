@@ -1,4 +1,4 @@
-import { GenreRaw } from '@/modules/discovery/genre';
+import type { GenreRaw } from '@/modules/discovery/genre';
 
 export type MovieSearchResultRaw = {
   backdrop_path: string;

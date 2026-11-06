@@ -3,11 +3,11 @@
 import { useCallback, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { toastError, toastSuccess } from '@/shared/lib/toast';
+import type {
+  FailedActionResult,
+  UseServerActionOptions,
+} from '@/shared/types/useServerAction';
 
-type FailedActionResult = {
-  success: false;
-  error: string;
-};
 
 const isFailedResult = (value: unknown): value is FailedActionResult => {
   if (typeof value !== 'object' || value === null) return false;
@@ -15,11 +15,6 @@ const isFailedResult = (value: unknown): value is FailedActionResult => {
   return 'error' in value;
 };
 
-type UseServerActionOptions = {
-  successMessage?: string;
-  errorMessage?: string;
-  refresh?: boolean;
-};
 
 export const useServerAction = <TArgs extends unknown[]>(
   action: (...args: TArgs) => Promise<unknown>,

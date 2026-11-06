@@ -1,4 +1,9 @@
-import { IconBookmark, IconDeviceTv, IconLayoutDashboard } from '@tabler/icons-react';
+import {
+  IconBookmark,
+  IconDeviceTv,
+  IconLayoutDashboard,
+  IconNotes,
+} from '@tabler/icons-react';
 
 export const navigation = [
   {
@@ -18,5 +23,11 @@ export const navigation = [
     id: 'discover',
     title: 'Discover',
     icon: IconDeviceTv,
+  },
+  {
+    href: '/notes',
+    id: 'notes',
+    title: 'Notes',
+    icon: IconNotes,
   },
 ];

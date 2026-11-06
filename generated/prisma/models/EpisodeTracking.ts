@@ -40,7 +40,6 @@ export type EpisodeTrackingMinAggregateOutputType = {
   watched: boolean | null
   watchedAt: Date | null
   rating: number | null
-  notes: string | null
   updatedAt: Date | null
 }
 
@@ -50,7 +49,6 @@ export type EpisodeTrackingMaxAggregateOutputType = {
   watched: boolean | null
   watchedAt: Date | null
   rating: number | null
-  notes: string | null
   updatedAt: Date | null
 }
 
@@ -60,7 +58,6 @@ export type EpisodeTrackingCountAggregateOutputType = {
   watched: number
   watchedAt: number
   rating: number
-  notes: number
   updatedAt: number
   _all: number
 }
@@ -80,7 +77,6 @@ export type EpisodeTrackingMinAggregateInputType = {
   watched?: true
   watchedAt?: true
   rating?: true
-  notes?: true
   updatedAt?: true
 }
 
@@ -90,7 +86,6 @@ export type EpisodeTrackingMaxAggregateInputType = {
   watched?: true
   watchedAt?: true
   rating?: true
-  notes?: true
   updatedAt?: true
 }
 
@@ -100,7 +95,6 @@ export type EpisodeTrackingCountAggregateInputType = {
   watched?: true
   watchedAt?: true
   rating?: true
-  notes?: true
   updatedAt?: true
   _all?: true
 }
@@ -197,7 +191,6 @@ export type EpisodeTrackingGroupByOutputType = {
   watched: boolean
   watchedAt: Date | null
   rating: number | null
-  notes: string | null
   updatedAt: Date
   _count: EpisodeTrackingCountAggregateOutputType | null
   _avg: EpisodeTrackingAvgAggregateOutputType | null
@@ -230,7 +223,6 @@ export type EpisodeTrackingWhereInput = {
   watched?: Prisma.BoolFilter<"EpisodeTracking"> | boolean
   watchedAt?: Prisma.DateTimeNullableFilter<"EpisodeTracking"> | Date | string | null
   rating?: Prisma.IntNullableFilter<"EpisodeTracking"> | number | null
-  notes?: Prisma.StringNullableFilter<"EpisodeTracking"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"EpisodeTracking"> | Date | string
   episode?: Prisma.XOR<Prisma.EpisodeScalarRelationFilter, Prisma.EpisodeWhereInput>
 }
@@ -241,7 +233,6 @@ export type EpisodeTrackingOrderByWithRelationInput = {
   watched?: Prisma.SortOrder
   watchedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   episode?: Prisma.EpisodeOrderByWithRelationInput
 }
@@ -255,7 +246,6 @@ export type EpisodeTrackingWhereUniqueInput = Prisma.AtLeast<{
   watched?: Prisma.BoolFilter<"EpisodeTracking"> | boolean
   watchedAt?: Prisma.DateTimeNullableFilter<"EpisodeTracking"> | Date | string | null
   rating?: Prisma.IntNullableFilter<"EpisodeTracking"> | number | null
-  notes?: Prisma.StringNullableFilter<"EpisodeTracking"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"EpisodeTracking"> | Date | string
   episode?: Prisma.XOR<Prisma.EpisodeScalarRelationFilter, Prisma.EpisodeWhereInput>
 }, "id" | "episodeId">
@@ -266,7 +256,6 @@ export type EpisodeTrackingOrderByWithAggregationInput = {
   watched?: Prisma.SortOrder
   watchedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EpisodeTrackingCountOrderByAggregateInput
   _avg?: Prisma.EpisodeTrackingAvgOrderByAggregateInput
@@ -284,7 +273,6 @@ export type EpisodeTrackingScalarWhereWithAggregatesInput = {
   watched?: Prisma.BoolWithAggregatesFilter<"EpisodeTracking"> | boolean
   watchedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EpisodeTracking"> | Date | string | null
   rating?: Prisma.IntNullableWithAggregatesFilter<"EpisodeTracking"> | number | null
-  notes?: Prisma.StringNullableWithAggregatesFilter<"EpisodeTracking"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"EpisodeTracking"> | Date | string
 }
 
@@ -293,7 +281,6 @@ export type EpisodeTrackingCreateInput = {
   watched?: boolean
   watchedAt?: Date | string | null
   rating?: number | null
-  notes?: string | null
   updatedAt?: Date | string
   episode: Prisma.EpisodeCreateNestedOneWithoutTrackingInput
 }
@@ -304,7 +291,6 @@ export type EpisodeTrackingUncheckedCreateInput = {
   watched?: boolean
   watchedAt?: Date | string | null
   rating?: number | null
-  notes?: string | null
   updatedAt?: Date | string
 }
 
@@ -313,7 +299,6 @@ export type EpisodeTrackingUpdateInput = {
   watched?: Prisma.BoolFieldUpdateOperationsInput | boolean
   watchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   episode?: Prisma.EpisodeUpdateOneRequiredWithoutTrackingNestedInput
 }
@@ -324,7 +309,6 @@ export type EpisodeTrackingUncheckedUpdateInput = {
   watched?: Prisma.BoolFieldUpdateOperationsInput | boolean
   watchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -334,7 +318,6 @@ export type EpisodeTrackingCreateManyInput = {
   watched?: boolean
   watchedAt?: Date | string | null
   rating?: number | null
-  notes?: string | null
   updatedAt?: Date | string
 }
 
@@ -343,7 +326,6 @@ export type EpisodeTrackingUpdateManyMutationInput = {
   watched?: Prisma.BoolFieldUpdateOperationsInput | boolean
   watchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -353,7 +335,6 @@ export type EpisodeTrackingUncheckedUpdateManyInput = {
   watched?: Prisma.BoolFieldUpdateOperationsInput | boolean
   watchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -368,7 +349,6 @@ export type EpisodeTrackingCountOrderByAggregateInput = {
   watched?: Prisma.SortOrder
   watchedAt?: Prisma.SortOrder
   rating?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -382,7 +362,6 @@ export type EpisodeTrackingMaxOrderByAggregateInput = {
   watched?: Prisma.SortOrder
   watchedAt?: Prisma.SortOrder
   rating?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -392,7 +371,6 @@ export type EpisodeTrackingMinOrderByAggregateInput = {
   watched?: Prisma.SortOrder
   watchedAt?: Prisma.SortOrder
   rating?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -437,7 +415,6 @@ export type EpisodeTrackingCreateWithoutEpisodeInput = {
   watched?: boolean
   watchedAt?: Date | string | null
   rating?: number | null
-  notes?: string | null
   updatedAt?: Date | string
 }
 
@@ -446,7 +423,6 @@ export type EpisodeTrackingUncheckedCreateWithoutEpisodeInput = {
   watched?: boolean
   watchedAt?: Date | string | null
   rating?: number | null
-  notes?: string | null
   updatedAt?: Date | string
 }
 
@@ -471,7 +447,6 @@ export type EpisodeTrackingUpdateWithoutEpisodeInput = {
   watched?: Prisma.BoolFieldUpdateOperationsInput | boolean
   watchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -480,7 +455,6 @@ export type EpisodeTrackingUncheckedUpdateWithoutEpisodeInput = {
   watched?: Prisma.BoolFieldUpdateOperationsInput | boolean
   watchedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -492,7 +466,6 @@ export type EpisodeTrackingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   watched?: boolean
   watchedAt?: boolean
   rating?: boolean
-  notes?: boolean
   updatedAt?: boolean
   episode?: boolean | Prisma.EpisodeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episodeTracking"]>
@@ -503,7 +476,6 @@ export type EpisodeTrackingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   watched?: boolean
   watchedAt?: boolean
   rating?: boolean
-  notes?: boolean
   updatedAt?: boolean
   episode?: boolean | Prisma.EpisodeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episodeTracking"]>
@@ -514,7 +486,6 @@ export type EpisodeTrackingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   watched?: boolean
   watchedAt?: boolean
   rating?: boolean
-  notes?: boolean
   updatedAt?: boolean
   episode?: boolean | Prisma.EpisodeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episodeTracking"]>
@@ -525,11 +496,10 @@ export type EpisodeTrackingSelectScalar = {
   watched?: boolean
   watchedAt?: boolean
   rating?: boolean
-  notes?: boolean
   updatedAt?: boolean
 }
 
-export type EpisodeTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "episodeId" | "watched" | "watchedAt" | "rating" | "notes" | "updatedAt", ExtArgs["result"]["episodeTracking"]>
+export type EpisodeTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "episodeId" | "watched" | "watchedAt" | "rating" | "updatedAt", ExtArgs["result"]["episodeTracking"]>
 export type EpisodeTrackingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   episode?: boolean | Prisma.EpisodeDefaultArgs<ExtArgs>
 }
@@ -550,8 +520,10 @@ export type $EpisodeTrackingPayload<ExtArgs extends runtime.Types.Extensions.Int
     episodeId: string
     watched: boolean
     watchedAt: Date | null
+    /**
+     * Independent of notes: rating an episode never touches its note list.
+     */
     rating: number | null
-    notes: string | null
     updatedAt: Date
   }, ExtArgs["result"]["episodeTracking"]>
   composites: {}
@@ -982,7 +954,6 @@ export interface EpisodeTrackingFieldRefs {
   readonly watched: Prisma.FieldRef<"EpisodeTracking", 'Boolean'>
   readonly watchedAt: Prisma.FieldRef<"EpisodeTracking", 'DateTime'>
   readonly rating: Prisma.FieldRef<"EpisodeTracking", 'Int'>
-  readonly notes: Prisma.FieldRef<"EpisodeTracking", 'String'>
   readonly updatedAt: Prisma.FieldRef<"EpisodeTracking", 'DateTime'>
 }
     

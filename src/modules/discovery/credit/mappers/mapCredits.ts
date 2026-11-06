@@ -1,4 +1,4 @@
-import { Credits, CreditsRaw } from '@/modules/discovery/credit';
+import type { Credits, CreditsRaw } from '@/modules/discovery/credit';
 import { mapCast } from '@/modules/discovery/credit/mappers/mapCast';
 import { mapCrew } from '@/modules/discovery/credit/mappers/mapCrew';
 

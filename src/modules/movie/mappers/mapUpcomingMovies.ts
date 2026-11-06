@@ -1,4 +1,4 @@
-import { MappedUpcomingMovie, UpcomingMovie } from '@/modules/movie/types/upcomingMovie';
+import type { MappedUpcomingMovie, UpcomingMovie } from '@/modules/movie/types/upcomingMovie';
 
 export const mapUpcomingMovies = (movies: UpcomingMovie[]): MappedUpcomingMovie[] =>
   movies.map((movie) => ({

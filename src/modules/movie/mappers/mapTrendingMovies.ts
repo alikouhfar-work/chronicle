@@ -1,4 +1,4 @@
-import { mapTrending as mapTrendingBase } from '@/modules/media/mappers';
+import { mapTrending as mapTrendingBase } from '@/modules/media/mappers/mediaMappers';
 import type { TrendingMovie, TrendingMovieRaw } from '@/modules/movie';
 
 export const mapTrendingMovies = (

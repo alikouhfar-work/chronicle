@@ -1,3 +1,7 @@
+import { env } from '@/infra/env';
+import type { TmdbFetchOptions } from '@/infra/tmdb/types';
+
+export type { TmdbFetchOptions };
 import { ExternalServiceError } from '@/shared/lib/errors';
 
 class TmdbConfigError extends ExternalServiceError {
@@ -24,13 +28,8 @@ class TmdbNetworkError extends ExternalServiceError {
   }
 }
 
-export type TmdbFetchOptions = RequestInit & {
-  next?: NextFetchRequestConfig;
-  timeoutMs?: number;
-};
-
 export const resolveTmdbBaseUrl = (): string => {
-  const baseUrl = process.env.TMDB_BASE_URL;
+  const baseUrl = env.tmdbBaseUrl;
   if (!baseUrl) {
     throw new TmdbConfigError('TMDB_BASE_URL is not defined');
   }
@@ -38,7 +37,7 @@ export const resolveTmdbBaseUrl = (): string => {
 };
 
 const resolveAccessToken = (): string => {
-  const token = process.env.TMDB_ACCESS_TOKEN ?? process.env.DEMO_TMDB_TOKEN;
+  const token = env.tmdbAccessToken;
   if (!token) {
     throw new TmdbConfigError('TMDB_ACCESS_TOKEN is not defined');
   }

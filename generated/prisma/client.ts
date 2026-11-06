@@ -82,10 +82,58 @@ export type MovieTracking = Prisma.MovieTrackingModel
  */
 export type EpisodeTracking = Prisma.EpisodeTrackingModel
 /**
+ * Model MediaNote
+ * Private notes about a title or episode. Deliberately many-per-media: notes
+ * are free-form and independent from the single rating on the tracking row,
+ * and independent from public comments (different audience, no mentions).
+ */
+export type MediaNote = Prisma.MediaNoteModel
+/**
  * Model User
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model RewatchLog
+ * Invariants enforced by DB CHECK constraints (migration 20261104160000):
+ * media_id equals the deepest typed id, exactly one media-type branch is
+ * populated, and ratings stay within 1-5.
+ */
+export type RewatchLog = Prisma.RewatchLogModel
+/**
+ * Model RewatchLogRemoval
+ * A reversible watch removal: the deleted rows and the counters/tracking values
+ * they changed are kept for a short window so an accidental unwatch can be
+ * undone byte-for-byte. Unlike a `deleted_at` flag on `rewatch_logs`, nothing
+ * that reads watches has to learn to filter these rows out — they are not there.
+ */
+export type RewatchLogRemoval = Prisma.RewatchLogRemovalModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel
+/**
+ * Model CommentReport
+ * One reader's report. Unresolved rows are the moderation queue; resolving one
+ * records when it was handled (hiding the comment resolves all of them).
+ */
+export type CommentReport = Prisma.CommentReportModel
+/**
+ * Model CommentAttachment
+ * 
+ */
+export type CommentAttachment = Prisma.CommentAttachmentModel
+/**
+ * Model CommentMention
+ * 
+ */
+export type CommentMention = Prisma.CommentMentionModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
 /**
  * Model Account
  * 

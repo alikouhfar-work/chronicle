@@ -1,4 +1,4 @@
-import { MappedUpNextEpisode, UpNextEpisode } from '@/modules/episode-season/types/upNextEpisode';
+import type { MappedUpNextEpisode, UpNextEpisode } from '@/modules/episode-season/types/upNextEpisode';
 
 export const mapUpNextEpisodes = (episodes: UpNextEpisode[]): MappedUpNextEpisode[] =>
   episodes.map((episode) => ({

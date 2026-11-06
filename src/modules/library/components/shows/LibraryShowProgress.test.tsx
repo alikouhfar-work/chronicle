@@ -16,16 +16,15 @@ describe('LibraryShowProgress', () => {
     const { container } = render(
       <LibraryShowProgress
         seasons={[season(1, [true, true]), season(2, [true, false])]}
-        numberOfEpisodes={4}
         lifecycle="continuing"
       />,
     );
 
     expect(screen.getByText('Next up · S2 E2')).toBeInTheDocument();
-    expect(screen.getByText('75%')).toHaveClass('text-indigo-400');
+    expect(screen.getByText('75%')).toHaveClass('text-info');
     const segments = container.querySelectorAll('[role="progressbar"] > div');
     expect(segments).toHaveLength(2);
-    expect(segments[0].firstChild).toHaveClass('bg-indigo-400');
+    expect(segments[0]!.firstChild).toHaveClass('bg-secondary');
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-label',
       'Next up · S2 E2, 75 percent, show is continuing',
@@ -36,15 +35,14 @@ describe('LibraryShowProgress', () => {
     const { container } = render(
       <LibraryShowProgress
         seasons={[season(1, [true, true])]}
-        numberOfEpisodes={2}
         lifecycle="ended"
       />,
     );
 
     expect(screen.getByText('Sweet finale 🏁')).toBeInTheDocument();
-    expect(screen.getByText('100%')).toHaveClass('text-indigo-400');
+    expect(screen.getByText('100%')).toHaveClass('text-info');
     expect(container.querySelector('[role="progressbar"] > div')?.firstChild).toHaveClass(
-      'bg-indigo-400',
+      'bg-secondary',
     );
   });
 
@@ -52,7 +50,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true])]}
-        numberOfEpisodes={1}
         lifecycle="continuing"
       />,
     );
@@ -64,16 +61,15 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="DROPPED"
       />,
     );
 
     // 50% watched → deterministic pick from the quotes array.
-    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length];
+    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
-    expect(screen.getByText('50%')).toHaveClass('text-rose-500');
+    expect(screen.getByText('50%')).toHaveClass('text-danger');
     expect(screen.getByRole('progressbar')).toHaveAttribute(
       'aria-label',
       `${expected}, 50 percent, show is dropped`,
@@ -84,13 +80,12 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="dropped"
       />,
     );
 
-    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length];
+    const expected = STATUS_HEADLINES.DROPPED[50 % STATUS_HEADLINES.DROPPED.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 
@@ -98,13 +93,12 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="WATCHING"
       />,
     );
 
-    const expected = STATUS_HEADLINES.WATCHING[50 % STATUS_HEADLINES.WATCHING.length];
+    const expected = STATUS_HEADLINES.WATCHING[50 % STATUS_HEADLINES.WATCHING.length]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 
@@ -112,7 +106,6 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, true])]}
-        numberOfEpisodes={2}
         lifecycle="ended"
         trackingStatus="COMPLETED"
       />,
@@ -130,26 +123,24 @@ describe('LibraryShowProgress', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [true, true])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="COMPLETED"
       />,
     );
 
-    expect(screen.getByText(STATUS_HEADLINES.COMPLETED[0])).toBeInTheDocument();
+    expect(screen.getByText(STATUS_HEADLINES.COMPLETED[0]!)).toBeInTheDocument();
   });
 
   it('shows a dramatic headline for PLAN_TO_WATCH', () => {
     render(
       <LibraryShowProgress
         seasons={[season(1, [false, false])]}
-        numberOfEpisodes={2}
         lifecycle="continuing"
         trackingStatus="PLAN_TO_WATCH"
       />,
     );
 
-    const expected = STATUS_HEADLINES.PLAN_TO_WATCH[0];
+    const expected = STATUS_HEADLINES.PLAN_TO_WATCH[0]!;
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import { GenreRaw } from '@/modules/discovery/genre';
+import type { GenreRaw } from '@/modules/discovery/genre';
 
 export type TrendingMovieRaw = {
   adult: boolean;

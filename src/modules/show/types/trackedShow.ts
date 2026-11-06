@@ -1,6 +1,6 @@
-import { ShowTracking } from '@/modules/show/types/showTracking';
-import { Season } from '@/modules/episode-season';
-import { Genre } from '@/modules/discovery/genre';
+import type { ShowTracking } from '@/modules/show/types/showTracking';
+import type { Season } from '@/modules/episode-season';
+import type { Genre } from '@/modules/discovery/genre';
 
 export type TrackedShow = {
   id: string;
@@ -17,6 +17,7 @@ export type TrackedShow = {
   numberOfSeasons: number;
   numberOfEpisodes: number;
   inProduction: boolean;
+  rewatchCount: number;
   seasons: Season[];
   genres: Genre[];
   tracking: ShowTracking | null;

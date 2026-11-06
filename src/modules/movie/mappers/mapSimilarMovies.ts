@@ -1,4 +1,4 @@
-import { mapSimilar as mapSimilarBase } from '@/modules/media/mappers';
+import { mapSimilar as mapSimilarBase } from '@/modules/media/mappers/mediaMappers';
 import type { SimilarMovie, SimilarMovieRaw } from '@/modules/movie/types/similarMovie';
 
 export const mapSimilarMovies = (

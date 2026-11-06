@@ -26,3 +26,39 @@ export const MovieTrackingStatus = {
 } as const
 
 export type MovieTrackingStatus = (typeof MovieTrackingStatus)[keyof typeof MovieTrackingStatus]
+
+
+export const RewatchMediaType = {
+  EPISODE: 'EPISODE',
+  SEASON: 'SEASON',
+  SHOW: 'SHOW',
+  MOVIE: 'MOVIE'
+} as const
+
+export type RewatchMediaType = (typeof RewatchMediaType)[keyof typeof RewatchMediaType]
+
+
+export const CommentMediaType = {
+  EPISODE: 'EPISODE',
+  SHOW: 'SHOW',
+  MOVIE: 'MOVIE'
+} as const
+
+export type CommentMediaType = (typeof CommentMediaType)[keyof typeof CommentMediaType]
+
+
+export const NotificationType = {
+  COMMENT_MENTION: 'COMMENT_MENTION'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const CommentReportReason = {
+  SPAM: 'SPAM',
+  ABUSE: 'ABUSE',
+  OFF_TOPIC: 'OFF_TOPIC',
+  OTHER: 'OTHER'
+} as const
+
+export type CommentReportReason = (typeof CommentReportReason)[keyof typeof CommentReportReason]

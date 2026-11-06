@@ -1,9 +1,9 @@
-import { Genre, GenreRaw } from '@/modules/discovery/genre';
-import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
+import type { Genre, GenreRaw } from '@/modules/discovery/genre';
+import type { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 
 type MovieTracking = {
   id: string;
-  notes?: string | null;
+  /** Rating only — private notes live in `MediaNote`, independent from this. */
   rating?: number | null;
   status: MovieTrackingStatus;
   addedAt: Date;
@@ -22,6 +22,7 @@ export type TrackedMovie = {
   posterDescription?: string;
   runtime: number;
   tagline?: string | null;
+  rewatchCount: number;
   tracking: MovieTracking | null;
 };
 

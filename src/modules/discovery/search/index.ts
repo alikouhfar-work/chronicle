@@ -6,7 +6,7 @@ export { SearchResultLoading } from './components/SearchResultLoading';
 export { getTitleDetails } from './queries/getTitleDetails';
 
 export type { SearchPageProps } from './types/searchPage';
-export type { SearchResultRaw, SearchResultResponse } from './types/searchResult';
+export type { SearchResultRaw, SearchResponse } from './types/searchResult';
 export type {
   TitleDetails,
   TitleDetailsPageProps,

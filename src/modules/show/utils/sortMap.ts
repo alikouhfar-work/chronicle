@@ -1,4 +1,4 @@
-import { MediaSortFilter } from '@/modules/media/entities';
+import type { MediaSortFilter } from '@/modules/media/types/media';
 
 export const showSortMap = {
   title: 'name',

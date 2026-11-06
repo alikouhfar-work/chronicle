@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
 import type { Metadata } from 'next';
 import type { MediaType } from '@/shared/types/media';
 import { LibraryDetails } from '@/modules/library';
-import { getTrackedMovie } from '@/modules/movie/queries/getTrackedMovie';
+import { PublicMediaPreview } from '@/modules/library/components/details/PublicMediaPreview';
+import { getTrackedMovie } from '@/modules/movie/services/getTrackedMovie';
 import { getMovieCredits } from '@/modules/movie/queries/getMovieCredits';
 import { getSimilarMovies } from '@/modules/movie/queries/getSimilarMovies';
-import { getFreshTrackedShow } from '@/modules/show/queries/getFreshTrackedShow';
+import { getSyncedTrackedShow } from '@/modules/show/services/getSyncedTrackedShow';
 import { getShowCredits } from '@/modules/show/queries/getShowCredits';
 import { getSimilarShows } from '@/modules/show/queries/getSimilarShows';
 import { getTitleDetails } from '@/modules/discovery/search/queries/getTitleDetails';
@@ -15,6 +14,16 @@ import type { LibraryDetailsPageProps } from '@/modules/library/types/libraryDet
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { getAppBaseUrl } from '@/shared/lib/appUrl';
 import { auth } from '@/infra/auth/auth';
+import { getCommentViewer } from '@/modules/comments/services/getCommentViewer';
+import { listComments } from '@/modules/comments/services/listComments';
+import { toInitialCommentPage } from '@/modules/comments/lib/toInitialCommentPage';
+import { listNotes } from '@/modules/notes/services/listNotes';
+import { DEFAULT_COMMENT_LIMIT } from '@/modules/comments/constants';
+
+const resolveTmdbId = (value: string): number | null => {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+};
 
 export const dynamic = 'force-dynamic';
 
@@ -25,9 +34,7 @@ const isValidSlug = (slug: unknown): slug is [MediaType, string] =>
   typeof slug[1] === 'string' &&
   slug[1].length > 0;
 
-export const generateMetadata = async ({
-  params,
-}: LibraryDetailsPageProps): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: LibraryDetailsPageProps): Promise<Metadata> => {
   try {
     const { slug } = await params;
     if (!isValidSlug(slug)) return {};
@@ -79,40 +86,6 @@ export const generateMetadata = async ({
   }
 };
 
-const PublicMediaPreview = async ({ mediaType, id }: { mediaType: MediaType; id: string }) => {
-  // Only reachable by link-preview crawlers that the proxy lets through; the
-  // body is intentionally session-free so the 200 response keeps its OG tags.
-  const details = await getTitleDetails(mediaType, id);
-  if (!details) notFound();
-
-  const posterUrl = getTmdbImageUrl(details.posterPath, 'poster', 'w500');
-
-  return (
-    <article className="mx-auto max-w-3xl space-y-4 px-4 py-8 font-sans">
-      <h1 className="text-2xl font-bold text-white">
-        {details.name}
-        {details.year && details.year !== 'N/A' ? ` (${details.year})` : ''}
-      </h1>
-      {posterUrl && (
-        <Image
-          src={posterUrl}
-          alt={details.name}
-          width={300}
-          height={450}
-          className="rounded-2xl border border-white/10"
-        />
-      )}
-      {details.overview && <p className="text-sm leading-relaxed text-zinc-300">{details.overview}</p>}
-      <Link
-        href={`/search?query=${encodeURIComponent(details.name)}`}
-        className="inline-flex rounded-full bg-violet-600 px-4 py-2 text-xs font-semibold text-white"
-      >
-        Open in Chronicle
-      </Link>
-    </article>
-  );
-};
-
 const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
   const { slug } = await params;
   if (!isValidSlug(slug)) notFound();
@@ -123,11 +96,19 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
     return <PublicMediaPreview mediaType={mediaType} id={id} />;
   }
 
+  const viewer = await getCommentViewer();
+
+  const tmdbId = resolveTmdbId(id);
+
   if (mediaType === 'movie') {
-    const [movie, credits, similarMovies] = await Promise.all([
+    const [movie, credits, similarMovies, reviews, notes] = await Promise.all([
       getTrackedMovie(id),
       getMovieCredits(id),
       getSimilarMovies(id),
+      tmdbId === null
+        ? Promise.resolve(null)
+        : listComments('movie', tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
+      tmdbId === null ? Promise.resolve(null) : listNotes('movie', tmdbId),
     ]);
 
     if (!movie) notFound();
@@ -138,20 +119,35 @@ const LibraryDetailsPage = async ({ params }: LibraryDetailsPageProps) => {
         mediaType="movie"
         credits={credits}
         similarMedia={similarMovies}
+        viewer={viewer}
+        initialNotes={notes?.success ? notes.notes : undefined}
+        initialReviews={reviews ? toInitialCommentPage(reviews) : undefined}
       />
     );
   }
 
-  const [show, tvCredits, similarShows] = await Promise.all([
-    getFreshTrackedShow(id),
+  const [show, tvCredits, similarShows, reviews, notes] = await Promise.all([
+    getSyncedTrackedShow(id),
     getShowCredits(id),
     getSimilarShows(id),
+    tmdbId === null
+      ? Promise.resolve(null)
+      : listComments('show', tmdbId, undefined, DEFAULT_COMMENT_LIMIT),
+    tmdbId === null ? Promise.resolve(null) : listNotes('show', tmdbId),
   ]);
 
   if (!show) notFound();
 
   return (
-    <LibraryDetails media={show} mediaType="tv" credits={tvCredits} similarMedia={similarShows} />
+    <LibraryDetails
+      media={show}
+      mediaType="tv"
+      credits={tvCredits}
+      similarMedia={similarShows}
+      viewer={viewer}
+      initialNotes={notes?.success ? notes.notes : undefined}
+      initialReviews={reviews ? toInitialCommentPage(reviews) : undefined}
+    />
   );
 };
 

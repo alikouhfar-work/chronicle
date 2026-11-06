@@ -39,7 +39,6 @@ export type MovieTrackingMinAggregateOutputType = {
   movieId: string | null
   status: $Enums.MovieTrackingStatus | null
   rating: number | null
-  notes: string | null
   addedAt: Date | null
   startedAt: Date | null
   completedAt: Date | null
@@ -51,7 +50,6 @@ export type MovieTrackingMaxAggregateOutputType = {
   movieId: string | null
   status: $Enums.MovieTrackingStatus | null
   rating: number | null
-  notes: string | null
   addedAt: Date | null
   startedAt: Date | null
   completedAt: Date | null
@@ -63,7 +61,6 @@ export type MovieTrackingCountAggregateOutputType = {
   movieId: number
   status: number
   rating: number
-  notes: number
   addedAt: number
   startedAt: number
   completedAt: number
@@ -85,7 +82,6 @@ export type MovieTrackingMinAggregateInputType = {
   movieId?: true
   status?: true
   rating?: true
-  notes?: true
   addedAt?: true
   startedAt?: true
   completedAt?: true
@@ -97,7 +93,6 @@ export type MovieTrackingMaxAggregateInputType = {
   movieId?: true
   status?: true
   rating?: true
-  notes?: true
   addedAt?: true
   startedAt?: true
   completedAt?: true
@@ -109,7 +104,6 @@ export type MovieTrackingCountAggregateInputType = {
   movieId?: true
   status?: true
   rating?: true
-  notes?: true
   addedAt?: true
   startedAt?: true
   completedAt?: true
@@ -208,7 +202,6 @@ export type MovieTrackingGroupByOutputType = {
   movieId: string
   status: $Enums.MovieTrackingStatus
   rating: number | null
-  notes: string | null
   addedAt: Date
   startedAt: Date | null
   completedAt: Date | null
@@ -243,7 +236,6 @@ export type MovieTrackingWhereInput = {
   movieId?: Prisma.StringFilter<"MovieTracking"> | string
   status?: Prisma.EnumMovieTrackingStatusFilter<"MovieTracking"> | $Enums.MovieTrackingStatus
   rating?: Prisma.IntNullableFilter<"MovieTracking"> | number | null
-  notes?: Prisma.StringNullableFilter<"MovieTracking"> | string | null
   addedAt?: Prisma.DateTimeFilter<"MovieTracking"> | Date | string
   startedAt?: Prisma.DateTimeNullableFilter<"MovieTracking"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"MovieTracking"> | Date | string | null
@@ -256,7 +248,6 @@ export type MovieTrackingOrderByWithRelationInput = {
   movieId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -272,7 +263,6 @@ export type MovieTrackingWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MovieTrackingWhereInput | Prisma.MovieTrackingWhereInput[]
   status?: Prisma.EnumMovieTrackingStatusFilter<"MovieTracking"> | $Enums.MovieTrackingStatus
   rating?: Prisma.IntNullableFilter<"MovieTracking"> | number | null
-  notes?: Prisma.StringNullableFilter<"MovieTracking"> | string | null
   addedAt?: Prisma.DateTimeFilter<"MovieTracking"> | Date | string
   startedAt?: Prisma.DateTimeNullableFilter<"MovieTracking"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"MovieTracking"> | Date | string | null
@@ -285,7 +275,6 @@ export type MovieTrackingOrderByWithAggregationInput = {
   movieId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
-  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -305,7 +294,6 @@ export type MovieTrackingScalarWhereWithAggregatesInput = {
   movieId?: Prisma.StringWithAggregatesFilter<"MovieTracking"> | string
   status?: Prisma.EnumMovieTrackingStatusWithAggregatesFilter<"MovieTracking"> | $Enums.MovieTrackingStatus
   rating?: Prisma.IntNullableWithAggregatesFilter<"MovieTracking"> | number | null
-  notes?: Prisma.StringNullableWithAggregatesFilter<"MovieTracking"> | string | null
   addedAt?: Prisma.DateTimeWithAggregatesFilter<"MovieTracking"> | Date | string
   startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MovieTracking"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MovieTracking"> | Date | string | null
@@ -316,7 +304,6 @@ export type MovieTrackingCreateInput = {
   id?: string
   status?: $Enums.MovieTrackingStatus
   rating?: number | null
-  notes?: string | null
   addedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -329,7 +316,6 @@ export type MovieTrackingUncheckedCreateInput = {
   movieId: string
   status?: $Enums.MovieTrackingStatus
   rating?: number | null
-  notes?: string | null
   addedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -340,7 +326,6 @@ export type MovieTrackingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumMovieTrackingStatusFieldUpdateOperationsInput | $Enums.MovieTrackingStatus
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -353,7 +338,6 @@ export type MovieTrackingUncheckedUpdateInput = {
   movieId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumMovieTrackingStatusFieldUpdateOperationsInput | $Enums.MovieTrackingStatus
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -365,7 +349,6 @@ export type MovieTrackingCreateManyInput = {
   movieId: string
   status?: $Enums.MovieTrackingStatus
   rating?: number | null
-  notes?: string | null
   addedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -376,7 +359,6 @@ export type MovieTrackingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumMovieTrackingStatusFieldUpdateOperationsInput | $Enums.MovieTrackingStatus
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -388,7 +370,6 @@ export type MovieTrackingUncheckedUpdateManyInput = {
   movieId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumMovieTrackingStatusFieldUpdateOperationsInput | $Enums.MovieTrackingStatus
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -405,7 +386,6 @@ export type MovieTrackingCountOrderByAggregateInput = {
   movieId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rating?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -421,7 +401,6 @@ export type MovieTrackingMaxOrderByAggregateInput = {
   movieId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rating?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -433,7 +412,6 @@ export type MovieTrackingMinOrderByAggregateInput = {
   movieId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   rating?: Prisma.SortOrder
-  notes?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -484,7 +462,6 @@ export type MovieTrackingCreateWithoutMovieInput = {
   id?: string
   status?: $Enums.MovieTrackingStatus
   rating?: number | null
-  notes?: string | null
   addedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -495,7 +472,6 @@ export type MovieTrackingUncheckedCreateWithoutMovieInput = {
   id?: string
   status?: $Enums.MovieTrackingStatus
   rating?: number | null
-  notes?: string | null
   addedAt?: Date | string
   startedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -522,7 +498,6 @@ export type MovieTrackingUpdateWithoutMovieInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumMovieTrackingStatusFieldUpdateOperationsInput | $Enums.MovieTrackingStatus
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -533,7 +508,6 @@ export type MovieTrackingUncheckedUpdateWithoutMovieInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumMovieTrackingStatusFieldUpdateOperationsInput | $Enums.MovieTrackingStatus
   rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -547,7 +521,6 @@ export type MovieTrackingSelect<ExtArgs extends runtime.Types.Extensions.Interna
   movieId?: boolean
   status?: boolean
   rating?: boolean
-  notes?: boolean
   addedAt?: boolean
   startedAt?: boolean
   completedAt?: boolean
@@ -560,7 +533,6 @@ export type MovieTrackingSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   movieId?: boolean
   status?: boolean
   rating?: boolean
-  notes?: boolean
   addedAt?: boolean
   startedAt?: boolean
   completedAt?: boolean
@@ -573,7 +545,6 @@ export type MovieTrackingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   movieId?: boolean
   status?: boolean
   rating?: boolean
-  notes?: boolean
   addedAt?: boolean
   startedAt?: boolean
   completedAt?: boolean
@@ -586,14 +557,13 @@ export type MovieTrackingSelectScalar = {
   movieId?: boolean
   status?: boolean
   rating?: boolean
-  notes?: boolean
   addedAt?: boolean
   startedAt?: boolean
   completedAt?: boolean
   updatedAt?: boolean
 }
 
-export type MovieTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "movieId" | "status" | "rating" | "notes" | "addedAt" | "startedAt" | "completedAt" | "updatedAt", ExtArgs["result"]["movieTracking"]>
+export type MovieTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "movieId" | "status" | "rating" | "addedAt" | "startedAt" | "completedAt" | "updatedAt", ExtArgs["result"]["movieTracking"]>
 export type MovieTrackingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   movie?: boolean | Prisma.MovieDefaultArgs<ExtArgs>
 }
@@ -613,8 +583,10 @@ export type $MovieTrackingPayload<ExtArgs extends runtime.Types.Extensions.Inter
     id: string
     movieId: string
     status: $Enums.MovieTrackingStatus
+    /**
+     * Independent of notes: a rating never creates, edits, or deletes a note.
+     */
     rating: number | null
-    notes: string | null
     addedAt: Date
     startedAt: Date | null
     completedAt: Date | null
@@ -1047,7 +1019,6 @@ export interface MovieTrackingFieldRefs {
   readonly movieId: Prisma.FieldRef<"MovieTracking", 'String'>
   readonly status: Prisma.FieldRef<"MovieTracking", 'MovieTrackingStatus'>
   readonly rating: Prisma.FieldRef<"MovieTracking", 'Int'>
-  readonly notes: Prisma.FieldRef<"MovieTracking", 'String'>
   readonly addedAt: Prisma.FieldRef<"MovieTracking", 'DateTime'>
   readonly startedAt: Prisma.FieldRef<"MovieTracking", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"MovieTracking", 'DateTime'>
