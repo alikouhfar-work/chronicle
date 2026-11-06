@@ -75,14 +75,10 @@ jobs:
         env:
           INTEGRATION_DB: '1'
 
-      # The Next.js security advisory makes the first build attempt exit 1 with
-      # no compile errors; the documented remedy is to run it again.
+      # `build` runs `prisma generate && next build`, so the client is regenerated
+      # from the schema every time instead of being trusted from a snapshot.
       - name: Build
-        run: |
-          if ! npm run build; then
-            echo "Retrying the build after the Next.js advisory gate"
-            npm run build
-          fi
+        run: npm run build
 
   e2e:
     name: Playwright journeys
@@ -105,8 +101,8 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgresql://admin:***@localhost:5432/chronicle_e2e_test?schema=public
-      E2E_DATABASE_URL: postgresql://admin:***@localhost:5432/chronicle_e2e_test?schema=public
+      DATABASE_URL: postgresql://admin:postgres@localhost:5432/chronicle_e2e_test?schema=public
+      E2E_DATABASE_URL: postgresql://admin:postgres@localhost:5432/chronicle_e2e_test?schema=public
       AUTH_SECRET: ci-only-secret-not-used-in-production
       AUTH_TRUST_HOST: 'true'
       NEXT_PUBLIC_APP_URL: http://localhost:3100
