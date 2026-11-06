@@ -1,5 +1,5 @@
 import { searchMedia } from '@/modules/discovery/search/queries/searchMedia';
-import { SearchResultListProps } from '@/modules/discovery/search/types/searchResultList';
+import type { SearchResultListProps } from '@/modules/discovery/search/types/searchResultList';
 import { IconSearchOff, IconSparkles } from '@tabler/icons-react';
 import { SearchResultShowCard } from '@/modules/discovery/search/components/SearchResultShowCard';
 import Link from 'next/link';

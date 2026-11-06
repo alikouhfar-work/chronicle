@@ -1,5 +1,5 @@
 import { ShowTrackingStatus } from '../../../../generated/prisma/enums';
-import { MediaStatusFilter } from '@/modules/media/types/media';
+import type { MediaStatusFilter } from '@/modules/media/types/media';
 
 export const showTrackingStatusMap = {
   plan_to_watch: ShowTrackingStatus.PLAN_TO_WATCH,

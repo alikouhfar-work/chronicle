@@ -1,6 +1,6 @@
 'use client';
 
-import { LibraryMediaTrackButtonProps } from '@/modules/library/types/libraryMediaTrackButton';
+import type { LibraryMediaTrackButtonProps } from '@/modules/library/types/libraryMediaTrackButton';
 import { addMediaAction } from '@/modules/library/actions/addMediaAction';
 import { IconPlus } from '@tabler/icons-react';
 import { clsx } from 'clsx';

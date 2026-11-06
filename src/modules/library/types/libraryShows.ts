@@ -1,4 +1,4 @@
-import { MediaSortFilter, MediaStatusFilter } from '@/modules/library';
+import type { MediaSortFilter, MediaStatusFilter } from '@/modules/library';
 
 export type LibraryShowsProps = {
   search?: string

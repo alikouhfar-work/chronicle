@@ -499,7 +499,7 @@ No directory reshuffle is in scope.
 |----|---------|--------|--------|
 | WP-25 | Cut the `shared`/`infra` → feature edges, absorb `modules/api` into `infra/http`, then enable the layering + cycle guardrails — **done 2026-11-05**: `shared/` and `infra/` import no feature; 31-pair ratchet in `src/architecture.test.ts`. Remaining inversions (library↔discovery, comments↔notes, show↔episode-season) are named in the test, not fixed. | A1, A2, A8 | M |
 | WP-26 | `next/dynamic` for the five interaction-only client surfaces + a chunk budget — **done 2026-11-05**: six call sites lazied (both watch dialogs, the report form); bell stays eager for the badge. No explicit budget asserted yet. | A3 | S |
-| WP-27 | `verbatimModuleSyntax`, `ES2022`, unused/override flags (197 mechanical errors) | A4 | S |
+| WP-27 | `verbatimModuleSyntax`, `ES2022`, unused/override flags (197 mechanical errors) — **done 2026-11-05**: flags on, 134 files rewritten to `import type` via the typescript-eslint autofix, four residuals fixed by hand. | A4 | S |
 | WP-28 | Caching decision: stay on `unstable_cache` or move to `cacheComponents`/`use cache`; route-level `revalidate` either way | A7 | S/M |
 | WP-29 | `infra/env.ts` with fail-fast parsing; migrate the 27 ad-hoc `process.env` reads | A5 | M |
 | WP-30 | One validation contract at four request boundaries | A6 | M |

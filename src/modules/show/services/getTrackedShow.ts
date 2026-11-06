@@ -2,7 +2,7 @@ import 'server-only';
 
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { TrackedShow } from '@/modules/show';
+import type { TrackedShow } from '@/modules/show';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';
 import { parseTmdbId } from '@/shared/lib/validate';
 

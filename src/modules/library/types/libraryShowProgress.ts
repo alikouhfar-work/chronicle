@@ -1,4 +1,4 @@
-import { Season } from '@/modules/episode-season';
+import type { Season } from '@/modules/episode-season';
 import type { ShowLifecycle } from '@/modules/show/types/showLifecycle';
 
 export type LibraryShowProgressProps = {

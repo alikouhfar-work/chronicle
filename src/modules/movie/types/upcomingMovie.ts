@@ -1,4 +1,4 @@
-import { TrackedMovie } from '@/modules/movie';
+import type { TrackedMovie } from '@/modules/movie';
 
 export type UpcomingMovie = Omit<TrackedMovie, 'genres'>;
 

@@ -1,5 +1,5 @@
 import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
-import { Person, PersonRaw } from '@/modules/discovery/person/types/person';
+import type { Person, PersonRaw } from '@/modules/discovery/person/types/person';
 import { mapPerson } from '@/modules/discovery/person/mappers/mapPerson';
 
 export const getPerson = async (id: string): Promise<Person | null> => {

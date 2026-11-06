@@ -3,7 +3,7 @@ import 'server-only';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { mapUpNextEpisodes } from '@/modules/episode-season/mappers/mapUpNextEpisodes';
-import { MappedUpNextEpisode, UpNextEpisode } from '@/modules/episode-season/types/upNextEpisode';
+import type { MappedUpNextEpisode, UpNextEpisode } from '@/modules/episode-season/types/upNextEpisode';
 import { syncStaleTrackedShows } from '@/modules/show/services/syncStaleTrackedShows';
 import { DatabaseError } from '@/shared/lib/errors';
 

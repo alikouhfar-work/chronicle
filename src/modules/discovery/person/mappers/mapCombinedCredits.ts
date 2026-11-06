@@ -1,4 +1,4 @@
-import { CombinedCredit, CombinedCreditRaw } from '@/modules/discovery/person/types/combinedCredit';
+import type { CombinedCredit, CombinedCreditRaw } from '@/modules/discovery/person/types/combinedCredit';
 import { mapCreditShows } from '@/modules/discovery/person/mappers/mapCreditShows';
 import { mapCreditMovies } from '@/modules/discovery/person/mappers/mapCreditMovies';
 

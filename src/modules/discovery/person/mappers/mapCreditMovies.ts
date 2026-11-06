@@ -1,4 +1,4 @@
-import { CombinedCredit, CreditMovieRaw } from '@/modules/discovery/person/types/combinedCredit';
+import type { CombinedCredit, CreditMovieRaw } from '@/modules/discovery/person/types/combinedCredit';
 
 export const mapCreditMovies = (
   creditMovie: CreditMovieRaw,

@@ -1,4 +1,4 @@
-import { Episode, EpisodeRaw } from '@/modules/episode-season';
+import type { Episode, EpisodeRaw } from '@/modules/episode-season';
 
 export type SeasonRaw = {
   id: number;

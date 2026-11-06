@@ -1,4 +1,4 @@
-import { MediaType } from '@/shared/types/media';
+import type { MediaType } from '@/shared/types/media';
 
 export type LibraryMediaDeleteButtonProps = {
   mediaId: string;

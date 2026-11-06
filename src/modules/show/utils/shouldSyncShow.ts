@@ -1,4 +1,4 @@
-import { TrackedShow } from '@/modules/show';
+import type { TrackedShow } from '@/modules/show';
 
 export const shouldSyncShow = (show: TrackedShow) => {
   const now = new Date();

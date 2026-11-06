@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import { formatBirthInfo } from '@/modules/discovery/person/utils/formatBirthInfo';
 import { getGenderLabel } from '@/modules/discovery/person/utils/getGenderLabel';
-import { PersonDetailsHeroProps } from '@/modules/discovery/person/types/personDetailsHero';
+import type { PersonDetailsHeroProps } from '@/modules/discovery/person/types/personDetailsHero';
 
 export const PersonDetailsHero = ({ person, combinedCreditsCount }: PersonDetailsHeroProps) => {
   const formattedBirthInfo = formatBirthInfo(person.birthday, person.deathday);

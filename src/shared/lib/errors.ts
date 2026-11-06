@@ -2,7 +2,7 @@ export class AppError extends Error {
   readonly code: string;
   readonly status: number;
   readonly retryable: boolean;
-  readonly cause?: unknown;
+  override readonly cause?: unknown;
 
   constructor(message: string, opts?: { code?: string; status?: number; retryable?: boolean; cause?: unknown }) {
     super(message);

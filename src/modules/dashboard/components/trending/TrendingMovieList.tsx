@@ -1,6 +1,6 @@
 import { IconMovie } from '@tabler/icons-react';
 import { TrendingMediaSection } from '@/modules/dashboard/components/trending/TrendingMediaSection';
-import { TrendingMovie } from '@/modules/movie';
+import type { TrendingMovie } from '@/modules/movie';
 import { getTrendingMovies } from '@/modules/movie/queries/getTrendingMovies';
 
 export const TrendingMovieList = async () => {

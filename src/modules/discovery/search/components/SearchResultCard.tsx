@@ -1,6 +1,6 @@
 import { IconDeviceTv, IconGlobe, IconLanguage, IconMovie, IconStar } from '@tabler/icons-react';
 import Link from 'next/link';
-import { SearchResultCardProps } from '@/modules/discovery/search/types/searchResultCard';
+import type { SearchResultCardProps } from '@/modules/discovery/search/types/searchResultCard';
 import { SearchResultCardActions } from '@/modules/discovery/search/components/SearchResultCardActions';
 import Image from 'next/image';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';

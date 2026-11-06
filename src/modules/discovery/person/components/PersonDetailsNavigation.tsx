@@ -1,5 +1,5 @@
 import { IconTrendingUp, IconUser } from '@tabler/icons-react';
-import { PersonDetailsNavigationProps } from '@/modules/discovery/person/types/personDetailsNavigation';
+import type { PersonDetailsNavigationProps } from '@/modules/discovery/person/types/personDetailsNavigation';
 import { BackButton } from '@/shared/ui/BackButton';
 
 export const PersonDetailsNavigation = ({ person }: PersonDetailsNavigationProps) => {

@@ -1,4 +1,4 @@
-import { MediaSortFilter, MediaStatusFilter, MediaTypeFilter } from '@/modules/library';
+import type { MediaSortFilter, MediaStatusFilter, MediaTypeFilter } from '@/modules/library';
 
 export type LibraryPageProps = {
   searchParams: Promise<{

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { clsx } from 'clsx';
-import { LibraryMediaViewDetailsButtonProps } from '@/modules/library/types/libraryMediaViewDetailsButton';
+import type { LibraryMediaViewDetailsButtonProps } from '@/modules/library/types/libraryMediaViewDetailsButton';
 import { IconCircleCheck } from '@tabler/icons-react';
 
 export const LibraryMediaViewDetailsButton = ({

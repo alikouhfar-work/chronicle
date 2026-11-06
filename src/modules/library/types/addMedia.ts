@@ -1,4 +1,4 @@
-import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
+import type { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';
 
 export type AddMediaParams =
   | {

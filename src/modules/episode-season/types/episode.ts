@@ -1,4 +1,4 @@
-import { EpisodeTracking } from '@/modules/episode-season/types/tracking';
+import type { EpisodeTracking } from '@/modules/episode-season/types/tracking';
 
 export type EpisodeRaw = {
   id: number;

@@ -1,5 +1,5 @@
 import { PersonDetailsNavigation } from '@/modules/discovery/person';
-import { PersonDetailsProps } from '@/modules/discovery/person/types/personDetails';
+import type { PersonDetailsProps } from '@/modules/discovery/person/types/personDetails';
 import { PersonDetailsFilmography } from '@/modules/discovery/person/components/filmography/PersonDetailsFilmography';
 import { PersonDetailsHero } from '@/modules/discovery/person/components/PersonDetailsHero';
 

@@ -1,5 +1,5 @@
-import { MediaType } from '@/shared/types/media';
-import { GenreRaw } from '@/modules/discovery/genre';
+import type { MediaType } from '@/shared/types/media';
+import type { GenreRaw } from '@/modules/discovery/genre';
 
 export type SearchResultCardProps = {
   id: number;

@@ -1,7 +1,7 @@
-import { UpcomingMediaSectionProps } from '@/shared/types/upcoming';
+import type { UpcomingMediaSectionProps } from '@/shared/types/upcoming';
 import { UpcomingMediaCard } from '@/modules/dashboard/components/upcoming/UpcomingMediaCard';
-import { MappedUpcomingEpisode } from '@/modules/episode-season/types/upcomingEpisode';
-import { MappedUpcomingMovie } from '@/modules/movie/types/upcomingMovie';
+import type { MappedUpcomingEpisode } from '@/modules/episode-season/types/upcomingEpisode';
+import type { MappedUpcomingMovie } from '@/modules/movie/types/upcomingMovie';
 import { UpcomingMediaEmpty } from '@/modules/dashboard/components/upcoming/UpcomingMediaEmpty';
 
 export const UpcomingMediaSection = <T extends MappedUpcomingEpisode | MappedUpcomingMovie>({

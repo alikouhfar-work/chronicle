@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { JetBrains_Mono, Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/google';
 import './globals.css';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { ServiceWorkerRegistration } from '@/shared/ui/ServiceWorkerRegistration';
 
 const plusJakartaSans = Plus_Jakarta_Sans({

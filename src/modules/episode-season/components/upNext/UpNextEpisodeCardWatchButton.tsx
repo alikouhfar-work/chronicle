@@ -1,8 +1,8 @@
 'use client';
 
 import { IconCircleCheck } from '@tabler/icons-react';
-import { MouseEventHandler } from 'react';
-import { UpNextEpisodeCardWatchButtonProps } from '@/modules/episode-season/types/upNextEpisodeCardWatchButton';
+import type { MouseEventHandler } from 'react';
+import type { UpNextEpisodeCardWatchButtonProps } from '@/modules/episode-season/types/upNextEpisodeCardWatchButton';
 import { toggleEpisodeWatched } from '@/modules/episode-season/actions/toggleEpisodeWatched';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';

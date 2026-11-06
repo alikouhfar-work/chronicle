@@ -1,4 +1,4 @@
-import { ShowSearchResult, ShowSearchResultRaw } from '@/modules/show';
+import type { ShowSearchResult, ShowSearchResultRaw } from '@/modules/show';
 
 export const mapShowSearchResult = (
   show: ShowSearchResultRaw,

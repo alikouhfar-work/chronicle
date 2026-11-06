@@ -1,7 +1,7 @@
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
 import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
-import { TrackedMovieDetailsRaw } from '@/modules/movie/types/trackedMovie';
+import type { TrackedMovieDetailsRaw } from '@/modules/movie/types/trackedMovie';
 import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 import { DatabaseError, ExternalServiceError, ValidationError } from '@/shared/lib/errors';
 import { buildTrackingTimestamps } from '@/modules/media/tracking';

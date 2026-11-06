@@ -8,7 +8,7 @@ export const toAppMediaType = (value: string): CommentMediaType => {
   return 'movie';
 };
 
-const reviewsTab = (tmdbId: number, commentAvailable: boolean, commentId: string): string =>
+const reviewsTab = (commentAvailable: boolean, commentId: string): string =>
   commentAvailable
     ? `?tab=reviews#comment-${commentId}`
     : '?tab=reviews&mention=unavailable';
@@ -17,14 +17,14 @@ export const buildMovieNotificationHref = (
   tmdbId: number,
   commentId: string,
   commentAvailable: boolean,
-): string => `/library/movie/${tmdbId}${reviewsTab(tmdbId, commentAvailable, commentId)}`;
+): string => `/library/movie/${tmdbId}${reviewsTab(commentAvailable, commentId)}`;
 
 // Library detail routes are `/library/tv/[tmdbId]` — `/library/show/...` 404s.
 export const buildShowNotificationHref = (
   tmdbId: number,
   commentId: string,
   commentAvailable: boolean,
-): string => `/library/tv/${tmdbId}${reviewsTab(tmdbId, commentAvailable, commentId)}`;
+): string => `/library/tv/${tmdbId}${reviewsTab(commentAvailable, commentId)}`;
 
 /**
  * The episode page is keyed by the internal episode id, which only exists in

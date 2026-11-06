@@ -1,5 +1,5 @@
 import { getPosterPlaceholderColor } from '@/infra/tmdb/images';
-import { UpNextEpisodeCardProps } from '@/modules/episode-season/types/upNextShowCard';
+import type { UpNextEpisodeCardProps } from '@/modules/episode-season/types/upNextShowCard';
 import { format } from 'date-fns';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import Image from 'next/image';

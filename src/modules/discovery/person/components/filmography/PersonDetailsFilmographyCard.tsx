@@ -1,5 +1,5 @@
 import { IconDeviceTv, IconMovie, IconStar } from '@tabler/icons-react';
-import { PersonDetailsFilmographyCardProps } from '@/modules/discovery/person/types/personDetailsFilmographyCard';
+import type { PersonDetailsFilmographyCardProps } from '@/modules/discovery/person/types/personDetailsFilmographyCard';
 import { getTmdbImageUrl } from '@/infra/tmdb/images';
 import Image from 'next/image';
 import { LibraryMediaViewDetailsButton } from '@/modules/library/components/LibraryMediaViewDetailsButton';

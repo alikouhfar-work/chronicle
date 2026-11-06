@@ -3,7 +3,7 @@ import 'server-only';
 import { addDays } from 'date-fns';
 import { prisma } from '@/infra/db/prisma';
 import { requireUserId } from '@/infra/tmdb/forUser';
-import { GetUpcomingMediaOptions } from '@/shared/types/getUpcomingMedia';
+import type { GetUpcomingMediaOptions } from '@/shared/types/getUpcomingMedia';
 import { mapUpcomingEpisodes } from '@/modules/episode-season/mappers/mapUpcomingEpisodes';
 import { syncStaleTrackedShows } from '@/modules/show/services/syncStaleTrackedShows';
 import { DatabaseError, NotFoundError, ValidationError } from '@/shared/lib/errors';

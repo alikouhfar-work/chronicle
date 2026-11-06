@@ -1,4 +1,4 @@
-import { PersonDetailsFilmographyListProps } from '@/modules/discovery/person/types/personDetailsFilmographyList';
+import type { PersonDetailsFilmographyListProps } from '@/modules/discovery/person/types/personDetailsFilmographyList';
 import { PersonDetailsFilmographyCard } from '@/modules/discovery/person/components/filmography/PersonDetailsFilmographyCard';
 
 export const PersonDetailsFilmographyList = ({

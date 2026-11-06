@@ -1,5 +1,5 @@
 import { IconStar } from '@tabler/icons-react';
-import { LibraryMovieRatingProps } from '@/modules/library/types/libraryMovieRating';
+import type { LibraryMovieRatingProps } from '@/modules/library/types/libraryMovieRating';
 
 export const LibraryMovieRating = ({ rating }: LibraryMovieRatingProps) => {
   return (

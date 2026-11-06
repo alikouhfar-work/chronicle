@@ -1,6 +1,6 @@
-import { TrendingMediaListProps } from '@/shared/types/trending';
-import { TrendingShow } from '@/modules/show';
-import { TrendingMovie } from '@/modules/movie';
+import type { TrendingMediaListProps } from '@/shared/types/trending';
+import type { TrendingShow } from '@/modules/show';
+import type { TrendingMovie } from '@/modules/movie';
 import { TrendingMediaCard } from '@/modules/dashboard/components/trending/TrendingMediaCard';
 
 export const TrendingMediaSection = <T extends TrendingShow | TrendingMovie>({

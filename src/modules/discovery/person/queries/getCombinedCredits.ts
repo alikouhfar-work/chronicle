@@ -1,7 +1,7 @@
 import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { getGenreDictionary } from '@/modules/discovery/genre';
-import { GetCombinedCreditsResponse } from '@/modules/discovery/person/types/getCombinedCredits';
-import { CombinedCredit } from '@/modules/discovery/person/types/combinedCredit';
+import type { GetCombinedCreditsResponse } from '@/modules/discovery/person/types/getCombinedCredits';
+import type { CombinedCredit } from '@/modules/discovery/person/types/combinedCredit';
 import { mapCombinedCredits } from '@/modules/discovery/person/mappers/mapCombinedCredits';
 import { getTrackedMoviesLookup } from '@/modules/movie/services/getTrackedMoviesLookup';
 import { getTrackedShowsLookup } from '@/modules/show/services/getTrackedShowsLookup';

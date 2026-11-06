@@ -1,6 +1,5 @@
 import { IconSearch } from '@tabler/icons-react';
-import React from 'react';
-import { SearchFormProps } from '@/modules/discovery/search/types/searchForm';
+import type { SearchFormProps } from '@/modules/discovery/search/types/searchForm';
 
 export const SearchForm = ({ query }: SearchFormProps) => {
   return (

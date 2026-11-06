@@ -3,7 +3,7 @@
 import { IconCircleCheck, IconPlus } from '@tabler/icons-react';
 import { ShowTrackingStatus } from '../../../../../generated/prisma/enums';
 import { addMediaAction } from '@/modules/library/actions/addMediaAction';
-import { SearchResultCardActionsProps } from '@/modules/discovery/search/types/searchResultCardActions';
+import type { SearchResultCardActionsProps } from '@/modules/discovery/search/types/searchResultCardActions';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
 

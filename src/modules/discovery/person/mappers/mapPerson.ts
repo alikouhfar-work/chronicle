@@ -1,4 +1,4 @@
-import { Person, PersonRaw } from '@/modules/discovery/person/types/person';
+import type { Person, PersonRaw } from '@/modules/discovery/person/types/person';
 
 export const mapPerson = (person: PersonRaw): Person => ({
   alsoKnownAs: person.also_known_as,

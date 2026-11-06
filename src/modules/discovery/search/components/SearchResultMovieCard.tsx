@@ -1,4 +1,4 @@
-import { MovieSearchResult } from '@/modules/movie';
+import type { MovieSearchResult } from '@/modules/movie';
 import { SearchResultCard } from '@/modules/discovery/search/components/SearchResultCard';
 
 export const SearchResultMovieCard = (movie: MovieSearchResult) => {

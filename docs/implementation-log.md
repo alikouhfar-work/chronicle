@@ -623,3 +623,17 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Verified: tsc, eslint, 357 unit tests (one test now awaits the lazily imported
   dialog), build compiled on the advisory retry, 9/9 Playwright journeys — the
   dialogs still open and log watches after being split out.
+
+## 2026-11-05 — WP-27 · Type-only imports are explicit; the compiler is stricter
+- Change: `tsconfig.json` now has `verbatimModuleSyntax`, `noUnusedLocals`,
+  `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noImplicitOverride`, and
+  `target: ES2022`; `allowJs` removed (there is no JS in `src/`). The 197 type-only
+  imports were rewritten mechanically with `@typescript-eslint/consistent-type-imports
+  --fix` (134 files, `import type` only — no behaviour), then four residuals fixed by
+  hand: two unused `import React`, an unused `tmdbId` parameter on
+  `notifications/lib/notificationHrefs.reviewsTab` (call sites updated), and
+  `AppError.cause` now declares `override`.
+- Migration: none.
+- Verified: tsc clean with the new flags (from 397 errors down to 0), eslint clean,
+  357 unit tests, build compiled on the advisory retry, 9/9 Playwright journeys — the
+  value-import → type-import rewrite did not drop any runtime dependency.

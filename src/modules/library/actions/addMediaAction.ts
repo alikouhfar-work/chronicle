@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { addMediaToLibrary } from '@/modules/library/actions/addMediaToLibrary';
-import { AddMediaActionResult, AddMediaParams } from '@/modules/library/types/addMedia';
+import type { AddMediaActionResult, AddMediaParams } from '@/modules/library/types/addMedia';
 
 export const addMediaAction = async (params: AddMediaParams): Promise<AddMediaActionResult> => {
   try {

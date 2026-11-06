@@ -1,4 +1,4 @@
-import { PersonDetailsFilmographyProps } from '@/modules/discovery/person/types/personDetailsFilmography';
+import type { PersonDetailsFilmographyProps } from '@/modules/discovery/person/types/personDetailsFilmography';
 import { PersonDetailsFilmographyList } from '@/modules/discovery/person/components/filmography/PersonDetailsFilmographyList';
 import { PersonDetailsFilmographyEmpty } from '@/modules/discovery/person/components/filmography/PersonDetailsFilmographyEmpty';
 

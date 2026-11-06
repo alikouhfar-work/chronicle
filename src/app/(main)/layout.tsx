@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Header } from '@/app/_components/Header';
 import { Footer } from '@/app/_components/Footer';
 import { Toaster } from 'react-hot-toast';

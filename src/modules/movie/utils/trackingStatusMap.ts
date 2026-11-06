@@ -1,5 +1,5 @@
 import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
-import { MediaStatusFilter } from '@/modules/media/types/media';
+import type { MediaStatusFilter } from '@/modules/media/types/media';
 
 export const movieTrackingStatusMap = {
   watching: MovieTrackingStatus.WATCHING,

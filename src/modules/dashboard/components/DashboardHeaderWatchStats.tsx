@@ -1,5 +1,5 @@
 import { IconCircleCheck, IconClock, IconDeviceTv, IconMovie } from '@tabler/icons-react';
-import { DashboardHeaderWatchStatsProps } from '@/modules/dashboard/types/dashboardHeader';
+import type { DashboardHeaderWatchStatsProps } from '@/modules/dashboard/types/dashboardHeader';
 import { computeWatchStats } from '@/modules/dashboard/lib/watchStats';
 import { formatMinutes } from '@/shared/lib/formatMinutes';
 

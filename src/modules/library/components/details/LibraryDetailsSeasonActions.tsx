@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { markSeasonWatched } from '@/modules/episode-season/actions/markSeasonWatched';
-import { LibraryDetailsSeasonActionsProps } from '@/modules/library/types/libraryDetailsSeasonActions';
+import type { LibraryDetailsSeasonActionsProps } from '@/modules/library/types/libraryDetailsSeasonActions';
 import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
 import dynamic from 'next/dynamic';
 import { clsx } from 'clsx';

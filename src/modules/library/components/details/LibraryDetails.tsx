@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { LibraryDetailsHeader } from '@/modules/library/components/details/LibraryDetailsHeader';
-import { LibraryShowDetailsProps } from '@/modules/library/types/libraryDetails';
+import type { LibraryShowDetailsProps } from '@/modules/library/types/libraryDetails';
 import { LibraryDetailsSeasons } from '@/modules/library/components/details/LibraryDetailsSeasons';
 import { LibraryDetailsFooter } from '@/modules/library/components/details/LibraryDetailsFooter';
 import { LibraryDetailsShowWatchToggle } from '@/modules/library/components/details/LibraryDetailsShowWatchToggle';

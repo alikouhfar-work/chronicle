@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IconTrash } from '@tabler/icons-react';
 import { deleteShowFromLibrary } from '@/modules/show/actions/deleteShowFromLibrary';
-import { LibraryMediaDeleteButtonProps } from '@/modules/library/types/libraryMediaDeleteButton';
+import type { LibraryMediaDeleteButtonProps } from '@/modules/library/types/libraryMediaDeleteButton';
 import { deleteMovieFromLibrary } from '@/modules/movie/actions/deleteMovieFromLibrary';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';

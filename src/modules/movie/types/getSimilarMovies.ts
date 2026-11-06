@@ -1,4 +1,4 @@
-import { SimilarMovieRaw } from '@/modules/movie/types/similarMovie';
+import type { SimilarMovieRaw } from '@/modules/movie/types/similarMovie';
 
 export type GetSimilarMoviesResponse = {
   results: SimilarMovieRaw[];

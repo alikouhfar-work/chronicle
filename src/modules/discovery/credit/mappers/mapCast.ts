@@ -1,4 +1,4 @@
-import { Cast, CastRaw } from '@/modules/discovery/credit/types/cast';
+import type { Cast, CastRaw } from '@/modules/discovery/credit/types/cast';
 
 export const mapCast = (cast: CastRaw[]): Cast[] =>
   cast.map((person) => ({

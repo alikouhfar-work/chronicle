@@ -1,7 +1,7 @@
 import { fetchTrendingRaw } from '@/modules/media/queries/fetchTrendingRaw';
 import { attachTrackedFlags } from '@/modules/media/queries/attachTrackedFlags';
 import { mapTrendingShows } from '@/modules/show/mappers/mapTrendingShows';
-import { TrendingShow, TrendingShowRaw } from '@/modules/show/types/trendingShow';
+import type { TrendingShow, TrendingShowRaw } from '@/modules/show/types/trendingShow';
 import { getTrackedShowsLookup } from '@/modules/show/services/getTrackedShowsLookup';
 
 export const getTrendingShows = async (): Promise<TrendingShow[]> => {

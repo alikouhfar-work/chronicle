@@ -1,4 +1,4 @@
-import { ShowSearchResult } from '@/modules/show/types/showSearchResult';
+import type { ShowSearchResult } from '@/modules/show/types/showSearchResult';
 import { formatCountryBadge } from '../utils/formatCountryBadge';
 import { SearchResultCard } from '@/modules/discovery/search/components/SearchResultCard';
 

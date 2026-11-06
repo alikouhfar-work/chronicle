@@ -1,6 +1,6 @@
-import { Season } from '@/modules/episode-season';
-import { Episode } from '@/modules/episode-season';
-import { TrackedShow } from '@/modules/show';
+import type { Season } from '@/modules/episode-season';
+import type { Episode } from '@/modules/episode-season';
+import type { TrackedShow } from '@/modules/show';
 
 export type UpNextEpisode = Episode & {
   season: Omit<Season, 'episodes'> & {

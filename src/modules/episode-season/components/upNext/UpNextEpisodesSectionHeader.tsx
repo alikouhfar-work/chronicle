@@ -1,5 +1,5 @@
 import { IconPlayerPlay } from '@tabler/icons-react';
-import { UpNextEpisodesSectionHeaderProps } from '@/modules/episode-season/types/upNextShowsSectionHeader';
+import type { UpNextEpisodesSectionHeaderProps } from '@/modules/episode-season/types/upNextShowsSectionHeader';
 
 export const UpNextEpisodesSectionHeader = ({
   upNextEpisodesCount,

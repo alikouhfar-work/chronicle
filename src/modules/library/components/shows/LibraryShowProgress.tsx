@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { LibraryShowProgressProps } from '@/modules/library/types/libraryShowProgress';
+import type { LibraryShowProgressProps } from '@/modules/library/types/libraryShowProgress';
 import { getShowProgress } from '@/modules/show/utils/getShowProgress';
 import { getShowPosition } from '@/modules/show/utils/getShowPosition';
 import {

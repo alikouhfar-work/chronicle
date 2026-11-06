@@ -1,6 +1,6 @@
 import { tmdbFetchForUser as tmdbFetch } from '@/infra/tmdb/forUser';
 import { getGenreDictionary } from '@/modules/discovery/genre';
-import { SearchResponse } from '@/modules/discovery/search';
+import type { SearchResponse } from '@/modules/discovery/search';
 import { mapSearchResult } from '@/modules/discovery/search/mappers/mapSearchResult';
 import { getTrackedMoviesLookup } from '@/modules/movie/services/getTrackedMoviesLookup';
 import { getTrackedShowsLookup } from '@/modules/show/services/getTrackedShowsLookup';

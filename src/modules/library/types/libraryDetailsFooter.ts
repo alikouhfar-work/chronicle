@@ -1,6 +1,6 @@
-import { Credits } from '@/modules/discovery/credit';
-import { SimilarShow } from '@/modules/show';
-import { SimilarMovie } from '@/modules/movie';
+import type { Credits } from '@/modules/discovery/credit';
+import type { SimilarShow } from '@/modules/show';
+import type { SimilarMovie } from '@/modules/movie';
 
 export type LibraryDetailsFooterProps = {
   credits: Credits | null;

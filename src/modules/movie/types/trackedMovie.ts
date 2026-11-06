@@ -1,5 +1,5 @@
-import { Genre, GenreRaw } from '@/modules/discovery/genre';
-import { MovieTrackingStatus } from '../../../../generated/prisma/enums';
+import type { Genre, GenreRaw } from '@/modules/discovery/genre';
+import type { MovieTrackingStatus } from '../../../../generated/prisma/enums';
 
 type MovieTracking = {
   id: string;

@@ -1,4 +1,4 @@
-import { AddMediaParams } from '@/modules/library/types/addMedia';
+import type { AddMediaParams } from '@/modules/library/types/addMedia';
 import { addShow } from '@/modules/show/actions/addShow';
 import { addMovie } from '@/modules/movie/actions/addMovie';
 import { MovieTrackingStatus, ShowTrackingStatus } from '../../../../generated/prisma/enums';

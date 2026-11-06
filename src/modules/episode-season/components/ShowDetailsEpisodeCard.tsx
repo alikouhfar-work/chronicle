@@ -4,7 +4,7 @@ import { IconCalendar, IconCalendarTime, IconStar } from '@tabler/icons-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { ShowDetailsEpisodeCardToggleButton } from '@/modules/episode-season/components/ShowDetailsEpisodeCardToggleButton';
-import { ShowDetailsEpisodeCardProps } from '@/modules/episode-season/types/showDetailsEpisodeCardProps';
+import type { ShowDetailsEpisodeCardProps } from '@/modules/episode-season/types/showDetailsEpisodeCardProps';
 import { RewatchHistoryButton } from '@/modules/rewatch';
 
 /**

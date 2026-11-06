@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { IconDeviceTv } from '@tabler/icons-react';
 import { clsx } from 'clsx';
-import { LibraryDetailsSeasonsProps } from '@/modules/library/types/libraryDetailsSeasons';
+import type { LibraryDetailsSeasonsProps } from '@/modules/library/types/libraryDetailsSeasons';
 import { ShowDetailsEpisodeCard } from '@/modules/episode-season';
 import { LibraryDetailsSeasonActions } from '@/modules/library/components/details/LibraryDetailsSeasonActions';
 import { describeSeasonRewatch } from '@/modules/rewatch/lib/seasonRewatch';
