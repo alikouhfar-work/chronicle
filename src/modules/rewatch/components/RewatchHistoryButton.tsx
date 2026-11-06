@@ -3,8 +3,13 @@
 import { useState } from 'react';
 import { IconHistory } from '@tabler/icons-react';
 import { clsx } from 'clsx';
-import { RewatchHistoryModal } from '@/modules/rewatch/components/RewatchHistoryModal';
+import dynamic from 'next/dynamic';
 import type { RewatchHistoryButtonProps } from '@/modules/rewatch/types/rewatch';
+
+const RewatchHistoryModal = dynamic(
+  () => import('@/modules/rewatch/components/RewatchHistoryModal').then((m) => m.RewatchHistoryModal),
+  { ssr: false },
+);
 
 export const RewatchHistoryButton = ({
   mediaType,

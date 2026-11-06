@@ -4,11 +4,17 @@ import { useState } from 'react';
 import { markSeasonWatched } from '@/modules/episode-season/actions/markSeasonWatched';
 import { LibraryDetailsSeasonActionsProps } from '@/modules/library/types/libraryDetailsSeasonActions';
 import { IconCircleCheck, IconCircleX } from '@tabler/icons-react';
+import dynamic from 'next/dynamic';
 import { clsx } from 'clsx';
-import { RewatchButton, WatchActionModal } from '@/modules/rewatch';
+import { RewatchButton } from '@/modules/rewatch';
 import { SEASON_REWATCH_THRESHOLDS } from '@/modules/rewatch/lib/seasonRewatch';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
+
+const WatchActionModal = dynamic(
+  () => import('@/modules/rewatch/components/WatchActionModal').then((m) => m.WatchActionModal),
+  { ssr: false },
+);
 
 /**
  * Season header actions. Marking an unwatched season stays a single click;

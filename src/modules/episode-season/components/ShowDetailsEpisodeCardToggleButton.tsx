@@ -2,12 +2,17 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { IconCircle } from '@tabler/icons-react';
-import { WatchActionModal } from '@/modules/rewatch/components/WatchActionModal';
 import { ShowDetailsEpisodeCardToggleButtonProps } from '@/modules/episode-season/types/showDetailsEpisodeCardToggleButtonProps';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
 import { toastError } from '@/shared/lib/toast';
 import { ActionButton } from '@/shared/ui/ActionButton';
+
+const WatchActionModal = dynamic(
+  () => import('@/modules/rewatch/components/WatchActionModal').then((m) => m.WatchActionModal),
+  { ssr: false },
+);
 
 export const ShowDetailsEpisodeCardToggleButton = ({
   episodeId,

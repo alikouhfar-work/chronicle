@@ -2,12 +2,17 @@
 
 import { useState } from 'react';
 import { IconEye, IconEyeCheck } from '@tabler/icons-react';
+import dynamic from 'next/dynamic';
 import { clsx } from 'clsx';
 import { markShowWatched } from '@/modules/show/actions/markShowWatched';
-import { WatchActionModal } from '@/modules/rewatch/components/WatchActionModal';
 import type { LibraryDetailsShowWatchToggleProps } from '@/modules/library/types/libraryDetailsShowWatchToggle';
 import { useServerAction } from '@/shared/hooks/useServerAction';
 import { ActionButton } from '@/shared/ui/ActionButton';
+
+const WatchActionModal = dynamic(
+  () => import('@/modules/rewatch/components/WatchActionModal').then((m) => m.WatchActionModal),
+  { ssr: false },
+);
 
 /**
  * Watch control for a whole show. Mirrors the episode card: an unwatched show

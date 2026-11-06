@@ -90,8 +90,9 @@ describe('RewatchButton', () => {
     });
 
     expect(addRewatch).not.toHaveBeenCalled();
+    // The dialog is a dynamic() import now, so it lands a tick later.
+    await waitFor(() => expect(document.querySelector('dialog')).not.toBeNull());
     const dialog = document.querySelector('dialog');
-    expect(dialog).not.toBeNull();
     expect(dialog?.textContent).toContain('Movie Options');
     expect(dialog?.textContent).toContain('Fight Club');
     expect(dialog?.textContent).toContain('2 watches logged');
@@ -102,7 +103,9 @@ describe('RewatchButton', () => {
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: 'Watch options. 1 watch logged.' }));
     });
-    expect(document.querySelector('dialog')?.textContent).toContain('Show Options');
+    await waitFor(() =>
+      expect(document.querySelector('dialog')?.textContent).toContain('Show Options'),
+    );
   });
 
   it('asks before logging when a movie is completed but has no logged watches', async () => {

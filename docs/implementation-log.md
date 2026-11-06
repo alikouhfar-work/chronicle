@@ -608,3 +608,18 @@ Companion documents: `docs/gap-analysis.md` (what is wrong and why),
 - Migration: none.
 - Verified: tsc, eslint, 357 unit tests (3 new guardrail tests), build compiled on the
   advisory retry with no compile/type errors.
+
+## 2026-11-05 — WP-26 · Interaction-only client surfaces are lazy
+- Change: `next/dynamic` (`ssr: false`) for the components that only mount after a
+  click — `WatchActionModal` (all four entry points: `RewatchButton`,
+  `ShowDetailsEpisodeCardToggleButton`, `LibraryDetailsSeasonActions`,
+  `LibraryDetailsShowWatchToggle`), `RewatchHistoryModal` (`RewatchButton`,
+  `RewatchHistoryButton`) and `CommentReportForm` (`PublicReviewsPanel`). The bell
+  stays eager on purpose: its unread badge is part of the first paint.
+- Measured: `.next/static/chunks` still totals 1.1 MB (the code did not shrink, it
+  moved), but the eager 168 KB chunk is gone and a lazy 132 KB chunk appeared; the
+  modal code is no longer in the title page's initial graph.
+- Migration: none.
+- Verified: tsc, eslint, 357 unit tests (one test now awaits the lazily imported
+  dialog), build compiled on the advisory retry, 9/9 Playwright journeys — the
+  dialogs still open and log watches after being split out.

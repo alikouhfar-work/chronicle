@@ -4,11 +4,20 @@ import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
 import { clsx } from 'clsx';
 import { IconHistory, IconLoader2, IconRotateClockwise } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { addRewatch } from '@/modules/rewatch/actions/addRewatch';
-import { RewatchHistoryModal } from '@/modules/rewatch/components/RewatchHistoryModal';
-import { WatchActionModal } from '@/modules/rewatch/components/WatchActionModal';
 import type { RewatchButtonProps } from '@/modules/rewatch/types/rewatch';
 import { toastError } from '@/shared/lib/toast';
+
+// Both dialogs only exist after a click, so they stay out of the page's first-load graph.
+const RewatchHistoryModal = dynamic(
+  () => import('@/modules/rewatch/components/RewatchHistoryModal').then((m) => m.RewatchHistoryModal),
+  { ssr: false },
+);
+const WatchActionModal = dynamic(
+  () => import('@/modules/rewatch/components/WatchActionModal').then((m) => m.WatchActionModal),
+  { ssr: false },
+);
 
 const LONG_PRESS_MS = 550;
 

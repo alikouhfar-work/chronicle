@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import {
@@ -23,12 +24,17 @@ import { CommentImageGrid } from '@/modules/comments/components/CommentImageGrid
 import { CommentContent } from '@/modules/comments/components/CommentContent';
 import { CommentReportButton } from '@/modules/comments/components/CommentReportButton';
 import { CommentSkeleton } from '@/modules/comments/components/CommentSkeleton';
+
+// Only mounts after a reader presses the flag.
+const CommentReportForm = dynamic(
+  () => import('@/modules/comments/components/CommentReportForm').then((m) => m.CommentReportForm),
+  { ssr: false },
+);
 import {
   absoluteTime,
   relativeTime,
   toGridAttachments,
 } from '@/modules/comments/lib/commentFeedFormat';
-import { CommentReportForm } from '@/modules/comments/components/CommentReportForm';
 import { MentionComposerTextarea } from '@/modules/comments/components/MentionComposerTextarea';
 import {
   COMMENT_ALLOWED_IMAGE_TYPES,
