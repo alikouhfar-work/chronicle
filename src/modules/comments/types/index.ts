@@ -1,3 +1,5 @@
+import type { CommentReportReason } from '@/modules/comments/constants';
+
 export type CommentMediaType = 'episode' | 'show' | 'movie';
 
 
@@ -24,6 +26,13 @@ export type CommentView = {
   attachments: CommentAttachmentView[];
   /** Client-only flag for optimistic entries. */
   pending?: boolean;
+  /**
+   * Moderation state. Only the author ever receives a hidden comment (the feed
+   * filters it out for everyone else), and the reason is there so the author can
+   * see why it is gone.
+   */
+  hidden?: boolean;
+  hiddenReason?: string | null;
 };
 
 export type CommentCursor = {
@@ -80,4 +89,50 @@ export type GetCommentByIdResult = {
   success: boolean;
   error?: string;
   comment: CommentView | null;
+};
+
+export type ReportCommentInput = {
+  commentId: string;
+  reason: CommentReportReason;
+  note?: string;
+};
+
+export type ReportCommentResult = {
+  success: boolean;
+  error?: string;
+  /** The reader had already reported this review; nothing was written twice. */
+  alreadyReported?: boolean;
+};
+
+/** One review in the moderation queue, with every unresolved report on it. */
+export type ModerationQueueItem = {
+  commentId: string;
+  content: string;
+  mediaType: CommentMediaType;
+  tmdbId: number;
+  createdAt: Date;
+  hiddenAt: Date | null;
+  hiddenReason: string | null;
+  author: { id: string; name: string | null; username: string | null };
+  reports: Array<{
+    id: string;
+    reason: CommentReportReason;
+    note: string | null;
+    createdAt: Date;
+    reporter: { id: string; name: string | null; username: string | null };
+  }>;
+};
+
+export type ModerationDecisionInput = {
+  commentId: string;
+  action: 'hide' | 'dismiss';
+  /** Shown to the author when the review is hidden. */
+  reason?: string;
+};
+
+export type ModerationDecisionResult = {
+  success: boolean;
+  error?: string;
+  hidden?: boolean;
+  resolvedReports?: number;
 };

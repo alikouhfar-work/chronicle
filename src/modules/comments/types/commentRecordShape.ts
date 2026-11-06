@@ -4,6 +4,8 @@ export type CommentRecordShape = {
   id: string;
   content: string;
   createdAt: Date;
+  hiddenAt?: Date | null;
+  hiddenReason?: string | null;
   user: CommentAuthor;
   attachments: Array<{
     id: string;

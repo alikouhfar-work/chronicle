@@ -26,4 +26,8 @@ export const toCommentView = (comment: CommentRecordShape): CommentView => ({
   createdAt: comment.createdAt,
   author: comment.user,
   attachments: comment.attachments.map(toCommentAttachmentView),
+  // Only present when the row is hidden; the client renders a notice for the
+  // author instead of dropping their own review without explanation.
+  hidden: Boolean(comment.hiddenAt),
+  hiddenReason: comment.hiddenAt ? (comment.hiddenReason ?? null) : null,
 });

@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/infra/db/prisma';
+import { auth } from '@/infra/auth/auth';
 import { publicUserSelect } from '@/modules/user/lib/publicUser';
 import { toCommentView } from '@/modules/comments/lib/toCommentView';
 import { PRISMA_MEDIA_TYPE, isCommentMediaType, isTmdbId } from '@/modules/comments/lib/validation';
@@ -36,9 +37,16 @@ export const listComments = async (
   const pageSize = Math.min(MAX_LIMIT, Math.max(1, Math.floor(limit)));
   const safeCursor = normalizeCursor(cursor);
 
+  // A hidden review leaves the public feed but never disappears for its author:
+  // they keep seeing it, with the reason, so moderation is explainable rather
+  // than silent. Everyone else — signed out or not — gets the filtered feed.
+  const session = await auth();
+  const viewerId = session?.user?.id ?? null;
+
   const where: Record<string, unknown> = {
     mediaType: PRISMA_MEDIA_TYPE[mediaType],
     tmdbId,
+    AND: [viewerId ? { OR: [{ hiddenAt: null }, { userId: viewerId }] } : { hiddenAt: null }],
   };
 
   if (safeCursor) {

@@ -64,6 +64,7 @@ export const ModelName = {
   RewatchLog: 'RewatchLog',
   RewatchLogRemoval: 'RewatchLogRemoval',
   Comment: 'Comment',
+  CommentReport: 'CommentReport',
   CommentAttachment: 'CommentAttachment',
   CommentMention: 'CommentMention',
   Notification: 'Notification',
@@ -279,10 +280,25 @@ export const CommentScalarFieldEnum = {
   tmdbId: 'tmdbId',
   content: 'content',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  hiddenAt: 'hiddenAt',
+  hiddenReason: 'hiddenReason'
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const CommentReportScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  reporterId: 'reporterId',
+  reason: 'reason',
+  note: 'note',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type CommentReportScalarFieldEnum = (typeof CommentReportScalarFieldEnum)[keyof typeof CommentReportScalarFieldEnum]
 
 
 export const CommentAttachmentScalarFieldEnum = {

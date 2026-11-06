@@ -114,6 +114,12 @@ export type RewatchLogRemoval = Prisma.RewatchLogRemovalModel
  */
 export type Comment = Prisma.CommentModel
 /**
+ * Model CommentReport
+ * One reader's report. Unresolved rows are the moderation queue; resolving one
+ * records when it was handled (hiding the comment resolves all of them).
+ */
+export type CommentReport = Prisma.CommentReportModel
+/**
  * Model CommentAttachment
  * 
  */

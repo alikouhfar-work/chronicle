@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   findEpisode: vi.fn(),
   findUsers: vi.fn(),
   requireUserId: vi.fn(),
+  auth: vi.fn(),
 }));
 
 vi.mock('@/infra/db/prisma', () => ({
@@ -22,6 +23,10 @@ vi.mock('@/infra/db/prisma', () => ({
 
 vi.mock('@/infra/tmdb/forUser', () => ({
   requireUserId: mocks.requireUserId,
+}));
+
+vi.mock('@/infra/auth/auth', () => ({
+  auth: mocks.auth,
 }));
 
 import { createComment } from '@/modules/comments/actions/createComment';
@@ -39,6 +44,7 @@ describe('comment service TMDB scoping', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.requireUserId.mockResolvedValue('user-1');
+    mocks.auth.mockResolvedValue(null);
     mocks.findMany.mockResolvedValue([]);
   });
 

@@ -410,6 +410,7 @@ export const ModelName = {
   RewatchLog: 'RewatchLog',
   RewatchLogRemoval: 'RewatchLogRemoval',
   Comment: 'Comment',
+  CommentReport: 'CommentReport',
   CommentAttachment: 'CommentAttachment',
   CommentMention: 'CommentMention',
   Notification: 'Notification',
@@ -431,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "mediaNote" | "user" | "rewatchLog" | "rewatchLogRemoval" | "comment" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
+    modelProps: "show" | "movie" | "season" | "episode" | "genre" | "showTracking" | "movieTracking" | "episodeTracking" | "mediaNote" | "user" | "rewatchLog" | "rewatchLogRemoval" | "comment" | "commentReport" | "commentAttachment" | "commentMention" | "notification" | "account" | "session" | "verificationToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1397,6 +1398,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CommentReport: {
+      payload: Prisma.$CommentReportPayload<ExtArgs>
+      fields: Prisma.CommentReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommentReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommentReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>
+        }
+        findFirst: {
+          args: Prisma.CommentReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommentReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>
+        }
+        findMany: {
+          args: Prisma.CommentReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>[]
+        }
+        create: {
+          args: Prisma.CommentReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>
+        }
+        createMany: {
+          args: Prisma.CommentReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommentReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>[]
+        }
+        delete: {
+          args: Prisma.CommentReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>
+        }
+        update: {
+          args: Prisma.CommentReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommentReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommentReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommentReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommentReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentReportPayload>
+        }
+        aggregate: {
+          args: Prisma.CommentReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommentReport>
+        }
+        groupBy: {
+          args: Prisma.CommentReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommentReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentReportCountAggregateOutputType> | number
+        }
+      }
+    }
     CommentAttachment: {
       payload: Prisma.$CommentAttachmentPayload<ExtArgs>
       fields: Prisma.CommentAttachmentFieldRefs
@@ -2071,10 +2146,25 @@ export const CommentScalarFieldEnum = {
   tmdbId: 'tmdbId',
   content: 'content',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  hiddenAt: 'hiddenAt',
+  hiddenReason: 'hiddenReason'
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const CommentReportScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  reporterId: 'reporterId',
+  reason: 'reason',
+  note: 'note',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type CommentReportScalarFieldEnum = (typeof CommentReportScalarFieldEnum)[keyof typeof CommentReportScalarFieldEnum]
 
 
 export const CommentAttachmentScalarFieldEnum = {
@@ -2321,6 +2411,20 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'CommentReportReason'
+ */
+export type EnumCommentReportReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommentReportReason'>
+    
+
+
+/**
+ * Reference to a field of type 'CommentReportReason[]'
+ */
+export type ListEnumCommentReportReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommentReportReason[]'>
+    
+
+
+/**
  * Reference to a field of type 'NotificationType'
  */
 export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
@@ -2511,6 +2615,7 @@ export type GlobalOmitConfig = {
   rewatchLog?: Prisma.RewatchLogOmit
   rewatchLogRemoval?: Prisma.RewatchLogRemovalOmit
   comment?: Prisma.CommentOmit
+  commentReport?: Prisma.CommentReportOmit
   commentAttachment?: Prisma.CommentAttachmentOmit
   commentMention?: Prisma.CommentMentionOmit
   notification?: Prisma.NotificationOmit

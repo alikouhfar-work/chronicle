@@ -219,6 +219,7 @@ model User {
   notes                 MediaNote[]
   comments              Comment[]
   mentions              CommentMention[] @relation("MentionsReceived")
+  commentReports        CommentReport[]   @relation("CommentReports")
   notificationsReceived Notification[]   @relation("NotificationsReceived")
   notificationsSent     Notification[]   @relation("NotificationsSent")
 }
@@ -294,15 +295,51 @@ model Comment {
   content   String           @db.Text
   createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  /// Set by moderation. A hidden comment leaves the public feed but stays
+  /// visible to its author with `hiddenReason` so the removal is explainable.
+  hiddenAt     DateTime? @map("hidden_at") @db.Timestamptz(3)
+  hiddenReason String?   @map("hidden_reason")
 
   user          User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   attachments   CommentAttachment[]
   mentions      CommentMention[]    @relation("CommentMentions")
   notifications Notification[]
+  reports       CommentReport[]
 
   @@index([mediaType, tmdbId, createdAt, id])
   @@index([userId, createdAt])
+  @@index([hiddenAt])
   @@map("comments")
+}
+
+/// Why a reader flagged a review. Labels are lower-case in Postgres, like every
+/// other enum here.
+enum CommentReportReason {
+  SPAM      @map("spam")
+  ABUSE     @map("abuse")
+  OFF_TOPIC @map("off_topic")
+  OTHER     @map("other")
+}
+
+/// One reader's report. Unresolved rows are the moderation queue; resolving one
+/// records when it was handled (hiding the comment resolves all of them).
+model CommentReport {
+  id         String              @id @default(uuid())
+  commentId  String              @map("comment_id")
+  reporterId String              @map("reporter_id")
+  reason     CommentReportReason
+  note       String?             @db.Text
+  createdAt  DateTime            @default(now()) @map("created_at") @db.Timestamptz(3)
+  resolvedAt DateTime?           @map("resolved_at") @db.Timestamptz(3)
+
+  comment  Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reporter User    @relation("CommentReports", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  /// One report per reader per comment: a second POST is a no-op, not a queue
+  /// full of duplicates.
+  @@unique([commentId, reporterId])
+  @@index([resolvedAt, createdAt])
+  @@map("comment_reports")
 }
 
 model CommentAttachment {

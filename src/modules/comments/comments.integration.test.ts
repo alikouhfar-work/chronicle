@@ -1,6 +1,10 @@
 // @vitest-environment node
 
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+// These suites call services that resolve the session viewer; without a Next
+// request there is none, which is exactly the signed-out path they exercise.
+vi.mock('@/infra/auth/auth', () => ({ auth: async () => null }));
 
 const integrationEnabled = process.env.INTEGRATION_DB === '1';
 

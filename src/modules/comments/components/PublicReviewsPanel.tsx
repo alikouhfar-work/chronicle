@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { format, formatDistanceToNow } from 'date-fns';
 import {
   IconAlertCircle,
   IconCheck,
@@ -22,9 +21,22 @@ import { updateComment } from '@/modules/comments/actions/updateComment';
 import { listComments } from '@/modules/comments/services/listComments';
 import { CommentImageGrid } from '@/modules/comments/components/CommentImageGrid';
 import { CommentContent } from '@/modules/comments/components/CommentContent';
-import type { CommentAttachment } from '@/modules/comments/types/commentAttachment';
+import { CommentReportButton } from '@/modules/comments/components/CommentReportButton';
+import { CommentSkeleton } from '@/modules/comments/components/CommentSkeleton';
+import {
+  absoluteTime,
+  relativeTime,
+  toGridAttachments,
+} from '@/modules/comments/lib/commentFeedFormat';
+import { CommentReportForm } from '@/modules/comments/components/CommentReportForm';
 import { MentionComposerTextarea } from '@/modules/comments/components/MentionComposerTextarea';
-import { COMMENT_MAX_LENGTH, MAX_ATTACHMENTS } from '@/modules/comments/constants';
+import {
+  COMMENT_ALLOWED_IMAGE_TYPES,
+  COMMENT_MAX_IMAGE_BYTES,
+  COMMENT_MAX_LENGTH,
+  COMMENT_REVIEW_PAGE_SIZE,
+  MAX_ATTACHMENTS,
+} from '@/modules/comments/constants';
 import type { FeedStatus } from '@/modules/comments/types/feedStatus';
 import type {
   CommentCursor,
@@ -35,45 +47,6 @@ import type { PublicReviewsPanelProps } from '@/modules/comments/types/mediaComm
 import { usePrefersReducedMotion } from '@/shared/hooks/usePrefersReducedMotion';
 import { createMonogram } from '@/shared/lib/createMonogram';
 import { toastError } from '@/shared/lib/toast';
-
-const PAGE_SIZE = 20;
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-
-const relativeTime = (value: Date): string => {
-  const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) return '';
-  return formatDistanceToNow(date, { addSuffix: true });
-};
-
-const absoluteTime = (value: Date): string => {
-  const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) return '';
-  return format(date, 'PPpp');
-};
-
-const toGridAttachments = (comment: CommentView): CommentAttachment[] =>
-  comment.attachments.map((attachment) => ({
-    id: attachment.id,
-    url: attachment.url,
-    mimeType: attachment.mimeType,
-  }));
-
-const CommentSkeleton = () => (
-  <div className="glass-card space-y-3 rounded-3xl border border-white/10 p-5">
-    <div className="flex items-center gap-3">
-      <div className="size-9 animate-pulse rounded-full bg-white/6 motion-reduce:animate-none" />
-      <div className="space-y-1.5">
-        <div className="h-3 w-28 animate-pulse rounded bg-white/8 motion-reduce:animate-none" />
-        <div className="h-2.5 w-20 animate-pulse rounded bg-white/5 motion-reduce:animate-none" />
-      </div>
-    </div>
-    <div className="space-y-2">
-      <div className="h-3 w-full animate-pulse rounded bg-white/6 motion-reduce:animate-none" />
-      <div className="h-3 w-4/5 animate-pulse rounded bg-white/6 motion-reduce:animate-none" />
-    </div>
-  </div>
-);
 
 export const PublicReviewsPanel = ({
   mediaType,
@@ -115,13 +88,17 @@ export const PublicReviewsPanel = ({
   const [savingEdit, setSavingEdit] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
+  // Reporting is per review: `reportingId` opens one form, `reportedIds` retires
+  // the flag once the server accepted it.
+  const [reportingId, setReportingId] = useState<string | null>(null);
+  const [reportedIds, setReportedIds] = useState<Set<string>>(() => new Set());
   const [feedActionError, setFeedActionError] = useState<string | null>(null);
 
   const loadInitial = useCallback(async () => {
     setStatus('loading');
     setFeedError(null);
 
-    const result = await listComments(mediaType, tmdbId, undefined, PAGE_SIZE);
+    const result = await listComments(mediaType, tmdbId, undefined, COMMENT_REVIEW_PAGE_SIZE);
     if (result.success) {
       setComments(result.comments);
       setCursor(result.nextCursor);
@@ -164,7 +141,7 @@ export const PublicReviewsPanel = ({
     if (!cursor || loadingMore) return;
 
     setLoadingMore(true);
-    const result = await listComments(mediaType, tmdbId, cursor, PAGE_SIZE);
+    const result = await listComments(mediaType, tmdbId, cursor, COMMENT_REVIEW_PAGE_SIZE);
     setLoadingMore(false);
 
     if (!result.success) {
@@ -191,13 +168,13 @@ export const PublicReviewsPanel = ({
       return;
     }
 
-    const invalidType = files.find((file) => !ALLOWED_IMAGE_TYPES.includes(file.type));
+    const invalidType = files.find((file) => !COMMENT_ALLOWED_IMAGE_TYPES.includes(file.type));
     if (invalidType) {
       setComposerError('Only JPEG, PNG, and WebP images are supported.');
       return;
     }
 
-    const tooLarge = files.find((file) => file.size > MAX_IMAGE_BYTES);
+    const tooLarge = files.find((file) => file.size > COMMENT_MAX_IMAGE_BYTES);
     if (tooLarge) {
       setComposerError('Each image must be 5MB or smaller.');
       return;
@@ -443,7 +420,7 @@ export const PublicReviewsPanel = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept={ALLOWED_IMAGE_TYPES.join(',')}
+          accept={COMMENT_ALLOWED_IMAGE_TYPES.join(',')}
           multiple
           className="sr-only"
           onChange={(event) => void handleFiles(event.target.files)}
@@ -566,15 +543,17 @@ export const PublicReviewsPanel = ({
             const isEditing = editingId === comment.id;
             const isConfirmingDelete = confirmingDeleteId === comment.id;
             const isDeleting = deletingId === comment.id;
+            const isHidden = Boolean(comment.hidden);
+            const canReport = Boolean(viewer) && !isOwn && !comment.pending && !reportedIds.has(comment.id);
 
             return (
               <article
                 key={comment.id}
                 id={`comment-${comment.id}`}
                 aria-busy={comment.pending || undefined}
-                className={`glass-card scroll-mt-24 space-y-3 rounded-3xl border border-white/10 p-5 transition-shadow target:border-violet-400/70 target:ring-2 target:ring-violet-400/50 motion-reduce:transition-none sm:p-6 ${
-                  comment.pending ? 'opacity-70' : ''
-                }`}
+                className={`glass-card scroll-mt-24 space-y-3 rounded-3xl border p-5 transition-shadow target:border-violet-400/70 target:ring-2 target:ring-violet-400/50 motion-reduce:transition-none sm:p-6 ${
+                  isHidden ? 'border-amber-400/30' : 'border-white/10'
+                } ${comment.pending ? 'opacity-70' : ''}`}
               >
                 <div className="flex items-start gap-3">
                   {comment.author.image ? (
@@ -605,6 +584,12 @@ export const PublicReviewsPanel = ({
                       </time>
                       {comment.pending && (
                         <span className="text-[11px] font-semibold text-violet-300">Posting…</span>
+                      )}
+
+                      {canReport && !isEditing && (
+                        <span className="ml-auto flex items-center gap-1">
+                          <CommentReportButton onOpen={() => setReportingId(comment.id)} />
+                        </span>
                       )}
 
                       {isOwn && !comment.pending && !isEditing && (
@@ -688,11 +673,34 @@ export const PublicReviewsPanel = ({
                       </div>
                     ) : (
                       <>
+                        {isHidden && (
+                          <p
+                            role="status"
+                            className="mt-2 flex items-start gap-2 rounded-xl border border-amber-400/25 bg-amber-400/10 px-3 py-2 text-[11px] text-amber-200"
+                          >
+                            <IconAlertCircle size={13} className="mt-px shrink-0" />
+                            <span>
+                              Hidden from public view —{' '}
+                              {comment.hiddenReason ?? 'a moderator hid this review.'}
+                            </span>
+                          </p>
+                        )}
+
                         <CommentContent content={comment.content} className="mt-1.5 text-sm leading-relaxed break-words whitespace-pre-wrap text-zinc-200" />
 
                         <div className="mt-3">
                           <CommentImageGrid attachments={toGridAttachments(comment)} />
                         </div>
+
+                        {reportingId === comment.id && (
+                          <CommentReportForm
+                            commentId={comment.id}
+                            onClose={() => setReportingId(null)}
+                            onReported={() =>
+                              setReportedIds((current) => new Set(current).add(comment.id))
+                            }
+                          />
+                        )}
                       </>
                     )}
                   </div>

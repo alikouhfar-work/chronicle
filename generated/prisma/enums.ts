@@ -52,3 +52,13 @@ export const NotificationType = {
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const CommentReportReason = {
+  SPAM: 'SPAM',
+  ABUSE: 'ABUSE',
+  OFF_TOPIC: 'OFF_TOPIC',
+  OTHER: 'OTHER'
+} as const
+
+export type CommentReportReason = (typeof CommentReportReason)[keyof typeof CommentReportReason]
